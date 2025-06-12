@@ -1,0 +1,30 @@
+name: .NET Framework Build
+
+on:
+  push:
+    branches: [ "master" ] # Assuming 'master' is the main branch
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Restore NuGet packages
+      run: nuget restore CurePlease.sln
+
+    - name: Build solution
+      run: msbuild CurePlease.sln /p:Configuration=Release # Or Debug if preferred
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CurePleaseExecutable
+        path: obj/x86/Release/Cure Please.exe # Adjust path if necessary
