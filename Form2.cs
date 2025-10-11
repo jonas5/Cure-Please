@@ -1833,7 +1833,6 @@ namespace CurePlease
         public Form2 ( )
         {
             StartPosition = FormStartPosition.CenterScreen;
-
             InitializeComponent ( );
 
             JobNames.Add ( new JobTitles
@@ -2426,9 +2425,9 @@ namespace CurePlease
             config.curagaTargetName = curagaTargetName.Text;
             config.curagaRequiredMembers = requiredCuragaNumbers.Value;
 
-            config.regen1enabled = regen1enabled.Checked;
-            config.regen2enabled = regen2enabled.Checked;
-            config.regen3enabled = regen3enabled.Checked;
+            config.regen1enabled = regen1.Checked;
+            config.regen2enabled = regen2.Checked;
+            config.regen3enabled = regen3.Checked;
             config.cureBeforeRegen = cureBeforeRegen.Checked;
 
             // ENHANCING MAGIC
@@ -3476,9 +3475,9 @@ namespace CurePlease
             curagaTargetName.Text = config.curagaTargetName;
             requiredCuragaNumbers.Value = config.curagaRequiredMembers;
 
-            regen1enabled.Checked = config.regen1enabled;
-            regen2enabled.Checked = config.regen2enabled;
-            regen3enabled.Checked = config.regen3enabled;
+            regen1.Checked = config.regen1enabled;
+            regen2.Checked = config.regen2enabled;
+            regen3.Checked = config.regen3enabled;
             cureBeforeRegen.Checked = config.cureBeforeRegen;
 
             // ENHANCING MAGIC
