@@ -5239,11 +5239,29 @@
             playerStormspell[partyMemberId] = DateTime.Now;
         }
 
+
         private void Regen_Player(byte partyMemberId)
         {
-            string[] regen_spells = { "Regen", "Regen II", "Regen III", "Regen IV", "Regen V" };
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, regen_spells[Form2.config.autoRegen_Spell]);
-            playerRegen[partyMemberId] = DateTime.Now;
+            if (Form2.config.cureBeforeRegen)
+            {
+                CureCalculator(partyMemberId, false);
+            }
+
+            if (Form2.config.regen3enabled && HasSpell("Regen III") && JobChecker("Regen III") == true && CheckSpellRecast("Regen III") == 0)
+            {
+                CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen III");
+                playerRegen[partyMemberId] = DateTime.Now;
+            }
+            else if (Form2.config.regen2enabled && HasSpell("Regen II") && JobChecker("Regen II") == true && CheckSpellRecast("Regen II") == 0)
+            {
+                CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen II");
+                playerRegen[partyMemberId] = DateTime.Now;
+            }
+            else if (Form2.config.regen1enabled && HasSpell("Regen") && JobChecker("Regen") == true && CheckSpellRecast("Regen") == 0)
+            {
+                CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen");
+                playerRegen[partyMemberId] = DateTime.Now;
+            }
         }
 
         private void Refresh_Player(byte partyMemberId)

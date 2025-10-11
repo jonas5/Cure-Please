@@ -1,4 +1,4 @@
-﻿namespace CurePlease
+namespace CurePlease
 {
     using System;
     using System.Collections.Generic;
@@ -177,6 +177,26 @@
             }
 
             public decimal curagaRequiredMembers
+            {
+                get; set;
+            }
+
+            public bool regen1enabled
+            {
+                get; set;
+            }
+
+            public bool regen2enabled
+            {
+                get; set;
+            }
+
+            public bool regen3enabled
+            {
+                get; set;
+            }
+
+            public bool cureBeforeRegen
             {
                 get; set;
             }
@@ -1792,11 +1812,6 @@
                 get; set;
             }
 
-            // RDM Debuffs
-            public bool rdmDebuffsEnabled { get; set; }
-            public decimal rdmDebuffHP { get; set; }
-            public List<string> rdmDebuffList { get; set; }
-
             // ADD ON OPTIONS
             public string ipAddress
             {
@@ -1932,25 +1947,6 @@
                 job_number = 22,
                 job_name = "RUN"
             } );
-
-            rdmDebuffListBox.Items.Add("Dia");
-            rdmDebuffListBox.Items.Add("Dia II");
-            rdmDebuffListBox.Items.Add("Diaga");
-            rdmDebuffListBox.Items.Add("Slow");
-            rdmDebuffListBox.Items.Add("Slow II");
-            rdmDebuffListBox.Items.Add("Paralyze");
-            rdmDebuffListBox.Items.Add("Paralyze II");
-            rdmDebuffListBox.Items.Add("Addle");
-            rdmDebuffListBox.Items.Add("Distract");
-            rdmDebuffListBox.Items.Add("Distract II");
-            rdmDebuffListBox.Items.Add("Frazzle");
-            rdmDebuffListBox.Items.Add("Frazzle II");
-            rdmDebuffListBox.Items.Add("Poison");
-            rdmDebuffListBox.Items.Add("Poison II");
-            rdmDebuffListBox.Items.Add("Poisona");
-            rdmDebuffListBox.Items.Add("Blind");
-            rdmDebuffListBox.Items.Add("Blind II");
-            rdmDebuffListBox.Items.Add("Silence");
 
             if ( config.settingsSet != true )
             {
@@ -2350,11 +2346,6 @@
                 config.enableFastCast_Mode = false;
                 config.trackCastingPackets = false;
 
-                // RDM Debuffs
-                config.rdmDebuffsEnabled = false;
-                config.rdmDebuffHP = 99;
-                config.rdmDebuffList = new List<string>();
-
                 // OTHERS
 
                 config.settingsSet = true;
@@ -2434,6 +2425,11 @@
             config.curagaTargetType = curagaTargetType.SelectedIndex;
             config.curagaTargetName = curagaTargetName.Text;
             config.curagaRequiredMembers = requiredCuragaNumbers.Value;
+
+            config.regen1enabled = regen1enabled.Checked;
+            config.regen2enabled = regen2enabled.Checked;
+            config.regen3enabled = regen3enabled.Checked;
+            config.cureBeforeRegen = cureBeforeRegen.Checked;
 
             // ENHANCING MAGIC
 
@@ -2863,11 +2859,6 @@
 
             config.enableFastCast_Mode = enableFastCast_Mode.Checked;
             config.trackCastingPackets = trackCastingPackets.Checked;
-
-            // RDM Debuffs
-            config.rdmDebuffsEnabled = rdmDebuffsEnabled.Checked;
-            config.rdmDebuffHP = rdmDebuffHP.Value;
-            config.rdmDebuffList = rdmDebuffListBox.CheckedItems.Cast<string>().ToList();
 
             // OTHERS
 
@@ -3485,6 +3476,11 @@
             curagaTargetName.Text = config.curagaTargetName;
             requiredCuragaNumbers.Value = config.curagaRequiredMembers;
 
+            regen1enabled.Checked = config.regen1enabled;
+            regen2enabled.Checked = config.regen2enabled;
+            regen3enabled.Checked = config.regen3enabled;
+            cureBeforeRegen.Checked = config.cureBeforeRegen;
+
             // ENHANCING MAGIC
 
             // BASIC ENHANCING
@@ -3948,19 +3944,6 @@
 
             enableFastCast_Mode.Checked = config.enableFastCast_Mode;
             trackCastingPackets.Checked = config.trackCastingPackets;
-            // RDM Debuffs
-            rdmDebuffsEnabled.Checked = config.rdmDebuffsEnabled;
-            rdmDebuffHP.Value = config.rdmDebuffHP;
-            if (config.rdmDebuffList != null)
-            {
-                for (int i = 0; i < rdmDebuffListBox.Items.Count; i++)
-                {
-                    if (config.rdmDebuffList.Contains(rdmDebuffListBox.Items[i].ToString()))
-                    {
-                        rdmDebuffListBox.SetItemChecked(i, true);
-                    }
-                }
-            }
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )
