@@ -9553,7 +9553,7 @@
                         }
                     }
                 }
-                catch (Exception error1)
+        catch (Exception)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }

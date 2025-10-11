@@ -663,6 +663,14 @@
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // regenGroupBox
+            //
+            this.regenGroupBox = new CurePlease.GroupBoxEx();
+            this.regen1enabled = new System.Windows.Forms.CheckBox();
+            this.regen2enabled = new System.Windows.Forms.CheckBox();
+            this.regen3enabled = new System.Windows.Forms.CheckBox();
+            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
+            //
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(661, 597);
