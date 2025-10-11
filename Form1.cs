@@ -6881,9 +6881,24 @@
                                 {
                                     Phalanx_IIPlayer(charDATA.MemberNumber);
                                 }
+                                if (Form2.config.cureBeforeRegen)
+                                {
+                                    CureCalculator(charDATA.MemberNumber, false);
+                                }
                                 if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Regen))
                                 {
-                                    Regen_Player(charDATA.MemberNumber);
+                                    if (Form2.config.regen3enabled && HasSpell("Regen III") && JobChecker("Regen III") == true && CheckSpellRecast("Regen III") == 0)
+                                    {
+                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, "Regen III");
+                                    }
+                                    else if (Form2.config.regen2enabled && HasSpell("Regen II") && JobChecker("Regen II") == true && CheckSpellRecast("Regen II") == 0)
+                                    {
+                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, "Regen II");
+                                    }
+                                    else if (Form2.config.regen1enabled && HasSpell("Regen") && JobChecker("Regen") == true && CheckSpellRecast("Regen") == 0)
+                                    {
+                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, "Regen");
+                                    }
                                 }
                                 if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Refresh))
                                 {

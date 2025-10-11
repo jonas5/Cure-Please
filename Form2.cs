@@ -1732,6 +1732,26 @@
                 get; set;
             }
 
+            public bool regen1enabled
+            {
+                get; set;
+            }
+
+            public bool regen2enabled
+            {
+                get; set;
+            }
+
+            public bool regen3enabled
+            {
+                get; set;
+            }
+
+            public bool cureBeforeRegen
+            {
+                get; set;
+            }
+
             // PROGRAM OPTIONS
 
             // PAUSE OPTIONS
@@ -2405,6 +2425,11 @@
             config.curagaTargetType = curagaTargetType.SelectedIndex;
             config.curagaTargetName = curagaTargetName.Text;
             config.curagaRequiredMembers = requiredCuragaNumbers.Value;
+
+            config.regen1enabled = regen1enabled.Checked;
+            config.regen2enabled = regen2enabled.Checked;
+            config.regen3enabled = regen3enabled.Checked;
+            config.cureBeforeRegen = cureBeforeRegen.Checked;
 
             // ENHANCING MAGIC
 
@@ -3451,6 +3476,11 @@
             curagaTargetName.Text = config.curagaTargetName;
             requiredCuragaNumbers.Value = config.curagaRequiredMembers;
 
+            regen1enabled.Checked = config.regen1enabled;
+            regen2enabled.Checked = config.regen2enabled;
+            regen3enabled.Checked = config.regen3enabled;
+            cureBeforeRegen.Checked = config.cureBeforeRegen;
+
             // ENHANCING MAGIC
 
             // BASIC ENHANCING
@@ -3914,6 +3944,11 @@
 
             enableFastCast_Mode.Checked = config.enableFastCast_Mode;
             trackCastingPackets.Checked = config.trackCastingPackets;
+
+            regen1enabled.Checked = config.regen1enabled;
+            regen2enabled.Checked = config.regen2enabled;
+            regen3enabled.Checked = config.regen3enabled;
+            cureBeforeRegen.Checked = config.cureBeforeRegen;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )
