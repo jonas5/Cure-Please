@@ -7,6 +7,7 @@ namespace CurePlease
     using System.Linq;
     using System.Windows.Forms;
     using System.Xml.Serialization;
+    using System.Xml;
 
     #region "== Form2"
 
@@ -21,6 +22,22 @@ namespace CurePlease
             }
 
             public string job_name
+            {
+                get; set;
+            }
+
+            // TARGET DEBUFFS
+            public bool enableTargetDebuffs
+            {
+                get; set;
+            }
+
+            public int targetDebuffHPPercentage
+            {
+                get; set;
+            }
+
+            public List<string> targetDebuffs
             {
                 get; set;
             }
@@ -2345,6 +2362,11 @@ namespace CurePlease
                 config.enableFastCast_Mode = false;
                 config.trackCastingPackets = false;
 
+                // TARGET DEBUFFS
+                config.enableTargetDebuffs = false;
+                config.targetDebuffHPPercentage = 90;
+                config.targetDebuffs = new List<string>();
+
                 // OTHERS
 
                 config.settingsSet = true;
@@ -2360,6 +2382,31 @@ namespace CurePlease
             else
             {
                 loadJobSettings.Checked = false;
+            }
+
+            LoadRdmDebuffs();
+        }
+
+        private void LoadRdmDebuffs()
+        {
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Buffs.xml");
+                if (File.Exists(path))
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(path);
+                    XmlNodeList nodes = doc.SelectNodes("//buffs/o");
+                    foreach (XmlNode node in nodes)
+                    {
+                        string spellName = node.Attributes["en"].Value;
+                        targetDebuffsCheckedListBox.Items.Add(spellName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading buffs from XML: " + ex.Message);
             }
         }
 
@@ -2858,6 +2905,11 @@ namespace CurePlease
 
             config.enableFastCast_Mode = enableFastCast_Mode.Checked;
             config.trackCastingPackets = trackCastingPackets.Checked;
+
+            // TARGET DEBUFFS
+            config.enableTargetDebuffs = enableTargetDebuffsCheckBox.Checked;
+            config.targetDebuffHPPercentage = (int)targetDebuffHPPercentage.Value;
+            config.targetDebuffs = targetDebuffsCheckedListBox.CheckedItems.OfType<string>().ToList();
 
             // OTHERS
 
@@ -3943,6 +3995,18 @@ namespace CurePlease
 
             enableFastCast_Mode.Checked = config.enableFastCast_Mode;
             trackCastingPackets.Checked = config.trackCastingPackets;
+
+            // TARGET DEBUFFS
+            enableTargetDebuffsCheckBox.Checked = config.enableTargetDebuffs;
+            targetDebuffHPPercentage.Value = config.targetDebuffHPPercentage;
+
+            for (int i = 0; i < targetDebuffsCheckedListBox.Items.Count; i++)
+            {
+                if (config.targetDebuffs.Contains(targetDebuffsCheckedListBox.Items[i].ToString()))
+                {
+                    targetDebuffsCheckedListBox.SetItemChecked(i, true);
+                }
+            }
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )

@@ -1707,6 +1707,69 @@
             this.tabPage7.Text = "Program Options";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // targetDebuffPage
+            //
+            this.targetDebuffPage.Controls.Add(this.targetDebuffsGroupBox);
+            this.targetDebuffPage.Location = new System.Drawing.Point(4, 26);
+            this.targetDebuffPage.Name = "targetDebuffPage";
+            this.targetDebuffPage.Size = new System.Drawing.Size(806, 557);
+            this.targetDebuffPage.TabIndex = 8;
+            this.targetDebuffPage.Text = "Target Debuff";
+            this.targetDebuffPage.UseVisualStyleBackColor = true;
+            //
+            // targetDebuffsGroupBox
+            //
+            this.targetDebuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
+            this.targetDebuffsGroupBox.Controls.Add(this.enableTargetDebuffsCheckBox);
+            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPLabel);
+            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPPercentage);
+            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffsCheckedListBox);
+            this.targetDebuffsGroupBox.Location = new System.Drawing.Point(6, 6);
+            this.targetDebuffsGroupBox.Name = "targetDebuffsGroupBox";
+            this.targetDebuffsGroupBox.Size = new System.Drawing.Size(794, 545);
+            this.targetDebuffsGroupBox.TabIndex = 0;
+            this.targetDebuffsGroupBox.TabStop = false;
+            this.targetDebuffsGroupBox.Text = "Target Debuff Settings";
+            //
+            // enableTargetDebuffsCheckBox
+            //
+            this.enableTargetDebuffsCheckBox.AutoSize = true;
+            this.enableTargetDebuffsCheckBox.Location = new System.Drawing.Point(16, 29);
+            this.enableTargetDebuffsCheckBox.Name = "enableTargetDebuffsCheckBox";
+            this.enableTargetDebuffsCheckBox.Size = new System.Drawing.Size(147, 19);
+            this.enableTargetDebuffsCheckBox.TabIndex = 0;
+            this.enableTargetDebuffsCheckBox.Text = "Enable Target Debuffs";
+            this.enableTargetDebuffsCheckBox.UseVisualStyleBackColor = true;
+            //
+            // targetDebuffHPLabel
+            //
+            this.targetDebuffHPLabel.AutoSize = true;
+            this.targetDebuffHPLabel.Location = new System.Drawing.Point(200, 30);
+            this.targetDebuffHPLabel.Name = "targetDebuffHPLabel";
+            this.targetDebuffHPLabel.Size = new System.Drawing.Size(109, 15);
+            this.targetDebuffHPLabel.TabIndex = 1;
+            this.targetDebuffHPLabel.Text = "Debuff HP % below:";
+            //
+            // targetDebuffHPPercentage
+            //
+            this.targetDebuffHPPercentage.Location = new System.Drawing.Point(315, 28);
+            this.targetDebuffHPPercentage.Name = "targetDebuffHPPercentage";
+            this.targetDebuffHPPercentage.Size = new System.Drawing.Size(50, 21);
+            this.targetDebuffHPPercentage.TabIndex = 2;
+            this.targetDebuffHPPercentage.Value = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+            //
+            // targetDebuffsCheckedListBox
+            //
+            this.targetDebuffsCheckedListBox.FormattingEnabled = true;
+            this.targetDebuffsCheckedListBox.Location = new System.Drawing.Point(16, 60);
+            this.targetDebuffsCheckedListBox.Name = "targetDebuffsCheckedListBox";
+            this.targetDebuffsCheckedListBox.Size = new System.Drawing.Size(349, 468);
+            this.targetDebuffsCheckedListBox.TabIndex = 3;
+            //
             // groupBoxEx1
             // 
             this.groupBoxEx1.BorderColor = System.Drawing.Color.DimGray;
@@ -8114,6 +8177,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.targetDebuffPage);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
@@ -8837,5 +8901,11 @@
         private System.Windows.Forms.CheckBox regen3;
         private System.Windows.Forms.CheckBox regen2;
         private System.Windows.Forms.CheckBox regen1;
+        private System.Windows.Forms.TabPage targetDebuffPage;
+        private GroupBoxEx targetDebuffsGroupBox;
+        private System.Windows.Forms.CheckedListBox targetDebuffsCheckedListBox;
+        private System.Windows.Forms.NumericUpDown targetDebuffHPPercentage;
+        private System.Windows.Forms.Label targetDebuffHPLabel;
+        private System.Windows.Forms.CheckBox enableTargetDebuffsCheckBox;
     }
 }

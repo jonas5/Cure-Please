@@ -5388,6 +5388,10 @@ private void setinstance_Click(object sender, EventArgs e)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            if (Form2.config.enableTargetDebuffs)
+            {
+                RunTargetDebuffChecker();
+            }
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -9878,6 +9882,57 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private void CustomCommand_Tracker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             CustomCommand_Tracker.RunWorkerAsync();
+        }
+
+        private Dictionary<string, DateTime> debuffCastTimers = new Dictionary<string, DateTime>();
+        private Dictionary<string, float> debuffDurations = new Dictionary<string, float>();
+
+        private void RunTargetDebuffChecker()
+        {
+            if (_ELITEAPIPL.Target.GetTargetInfo().TargetIndex > 0)
+            {
+                EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex);
+                if (target.HPP <= Form2.config.targetDebuffHPPercentage)
+                {
+                    foreach (string debuff in Form2.config.targetDebuffs)
+                    {
+                        EliteAPI.ISpell spell = _ELITEAPIPL.Resources.GetSpell(debuff, 0);
+                        if (spell != null)
+                        {
+                            bool hasDebuff = target.Buffs.Any(b => b == spell.ID);
+
+                            if (!hasDebuff)
+                            {
+                                // If the debuff is not on the target, check if we can cast it.
+                                if (!debuffCastTimers.ContainsKey(debuff) || (DateTime.Now - debuffCastTimers[debuff]).TotalSeconds > spell.Recast)
+                                {
+                                    if (CheckSpellRecast(debuff) == 0 && HasSpell(debuff) && JobChecker(debuff) == true)
+                                    {
+                                        CastSpell("<bt>", debuff);
+                                        debuffCastTimers[debuff] = DateTime.Now;
+                                        debuffDurations[debuff] = spell.Duration;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // If the debuff is on the target, check if it has expired.
+                                if (debuffCastTimers.ContainsKey(debuff) && debuffDurations.ContainsKey(debuff))
+                                {
+                                    if ((DateTime.Now - debuffCastTimers[debuff]).TotalSeconds > debuffDurations[debuff])
+                                    {
+                                        if (CheckSpellRecast(debuff) == 0 && HasSpell(debuff) && JobChecker(debuff) == true)
+                                        {
+                                            CastSpell("<bt>", debuff);
+                                            debuffCastTimers[debuff] = DateTime.Now;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
