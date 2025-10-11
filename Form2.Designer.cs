@@ -7731,6 +7731,56 @@
             this.plDebuffEnabled.UseVisualStyleBackColor = true;
             this.plDebuffEnabled.CheckedChanged += new System.EventHandler(this.plDebuffEnabled_CheckedChanged);
             // 
+            // rdmDebuffPage
+            //
+            this.rdmDebuffPage = new System.Windows.Forms.TabPage();
+            this.rdmDebuffPage.SuspendLayout();
+            this.rdmDebuffPage.Controls.Add(this.rdmDebuffsEnabled);
+            this.rdmDebuffPage.Controls.Add(this.rdmDebuffHP);
+            this.rdmDebuffPage.Controls.Add(this.label69);
+            this.rdmDebuffPage.Controls.Add(this.rdmDebuffListBox);
+            this.rdmDebuffPage.Location = new System.Drawing.Point(4, 26);
+            this.rdmDebuffPage.Name = "rdmDebuffPage";
+            this.rdmDebuffPage.Padding = new System.Windows.Forms.Padding(3);
+            this.rdmDebuffPage.Size = new System.Drawing.Size(806, 557);
+            this.rdmDebuffPage.TabIndex = 8;
+            this.rdmDebuffPage.Text = "RDM Debuffs";
+            this.rdmDebuffPage.UseVisualStyleBackColor = true;
+            //
+            // rdmDebuffsEnabled
+            //
+            this.rdmDebuffsEnabled.AutoSize = true;
+            this.rdmDebuffsEnabled.Location = new System.Drawing.Point(8, 6);
+            this.rdmDebuffsEnabled.Name = "rdmDebuffsEnabled";
+            this.rdmDebuffsEnabled.Size = new System.Drawing.Size(142, 17);
+            this.rdmDebuffsEnabled.TabIndex = 0;
+            this.rdmDebuffsEnabled.Text = "Enable RDM Debuffs";
+            this.rdmDebuffsEnabled.UseVisualStyleBackColor = true;
+            //
+            // rdmDebuffHP
+            //
+            this.rdmDebuffHP.Location = new System.Drawing.Point(210, 6);
+            this.rdmDebuffHP.Name = "rdmDebuffHP";
+            this.rdmDebuffHP.Size = new System.Drawing.Size(50, 20);
+            this.rdmDebuffHP.TabIndex = 1;
+            //
+            // label69
+            //
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(156, 8);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(48, 13);
+            this.label69.TabIndex = 2;
+            this.label69.Text = "Mob HP%:";
+            //
+            // rdmDebuffListBox
+            //
+            this.rdmDebuffListBox.FormattingEnabled = true;
+            this.rdmDebuffListBox.Location = new System.Drawing.Point(8, 29);
+            this.rdmDebuffListBox.Name = "rdmDebuffListBox";
+            this.rdmDebuffListBox.Size = new System.Drawing.Size(252, 424);
+            this.rdmDebuffListBox.TabIndex = 3;
+            //
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.groupBox12);
@@ -7924,67 +7974,12 @@
             this.groupBox2.Controls.Add(this.curePercentageLabel);
             this.groupBox2.Controls.Add(this.cure2amount);
             this.groupBox2.Controls.Add(this.cure1amount);
-            this.groupBox2.Controls.Add(this.regenGroupBox);
             this.groupBox2.Location = new System.Drawing.Point(6, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(797, 298);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Healing Options";
-            //
-            // regenGroupBox
-            //
-            this.regenGroupBox.BorderColor = System.Drawing.Color.SlateGray;
-            this.regenGroupBox.Controls.Add(this.cureBeforeRegen);
-            this.regenGroupBox.Controls.Add(this.regen3enabled);
-            this.regenGroupBox.Controls.Add(this.regen2enabled);
-            this.regenGroupBox.Controls.Add(this.regen1enabled);
-            this.regenGroupBox.Location = new System.Drawing.Point(173, 103);
-            this.regenGroupBox.Name = "regenGroupBox";
-            this.regenGroupBox.Size = new System.Drawing.Size(141, 141);
-            this.regenGroupBox.TabIndex = 15;
-            this.regenGroupBox.TabStop = false;
-            this.regenGroupBox.Text = "Regen";
-            //
-            // cureBeforeRegen
-            //
-            this.cureBeforeRegen.AutoSize = true;
-            this.cureBeforeRegen.Location = new System.Drawing.Point(6, 98);
-            this.cureBeforeRegen.Name = "cureBeforeRegen";
-            this.cureBeforeRegen.Size = new System.Drawing.Size(125, 19);
-            this.cureBeforeRegen.TabIndex = 3;
-            this.cureBeforeRegen.Text = "Cure before Regen";
-            this.cureBeforeRegen.UseVisualStyleBackColor = true;
-            //
-            // regen3enabled
-            //
-            this.regen3enabled.AutoSize = true;
-            this.regen3enabled.Location = new System.Drawing.Point(6, 73);
-            this.regen3enabled.Name = "regen3enabled";
-            this.regen3enabled.Size = new System.Drawing.Size(74, 19);
-            this.regen3enabled.TabIndex = 2;
-            this.regen3enabled.Text = "Regen III";
-            this.regen3enabled.UseVisualStyleBackColor = true;
-            //
-            // regen2enabled
-            //
-            this.regen2enabled.AutoSize = true;
-            this.regen2enabled.Location = new System.Drawing.Point(6, 48);
-            this.regen2enabled.Name = "regen2enabled";
-            this.regen2enabled.Size = new System.Drawing.Size(71, 19);
-            this.regen2enabled.TabIndex = 1;
-            this.regen2enabled.Text = "Regen II";
-            this.regen2enabled.UseVisualStyleBackColor = true;
-            //
-            // regen1enabled
-            //
-            this.regen1enabled.AutoSize = true;
-            this.regen1enabled.Location = new System.Drawing.Point(6, 23);
-            this.regen1enabled.Name = "regen1enabled";
-            this.regen1enabled.Size = new System.Drawing.Size(62, 19);
-            this.regen1enabled.TabIndex = 0;
-            this.regen1enabled.Text = "Regen";
-            this.regen1enabled.UseVisualStyleBackColor = true;
             //
             // groupBox35
             // 
@@ -8104,6 +8099,7 @@
             this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.rdmDebuffPage);
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.HotTrack = true;
@@ -8823,10 +8819,10 @@
         private System.Windows.Forms.CheckBox plAmnesia;
         private System.Windows.Forms.ComboBox plSpikes_Spell;
         private System.Windows.Forms.CheckBox plSpikes;
-        private GroupBoxEx regenGroupBox;
-        private System.Windows.Forms.CheckBox regen1enabled;
-        private System.Windows.Forms.CheckBox regen2enabled;
-        private System.Windows.Forms.CheckBox regen3enabled;
-        private System.Windows.Forms.CheckBox cureBeforeRegen;
+        private System.Windows.Forms.TabPage rdmDebuffPage;
+        private System.Windows.Forms.CheckBox rdmDebuffsEnabled;
+        private System.Windows.Forms.NumericUpDown rdmDebuffHP;
+        private System.Windows.Forms.Label label69;
+        private System.Windows.Forms.CheckedListBox rdmDebuffListBox;
     }
 }

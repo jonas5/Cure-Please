@@ -29,10 +29,6 @@
         [Serializable]
         public class MySettings
         {
-            public bool regen1enabled { get; set; }
-            public bool regen2enabled { get; set; }
-            public bool regen3enabled { get; set; }
-            public bool cureBeforeRegen { get; set; }
             // BASE NEEDED FOR CONFIRMATION
             public bool settingsSet
             {
@@ -1796,6 +1792,11 @@
                 get; set;
             }
 
+            // RDM Debuffs
+            public bool rdmDebuffsEnabled { get; set; }
+            public decimal rdmDebuffHP { get; set; }
+            public List<string> rdmDebuffList { get; set; }
+
             // ADD ON OPTIONS
             public string ipAddress
             {
@@ -1932,13 +1933,28 @@
                 job_name = "RUN"
             } );
 
+            rdmDebuffListBox.Items.Add("Dia");
+            rdmDebuffListBox.Items.Add("Dia II");
+            rdmDebuffListBox.Items.Add("Diaga");
+            rdmDebuffListBox.Items.Add("Slow");
+            rdmDebuffListBox.Items.Add("Slow II");
+            rdmDebuffListBox.Items.Add("Paralyze");
+            rdmDebuffListBox.Items.Add("Paralyze II");
+            rdmDebuffListBox.Items.Add("Addle");
+            rdmDebuffListBox.Items.Add("Distract");
+            rdmDebuffListBox.Items.Add("Distract II");
+            rdmDebuffListBox.Items.Add("Frazzle");
+            rdmDebuffListBox.Items.Add("Frazzle II");
+            rdmDebuffListBox.Items.Add("Poison");
+            rdmDebuffListBox.Items.Add("Poison II");
+            rdmDebuffListBox.Items.Add("Poisona");
+            rdmDebuffListBox.Items.Add("Blind");
+            rdmDebuffListBox.Items.Add("Blind II");
+            rdmDebuffListBox.Items.Add("Silence");
+
             if ( config.settingsSet != true )
             {
                 // HEALING MAGIC
-            config.regen1enabled = false;
-            config.regen2enabled = false;
-            config.regen3enabled = false;
-            config.cureBeforeRegen = false;
                 config.cure1enabled = false;
                 config.cure2enabled = false;
                 config.cure3enabled = true;
@@ -2334,6 +2350,11 @@
                 config.enableFastCast_Mode = false;
                 config.trackCastingPackets = false;
 
+                // RDM Debuffs
+                config.rdmDebuffsEnabled = false;
+                config.rdmDebuffHP = 99;
+                config.rdmDebuffList = new List<string>();
+
                 // OTHERS
 
                 config.settingsSet = true;
@@ -2383,10 +2404,6 @@
         public void button4_Click ( object sender, EventArgs e )
         {
             // HEALING MAGIC
-            config.regen1enabled = regen1enabled.Checked;
-            config.regen2enabled = regen2enabled.Checked;
-            config.regen3enabled = regen3enabled.Checked;
-            config.cureBeforeRegen = cureBeforeRegen.Checked;
             config.cure1enabled = cure1enabled.Checked;
             config.cure2enabled = cure2enabled.Checked;
             config.cure3enabled = cure3enabled.Checked;
@@ -2846,6 +2863,11 @@
 
             config.enableFastCast_Mode = enableFastCast_Mode.Checked;
             config.trackCastingPackets = trackCastingPackets.Checked;
+
+            // RDM Debuffs
+            config.rdmDebuffsEnabled = rdmDebuffsEnabled.Checked;
+            config.rdmDebuffHP = rdmDebuffHP.Value;
+            config.rdmDebuffList = rdmDebuffListBox.CheckedItems.Cast<string>().ToList();
 
             // OTHERS
 
@@ -3426,10 +3448,6 @@
         public void updateForm ( MySettings config )
         {
             // HEALING MAGIC
-            regen1enabled.Checked = config.regen1enabled;
-            regen2enabled.Checked = config.regen2enabled;
-            regen3enabled.Checked = config.regen3enabled;
-            cureBeforeRegen.Checked = config.cureBeforeRegen;
             cure1enabled.Checked = config.cure1enabled;
             cure2enabled.Checked = config.cure2enabled;
             cure3enabled.Checked = config.cure3enabled;
@@ -3930,6 +3948,19 @@
 
             enableFastCast_Mode.Checked = config.enableFastCast_Mode;
             trackCastingPackets.Checked = config.trackCastingPackets;
+            // RDM Debuffs
+            rdmDebuffsEnabled.Checked = config.rdmDebuffsEnabled;
+            rdmDebuffHP.Value = config.rdmDebuffHP;
+            if (config.rdmDebuffList != null)
+            {
+                for (int i = 0; i < rdmDebuffListBox.Items.Count; i++)
+                {
+                    if (config.rdmDebuffList.Contains(rdmDebuffListBox.Items[i].ToString()))
+                    {
+                        rdmDebuffListBox.SetItemChecked(i, true);
+                    }
+                }
+            }
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )
