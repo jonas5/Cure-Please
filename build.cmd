@@ -1,0 +1,1 @@
+"C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe" CurePlease.sln /p:Configuration=Release /p:Platform=x86

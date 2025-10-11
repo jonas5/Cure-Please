@@ -2975,7 +2975,7 @@
                 buffID = 595
             });
 
-            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi"));
+            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi")).Union(Process.GetProcessesByName("horizon-loader"));
 
             if (pol.Count() < 1)
             {

@@ -13,3 +13,20 @@ C:\Users\User\Desktop\excl\GitHub Repos\Cure-Please\obj\x86\Release\CurePlease.c
 C:\Users\User\Desktop\excl\GitHub Repos\Cure-Please\obj\x86\Release\CurePlease.csproj.CopyComplete
 C:\Users\User\Desktop\excl\GitHub Repos\Cure-Please\obj\x86\Release\Cure Please.exe
 C:\Users\User\Desktop\excl\GitHub Repos\Cure-Please\obj\x86\Release\Cure Please.pdb
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\Cure Please.exe
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\Cure Please.pdb
+C:\Users\Youda\Gits\Cure-Please\bin\Release\AshitaAddon\CurePlease_Addon\CurePlease_Addon.lua
+C:\Users\Youda\Gits\Cure-Please\bin\Release\Cure Please.exe
+C:\Users\Youda\Gits\Cure-Please\bin\Release\Cure Please.pdb
+C:\Users\Youda\Gits\Cure-Please\bin\Release\EliteMMO.API.dll
+C:\Users\Youda\Gits\Cure-Please\bin\Release\GlobalHotKey.dll
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.csproj.AssemblyReference.cache
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.Form1.resources
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.Form2.resources
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.Form3.resources
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.Form4.resources
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.PartyBuffs.resources
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.Properties.Resources.resources
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.csproj.GenerateResource.cache
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.csproj.CoreCompileInputs.cache
+C:\Users\Youda\Gits\Cure-Please\obj\x86\Release\CurePlease.csproj.Up2Date
