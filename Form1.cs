@@ -5239,12 +5239,6 @@
             playerStormspell[partyMemberId] = DateTime.Now;
         }
 
-        private void Regen_Player(byte partyMemberId)
-        {
-            string[] regen_spells = { "Regen", "Regen II", "Regen III", "Regen IV", "Regen V" };
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, regen_spells[Form2.config.autoRegen_Spell]);
-            playerRegen[partyMemberId] = DateTime.Now;
-        }
 
         private void Refresh_Player(byte partyMemberId)
         {
@@ -6835,7 +6829,29 @@
                                 }
                                 if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Regen))
                                 {
-                                    Regen_Player(charDATA.MemberNumber);
+                                    if (Form2.config.cureBeforeRegen)
+                                    {
+                                        CureCalculator(charDATA.MemberNumber, false);
+                                    }
+                                    string regenToCast = "";
+                                    if (Form2.config.regen3enabled && HasSpell("Regen III") && CheckSpellRecast("Regen III") == 0 && JobChecker("Regen III") == true)
+                                    {
+                                        regenToCast = "Regen III";
+                                    }
+                                    else if (Form2.config.regen2enabled && HasSpell("Regen II") && CheckSpellRecast("Regen II") == 0 && JobChecker("Regen II") == true)
+                                    {
+                                        regenToCast = "Regen II";
+                                    }
+                                    else if (Form2.config.regen1enabled && HasSpell("Regen") && CheckSpellRecast("Regen") == 0 && JobChecker("Regen") == true)
+                                    {
+                                        regenToCast = "Regen";
+                                    }
+
+                                    if (!string.IsNullOrEmpty(regenToCast))
+                                    {
+                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, regenToCast);
+                                        playerRegen[charDATA.MemberNumber] = DateTime.Now;
+                                    }
                                 }
                                 if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Refresh))
                                 {
@@ -6881,23 +6897,30 @@
                                 {
                                     Phalanx_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if (Form2.config.cureBeforeRegen)
-                                {
-                                    CureCalculator(charDATA.MemberNumber, false);
-                                }
                                 if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Regen))
                                 {
-                                    if (Form2.config.regen3enabled && HasSpell("Regen III") && JobChecker("Regen III") == true && CheckSpellRecast("Regen III") == 0)
+                                    if (Form2.config.cureBeforeRegen)
                                     {
-                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, "Regen III");
+                                        CureCalculator(charDATA.MemberNumber, false);
                                     }
-                                    else if (Form2.config.regen2enabled && HasSpell("Regen II") && JobChecker("Regen II") == true && CheckSpellRecast("Regen II") == 0)
+                                    string regenToCast = "";
+                                    if (Form2.config.regen3enabled && HasSpell("Regen III") && CheckSpellRecast("Regen III") == 0 && JobChecker("Regen III") == true)
                                     {
-                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, "Regen II");
+                                        regenToCast = "Regen III";
                                     }
-                                    else if (Form2.config.regen1enabled && HasSpell("Regen") && JobChecker("Regen") == true && CheckSpellRecast("Regen") == 0)
+                                    else if (Form2.config.regen2enabled && HasSpell("Regen II") && CheckSpellRecast("Regen II") == 0 && JobChecker("Regen II") == true)
                                     {
-                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, "Regen");
+                                        regenToCast = "Regen II";
+                                    }
+                                    else if (Form2.config.regen1enabled && HasSpell("Regen") && CheckSpellRecast("Regen") == 0 && JobChecker("Regen") == true)
+                                    {
+                                        regenToCast = "Regen";
+                                    }
+
+                                    if (!string.IsNullOrEmpty(regenToCast))
+                                    {
+                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, regenToCast);
+                                        playerRegen[charDATA.MemberNumber] = DateTime.Now;
                                     }
                                 }
                                 if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Refresh))
@@ -6945,7 +6968,29 @@
                                 }
                                 if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRegen_Span[charDATA.MemberNumber].Minutes >= Form2.config.autoRegen_Minutes)
                                 {
-                                    Regen_Player(charDATA.MemberNumber);
+                                    if (Form2.config.cureBeforeRegen)
+                                    {
+                                        CureCalculator(charDATA.MemberNumber, false);
+                                    }
+                                    string regenToCast = "";
+                                    if (Form2.config.regen3enabled && HasSpell("Regen III") && CheckSpellRecast("Regen III") == 0 && JobChecker("Regen III") == true)
+                                    {
+                                        regenToCast = "Regen III";
+                                    }
+                                    else if (Form2.config.regen2enabled && HasSpell("Regen II") && CheckSpellRecast("Regen II") == 0 && JobChecker("Regen II") == true)
+                                    {
+                                        regenToCast = "Regen II";
+                                    }
+                                    else if (Form2.config.regen1enabled && HasSpell("Regen") && CheckSpellRecast("Regen") == 0 && JobChecker("Regen") == true)
+                                    {
+                                        regenToCast = "Regen";
+                                    }
+
+                                    if (!string.IsNullOrEmpty(regenToCast))
+                                    {
+                                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[charDATA.MemberNumber].Name, regenToCast);
+                                        playerRegen[charDATA.MemberNumber] = DateTime.Now;
+                                    }
                                 }
                                 if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRefresh_Span[charDATA.MemberNumber].Minutes >= Form2.config.autoRefresh_Minutes)
                                 {
@@ -9553,7 +9598,7 @@
                         }
                     }
                 }
-        catch (Exception)
+                catch (Exception error1)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }

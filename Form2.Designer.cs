@@ -663,14 +663,6 @@
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // regenGroupBox
-            //
-            this.regenGroupBox = new CurePlease.GroupBoxEx();
-            this.regen1enabled = new System.Windows.Forms.CheckBox();
-            this.regen2enabled = new System.Windows.Forms.CheckBox();
-            this.regen3enabled = new System.Windows.Forms.CheckBox();
-            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
-            //
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(661, 597);
@@ -7932,66 +7924,67 @@
             this.groupBox2.Controls.Add(this.curePercentageLabel);
             this.groupBox2.Controls.Add(this.cure2amount);
             this.groupBox2.Controls.Add(this.cure1amount);
+            this.groupBox2.Controls.Add(this.regenGroupBox);
             this.groupBox2.Location = new System.Drawing.Point(6, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(797, 298);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Healing Options";
-            // 
+            //
             // regenGroupBox
             //
             this.regenGroupBox.BorderColor = System.Drawing.Color.SlateGray;
-            this.regenGroupBox.Controls.Add(this.regen1enabled);
-            this.regenGroupBox.Controls.Add(this.regen2enabled);
-            this.regenGroupBox.Controls.Add(this.regen3enabled);
             this.regenGroupBox.Controls.Add(this.cureBeforeRegen);
-            this.regenGroupBox.Location = new System.Drawing.Point(180, 100);
+            this.regenGroupBox.Controls.Add(this.regen3enabled);
+            this.regenGroupBox.Controls.Add(this.regen2enabled);
+            this.regenGroupBox.Controls.Add(this.regen1enabled);
+            this.regenGroupBox.Location = new System.Drawing.Point(173, 103);
             this.regenGroupBox.Name = "regenGroupBox";
-            this.regenGroupBox.Size = new System.Drawing.Size(150, 120);
+            this.regenGroupBox.Size = new System.Drawing.Size(141, 141);
             this.regenGroupBox.TabIndex = 15;
             this.regenGroupBox.TabStop = false;
-            this.regenGroupBox.Text = "Regen Options";
-            //
-            // regen1enabled
-            //
-            this.regen1enabled.AutoSize = true;
-            this.regen1enabled.Location = new System.Drawing.Point(6, 25);
-            this.regen1enabled.Name = "regen1enabled";
-            this.regen1enabled.Size = new System.Drawing.Size(65, 19);
-            this.regen1enabled.TabIndex = 0;
-            this.regen1enabled.Text = "Regen";
-            this.regen1enabled.UseVisualStyleBackColor = true;
-            //
-            // regen2enabled
-            //
-            this.regen2enabled.AutoSize = true;
-            this.regen2enabled.Location = new System.Drawing.Point(6, 50);
-            this.regen2enabled.Name = "regen2enabled";
-            this.regen2enabled.Size = new System.Drawing.Size(75, 19);
-            this.regen2enabled.TabIndex = 1;
-            this.regen2enabled.Text = "Regen II";
-            this.regen2enabled.UseVisualStyleBackColor = true;
-            //
-            // regen3enabled
-            //
-            this.regen3enabled.AutoSize = true;
-            this.regen3enabled.Location = new System.Drawing.Point(6, 75);
-            this.regen3enabled.Name = "regen3enabled";
-            this.regen3enabled.Size = new System.Drawing.Size(78, 19);
-            this.regen3enabled.TabIndex = 2;
-            this.regen3enabled.Text = "Regen III";
-            this.regen3enabled.UseVisualStyleBackColor = true;
+            this.regenGroupBox.Text = "Regen";
             //
             // cureBeforeRegen
             //
             this.cureBeforeRegen.AutoSize = true;
-            this.cureBeforeRegen.Location = new System.Drawing.Point(6, 100);
+            this.cureBeforeRegen.Location = new System.Drawing.Point(6, 98);
             this.cureBeforeRegen.Name = "cureBeforeRegen";
-            this.cureBeforeRegen.Size = new System.Drawing.Size(126, 19);
+            this.cureBeforeRegen.Size = new System.Drawing.Size(125, 19);
             this.cureBeforeRegen.TabIndex = 3;
             this.cureBeforeRegen.Text = "Cure before Regen";
             this.cureBeforeRegen.UseVisualStyleBackColor = true;
+            //
+            // regen3enabled
+            //
+            this.regen3enabled.AutoSize = true;
+            this.regen3enabled.Location = new System.Drawing.Point(6, 73);
+            this.regen3enabled.Name = "regen3enabled";
+            this.regen3enabled.Size = new System.Drawing.Size(74, 19);
+            this.regen3enabled.TabIndex = 2;
+            this.regen3enabled.Text = "Regen III";
+            this.regen3enabled.UseVisualStyleBackColor = true;
+            //
+            // regen2enabled
+            //
+            this.regen2enabled.AutoSize = true;
+            this.regen2enabled.Location = new System.Drawing.Point(6, 48);
+            this.regen2enabled.Name = "regen2enabled";
+            this.regen2enabled.Size = new System.Drawing.Size(71, 19);
+            this.regen2enabled.TabIndex = 1;
+            this.regen2enabled.Text = "Regen II";
+            this.regen2enabled.UseVisualStyleBackColor = true;
+            //
+            // regen1enabled
+            //
+            this.regen1enabled.AutoSize = true;
+            this.regen1enabled.Location = new System.Drawing.Point(6, 23);
+            this.regen1enabled.Name = "regen1enabled";
+            this.regen1enabled.Size = new System.Drawing.Size(62, 19);
+            this.regen1enabled.TabIndex = 0;
+            this.regen1enabled.Text = "Regen";
+            this.regen1enabled.UseVisualStyleBackColor = true;
             //
             // groupBox35
             // 
