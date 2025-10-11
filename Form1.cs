@@ -3027,7 +3027,7 @@
 
             ForceSongRecast = true;
 
-            foreach (Process dats in Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi")).Where(dats => POLID.Text == dats.MainWindowTitle))
+            foreach (Process dats in Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi")).Union(Process.GetProcessesByName("horizon-loader")).Where(dats => POLID.Text == dats.MainWindowTitle))
             {
                 for (int i = 0; i < dats.Modules.Count; i++)
                 {
@@ -8332,7 +8332,7 @@
 
         private void refreshCharactersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi"));
+            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi")).Union(Process.GetProcessesByName("horizon-loader"));
 
             if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
             {
@@ -8822,7 +8822,7 @@
                 return;
             }
 
-            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi"));
+            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi")).Union(Process.GetProcessesByName("horizon-loader"));
 
             if (pol.Count() < 1)
             {
