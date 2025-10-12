@@ -5392,6 +5392,10 @@ private void setinstance_Click(object sender, EventArgs e)
             {
                 RunTargetDebuffChecker();
             }
+            if (Form2.config.enableTargetDebuffs)
+            {
+                RunTargetDebuffChecker();
+            }
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -9888,15 +9892,15 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             if (_ELITEAPIPL.Target.GetTargetInfo().TargetIndex > 0)
             {
-                var targetInfo = _ELITEAPIPL.Target.GetTargetInfo();
-                if (targetInfo.HPP <= Form2.config.targetDebuffHPPercentage)
+                EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex);
+                if (target.HPP <= Form2.config.targetDebuffHPPercentage)
                 {
                     foreach (string debuff in Form2.config.targetDebuffs)
                     {
                         EliteAPI.ISpell spell = _ELITEAPIPL.Resources.GetSpell(debuff, 0);
                         if (spell != null)
                         {
-                            bool hasDebuff = targetInfo.Buffs.Any(b => b == spell.ID);
+                            bool hasDebuff = target.Buffs.Any(b => b == spell.ID);
 
                             if (!hasDebuff)
                             {
