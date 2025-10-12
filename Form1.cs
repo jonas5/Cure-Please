@@ -9892,25 +9892,25 @@ private void updateInstances_Tick(object sender, EventArgs e)
             if (_ELITEAPIPL.Target.GetTargetInfo().TargetIndex > 0)
             {
                 EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex);
-                if (target.HPP <= Form2.config.targetDebuffHPPercentage)
+                if (target.CurrentHPP <= Form2.config.targetDebuffHPPercentage)
                 {
                     foreach (string debuff in Form2.config.targetDebuffs)
                     {
                         EliteAPI.ISpell spell = _ELITEAPIPL.Resources.GetSpell(debuff, 0);
                         if (spell != null)
                         {
-                            bool hasDebuff = target.Buffs.Any(b => b == spell.ID);
+                            bool hasDebuff = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex).GetPlayerInfo().Buffs.Any(b => b == spell.ID);
 
                             if (!hasDebuff)
                             {
                                 // If the debuff is not on the target, check if we can cast it.
-                                if (!debuffCastTimers.ContainsKey(debuff) || (DateTime.Now - debuffCastTimers[debuff]).TotalSeconds > spell.Recast)
+                                if (!debuffCastTimers.ContainsKey(debuff) || (DateTime.Now - debuffCastTimers[debuff]).TotalSeconds > spell.RecastTime)
                                 {
                                     if (CheckSpellRecast(debuff) == 0 && HasSpell(debuff) && JobChecker(debuff) == true)
                                     {
                                         CastSpell("<bt>", debuff);
                                         debuffCastTimers[debuff] = DateTime.Now;
-                                        debuffDurations[debuff] = spell.Duration;
+                                        debuffDurations[debuff] = spell.CAST_TIME;
                                     }
                                 }
                             }

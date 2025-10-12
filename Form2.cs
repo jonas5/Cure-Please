@@ -46,6 +46,10 @@ namespace CurePlease
         [Serializable]
         public class MySettings
         {
+            // TARGET DEBUFFS
+            public bool enableTargetDebuffs { get; set; }
+            public int targetDebuffHPPercentage { get; set; }
+            public List<string> targetDebuffs { get; set; }
             // BASE NEEDED FOR CONFIRMATION
             public bool settingsSet
             {
