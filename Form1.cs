@@ -9892,14 +9892,14 @@ private void updateInstances_Tick(object sender, EventArgs e)
             if (_ELITEAPIPL.Target.GetTargetInfo().TargetIndex > 0)
             {
                 EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex);
-                if (target.HPP <= Form2.config.targetDebuffHPPercentage)
+                if (target.CurrentHPP <= Form2.config.targetDebuffHPPercentage)
                 {
                     foreach (string debuff in Form2.config.targetDebuffs)
                     {
                         EliteAPI.ISpell spell = _ELITEAPIPL.Resources.GetSpell(debuff, 0);
                         if (spell != null)
                         {
-                            bool hasDebuff = target.Buffs.Any(b => b == spell.ID);
+                            bool hasDebuff = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex).Buffs.Any(b => b == spell.ID);
 
                             if (!hasDebuff)
                             {
