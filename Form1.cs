@@ -6062,3 +6062,4 @@
                     else
                     {
                         // Now run a scan to check all targets
+                    }
