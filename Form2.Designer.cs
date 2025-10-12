@@ -8901,5 +8901,11 @@
         private System.Windows.Forms.CheckBox regen3;
         private System.Windows.Forms.CheckBox regen2;
         private System.Windows.Forms.CheckBox regen1;
+        private System.Windows.Forms.TabPage targetDebuffPage;
+        private GroupBoxEx targetDebuffsGroupBox;
+        private System.Windows.Forms.CheckedListBox targetDebuffsCheckedListBox;
+        private System.Windows.Forms.NumericUpDown targetDebuffHPPercentage;
+        private System.Windows.Forms.Label targetDebuffHPLabel;
+        private System.Windows.Forms.CheckBox enableTargetDebuffsCheckBox;
     }
 }
