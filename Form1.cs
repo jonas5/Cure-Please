@@ -2975,204 +2975,204 @@
                 buffID = 595
             });
 
-            MessageBox.Show("🔍 Starting FFXI process scan...");
+    MessageBox.Show("🔍 Starting FFXI process scan...");
 
-            var pol = GetFFXIProcesses(requireVisibleWindow: true);
+    var pol = GetFFXIProcesses(requireVisibleWindow: true);
 
-            //MessageBox.Show($"🧮 Total matching processes found: {pol.Count}");
+    //MessageBox.Show($"🧮 Total matching processes found: {pol.Count}");
 
-            if (pol.Count < 1)
-            {
-                MessageBox.Show("⚠️ No visible FFXI-related processes found. Returning early.");
-                //MessageBox.Show("FFXI not found y");
-                return;
-            }
+    if (pol.Count < 1)
+    {
+        MessageBox.Show("⚠️ No visible FFXI-related processes found. Returning early.");
+        //MessageBox.Show("FFXI not found y");
+        return;
+    }
 
-            // Clear UI elements
-            // MessageBox.Show("🧹 Clearing dropdowns...");
-            POLID.Items.Clear();
-            POLID2.Items.Clear();
-            processids.Items.Clear();
-            activeprocessids.Items.Clear();
+    // Clear UI elements
+   // MessageBox.Show("🧹 Clearing dropdowns...");
+    POLID.Items.Clear();
+    POLID2.Items.Clear();
+    processids.Items.Clear();
+    activeprocessids.Items.Clear();
 
-            // Populate dropdowns
-            string processSummary = "📋 Populating dropdowns with process info:\n";
-            foreach (var proc in pol)
-            {
-                processSummary += $"✅ {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\"\n";
+    // Populate dropdowns
+    string processSummary = "📋 Populating dropdowns with process info:\n";
+    foreach (var proc in pol)
+    {
+        processSummary += $"✅ {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\"\n";
 
-                POLID.Items.Add(proc.MainWindowTitle);
-                POLID2.Items.Add(proc.MainWindowTitle);
-                processids.Items.Add(proc.Id);
-                activeprocessids.Items.Add(proc.Id);
-            }
-            //MessageBox.Show(processSummary);
+        POLID.Items.Add(proc.MainWindowTitle);
+        POLID2.Items.Add(proc.MainWindowTitle);
+        processids.Items.Add(proc.Id);
+        activeprocessids.Items.Add(proc.Id);
+    }
+    //MessageBox.Show(processSummary);
 
-            // Set default selections
-            //MessageBox.Show("🎯 Setting default selections...");
-            POLID.SelectedIndex = 0;
-            POLID2.SelectedIndex = 0;
-            processids.SelectedIndex = 0;
-            activeprocessids.SelectedIndex = 0;
+    // Set default selections
+    //MessageBox.Show("🎯 Setting default selections...");
+    POLID.SelectedIndex = 0;
+    POLID2.SelectedIndex = 0;
+    processids.SelectedIndex = 0;
+    activeprocessids.SelectedIndex = 0;
 
-            // Update UI version info
-            var versionText = "Cure Please v" + Application.ProductVersion;
-            //MessageBox.Show($"🆕 Setting version text: {versionText}");
+    // Update UI version info
+    var versionText = "Cure Please v" + Application.ProductVersion;
+    //MessageBox.Show($"🆕 Setting version text: {versionText}");
 
-            Text = notifyIcon1.Text = versionText;
-            notifyIcon1.BalloonTipTitle = versionText;
-            notifyIcon1.BalloonTipText = "CurePlease has been minimized.";
-            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+    Text = notifyIcon1.Text = versionText;
+    notifyIcon1.BalloonTipTitle = versionText;
+    notifyIcon1.BalloonTipText = "CurePlease has been minimized.";
+    notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
 
-            // MessageBox.Show("✅ FFXI process scan complete.");
+   // MessageBox.Show("✅ FFXI process scan complete.");
 
 
         }
 
-        private void setinstance_Click(object sender, EventArgs e)
+private void setinstance_Click(object sender, EventArgs e)
+{
+    if (!CheckForDLLFiles())
+    {
+        MessageBox.Show(
+            "Unable to locate EliteAPI.dll or EliteMMO.API.dll\nMake sure both files are in the same directory as the application",
+            "Error");
+        return;
+    }
+
+    processids.SelectedIndex = POLID.SelectedIndex;
+    activeprocessids.SelectedIndex = POLID.SelectedIndex;
+
+    _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
+    plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
+    Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Cure Please v" + Application.ProductVersion;
+
+    plLabel.ForeColor = Color.Green;
+    POLID.BackColor = Color.White;
+    plPosition.Enabled = true;
+    setinstance2.Enabled = true;
+    Form2.config.autoFollowName = string.Empty;
+
+    ForceSongRecast = true;
+
+    var polProcesses = GetFFXIProcesses(requireVisibleWindow: true);
+    foreach (var dats in polProcesses)
+    {
+        if (POLID.Text == dats.MainWindowTitle)
         {
-            if (!CheckForDLLFiles())
+            try
             {
-                MessageBox.Show(
-                    "Unable to locate EliteAPI.dll or EliteMMO.API.dll\nMake sure both files are in the same directory as the application",
-                    "Error");
-                return;
+                foreach (ProcessModule module in dats.Modules)
+                {
+                    if (module.FileName.Contains("Ashita.dll"))
+                    {
+                        WindowerMode = "Ashita";
+                    }
+                    else if (module.FileName.Contains("Hook.dll"))
+                    {
+                        WindowerMode = "Windower";
+                    }
+                }
             }
-
-            processids.SelectedIndex = POLID.SelectedIndex;
-            activeprocessids.SelectedIndex = POLID.SelectedIndex;
-
-            _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
-            plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
-            Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Cure Please v" + Application.ProductVersion;
-
-            plLabel.ForeColor = Color.Green;
-            POLID.BackColor = Color.White;
-            plPosition.Enabled = true;
-            setinstance2.Enabled = true;
-            Form2.config.autoFollowName = string.Empty;
-
-            ForceSongRecast = true;
-
-            var polProcesses = GetFFXIProcesses(requireVisibleWindow: true);
-            foreach (var dats in polProcesses)
+            catch (Exception ex)
             {
-                if (POLID.Text == dats.MainWindowTitle)
+                MessageBox.Show("Error accessing modules for process " + dats.ProcessName + " (" + dats.Id + "):\n" + ex.Message, "Module Access Error");
+            }
+        }
+    }
+
+    if (firstTime_Pause == 0)
+    {
+        Follow_BGW.RunWorkerAsync();
+        AddonReader.RunWorkerAsync();
+        firstTime_Pause = 1;
+    }
+
+    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
+    string loadSettingsPath = Path.Combine(path, "loadSettings");
+
+    if (File.Exists(loadSettingsPath))
+    {
+        if (_ELITEAPIPL.Player.MainJob != 0 && _ELITEAPIPL.Player.SubJob != 0)
+        {
+            JobTitles mainJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.MainJob);
+            JobTitles subJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.SubJob);
+
+            if (mainJob != null && subJob != null)
+            {
+                string filename = Path.Combine(path, _ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml");
+                string filename2 = Path.Combine(path, mainJob.job_name + "_" + subJob.job_name + ".xml");
+
+                string configFile = null;
+                if (File.Exists(filename))
+                    configFile = filename;
+                else if (File.Exists(filename2))
+                    configFile = filename2;
+
+                if (configFile != null)
                 {
                     try
                     {
-                        foreach (ProcessModule module in dats.Modules)
+                        using (var reader = new StreamReader(configFile))
                         {
-                            if (module.FileName.Contains("Ashita.dll"))
-                            {
-                                WindowerMode = "Ashita";
-                            }
-                            else if (module.FileName.Contains("Hook.dll"))
-                            {
-                                WindowerMode = "Windower";
-                            }
+                            var serializer = new XmlSerializer(typeof(Form2.MySettings));
+                            var config = (Form2.MySettings)serializer.Deserialize(reader);
+                            Form2.updateForm(config);
+                            Form2.button4_Click(sender, e);
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error accessing modules for process " + dats.ProcessName + " (" + dats.Id + "):\n" + ex.Message, "Module Access Error");
+                        MessageBox.Show("Failed to load settings from " + configFile + ":\n" + ex.Message, "Settings Load Error");
                     }
                 }
-            }
-
-            if (firstTime_Pause == 0)
-            {
-                Follow_BGW.RunWorkerAsync();
-                AddonReader.RunWorkerAsync();
-                firstTime_Pause = 1;
-            }
-
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
-            string loadSettingsPath = Path.Combine(path, "loadSettings");
-
-            if (File.Exists(loadSettingsPath))
-            {
-                if (_ELITEAPIPL.Player.MainJob != 0 && _ELITEAPIPL.Player.SubJob != 0)
-                {
-                    JobTitles mainJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.MainJob);
-                    JobTitles subJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.SubJob);
-
-                    if (mainJob != null && subJob != null)
-                    {
-                        string filename = Path.Combine(path, _ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml");
-                        string filename2 = Path.Combine(path, mainJob.job_name + "_" + subJob.job_name + ".xml");
-
-                        string configFile = null;
-                        if (File.Exists(filename))
-                            configFile = filename;
-                        else if (File.Exists(filename2))
-                            configFile = filename2;
-
-                        if (configFile != null)
-                        {
-                            try
-                            {
-                                using (var reader = new StreamReader(configFile))
-                                {
-                                    var serializer = new XmlSerializer(typeof(Form2.MySettings));
-                                    var config = (Form2.MySettings)serializer.Deserialize(reader);
-                                    Form2.updateForm(config);
-                                    Form2.button4_Click(sender, e);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("Failed to load settings from " + configFile + ":\n" + ex.Message, "Settings Load Error");
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (LUA_Plugin_Loaded == 0 && !Form2.config.pauseOnStartBox && _ELITEAPIMonitored != null)
-            {
-                Thread.Sleep(500);
-
-                List<string> commands = new List<string>();
-
-                if (WindowerMode == "Windower")
-                {
-                    commands.Add("//lua load CurePlease_addon");
-                    commands.Add("//cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-                    commands.Add("//cpaddon verify");
-
-                    if (Form2.config.enableHotKeys)
-                    {
-                        commands.Add("//bind ^!F1 cureplease toggle");
-                        commands.Add("//bind ^!F2 cureplease start");
-                        commands.Add("//bind ^!F3 cureplease pause");
-                    }
-                }
-                else if (WindowerMode == "Ashita")
-                {
-                    commands.Add("/addon load CurePlease_addon");
-                    commands.Add("/cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-                    commands.Add("/cpaddon verify");
-
-                    if (Form2.config.enableHotKeys)
-                    {
-                        commands.Add("/bind ^!F1 /cureplease toggle");
-                        commands.Add("/bind ^!F2 /cureplease start");
-                        commands.Add("/bind ^!F3 /cureplease pause");
-                    }
-                }
-
-                foreach (string cmd in commands)
-                {
-                    _ELITEAPIPL.ThirdParty.SendString(cmd);
-                    Thread.Sleep(100);
-                }
-
-                AddOnStatus_Click(sender, e);
-                currentAction.Text = "LUA Addon loaded. ( " + Form2.config.ipAddress + " - " + Form2.config.listeningPort + " )";
-                LUA_Plugin_Loaded = 1;
             }
         }
+    }
+
+    if (LUA_Plugin_Loaded == 0 && !Form2.config.pauseOnStartBox && _ELITEAPIMonitored != null)
+    {
+        Thread.Sleep(500);
+
+        List<string> commands = new List<string>();
+
+        if (WindowerMode == "Windower")
+        {
+            commands.Add("//lua load CurePlease_addon");
+            commands.Add("//cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
+            commands.Add("//cpaddon verify");
+
+            if (Form2.config.enableHotKeys)
+            {
+                commands.Add("//bind ^!F1 cureplease toggle");
+                commands.Add("//bind ^!F2 cureplease start");
+                commands.Add("//bind ^!F3 cureplease pause");
+            }
+        }
+        else if (WindowerMode == "Ashita")
+        {
+            commands.Add("/addon load CurePlease_addon");
+            commands.Add("/cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
+            commands.Add("/cpaddon verify");
+
+            if (Form2.config.enableHotKeys)
+            {
+                commands.Add("/bind ^!F1 /cureplease toggle");
+                commands.Add("/bind ^!F2 /cureplease start");
+                commands.Add("/bind ^!F3 /cureplease pause");
+            }
+        }
+
+        foreach (string cmd in commands)
+        {
+            _ELITEAPIPL.ThirdParty.SendString(cmd);
+            Thread.Sleep(100);
+        }
+
+        AddOnStatus_Click(sender, e);
+        currentAction.Text = "LUA Addon loaded. ( " + Form2.config.ipAddress + " - " + Form2.config.listeningPort + " )";
+        LUA_Plugin_Loaded = 1;
+    }
+}
 
 
 
@@ -5388,10 +5388,6 @@
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
-            if (Form2.config.enableTargetDebuffs)
-            {
-                RunTargetDebuffChecker();
-            }
             if (Form2.config.enableTargetDebuffs)
             {
                 RunTargetDebuffChecker();
@@ -8376,73 +8372,73 @@
 
 
 
-        private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
+private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
+{
+    var targetNames = new[] { "pol", "xiloader", "edenxi", "horizon-loader" };
+    var allProcesses = Process.GetProcesses();
+    var matchingProcesses = new List<Process>();
+
+    //string debugLog = "🔍 Scanning all processes...\n";
+
+    foreach (var proc in allProcesses)
+    {
+        string name = proc.ProcessName.ToLower();
+        bool isTarget = targetNames.Contains(name);
+        bool hasWindow = proc.MainWindowHandle != IntPtr.Zero;
+        bool passesVisibility = !requireVisibleWindow || hasWindow;
+
+        //debugLog += $"🧪 {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\" | WindowHandle: {proc.MainWindowHandle} | Match: {isTarget} | Visible: {hasWindow}\n";
+
+        if (isTarget && passesVisibility)
         {
-            var targetNames = new[] { "pol", "xiloader", "edenxi", "horizon-loader" };
-            var allProcesses = Process.GetProcesses();
-            var matchingProcesses = new List<Process>();
-
-            //string debugLog = "🔍 Scanning all processes...\n";
-
-            foreach (var proc in allProcesses)
-            {
-                string name = proc.ProcessName.ToLower();
-                bool isTarget = targetNames.Contains(name);
-                bool hasWindow = proc.MainWindowHandle != IntPtr.Zero;
-                bool passesVisibility = !requireVisibleWindow || hasWindow;
-
-                //debugLog += $"🧪 {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\" | WindowHandle: {proc.MainWindowHandle} | Match: {isTarget} | Visible: {hasWindow}\n";
-
-                if (isTarget && passesVisibility)
-                {
-                    matchingProcesses.Add(proc);
-                }
-            }
-
-            //debugLog += $"\n✅ Final matching count: {matchingProcesses.Count}";
-            //MessageBox.Show(debugLog, "FFXI Process Debug");
-
-            return matchingProcesses;
+            matchingProcesses.Add(proc);
         }
+    }
+
+    //debugLog += $"\n✅ Final matching count: {matchingProcesses.Count}";
+    //MessageBox.Show(debugLog, "FFXI Process Debug");
+
+    return matchingProcesses;
+}
 
 
 
 
-        private void refreshCharactersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var pol = GetFFXIProcesses();
+	private void refreshCharactersToolStripMenuItem_Click(object sender, EventArgs e)
+	{
+	    var pol = GetFFXIProcesses();
 
-            if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading ||
-                _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
-            {
-                // Possibly show a loading indicator or skip refresh
-                return;
-            }
+	    if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading ||
+	        _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
+	    {
+	        // Possibly show a loading indicator or skip refresh
+	        return;
+	    }
 
-            if (pol.Count < 1)
-            {
-                var hiddenPol = GetFFXIProcesses(requireVisibleWindow: false);
-                if (hiddenPol.Count > 0)
-                    MessageBox.Show("FFXI found, but no visible window. Running in background?");
-                else
-                    MessageBox.Show("FFXI not found at all.");
-            }
+	if (pol.Count < 1)
+	{
+	    var hiddenPol = GetFFXIProcesses(requireVisibleWindow: false);
+	    if (hiddenPol.Count > 0)
+	        MessageBox.Show("FFXI found, but no visible window. Running in background?");
+	    else
+	        MessageBox.Show("FFXI not found at all.");
+	}
 
 
-            POLID.Items.Clear();
-            POLID2.Items.Clear();
-            processids.Items.Clear();
+	    POLID.Items.Clear();
+	    POLID2.Items.Clear();
+	    processids.Items.Clear();
 
-            foreach (var proc in pol)
-            {
-                POLID.Items.Add(proc.MainWindowTitle);
-                POLID2.Items.Add(proc.MainWindowTitle);
-                processids.Items.Add(proc.Id);
-            }
+	    foreach (var proc in pol)
+	    {
+	        POLID.Items.Add(proc.MainWindowTitle);
+	        POLID2.Items.Add(proc.MainWindowTitle);
+	        processids.Items.Add(proc.Id);
+	    }
 
-            POLID.SelectedIndex = 0;
-            POLID2.SelectedIndex = 0;
-        }
+	    POLID.SelectedIndex = 0;
+	    POLID2.SelectedIndex = 0;
+	}
 
 
 
@@ -8898,58 +8894,58 @@
             return 0;
         }
 
-        private void updateInstances_Tick(object sender, EventArgs e)
+private void updateInstances_Tick(object sender, EventArgs e)
+{
+    // Skip update if either player is still loading
+    if ((_ELITEAPIPL != null && _ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading) ||
+        (_ELITEAPIMonitored != null && _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading))
+    {
+        return;
+    }
+
+    var pol = GetFFXIProcesses(requireVisibleWindow: true);
+
+    if (pol.Count < 1)
+    {
+        return;
+    }
+
+    // Clear dropdowns
+    POLID.Items.Clear();
+    POLID2.Items.Clear();
+    processids.Items.Clear();
+
+    int selectedPOLID = 0;
+    int selectedPOLID2 = 0;
+
+    for (int i = 0; i < pol.Count; i++)
+    {
+        var proc = pol[i];
+        string title = proc.MainWindowTitle;
+
+        POLID.Items.Add(title);
+        POLID2.Items.Add(title);
+        processids.Items.Add(proc.Id);
+
+        if (_ELITEAPIPL?.Player?.Name != null &&
+            title.Equals(_ELITEAPIPL.Player.Name, StringComparison.OrdinalIgnoreCase))
         {
-            // Skip update if either player is still loading
-            if ((_ELITEAPIPL != null && _ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading) ||
-                (_ELITEAPIMonitored != null && _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading))
-            {
-                return;
-            }
-
-            var pol = GetFFXIProcesses(requireVisibleWindow: true);
-
-            if (pol.Count < 1)
-            {
-                return;
-            }
-
-            // Clear dropdowns
-            POLID.Items.Clear();
-            POLID2.Items.Clear();
-            processids.Items.Clear();
-
-            int selectedPOLID = 0;
-            int selectedPOLID2 = 0;
-
-            for (int i = 0; i < pol.Count; i++)
-            {
-                var proc = pol[i];
-                string title = proc.MainWindowTitle;
-
-                POLID.Items.Add(title);
-                POLID2.Items.Add(title);
-                processids.Items.Add(proc.Id);
-
-                if (_ELITEAPIPL?.Player?.Name != null &&
-                    title.Equals(_ELITEAPIPL.Player.Name, StringComparison.OrdinalIgnoreCase))
-                {
-                    selectedPOLID = i;
-                    plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
-                    Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Cure Please v" + Application.ProductVersion;
-                }
-
-                if (_ELITEAPIMonitored?.Player?.Name != null &&
-                    title.Equals(_ELITEAPIMonitored.Player.Name, StringComparison.Ordinal))
-                {
-                    selectedPOLID2 = i;
-                    monitoredLabel.Text = "Monitored Player: " + _ELITEAPIMonitored.Player.Name;
-                }
-            }
-
-            POLID.SelectedIndex = selectedPOLID;
-            POLID2.SelectedIndex = selectedPOLID2;
+            selectedPOLID = i;
+            plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
+            Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Cure Please v" + Application.ProductVersion;
         }
+
+        if (_ELITEAPIMonitored?.Player?.Name != null &&
+            title.Equals(_ELITEAPIMonitored.Player.Name, StringComparison.Ordinal))
+        {
+            selectedPOLID2 = i;
+            monitoredLabel.Text = "Monitored Player: " + _ELITEAPIMonitored.Player.Name;
+        }
+    }
+
+    POLID.SelectedIndex = selectedPOLID;
+    POLID2.SelectedIndex = selectedPOLID2;
+}
 
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -9888,78 +9884,33 @@
             CustomCommand_Tracker.RunWorkerAsync();
         }
 
-        private int GetNearestEngagedEnemyID(float maxDistance = 25f)
+        private void RunTargetDebuffChecker()
         {
-            int bestTargetID = 0;
-            float closestDistance = float.MaxValue;
-
-            for (int i = 0; i < 2048; i++)
+            if (_ELITEAPIPL.Target.GetTargetInfo().TargetIndex > 0)
             {
-                EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-
-                if (entity == null || entity.Name == null)
-                    continue;
-
-                // Status 1 = engaged, Status 2 = attacking
-                if (entity.Status == 1 || entity.Status == 2)
+                EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex);
+                if (target.MaxHP > 0 && (target.CurrentHP * 100 / target.MaxHP) <= Form2.config.targetDebuffHPPercentage)
                 {
-                    if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
+                    foreach (string debuff in Form2.config.targetDebuffs)
                     {
-                        closestDistance = entity.Distance;
-                        bestTargetID = (int)entity.TargetID;
+                        EliteAPI.ISpell spell = _ELITEAPIPL.Resources.GetSpell(debuff, 0);
+                        if (spell != null)
+                        {
+                            bool hasDebuff = target.Buffs.Contains(spell.ID);
+
+                            if (!hasDebuff)
+                            {
+                                if (CheckSpellRecast(debuff) == 0 && HasSpell(debuff) && JobChecker(debuff) == true)
+                                {
+                                    CastSpell("<bt>", debuff);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
-
-            return bestTargetID;
         }
-
-private void RunTargetDebuffChecker()
-{
-    if (!Form2.config.enableTargetDebuffs || Form2.config.targetDebuffs == null || Form2.config.targetDebuffs.Count == 0)
-        return;
-
-    int enemyID = GetNearestEngagedEnemyID();
-
-    if (enemyID == 0)
-        return;
-
-    _ELITEAPIPL.Target.SetTarget(enemyID);
-    Thread.Sleep(500);
-
-    EliteAPI.TargetInfo targetInfo = _ELITEAPIPL.Target.GetTargetInfo();
-    int enemyIndex = (int)targetInfo.TargetIndex;
-    EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity(enemyIndex);
-
-    if (target == null || target.Name == null)
-        return;
-
-    foreach (string debuffName in Form2.config.targetDebuffs)
-    {
-        EliteAPI.ISpell spell = _ELITEAPIPL.Resources.GetSpell(debuffName, 0);
-
-        if (spell == null)
-            continue;
-
-        // Assume debuff is missing (no StatusEffects available)
-        if (CheckSpellRecast(debuffName) == 0 &&
-            HasSpell(debuffName) &&
-            JobChecker(debuffName))
-        {
-            CastSpell("<bt>", debuffName);
-            break;
-        }
-    }
-
-    if (!Form2.config.DisableTargettingCancel)
-    {
-        Thread.Sleep((int)(Form2.config.TargetRemoval_Delay * 1000));
-        _ELITEAPIPL.Target.SetTarget(0);
-    }
-}
-
-
-
     }
 
     // END OF THE FORM SCRIPT

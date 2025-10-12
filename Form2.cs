@@ -25,24 +25,6 @@ namespace CurePlease
             {
                 get; set;
             }
-
-            // TARGET DEBUFFS
-            public bool enableTargetDebuffs
-            {
-                get; set;
-            }
-
-            public int targetDebuffHPPercentage
-            {
-                get; set;
-            }
-
-            public List<string> targetDebuffs
-            {
-                get; set;
-            }
-
-
         }
 
         [Serializable]

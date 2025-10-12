@@ -654,13 +654,6 @@
             this.panel2.SuspendLayout();
             this.plDebuffWrapperPanel.SuspendLayout();
             this.plDebuffPanel.SuspendLayout();
-            
-            this.targetDebuffsGroupBox = new GroupBoxEx(); // or GroupBox if you're not using a custom class
-            this.targetDebuffsGroupBox.Text = "Target Debuffs";
-            this.targetDebuffsGroupBox.Size = new System.Drawing.Size(300, 150);
-            this.targetDebuffsGroupBox.Location = new System.Drawing.Point(20, 20);
-
-
             this.tabPage1.SuspendLayout();
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.requiredCuragaNumbers)).BeginInit();
