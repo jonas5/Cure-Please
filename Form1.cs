@@ -17,17 +17,6 @@
     using System.Windows.Forms;
     using System.Xml.Serialization;
 
-    [XmlType("o")]
-    public class DebuffSpell
-    {
-        [XmlAttribute("en")]
-        public string Name { get; set; }
-        [XmlAttribute("duration")]
-        public int Duration { get; set; }
-        [XmlAttribute("buffid")]
-        public int BuffId { get; set; }
-    }
-
     public partial class Form1 : Form
     {
 
@@ -8803,7 +8792,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             {
                 EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
 
-                if (entity == null || entity.Name == null || entity.Type != EliteAPI.XiEntityType.Monitored)
+                if (entity == null || entity.Name == null || entity.Type != EliteAPI.EntityType.MONSTER)
                     continue;
 
                 // Status 1 = engaged, Status 2 = attacking, etc.
@@ -8812,7 +8801,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                     if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
                     {
                         closestDistance = entity.Distance;
-                        bestTargetID = (int)entity.ID;
+                        bestTargetID = (int)entity.ServerId;
                     }
                 }
             }
@@ -9676,7 +9665,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                 }
-                catch (Exception error1)
+                catch (Exception)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }
@@ -9922,13 +9911,15 @@ private void updateInstances_Tick(object sender, EventArgs e)
             CustomCommand_Tracker.RunWorkerAsync();
         }
 
+        private Dictionary<int, Dictionary<int, DateTime>> debuffTracker = new Dictionary<int, Dictionary<int, DateTime>>();
+        private List<DebuffSpell> debuffSpells = new List<DebuffSpell>();
         private async Task RunTargetDebuffChecker()
         {
             int enemyId = GetNearestEngagedEnemyID();
             if (enemyId == 0) return;
 
             EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity(enemyId);
-            if (target == null || target.Type != EliteAPI.XiEntityType.Monitored) return;
+            if (target == null || target.Type != EliteAPI.EntityType.MONSTER) return;
 
             if (target.MaxHP > 0 && (target.CurrentHP * 100 / target.MaxHP) <= Form2.config.targetDebuffHPPercentage)
             {
@@ -9957,7 +9948,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         lastCastTime = debuffTracker[enemyId][spellInfo.BuffId];
                     }
 
-                    if (!hasDebuff && DateTime.Now > lastCastTime.AddSeconds(spellInfo.Duration))
+                    if (!hasDebuff && DateTime.Now > lastCastTime.AddSeconds(Convert.ToDouble(spellInfo.Duration)))
                     {
                         if (CheckSpellRecast(spellInfo.Name) == 0 && HasSpell(spellInfo.Name) && JobChecker(spellInfo.Name) == true)
                         {
@@ -9968,7 +9959,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                             await Task.Delay(1000);
                             if (!Form2.config.DisableTargettingCancel)
                             {
-                                await Task.Delay(TimeSpan.FromSeconds(Form2.config.TargetRemoval_Delay));
+                                await Task.Delay(TimeSpan.FromSeconds(Convert.ToDouble(Form2.config.TargetRemoval_Delay)));
                                 _ELITEAPIPL.Target.SetTarget(0);
                             }
                             break;

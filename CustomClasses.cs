@@ -173,7 +173,4 @@ namespace CurePlease
         }
     }
 
-
-
-
 }
