@@ -1,0 +1,61 @@
+Accuracy Down
+Addle
+AGI Down
+Amnesia
+Attack Down
+Bane
+Bind
+Bio
+Blindness
+Burn
+Chaos Roll
+Charm
+CHR Down
+Choke
+Curse
+Defense Down
+DEX Down
+Dia
+Disease
+Doom
+Drown
+Elegy
+Evasion Down
+Flash
+Frost
+gradual petrification
+Helix
+Inhibit TP
+INT Down
+intimidate
+Kaustra
+KO
+Lullaby
+Magic Acc. Down
+Magic Atk. Down
+Magic Def. Down
+Magic Evasion Down
+Max HP Down
+Max MP Down
+Max TP Down
+MND Down
+muddle
+Mute
+Paralysis
+Pathos
+Petrification
+Plague
+Poison
+Rasp
+Requiem
+Shock
+Silence
+Sleep
+Slow
+STR Down
+Stun
+Terror
+Threnody
+VIT Down
+Weakness
+Weight
