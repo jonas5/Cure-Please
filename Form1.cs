@@ -5386,11 +5386,12 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
 
+        private int lastDebuffTargetId = 0;
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
             if (Form2.config.enableTargetDebuffs)
             {
-                RunTargetDebuffChecker();
+                await RunTargetDebuffChecker();
             }
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
@@ -9884,25 +9885,63 @@ private void updateInstances_Tick(object sender, EventArgs e)
             CustomCommand_Tracker.RunWorkerAsync();
         }
 
-        private void RunTargetDebuffChecker()
+        private int GetNearestEngagedEnemyID(float maxDistance = 25f)
         {
-            if (_ELITEAPIPL.Target.GetTargetInfo().TargetIndex > 0)
+            int bestTargetID = 0;
+            float closestDistance = float.MaxValue;
+
+            for (int i = 0; i < 2048; i++)
             {
-                EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIPL.Target.GetTargetInfo().TargetIndex);
-                if (target.MaxHP > 0 && (target.CurrentHP * 100 / target.MaxHP) <= Form2.config.targetDebuffHPPercentage)
+                EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
+
+                if (entity == null || entity.Name == null)
+                    continue;
+
+                // Status 1 = engaged, Status 2 = attacking, etc.
+                if (entity.Status == 1 || entity.Status == 2)
+                {
+                    if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
+                    {
+                        closestDistance = entity.Distance;
+                        bestTargetID = entity.ID;
+                    }
+                }
+            }
+
+            return bestTargetID;
+        }
+
+        private async Task RunTargetDebuffChecker()
+        {
+            int enemyId = GetNearestEngagedEnemyID();
+            if (enemyId > 0)
+            {
+                if (lastDebuffTargetId != enemyId)
+                {
+                    _ELITEAPIPL.Target.SetTarget(enemyId);
+                    await Task.Delay(500);
+                    lastDebuffTargetId = enemyId;
+                }
+
+                EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity(enemyId);
+                if (target != null && target.MaxHP > 0 && (target.CurrentHP * 100 / target.MaxHP) <= Form2.config.targetDebuffHPPercentage)
                 {
                     foreach (string debuff in Form2.config.targetDebuffs)
                     {
-                        EliteAPI.ISpell spell = _ELITEAPIPL.Resources.GetSpell(debuff, 0);
-                        if (spell != null)
+                        EliteAPI.ISpell spellInfo = _ELITEAPIPL.Resources.GetSpell(debuff, 0);
+                        if (spellInfo != null)
                         {
-                            bool hasDebuff = target.Buffs.Contains(spell.ID);
-
-                            if (!hasDebuff)
+                            if (!target.Buffs.Contains(spellInfo.BuffID))
                             {
                                 if (CheckSpellRecast(debuff) == 0 && HasSpell(debuff) && JobChecker(debuff) == true)
                                 {
-                                    CastSpell("<bt>", debuff);
+                                    CastSpell("<t>", debuff);
+                                    await Task.Delay(1000);
+                                    if (!Form2.config.DisableTargettingCancel)
+                                    {
+                                        await Task.Delay(TimeSpan.FromSeconds(Form2.config.TargetRemoval_Delay));
+                                        _ELITEAPIPL.Target.SetTarget(0);
+                                    }
                                     break;
                                 }
                             }
