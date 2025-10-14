@@ -1,0 +1,23 @@
+<buffs>
+    <o en="Dia" duration="60" buffid="134" />
+    <o en="Dia II" duration="60" buffid="134" />
+    <o en="Bio" duration="60" buffid="135" />
+    <o en="Bio II" duration="60" buffid="135" />
+    <o en="Rend" duration="60" buffid="0" />
+    <o en="Paralyze" duration="120" buffid="4" />
+    <o en="Paralyze II" duration="120" buffid="4" />
+    <o en="Slow" duration="120" buffid="13" />
+    <o en="Slow II" duration="120" buffid="13" />
+    <o en="Blind" duration="120" buffid="5" />
+    <o en="Blind II" duration="120" buffid="5" />
+    <o en="Gravity" duration="60" buffid="12" />
+    <o en="Gravity II" duration="60" buffid="12" />
+    <o en="Poison" duration="60" buffid="3" />
+    <o en="Poison II" duration="60" buffid="3" />
+    <o en="Distract" duration="120" buffid="0" />
+    <o en="Distract II" duration="120" buffid="0" />
+    <o en="Frazzle" duration="120" buffid="0" />
+    <o en="Frazzle II" duration="120" buffid="0" />
+    <o en="Addle" duration="120" buffid="21" />
+    <o en="Addle II" duration="120" buffid="21" />
+</buffs>

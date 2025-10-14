@@ -2372,29 +2372,31 @@ namespace CurePlease
                 loadJobSettings.Checked = false;
             }
 
-            LoadRdmDebuffs();
+            LoadDebuffs();
         }
 
-        private void LoadRdmDebuffs()
+        private void LoadDebuffs()
         {
             try
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Buffs.xml");
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Debuffs.xml");
                 if (File.Exists(path))
                 {
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(path);
-                    XmlNodeList nodes = doc.SelectNodes("//buffs/o");
-                    foreach (XmlNode node in nodes)
+                    targetDebuffsCheckedListBox.Items.Clear();
+                    var serializer = new XmlSerializer(typeof(List<Form1.DebuffSpell>), new XmlRootAttribute("buffs"));
+                    using (var reader = new System.IO.StreamReader(path))
                     {
-                        string spellName = node.Attributes["en"].Value;
-                        targetDebuffsCheckedListBox.Items.Add(spellName);
+                        var debuffSpells = (List<Form1.DebuffSpell>)serializer.Deserialize(reader);
+                        foreach (var spell in debuffSpells)
+                        {
+                            targetDebuffsCheckedListBox.Items.Add(spell.Name);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading buffs from XML: " + ex.Message);
+                MessageBox.Show("Error loading debuffs from XML: " + ex.Message);
             }
         }
 
