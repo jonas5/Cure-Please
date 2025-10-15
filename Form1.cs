@@ -3074,9 +3074,9 @@ private void setinstance_Click(object sender, EventArgs e)
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show("Error accessing modules for process " + dats.ProcessName + " (" + dats.Id + "):\n" + ex.Message, "Module Access Error");
+               // MessageBox.Show("Error accessing modules for process " + dats.ProcessName + " (" + dats.Id + "):\n" + ex.Message, "Module Access Error");
             }
         }
     }
@@ -8485,7 +8485,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
 
                     if (entity.Name != null && entity.Name.ToLower().Equals(Form2.config.autoFollowName.ToLower()))
                     {
-                        return Convert.ToInt32(entity.TargetID);
+                        return Convert.ToInt32(entity.ServerId);
                     }
                 }
                 return -1;
@@ -8783,31 +8783,31 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             }
         }
 
-        private int GetNearestEngagedEnemyID(float maxDistance = 25f)
-        {
-            int bestTargetID = 0;
-            float closestDistance = float.MaxValue;
+        //private int GetNearestEngagedEnemyID(float maxDistance = 25f)
+        //{
+        //    int bestTargetID = 0;
+        //    float closestDistance = float.MaxValue;
 
-            for (int i = 0; i < 2048; i++)
-            {
-                EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
+        //    for (int i = 0; i < 2048; i++)
+        //    {
+        //        EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
 
-                if (entity == null || entity.Name == null || entity.Type != EliteAPI.EntityType.MONSTER)
-                    continue;
+        //        if (entity == null || entity.Name == null || entity.Type != EliteAPI.XiEntityType.MONSTER)
+        //            continue;
 
-                // Status 1 = engaged, Status 2 = attacking, etc.
-                if (entity.Status == 1 || entity.Status == 2)
-                {
-                    if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
-                    {
-                        closestDistance = entity.Distance;
-                        bestTargetID = (int)entity.ServerId;
-                    }
-                }
-            }
+        //        // Status 1 = engaged, Status 2 = attacking, etc.
+        //        if (entity.Status == 1 || entity.Status == 2)
+        //        {
+        //            if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
+        //            {
+        //                closestDistance = entity.Distance;
+        //                bestTargetID = (int)entity.ID;
+        //            }
+        //        }
+        //    }
 
-            return bestTargetID;
-        }
+        //    return bestTargetID;
+        //}
 
         private int CheckEngagedStatus_Hate()
         {
@@ -9667,7 +9667,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 }
                 catch (Exception)
                 {
-                    //  Console.WriteLine(error1.ToString());
+                    //  Console.WriteLine(ex.ToString());
                 }
 
                 listener.Close();
@@ -9911,63 +9911,63 @@ private void updateInstances_Tick(object sender, EventArgs e)
             CustomCommand_Tracker.RunWorkerAsync();
         }
 
-        private Dictionary<int, Dictionary<int, DateTime>> debuffTracker = new Dictionary<int, Dictionary<int, DateTime>>();
-        private List<DebuffSpell> debuffSpells = new List<DebuffSpell>();
-        private async Task RunTargetDebuffChecker()
-        {
-            int enemyId = GetNearestEngagedEnemyID();
-            if (enemyId == 0) return;
+        //private Dictionary<int, Dictionary<int, DateTime>> debuffTracker = new Dictionary<int, Dictionary<int, DateTime>>();
+        //private List<Form1.DebuffSpell> debuffSpells = new List<Form1.DebuffSpell>();
+        //private async Task RunTargetDebuffChecker()
+        //{
+        //    int enemyId = GetNearestEngagedEnemyID();
+        //    if (enemyId == 0) return;
 
-            EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity(enemyId);
-            if (target == null || target.Type != EliteAPI.EntityType.MONSTER) return;
+        //    EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity(enemyId);
+        //    if (target == null || target.Type != EliteAPI.XiEntityType.MONSTER) return;
 
-            if (target.MaxHP > 0 && (target.CurrentHP * 100 / target.MaxHP) <= Form2.config.targetDebuffHPPercentage)
-            {
-                if (!debuffTracker.ContainsKey(enemyId))
-                {
-                    debuffTracker[enemyId] = new Dictionary<int, DateTime>();
-                }
+        //    if (target.MaxHP > 0 && (target.CurrentHP * 100 / target.MaxHP) <= Form2.config.targetDebuffHPPercentage)
+        //    {
+        //        if (!debuffTracker.ContainsKey(enemyId))
+        //        {
+        //            debuffTracker[enemyId] = new Dictionary<int, DateTime>();
+        //        }
 
-                var spellsToCast = debuffSpells
-                    .Where(s => Form2.config.targetDebuffs.Contains(s.Name))
-                    .OrderBy(s =>
-                    {
-                        if (debuffTracker.ContainsKey(enemyId) && debuffTracker[enemyId].ContainsKey(s.BuffId))
-                        {
-                            return debuffTracker[enemyId][s.BuffId];
-                        }
-                        return DateTime.MinValue;
-                    });
+        //        var spellsToCast = debuffSpells
+        //            .Where(s => Form2.config.targetDebuffs.Contains(s.Name))
+        //            .OrderBy(s =>
+        //            {
+        //                if (debuffTracker.ContainsKey(enemyId) && debuffTracker[enemyId].ContainsKey(s.BuffId))
+        //                {
+        //                    return debuffTracker[enemyId][s.BuffId];
+        //                }
+        //                return DateTime.MinValue;
+        //            });
 
-                foreach (var spellInfo in spellsToCast)
-                {
-                    bool hasDebuff = target.Buffs.Contains((ushort)spellInfo.BuffId);
-                    DateTime lastCastTime = DateTime.MinValue;
-                    if (debuffTracker.ContainsKey(enemyId) && debuffTracker[enemyId].ContainsKey(spellInfo.BuffId))
-                    {
-                        lastCastTime = debuffTracker[enemyId][spellInfo.BuffId];
-                    }
+        //        foreach (var spellInfo in spellsToCast)
+        //        {
+        //            bool hasDebuff = target.Buffs.Contains((ushort)spellInfo.BuffId);
+        //            DateTime lastCastTime = DateTime.MinValue;
+        //            if (debuffTracker.ContainsKey(enemyId) && debuffTracker[enemyId].ContainsKey(spellInfo.BuffId))
+        //            {
+        //                lastCastTime = debuffTracker[enemyId][spellInfo.BuffId];
+        //            }
 
-                    if (!hasDebuff && DateTime.Now > lastCastTime.AddSeconds(Convert.ToDouble(spellInfo.Duration)))
-                    {
-                        if (CheckSpellRecast(spellInfo.Name) == 0 && HasSpell(spellInfo.Name) && JobChecker(spellInfo.Name) == true)
-                        {
-                            _ELITEAPIPL.Target.SetTarget(enemyId);
-                            await Task.Delay(500);
-                            CastSpell("<t>", spellInfo.Name);
-                            debuffTracker[enemyId][spellInfo.BuffId] = DateTime.Now;
-                            await Task.Delay(1000);
-                            if (!Form2.config.DisableTargettingCancel)
-                            {
-                                await Task.Delay(TimeSpan.FromSeconds(Convert.ToDouble(Form2.config.TargetRemoval_Delay)));
-                                _ELITEAPIPL.Target.SetTarget(0);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        //            if (!hasDebuff && DateTime.Now > lastCastTime.AddSeconds(Convert.ToDouble(spellInfo.Duration)))
+        //            {
+        //                if (CheckSpellRecast(spellInfo.Name) == 0 && HasSpell(spellInfo.Name) && JobChecker(spellInfo.Name) == true)
+        //                {
+        //                    _ELITEAPIPL.Target.SetTarget(enemyId);
+        //                    await Task.Delay(500);
+        //                    CastSpell("<t>", spellInfo.Name);
+        //                    debuffTracker[enemyId][spellInfo.BuffId] = DateTime.Now;
+        //                    await Task.Delay(1000);
+        //                    if (!Form2.config.DisableTargettingCancel)
+        //                    {
+        //                        await Task.Delay(TimeSpan.FromSeconds(Convert.ToDouble(Form2.config.TargetRemoval_Delay)));
+        //                        _ELITEAPIPL.Target.SetTarget(0);
+        //                    }
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         private void LoadDebuffSpells()
         {
@@ -9979,13 +9979,13 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     var serializer = new XmlSerializer(typeof(List<DebuffSpell>), new XmlRootAttribute("buffs"));
                     using (var reader = new System.IO.StreamReader(path))
                     {
-                        debuffSpells = (List<DebuffSpell>)serializer.Deserialize(reader);
+                        //debuffSpells = (List<DebuffSpell>)serializer.Deserialize(reader);
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show("Error loading debuffs from XML: " + ex.Message);
+                //MessageBox.Show("Error loading debuffs from XML: " + ex.Message);
             }
         }
     }
