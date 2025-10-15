@@ -1734,7 +1734,7 @@
             this.targetDebuffsGroupBox.Controls.Add(this.enableTargetDebuffsCheckBox);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPLabel);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPPercentage);
-            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffsCheckedListBox);
+            this.targetDebuffsGroupBox.Controls.Add(this.debuffsCheckedListBox);
             this.targetDebuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.targetDebuffsGroupBox.Name = "targetDebuffsGroupBox";
             this.targetDebuffsGroupBox.Size = new System.Drawing.Size(794, 545);

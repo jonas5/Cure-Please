@@ -5389,10 +5389,10 @@ private void setinstance_Click(object sender, EventArgs e)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
-            if (Form2.config.enableTargetDebuffs)
-            {
-                await RunTargetDebuffChecker();
-            }
+            //if (Form2.config.enableTargetDebuffs)
+            //{
+            //    await RunTargetDebuffChecker();
+            //}
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -8485,7 +8485,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
 
                     if (entity.Name != null && entity.Name.ToLower().Equals(Form2.config.autoFollowName.ToLower()))
                     {
-                        return Convert.ToInt32(entity.ServerId);
+                        return Convert.ToInt32(entity.ID);
                     }
                 }
                 return -1;
