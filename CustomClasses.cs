@@ -1,95 +1,190 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace CurePlease
 {
-    public class DebuffSpell
-    {
-        public string Name { get; set; }
-        public int BuffId { get; set; }
-        public int Duration { get; set; }
-    }
-
     public class GroupBoxEx : GroupBox
     {
-        private Color _borderColor = Color.Black;
-
+        private Color borderColor = Color.DimGray;
+        [DefaultValue(typeof(Color), "Black")]
         public Color BorderColor
         {
-            get { return _borderColor; }
-            set { _borderColor = value; Invalidate(); }
+            get => borderColor;
+            set { borderColor = value; Invalidate(); }
         }
-
+        private Color textColor = Color.Black;
+        [DefaultValue(typeof(Color), "Black")]
+        public Color TextColor
+        {
+            get => textColor;
+            set { textColor = value; Invalidate(); }
+        }
         protected override void OnPaint(PaintEventArgs e)
         {
-            //get the text size in groupbox
-            Size tSize = TextRenderer.MeasureText(this.Text, this.Font);
+            GroupBoxState state = base.Enabled ? GroupBoxState.Normal :
+                GroupBoxState.Disabled;
+            TextFormatFlags flags = TextFormatFlags.PreserveGraphicsTranslateTransform |
+                TextFormatFlags.PreserveGraphicsClipping | TextFormatFlags.TextBoxControl |
+                TextFormatFlags.WordBreak;
+            Color titleColor = TextColor;
+            if (!ShowKeyboardCues)
+            {
+                flags |= TextFormatFlags.HidePrefix;
+            }
 
-            //
-            Rectangle borderRect = this.ClientRectangle;
-            borderRect.Y = (borderRect.Y + (tSize.Height / 2));
-            borderRect.Height = (borderRect.Height - (tSize.Height / 2));
-            ControlPaint.DrawBorder(e.Graphics, borderRect, this._borderColor, ButtonBorderStyle.Solid);
+            if (RightToLeft == RightToLeft.Yes)
+            {
+                flags |= TextFormatFlags.RightToLeft | TextFormatFlags.Right;
+            }
 
-            Rectangle textRect = this.ClientRectangle;
-            textRect.X = (textRect.X + 6);
-            textRect.Width = tSize.Width;
-            textRect.Height = tSize.Height;
-            e.Graphics.FillRectangle(new SolidBrush(this.BackColor), textRect);
-            e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRect);
+            if (!Enabled)
+            {
+                titleColor = SystemColors.GrayText;
+            }
+
+            DrawUnthemedGroupBoxWithText(e.Graphics, new Rectangle(0, 0, base.Width,
+                base.Height), Text, Font, titleColor, flags, state);
+            RaisePaintEvent(this, e);
         }
+        private void DrawUnthemedGroupBoxWithText(Graphics g, Rectangle bounds,
+            string groupBoxText, Font font, Color titleColor,
+            TextFormatFlags flags, GroupBoxState state)
+        {
+            Rectangle rectangle = bounds;
+            rectangle.Width -= 8;
+            Size size = TextRenderer.MeasureText(g, groupBoxText, font,
+                new Size(rectangle.Width, rectangle.Height), flags);
+            rectangle.Width = size.Width;
+            rectangle.Height = size.Height;
+            if ((flags & TextFormatFlags.Right) == TextFormatFlags.Right)
+            {
+                rectangle.X = (bounds.Right - rectangle.Width) - 8;
+            }
+            else
+            {
+                rectangle.X += 8;
+            }
+
+            TextRenderer.DrawText(
+                g,
+                groupBoxText,
+                font,
+                rectangle,
+                titleColor,
+                flags);
+            if (rectangle.Width > 0)
+            {
+                rectangle.Inflate(2, 2);
+            }
+
+            using (Pen pen = new Pen(BorderColor))
+            {
+                int num = bounds.Top + (font.Height / 2);
+
+                g.DrawLine(pen, bounds.Left, num - 1, bounds.Left, bounds.Height - 2);
+
+                g.DrawLine(pen, bounds.Left, bounds.Height - 2, bounds.Width - 2, bounds.Height - 2);
+
+                g.DrawLine(pen, bounds.Left, num - 1, rectangle.X - 3, num - 1);
+
+                g.DrawLine(pen, rectangle.X + rectangle.Width + 2, num - 1, bounds.Width - 2, num - 1);
+
+                g.DrawLine(pen, bounds.Width - 2, num - 1, bounds.Width - 2, bounds.Height - 3);
+            }
+        }
+    }
+
+
+    [XmlType("o")]
+    public class DebuffSpell
+    {
+        [XmlAttribute("en")]
+        public string Name { get; set; }
+        [XmlAttribute("duration")]
+        public int Duration { get; set; }
+        [XmlAttribute("buffid")]
+        public int BuffId { get; set; }
     }
 
     public class NewTabControl : TabControl
     {
-        private Color _borderColor = Color.Black;
-        private Color _headerColor = Color.White;
-        private Color _selectedHeaderColor = Color.LightGray;
 
-        public Color BorderColor
+        public Color ControlBackColor { get; set; }
+        public Color SelectedTabColor { get; set; }
+        public Color TabTextColor { get; set; }
+        public Color SelectedTabTextColor { get; set; }
+
+        public NewTabControl()
         {
-            get { return _borderColor; }
-            set { _borderColor = value; Invalidate(); }
+            base.SetStyle(ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor, true);
+            base.UpdateStyles();
+
+            ControlBackColor = SystemColors.Control;
+            SelectedTabColor = SystemColors.Highlight;
+            TabTextColor = SystemColors.ControlText;
+            SelectedTabTextColor = SystemColors.ControlText;
+
         }
 
-        public Color HeaderColor
-        {
-            get { return _headerColor; }
-            set { _headerColor = value; Invalidate(); }
-        }
 
-        public Color SelectedHeaderColor
+        protected override void OnPaint(PaintEventArgs e)
         {
-            get { return _selectedHeaderColor; }
-            set { _selectedHeaderColor = value; Invalidate(); }
-        }
+            Rectangle boundsControl = ClientRectangle;
+            Brush colorBrush = new SolidBrush(ControlBackColor);
+            e.Graphics.FillRectangle(colorBrush, boundsControl);
 
-        protected override void OnDrawItem(DrawItemEventArgs e)
-        {
-            base.OnDrawItem(e);
-            Rectangle rect = e.Bounds;
-            Graphics g = e.Graphics;
-            Font font = this.Font;
-
-            if (e.Index == this.SelectedIndex)
+            for (int i = 0; i < TabCount; i++)
             {
-                //This is the selected tab
-                g.FillRectangle(new SolidBrush(_selectedHeaderColor), rect);
-                TextRenderer.DrawText(g, this.TabPages[e.Index].Text, font, rect, Color.Black);
-            }
-            else
-            {
-                //This is an unselected tab
-                g.FillRectangle(new SolidBrush(_headerColor), rect);
-                TextRenderer.DrawText(g, this.TabPages[e.Index].Text, font, rect, Color.Black);
+                Rectangle bounds = GetTabRect(i);
+
+                if (SelectedIndex == i)
+                {
+                    Brush selectBrush = new SolidBrush(SelectedTabColor);
+                    e.Graphics.FillRectangle(selectBrush, bounds);
+                }
+
+                int space = bounds.Height * 1 / 6;
+                int imageWidth = 0;
+                if (ImageList != null && ImageList.Images.Count >= i + 1)
+                {
+                    imageWidth = bounds.Height * 2 / 3;
+                    Image ins = ImageList.Images[i];
+                    Rectangle rectImage = new Rectangle(new Point(bounds.X + space, bounds.Y + bounds.Height / 2 - imageWidth / 2), new Size(imageWidth, imageWidth));
+                    e.Graphics.DrawImage(ins, rectImage);
+                }
+
+                PointF textPoint = new PointF();
+                SizeF textSize = TextRenderer.MeasureText(TabPages[i].Text, Font);
+
+                textPoint.X = bounds.X + imageWidth;
+                textPoint.Y = bounds.Bottom - textSize.Height - Padding.Y;
+                Rectangle rectText = new Rectangle(bounds.X + imageWidth + space, bounds.Top, bounds.Width - imageWidth, bounds.Height);
+
+                StringFormat sf = new StringFormat
+                {
+                    LineAlignment = StringAlignment.Center,
+                    Alignment = StringAlignment.Near
+                };
+
+                Font newFont = new Font("Times New Roman", 15);
+
+                if (SelectedIndex == i)
+                {
+                    Brush textBrush = new SolidBrush(Color.White);
+                    e.Graphics.DrawString(TabPages[i].Text, newFont, textBrush, rectText, sf);
+                }
+                else
+                {
+                    Brush textBrush = new SolidBrush(Color.Black);
+                    e.Graphics.DrawString(TabPages[i].Text, newFont, textBrush, rectText, sf);
+                }
             }
         }
     }
+
+
+
+
 }

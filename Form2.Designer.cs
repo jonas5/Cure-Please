@@ -552,17 +552,6 @@
             this.cure2enabled = new System.Windows.Forms.CheckBox();
             this.cure1enabled = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.targetDebuffPage = new System.Windows.Forms.TabPage();
-            this.targetDebuffsGroupBox = new CurePlease.GroupBoxEx();
-            this.enableTargetDebuffsCheckBox = new System.Windows.Forms.CheckBox();
-            this.targetDebuffHPLabel = new System.Windows.Forms.Label();
-            this.targetDebuffHPPercentage = new System.Windows.Forms.NumericUpDown();
-            this.debuffsCheckedListBox = new System.Windows.Forms.CheckedListBox();
-            this.regenGroupBox = new CurePlease.GroupBoxEx();
-            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
-            this.regen3 = new System.Windows.Forms.CheckBox();
-            this.regen2 = new System.Windows.Forms.CheckBox();
-            this.regen1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).BeginInit();
@@ -1734,7 +1723,7 @@
             this.targetDebuffsGroupBox.Controls.Add(this.enableTargetDebuffsCheckBox);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPLabel);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPPercentage);
-            this.targetDebuffsGroupBox.Controls.Add(this.debuffsCheckedListBox);
+            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffsCheckedListBox);
             this.targetDebuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.targetDebuffsGroupBox.Name = "targetDebuffsGroupBox";
             this.targetDebuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -7971,6 +7960,69 @@
             this.curaga3Enabled.Text = "Curaga III";
             this.curaga3Enabled.UseVisualStyleBackColor = true;
             //
+            // regenGroupBox
+            //
+            this.regenGroupBox = new CurePlease.GroupBoxEx();
+            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
+            this.regen3 = new System.Windows.Forms.CheckBox();
+            this.regen2 = new System.Windows.Forms.CheckBox();
+            this.regen1 = new System.Windows.Forms.CheckBox();
+            this.regenGroupBox.SuspendLayout();
+            this.SuspendLayout();
+            //
+            this.regenGroupBox.Controls.Add(this.cureBeforeRegen);
+            this.regenGroupBox.Controls.Add(this.regen3);
+            this.regenGroupBox.Controls.Add(this.regen2);
+            this.regenGroupBox.Controls.Add(this.regen1);
+            this.regenGroupBox.Location = new System.Drawing.Point(172, 103);
+            this.regenGroupBox.Name = "regenGroupBox";
+            this.regenGroupBox.Size = new System.Drawing.Size(200, 125);
+            this.regenGroupBox.TabIndex = 15;
+            this.regenGroupBox.TabStop = false;
+            this.regenGroupBox.Text = "Regen";
+            //
+            // cureBeforeRegen
+            //
+            this.cureBeforeRegen.AutoSize = true;
+            this.cureBeforeRegen.Location = new System.Drawing.Point(6, 95);
+            this.cureBeforeRegen.Name = "cureBeforeRegen";
+            this.cureBeforeRegen.Size = new System.Drawing.Size(126, 19);
+            this.cureBeforeRegen.TabIndex = 3;
+            this.cureBeforeRegen.Text = "Cure before Regen";
+            this.cureBeforeRegen.UseVisualStyleBackColor = true;
+            //
+            // regen3
+            //
+            this.regen3.AutoSize = true;
+            this.regen3.Location = new System.Drawing.Point(6, 70);
+            this.regen3.Name = "regen3";
+            this.regen3.Size = new System.Drawing.Size(75, 19);
+            this.regen3.TabIndex = 2;
+            this.regen3.Text = "Regen III";
+            this.regen3.UseVisualStyleBackColor = true;
+            //
+            // regen2
+            //
+            this.regen2.AutoSize = true;
+            this.regen2.Location = new System.Drawing.Point(6, 45);
+            this.regen2.Name = "regen2";
+            this.regen2.Size = new System.Drawing.Size(72, 19);
+            this.regen2.TabIndex = 1;
+            this.regen2.Text = "Regen II";
+            this.regen2.UseVisualStyleBackColor = true;
+            //
+            // regen1
+            //
+            this.regen1.AutoSize = true;
+            this.regen1.Location = new System.Drawing.Point(6, 20);
+            this.regen1.Name = "regen1";
+            this.regen1.Size = new System.Drawing.Size(63, 19);
+            this.regen1.TabIndex = 0;
+            this.regen1.Text = "Regen";
+            this.regen1.UseVisualStyleBackColor = true;
+            this.regenGroupBox.ResumeLayout(false);
+            this.regenGroupBox.PerformLayout();
+            //
             // groupBox2
             //
             this.groupBox2.BorderColor = System.Drawing.Color.SlateGray;
@@ -8128,16 +8180,6 @@
             this.tabControl1.Controls.Add(this.targetDebuffPage);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.HotTrack = true;
-            this.targetDebuffPage.Controls.Add(this.targetDebuffsGroupBox);
-            this.targetDebuffsGroupBox.Controls.Add(this.enableTargetDebuffsCheckBox);
-            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPLabel);
-            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPPercentage);
-            this.targetDebuffsGroupBox.Controls.Add(this.debuffsCheckedListBox);
-            this.groupBox2.Controls.Add(this.regenGroupBox);
-            this.regenGroupBox.Controls.Add(this.cureBeforeRegen);
-            this.regenGroupBox.Controls.Add(this.regen3);
-            this.regenGroupBox.Controls.Add(this.regen2);
-            this.regenGroupBox.Controls.Add(this.regen1);
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
