@@ -9920,9 +9920,9 @@ private void updateInstances_Tick(object sender, EventArgs e)
             if (enemyId == 0) return;
 
             EliteAPI.XiEntity target = _ELITEAPIPL.Entity.GetEntity(enemyId);
-            if (target == null || target.Type != EliteMMO.API.XiEntityType.Monitored) return;
+            if (target == null || target.Type != EliteMMO.API.EntityType.Monitored) return;
 
-            if (target.MaxHPCurrent > 0 && (target.CurrentHPCurrent * 100 / target.MaxHPCurrent) <= (int)Form2.config.targetDebuffHPPercentage)
+            if (target.MaxHP > 0 && (target.CurrentHP * 100 / target.MaxHP) <= (int)Form2.config.targetDebuffHPPercentage)
             {
                 if (!debuffTracker.ContainsKey(enemyId))
                 {
@@ -9935,7 +9935,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                 foreach (var spellInfo in spellsToCast)
                 {
-                    bool hasDebuff = target.Buffs.ToList().Contains((ushort)spellInfo.BuffId);
+                    bool hasDebuff = target.Buffs.Contains((ushort)spellInfo.BuffId);
                     DateTime lastCastTime = DateTime.MinValue;
                     if (debuffTracker.ContainsKey(enemyId) && debuffTracker[enemyId].ContainsKey(spellInfo.BuffId))
                     {

@@ -2383,10 +2383,10 @@ namespace CurePlease
                 if (File.Exists(path))
                 {
                     targetDebuffsCheckedListBox.Items.Clear();
-                    var serializer = new XmlSerializer(typeof(List<Form1.DebuffSpell>), new XmlRootAttribute("buffs"));
+                    var serializer = new XmlSerializer(typeof(List<DebuffSpell>), new XmlRootAttribute("buffs"));
                     using (var reader = new System.IO.StreamReader(path))
                     {
-                        var debuffSpells = (List<Form1.DebuffSpell>)serializer.Deserialize(reader);
+                        var debuffSpells = (List<DebuffSpell>)serializer.Deserialize(reader);
                         foreach (var spell in debuffSpells)
                         {
                             targetDebuffsCheckedListBox.Items.Add(spell.Name);

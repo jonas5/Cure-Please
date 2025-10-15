@@ -8169,6 +8169,7 @@
             //
             // tabControl1
             //
+            this.targetDebuffsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
@@ -8907,5 +8908,6 @@
         private System.Windows.Forms.NumericUpDown targetDebuffHPPercentage;
         private System.Windows.Forms.Label targetDebuffHPLabel;
         private System.Windows.Forms.CheckBox enableTargetDebuffsCheckBox;
+        private System.Windows.Forms.CheckedListBox targetDebuffsCheckedListBox;
     }
 }
