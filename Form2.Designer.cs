@@ -1723,7 +1723,7 @@
             this.targetDebuffsGroupBox.Controls.Add(this.enableTargetDebuffsCheckBox);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPLabel);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPPercentage);
-            this.targetDebuffsGroupBox.Controls.Add(this.debuffsCheckedListBox);
+            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffsCheckedListBox);
             this.targetDebuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.targetDebuffsGroupBox.Name = "targetDebuffsGroupBox";
             this.targetDebuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -8169,7 +8169,6 @@
             //
             // tabControl1
             //
-            this.debuffsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
@@ -8179,6 +8178,7 @@
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.targetDebuffPage);
+            this.targetDebuffsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
@@ -8907,6 +8907,6 @@
         private System.Windows.Forms.NumericUpDown targetDebuffHPPercentage;
         private System.Windows.Forms.Label targetDebuffHPLabel;
         private System.Windows.Forms.CheckBox enableTargetDebuffsCheckBox;
-        private System.Windows.Forms.CheckedListBox debuffsCheckedListBox;
+        private System.Windows.Forms.CheckedListBox targetDebuffsCheckedListBox;
     }
 }

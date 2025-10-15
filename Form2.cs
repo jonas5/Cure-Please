@@ -2382,14 +2382,14 @@ namespace CurePlease
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Debuffs.xml");
                 if (File.Exists(path))
                 {
-                    debuffsCheckedListBox.Items.Clear();
+                    this.targetDebuffsCheckedListBox.Items.Clear();
                     var serializer = new XmlSerializer(typeof(List<DebuffSpell>), new XmlRootAttribute("buffs"));
                     using (var reader = new System.IO.StreamReader(path))
                     {
                         var debuffSpells = (List<DebuffSpell>)serializer.Deserialize(reader);
                         foreach (var spell in debuffSpells)
                         {
-                            debuffsCheckedListBox.Items.Add(spell.Name);
+                            this.targetDebuffsCheckedListBox.Items.Add(spell.Name);
                         }
                     }
                 }
@@ -2899,7 +2899,7 @@ namespace CurePlease
             // TARGET DEBUFFS
             config.enableTargetDebuffs = enableTargetDebuffsCheckBox.Checked;
             config.targetDebuffHPPercentage = (int)targetDebuffHPPercentage.Value;
-            config.targetDebuffs = debuffsCheckedListBox.CheckedItems.OfType<string>().ToList();
+            config.targetDebuffs = this.targetDebuffsCheckedListBox.CheckedItems.OfType<string>().ToList();
 
             // OTHERS
 
@@ -3990,11 +3990,11 @@ namespace CurePlease
             enableTargetDebuffsCheckBox.Checked = config.enableTargetDebuffs;
             targetDebuffHPPercentage.Value = config.targetDebuffHPPercentage;
 
-            for (int i = 0; i < debuffsCheckedListBox.Items.Count; i++)
+            for (int i = 0; i < this.targetDebuffsCheckedListBox.Items.Count; i++)
             {
-                if (config.targetDebuffs.Contains(debuffsCheckedListBox.Items[i].ToString()))
+                if (config.targetDebuffs.Contains(this.targetDebuffsCheckedListBox.Items[i].ToString()))
                 {
-                    debuffsCheckedListBox.SetItemChecked(i, true);
+                    this.targetDebuffsCheckedListBox.SetItemChecked(i, true);
                 }
             }
         }
