@@ -8795,7 +8795,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             {
                 EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
 
-                if (entity == null || entity.Name == null || entity.Type != EliteMMO.API.XiEntityType.Monitored)
+                if (entity == null || entity.Name == null || entity.Type != EliteMMO.API.EntityType.Monitored)
                     continue;
 
                 // Status 1 = engaged, Status 2 = attacking, etc.

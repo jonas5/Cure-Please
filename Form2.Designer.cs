@@ -1723,7 +1723,7 @@
             this.targetDebuffsGroupBox.Controls.Add(this.enableTargetDebuffsCheckBox);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPLabel);
             this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffHPPercentage);
-            this.targetDebuffsGroupBox.Controls.Add(this.targetDebuffsCheckedListBox);
+            this.targetDebuffsGroupBox.Controls.Add(this.debuffsCheckedListBox);
             this.targetDebuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.targetDebuffsGroupBox.Name = "targetDebuffsGroupBox";
             this.targetDebuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -8169,7 +8169,7 @@
             //
             // tabControl1
             //
-            this.targetDebuffsCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.debuffsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
@@ -8904,10 +8904,9 @@
         private System.Windows.Forms.CheckBox regen1;
         private System.Windows.Forms.TabPage targetDebuffPage;
         private GroupBoxEx targetDebuffsGroupBox;
-        private System.Windows.Forms.CheckedListBox debuffsCheckedListBox;
         private System.Windows.Forms.NumericUpDown targetDebuffHPPercentage;
         private System.Windows.Forms.Label targetDebuffHPLabel;
         private System.Windows.Forms.CheckBox enableTargetDebuffsCheckBox;
-        private System.Windows.Forms.CheckedListBox targetDebuffsCheckedListBox;
+        private System.Windows.Forms.CheckedListBox debuffsCheckedListBox;
     }
 }
