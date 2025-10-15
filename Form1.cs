@@ -8804,7 +8804,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                     if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
                     {
                         closestDistance = entity.Distance;
-                        bestTargetID = (int)entity.TargetID;
+                        bestTargetID = (int)entity.ID;
                     }
                 }
             }

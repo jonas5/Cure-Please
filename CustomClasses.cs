@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
+using System.Xml.Serialization;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using System.Xml.Serialization;
 
 namespace CurePlease
 {
