@@ -320,25 +320,6 @@
                     }
                 }
             }
-                        else if (Form2.config.autoTargetEnemy)
-                        {
-                            int enemyID = GetNearestEngagedEnemyID();
-
-                            if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
-                            {
-                                _ELITEAPIPL.Target.SetTarget(enemyID);
-                                await Task.Delay(500);
-                                CastSpell("<t>", Form2.config.autoTargetSpell);
-                                lastKnownEstablisherTarget = enemyID;
-                                await Task.Delay(1000);
-
-                                if (!Form2.config.DisableTargettingCancel)
-                                {
-                                    await Task.Delay(TimeSpan.FromSeconds((double)Form2.config.TargetRemoval_Delay));
-                                    _ELITEAPIPL.Target.SetTarget(0);
-                                }
-                            }
-                        }
             else
             {
                 return 1;
@@ -6004,6 +5985,26 @@ private void setinstance_Click(object sender, EventArgs e)
                     // RUN DEBUFF REMOVAL - CONVERTED TO FUNCTION SO CAN BE RUN IN MULTIPLE AREAS
                     RunDebuffChecker();
 
+                    if (Form2.config.autoTargetEnemy)
+                    {
+                        int enemyID = GetNearestEngagedEnemyID();
+
+                        if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
+                        {
+                            _ELITEAPIPL.Target.SetTarget(enemyID);
+                            await Task.Delay(500);
+                            CastSpell("<t>", Form2.config.autoTargetSpell);
+                            lastKnownEstablisherTarget = enemyID;
+                            await Task.Delay(1000);
+
+                            if (!Form2.config.DisableTargettingCancel)
+                            {
+                                await Task.Delay(TimeSpan.FromSeconds(Form2.config.TargetRemoval_Delay));
+                                _ELITEAPIPL.Target.SetTarget(0);
+                            }
+                        }
+                    }
+
                     // PL Auto Buffs
 
                     string BarspellName = string.Empty;
@@ -9917,7 +9918,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
                     {
                         closestDistance = entity.Distance;
-                        bestTargetID = entity.TargetID;
+                        bestTargetID = (int)entity.ID;
                     }
                 }
             }

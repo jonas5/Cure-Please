@@ -2001,10 +2001,10 @@
             // groupBox10
             // 
             this.groupBox10.BorderColor = System.Drawing.Color.SlateGray;
+            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             this.groupBox10.Controls.Add(this.label59);
             this.groupBox10.Controls.Add(this.TargetRemoval_Delay);
             this.groupBox10.Controls.Add(this.label58);
-            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             this.groupBox10.Controls.Add(this.DisableTargettingCancel);
             this.groupBox10.Location = new System.Drawing.Point(368, 481);
             this.groupBox10.Name = "groupBox10";
@@ -2018,7 +2018,7 @@
             this.autoTargetEnemy.AutoSize = true;
             this.autoTargetEnemy.Location = new System.Drawing.Point(24, 71);
             this.autoTargetEnemy.Name = "autoTargetEnemy";
-            this.autoTargetEnemy.Size = new System.Drawing.Size(130, 19);
+            this.autoTargetEnemy.Size = new System.Drawing.Size(132, 19);
             this.autoTargetEnemy.TabIndex = 4;
             this.autoTargetEnemy.Text = "Auto Target Enemy";
             this.autoTargetEnemy.UseVisualStyleBackColor = true;
@@ -2057,16 +2057,6 @@
             this.DisableTargettingCancel.TabIndex = 0;
             this.DisableTargettingCancel.Text = "Disable auto target removal";
             this.DisableTargettingCancel.UseVisualStyleBackColor = true;
-            //
-            // autoTargetEnemy
-            //
-            this.autoTargetEnemy.AutoSize = true;
-            this.autoTargetEnemy.Location = new System.Drawing.Point(24, 71);
-            this.autoTargetEnemy.Name = "autoTargetEnemy";
-            this.autoTargetEnemy.Size = new System.Drawing.Size(130, 19);
-            this.autoTargetEnemy.TabIndex = 4;
-            this.autoTargetEnemy.Text = "Auto Target Enemy";
-            this.autoTargetEnemy.UseVisualStyleBackColor = true;
             // 
             // groupBox36
             // 
@@ -8793,7 +8783,6 @@
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.NumericUpDown TargetRemoval_Delay;
         private System.Windows.Forms.Label label58;
-        private System.Windows.Forms.CheckBox autoTargetEnemy;
         private GroupBoxEx groupBox18;
         private GroupBoxEx groupBox17;
         private GroupBoxEx groupBox14;
@@ -8859,5 +8848,6 @@
         private System.Windows.Forms.CheckBox regen3;
         private System.Windows.Forms.CheckBox regen2;
         private System.Windows.Forms.CheckBox regen1;
+        private System.Windows.Forms.CheckBox autoTargetEnemy;
     }
 }
