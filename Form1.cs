@@ -5999,7 +5999,7 @@ private void setinstance_Click(object sender, EventArgs e)
 
                             if (!Form2.config.DisableTargettingCancel)
                             {
-                                await Task.Delay(TimeSpan.FromSeconds(Form2.config.TargetRemoval_Delay));
+                                await Task.Delay(TimeSpan.FromSeconds((double)Form2.config.TargetRemoval_Delay));
                                 _ELITEAPIPL.Target.SetTarget(0);
                             }
                         }
@@ -9654,7 +9654,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                 }
-                catch (Exception error1)
+                catch (Exception)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }
@@ -9918,7 +9918,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
                     {
                         closestDistance = entity.Distance;
-                        bestTargetID = (int)entity.ID;
+                        bestTargetID = entity.TargetingIndex;
                     }
                 }
             }
