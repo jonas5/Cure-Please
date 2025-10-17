@@ -2057,6 +2057,16 @@
             this.DisableTargettingCancel.TabIndex = 0;
             this.DisableTargettingCancel.Text = "Disable auto target removal";
             this.DisableTargettingCancel.UseVisualStyleBackColor = true;
+            //
+            // autoTargetEnemy
+            //
+            this.autoTargetEnemy.AutoSize = true;
+            this.autoTargetEnemy.Location = new System.Drawing.Point(24, 71);
+            this.autoTargetEnemy.Name = "autoTargetEnemy";
+            this.autoTargetEnemy.Size = new System.Drawing.Size(130, 19);
+            this.autoTargetEnemy.TabIndex = 4;
+            this.autoTargetEnemy.Text = "Auto Target Enemy";
+            this.autoTargetEnemy.UseVisualStyleBackColor = true;
             // 
             // groupBox36
             // 
