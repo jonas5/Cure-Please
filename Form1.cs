@@ -1,4 +1,4 @@
-namespace CurePlease
+﻿namespace CurePlease
 {
     using CurePlease.Properties;
     using EliteMMO.API;
@@ -1152,14 +1152,14 @@ namespace CurePlease
       };
 
         private DateTime[] playerSong4 = new DateTime[]
-     {
+      {
             new DateTime(1970, 1, 1, 0, 0, 0)
-     };
+      };
 
         private DateTime[] Last_SongCast_Timer = new DateTime[]
-     {
+      {
             new DateTime(1970, 1, 1, 0, 0, 0)
-     };
+      };
 
         private DateTime[] playerPianissimo1_1 = new DateTime[]
       {
@@ -5447,6 +5447,7 @@ private void setinstance_Click(object sender, EventArgs e)
                 }
             }
 
+
             GrabPlayerMonitoredData();
 
             // Grab current time for calculations below
@@ -5524,7 +5525,8 @@ private void setinstance_Click(object sender, EventArgs e)
             playerFlurry_IISpan[11] = currentTime.Subtract(playerFlurry_II[11]);
             playerFlurry_IISpan[12] = currentTime.Subtract(playerFlurry_II[12]);
             playerFlurry_IISpan[13] = currentTime.Subtract(playerFlurry_II[13]);
-            playerFlurry_IISpan[14] = currentTime.Subtract(playerFlurry_II[15]);
+            playerFlurry_IISpan[14] = currentTime.Subtract(playerFlurry_II[14]);
+            playerFlurry_IISpan[15] = currentTime.Subtract(playerFlurry_II[15]);
             playerFlurry_IISpan[16] = currentTime.Subtract(playerFlurry_II[16]);
             playerFlurry_IISpan[17] = currentTime.Subtract(playerFlurry_II[17]);
 
@@ -5960,4 +5962,33 @@ private void setinstance_Click(object sender, EventArgs e)
                             }
                             else if (memberOF_curaga == 2 && pData.MemberNumber >= 6 && pData.MemberNumber <= 11)
                             {
-                                if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active
+                                if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
+                                {
+                                    if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
+                                    {
+                                        cures_required.Add(pData.MemberNumber);
+                                    }
+                                }
+                            }
+                            else if (memberOF_curaga == 3 && pData.MemberNumber >= 12 && pData.MemberNumber <= 17)
+                            {
+                                if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
+                                {
+                                    if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
+                                    {
+                                        cures_required.Add(pData.MemberNumber);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (cures_required.Count >= Form2.config.curagaRequiredMembers)
+                        {
+                            int lowestHP_id = cures_required.First();
+                            CuragaCalculatorAsync(lowestHP_id);
+                        }
+                    }
+
+                    /////////////////////////// CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                    //var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().Where
