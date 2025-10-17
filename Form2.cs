@@ -1698,6 +1698,11 @@ namespace CurePlease
                 get; set;
             }
 
+            public bool autoTargetEnemy
+            {
+                get; set;
+            }
+
             // DISABLE CANCEL TARGETTING
             public bool DisableTargettingCancel
             {
@@ -2286,6 +2291,7 @@ namespace CurePlease
                 config.autoTarget = false;
                 config.autoTargetSpell = "Dia";
                 config.AssistSpecifiedTarget = false;
+                config.autoTargetEnemy = false;
 
                 config.DisableTargettingCancel = false;
                 config.TargetRemoval_Delay = 3;
@@ -2805,6 +2811,7 @@ namespace CurePlease
             config.Hate_SpellType = Hate_SpellType.SelectedIndex;
             config.autoTarget_Target = autoTarget_target.Text;
             config.AssistSpecifiedTarget = AssistSpecifiedTarget.Checked;
+            config.autoTargetEnemy = autoTargetEnemy.Checked;
 
             config.DisableTargettingCancel = DisableTargettingCancel.Checked;
             config.TargetRemoval_Delay = TargetRemoval_Delay.Value;
@@ -3885,6 +3892,7 @@ namespace CurePlease
             autoTarget_target.Text = config.autoTarget_Target;
 
             AssistSpecifiedTarget.Checked = config.AssistSpecifiedTarget;
+            autoTargetEnemy.Checked = config.autoTargetEnemy;
 
             DisableTargettingCancel.Checked = config.DisableTargettingCancel;
             TargetRemoval_Delay.Value = config.TargetRemoval_Delay;

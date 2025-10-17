@@ -2004,14 +2004,25 @@
             this.groupBox10.Controls.Add(this.label59);
             this.groupBox10.Controls.Add(this.TargetRemoval_Delay);
             this.groupBox10.Controls.Add(this.label58);
+            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             this.groupBox10.Controls.Add(this.DisableTargettingCancel);
             this.groupBox10.Location = new System.Drawing.Point(368, 481);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(431, 73);
+            this.groupBox10.Size = new System.Drawing.Size(431, 100);
             this.groupBox10.TabIndex = 52;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Targetting Control";
             // 
+            // autoTargetEnemy
+            //
+            this.autoTargetEnemy.AutoSize = true;
+            this.autoTargetEnemy.Location = new System.Drawing.Point(24, 71);
+            this.autoTargetEnemy.Name = "autoTargetEnemy";
+            this.autoTargetEnemy.Size = new System.Drawing.Size(130, 19);
+            this.autoTargetEnemy.TabIndex = 4;
+            this.autoTargetEnemy.Text = "Auto Target Enemy";
+            this.autoTargetEnemy.UseVisualStyleBackColor = true;
+            //
             // label59
             // 
             this.label59.AutoSize = true;
@@ -8772,6 +8783,7 @@
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.NumericUpDown TargetRemoval_Delay;
         private System.Windows.Forms.Label label58;
+        private System.Windows.Forms.CheckBox autoTargetEnemy;
         private GroupBoxEx groupBox18;
         private GroupBoxEx groupBox17;
         private GroupBoxEx groupBox14;
