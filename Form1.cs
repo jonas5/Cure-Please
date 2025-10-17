@@ -5992,3 +5992,4 @@ private void setinstance_Click(object sender, EventArgs e)
                     /////////////////////////// CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     //var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().Where
+                }
