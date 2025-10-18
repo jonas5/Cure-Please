@@ -2001,7 +2001,6 @@
             // groupBox10
             // 
             this.groupBox10.BorderColor = System.Drawing.Color.SlateGray;
-            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             this.groupBox10.Controls.Add(this.label59);
             this.groupBox10.Controls.Add(this.TargetRemoval_Delay);
             this.groupBox10.Controls.Add(this.label58);
@@ -2012,17 +2011,8 @@
             this.groupBox10.TabIndex = 52;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Targetting Control";
+            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             // 
-            // autoTargetEnemy
-            //
-            this.autoTargetEnemy.AutoSize = true;
-            this.autoTargetEnemy.Location = new System.Drawing.Point(24, 71);
-            this.autoTargetEnemy.Name = "autoTargetEnemy";
-            this.autoTargetEnemy.Size = new System.Drawing.Size(132, 19);
-            this.autoTargetEnemy.TabIndex = 4;
-            this.autoTargetEnemy.Text = "Auto Target Enemy";
-            this.autoTargetEnemy.UseVisualStyleBackColor = true;
-            //
             // label59
             // 
             this.label59.AutoSize = true;
@@ -2057,6 +2047,16 @@
             this.DisableTargettingCancel.TabIndex = 0;
             this.DisableTargettingCancel.Text = "Disable auto target removal";
             this.DisableTargettingCancel.UseVisualStyleBackColor = true;
+            //
+            // autoTargetEnemy
+            //
+            this.autoTargetEnemy.AutoSize = true;
+            this.autoTargetEnemy.Location = new System.Drawing.Point(24, 71);
+            this.autoTargetEnemy.Name = "autoTargetEnemy";
+            this.autoTargetEnemy.Size = new System.Drawing.Size(132, 19);
+            this.autoTargetEnemy.TabIndex = 4;
+            this.autoTargetEnemy.Text = "Auto Target Enemy";
+            this.autoTargetEnemy.UseVisualStyleBackColor = true;
             // 
             // groupBox36
             // 

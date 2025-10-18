@@ -3029,6 +3029,31 @@
 
         }
 
+private int GetNearestEngagedEnemyID(float maxDistance = 25f)
+{
+    int bestTargetID = 0;
+    float closestDistance = float.MaxValue;
+
+    for (int i = 0; i < 2048; i++)
+    {
+        EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
+
+        if (entity == null || entity.Name == null)
+            continue;
+
+        // Status 1 = engaged, Status 2 = attacking, etc.
+        if (entity.Status == 1 || entity.Status == 2)
+        {
+            if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
+            {
+                closestDistance = entity.Distance;
+                bestTargetID = entity.TargetID;
+            }
+        }
+    }
+
+    return bestTargetID;
+}
 private void setinstance_Click(object sender, EventArgs e)
 {
     if (!CheckForDLLFiles())
@@ -5985,26 +6010,6 @@ private void setinstance_Click(object sender, EventArgs e)
                     // RUN DEBUFF REMOVAL - CONVERTED TO FUNCTION SO CAN BE RUN IN MULTIPLE AREAS
                     RunDebuffChecker();
 
-                    if (Form2.config.autoTargetEnemy)
-                    {
-                        int enemyID = GetNearestEngagedEnemyID();
-
-                        if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
-                        {
-                            _ELITEAPIPL.Target.SetTarget(enemyID);
-                            await Task.Delay(500);
-                            CastSpell("<t>", Form2.config.autoTargetSpell);
-                            lastKnownEstablisherTarget = enemyID;
-                            await Task.Delay(1000);
-
-                            if (!Form2.config.DisableTargettingCancel)
-                            {
-                                await Task.Delay(TimeSpan.FromSeconds((double)Form2.config.TargetRemoval_Delay));
-                                _ELITEAPIPL.Target.SetTarget(0);
-                            }
-                        }
-                    }
-
                     // PL Auto Buffs
 
                     string BarspellName = string.Empty;
@@ -6650,6 +6655,25 @@ private void setinstance_Click(object sender, EventArgs e)
                             }
                         }
 
+                        else if (Form2.config.autoTargetEnemy && (CheckSpellRecast(Form2.config.autoTargetSpell) == 0) && (HasSpell(Form2.config.autoTargetSpell)))
+                        {
+                            int enemyID = GetNearestEngagedEnemyID();
+
+                            if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
+                            {
+                                _ELITEAPIPL.Target.SetTarget(enemyID);
+                                await Task.Delay(500);
+                                CastSpell("<t>", Form2.config.autoTargetSpell);
+                                lastKnownEstablisherTarget = enemyID;
+                                await Task.Delay(1000);
+
+                                if (!Form2.config.DisableTargettingCancel)
+                                {
+                                    await Task.Delay(TimeSpan.FromSeconds(Form2.config.TargetRemoval_Delay));
+                                    _ELITEAPIPL.Target.SetTarget(0);
+                                }
+                            }
+                        }
                         else if ((Form2.config.autoTarget == true) && (CheckSpellRecast(Form2.config.autoTargetSpell) == 0) && (HasSpell(Form2.config.autoTargetSpell)))
                         {
                             if (Form2.config.Hate_SpellType == 1) // PARTY BASED HATE SPELL
@@ -9654,7 +9678,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception error1)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }
@@ -9898,32 +9922,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private void CustomCommand_Tracker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             CustomCommand_Tracker.RunWorkerAsync();
-        }
-
-        private int GetNearestEngagedEnemyID(float maxDistance = 25f)
-        {
-            int bestTargetID = 0;
-            float closestDistance = float.MaxValue;
-
-            for (int i = 0; i < 2048; i++)
-            {
-                EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-
-                if (entity == null || entity.Name == null)
-                    continue;
-
-                // Status 1 = engaged, Status 2 = attacking, etc.
-                if (entity.Status == 1 || entity.Status == 2)
-                {
-                    if (entity.Distance < closestDistance && entity.Distance <= maxDistance)
-                    {
-                        closestDistance = entity.Distance;
-                        bestTargetID = entity.TargetingIndex;
-                    }
-                }
-            }
-
-            return bestTargetID;
         }
     }
 
