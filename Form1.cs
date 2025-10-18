@@ -8824,7 +8824,17 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                 }
 
                 friendlyNames = friendlyNames.Distinct().ToList();
+
+                List<uint> friendlyIds = partyMembers.Select(p => p.ID).ToList();
+                friendlyIds.Add(_ELITEAPIPL.Player.ID);
+                if (_ELITEAPIPL.Player.ID != _ELITEAPIMonitored.Player.ID)
+                {
+                    friendlyIds.Add(_ELITEAPIMonitored.Player.ID);
+                }
+                friendlyIds = friendlyIds.Distinct().ToList();
+
                 debug_MSG_show.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
+                debug_MSG_show.AppendLine("Friendly IDs for claim check: " + string.Join(", ", friendlyIds));
                 bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
                 string targetName = useSpecifiedTarget ? Form2.config.autoTarget_Target.ToLower() : "N/A";
                 debug_MSG_show.AppendLine($"Config: useSpecifiedTarget={useSpecifiedTarget}, targetName='{targetName}'");
@@ -8851,6 +8861,14 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                             continue;
                         }
                         debug_MSG_show.AppendLine("  -> Pass: Type is Enemy or NPC.");
+
+                        // Claim Check
+                        if (entity.ClaimID != 0 && !friendlyIds.Contains(entity.ClaimID))
+                        {
+                            debug_MSG_show.AppendLine($"  -> Skip: Claimed by another player (ClaimID: {entity.ClaimID}).");
+                            continue;
+                        }
+                        debug_MSG_show.AppendLine("  -> Pass: Not claimed or claimed by a friendly player.");
 
                         // HP Check
                         if (entity.HealthPercent >= 100)
