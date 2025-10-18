@@ -2005,10 +2005,9 @@
             this.groupBox10.Controls.Add(this.TargetRemoval_Delay);
             this.groupBox10.Controls.Add(this.label58);
             this.groupBox10.Controls.Add(this.DisableTargettingCancel);
-            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             this.groupBox10.Location = new System.Drawing.Point(368, 481);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(431, 100);
+            this.groupBox10.Size = new System.Drawing.Size(431, 73);
             this.groupBox10.TabIndex = 52;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Targetting Control";
@@ -2047,16 +2046,6 @@
             this.DisableTargettingCancel.TabIndex = 0;
             this.DisableTargettingCancel.Text = "Disable auto target removal";
             this.DisableTargettingCancel.UseVisualStyleBackColor = true;
-            //
-            // autoTargetEnemy
-            //
-            this.autoTargetEnemy.AutoSize = true;
-            this.autoTargetEnemy.Location = new System.Drawing.Point(24, 71);
-            this.autoTargetEnemy.Name = "autoTargetEnemy";
-            this.autoTargetEnemy.Size = new System.Drawing.Size(132, 19);
-            this.autoTargetEnemy.TabIndex = 4;
-            this.autoTargetEnemy.Text = "Auto Target Enemy";
-            this.autoTargetEnemy.UseVisualStyleBackColor = true;
             // 
             // groupBox36
             // 
@@ -8848,6 +8837,5 @@
         private System.Windows.Forms.CheckBox regen3;
         private System.Windows.Forms.CheckBox regen2;
         private System.Windows.Forms.CheckBox regen1;
-        private System.Windows.Forms.CheckBox autoTargetEnemy;
     }
 }
