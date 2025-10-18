@@ -83,6 +83,7 @@
         private int lastCommand = 0;
 
         private int lastKnownEstablisherTarget = 0;
+        private int lockedTargetId = 0;
 
         // BARD SONG VARIABLES
         private int song_casting = 0;
@@ -8781,12 +8782,47 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             try
             {
                 debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
-                List<string> friendlyNames = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).Select(p => p.Name.ToLower()).ToList();
+
+                // 1. Check if a target is already locked
+                if (lockedTargetId != 0)
+                {
+                    debug_MSG_show.AppendLine($"Checking locked target ID: {lockedTargetId}");
+                    EliteAPI.XiEntity lockedEntity = _ELITEAPIPL.Entity.GetEntity(lockedTargetId);
+
+                    // Check if the locked entity is still valid
+                    if (lockedEntity != null && lockedEntity.HealthPercent > 0 && lockedEntity.Status == 1)
+                    {
+                        debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
+                        return lockedTargetId;
+                    }
+                    else
+                    {
+                        debug_MSG_show.AppendLine("  -> Locked target is no longer valid. Searching for a new one.");
+                        lockedTargetId = 0; // Reset locked target
+                    }
+                }
+
+                debug_MSG_show.AppendLine("No locked target. Starting new search.");
+
+                var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).ToList();
+                List<string> friendlyNames = partyMembers.Select(p => p.Name.ToLower()).ToList();
                 friendlyNames.Add(_ELITEAPIPL.Player.Name.ToLower());
                 if (_ELITEAPIPL.Player.Name.ToLower() != _ELITEAPIMonitored.Player.Name.ToLower())
                 {
                     friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
                 }
+
+                // Add pets of party members to the friendly list
+                foreach (var member in partyMembers)
+                {
+                    EliteAPI.XiEntity petEntity = _ELITEAPIPL.Entity.GetEntity(member.PetIndex);
+                    if (petEntity != null && !string.IsNullOrEmpty(petEntity.Name))
+                    {
+                        friendlyNames.Add(petEntity.Name.ToLower());
+                        debug_MSG_show.AppendLine($"  -> Added pet '{petEntity.Name}' for party member '{member.Name}' to friendly list.");
+                    }
+                }
+
                 friendlyNames = friendlyNames.Distinct().ToList();
                 debug_MSG_show.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
                 bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
@@ -8836,8 +8872,9 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         {
                             if (entityNameLower == targetName)
                             {
-                                debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Returning TargetID: {entity.TargetID}");
-                                return (int)entity.TargetID;
+                                debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Locking and returning index: {i}");
+                                lockedTargetId = i;
+                                return i;
                             }
                             else
                             {
@@ -8846,8 +8883,9 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         }
                         else
                         {
-                            debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Returning TargetID: {entity.TargetID}");
-                            return (int)entity.TargetID;
+                            debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Locking and returning index: {i}");
+                            lockedTargetId = i;
+                            return i;
                         }
                     }
                 }
