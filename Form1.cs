@@ -8079,6 +8079,7 @@ private void setinstance_Click(object sender, EventArgs e)
                 MessageBox.Show("Attach to process before pressing this button", "Error");
                 return;
             }
+            CheckEngagedStatus_Hate();
             MessageBox.Show(debug_MSG_show.ToString());
             debug_MSG_show.Clear();
         }
