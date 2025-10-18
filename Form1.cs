@@ -3914,77 +3914,6 @@ private void setinstance_Click(object sender, EventArgs e)
                                             named_Debuffs = named_Debuffs.Select(t => t.Trim()).ToList();
 
 
-                                            // IF SLOW IS NOT ACTIVE, YET NEITHER IS HASTE / FLURRY DESPITE BEING ENABLED
-                                            // RESET THE TIMER TO FORCE IT TO BE CAST
-                                            if (!DebuffContains(named_Debuffs, "13") && !DebuffContains(named_Debuffs, "33") && !DebuffContains(named_Debuffs, "265") && !DebuffContains(named_Debuffs, "562"))
-                                            {
-                                                if (ptMember != null)
-                                                {
-                                                    playerHaste[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerHaste_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerFlurry[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerFlurry_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                }
-                                            }
-                                            // IF SUBLIMATION IS NOT ACTIVE, YET NEITHER IS REFRESH DESPITE BEING
-                                            // ENABLED RESET THE TIMER TO FORCE IT TO BE CAST
-                                            if (!DebuffContains(named_Debuffs, "187") && !DebuffContains(named_Debuffs, "188") && !DebuffContains(named_Debuffs, "43"))
-                                            {
-                                                if (ptMember != null)
-                                                {
-                                                    playerRefresh[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);  // ERROR
-                                                }
-                                            }
-                                            // IF REGEN IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER TO
-                                            // FORCE IT TO BE CAST
-                                            if (!DebuffContains(named_Debuffs, "42"))
-                                            {
-                                                if (ptMember != null)
-                                                {
-                                                    playerRegen[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                }
-                                            }
-                                            // IF PROTECT IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER TO
-                                            // FORCE IT TO BE CAST
-                                            if (!DebuffContains(named_Debuffs, "40"))
-                                            {
-                                                if (ptMember != null)
-                                                {
-                                                    playerProtect[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                }
-                                            }
-
-                                            // IF SHELL IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER TO
-                                            // FORCE IT TO BE CAST
-                                            if (!DebuffContains(named_Debuffs, "41"))
-                                            {
-                                                if (ptMember != null)
-                                                {
-                                                    playerShell[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                }
-                                            }
-                                            // IF PHALANX II IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER
-                                            // TO FORCE IT TO BE CAST
-                                            if (!DebuffContains(named_Debuffs, "116"))
-                                            {
-                                                if (ptMember != null)
-                                                {
-                                                    playerPhalanx_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                }
-
-                                            }
-                                            // IF NO STORM SPELL IS ACTIVE DESPITE BEING ENABLED RESET THE TIMER
-                                            // TO FORCE IT TO BE CAST
-                                            if (!DebuffContains(named_Debuffs, "178") && !DebuffContains(named_Debuffs, "179") && !DebuffContains(named_Debuffs, "180") && !DebuffContains(named_Debuffs, "181") &&
-                                                !DebuffContains(named_Debuffs, "182") && !DebuffContains(named_Debuffs, "183") && !DebuffContains(named_Debuffs, "184") && !DebuffContains(named_Debuffs, "185") &&
-                                                !DebuffContains(named_Debuffs, "589") && !DebuffContains(named_Debuffs, "590") && !DebuffContains(named_Debuffs, "591") && !DebuffContains(named_Debuffs, "592") &&
-                                                !DebuffContains(named_Debuffs, "593") && !DebuffContains(named_Debuffs, "594") && !DebuffContains(named_Debuffs, "595") && !DebuffContains(named_Debuffs, "596"))
-                                            {
-                                                if (ptMember != null)
-                                                {
-                                                    playerStormspell[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                }
-                                            }
 
 
                                             // ==============================================================================================================================================================================
@@ -4586,13 +4515,14 @@ private void setinstance_Click(object sender, EventArgs e)
             if (string.IsNullOrEmpty(characterName))
                 return false;
 
-            for (int i = 0; i < 2048; i++)
+            var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == characterName);
+            if (partyMember == null)
+                return false;
+
+            var entity = _ELITEAPIMonitored.Entity.GetEntity(partyMember.MemberNumber);
+            if (entity != null)
             {
-                var entity = _ELITEAPIPL.Entity.GetEntity(i);
-                if (entity != null && entity.Name == characterName)
-                {
-                    return entity.Buffs.Contains((ushort)buffId);
-                }
+                return entity.Buffs.Contains((ushort)buffId);
             }
 
             return false;
@@ -4638,43 +4568,36 @@ private void setinstance_Click(object sender, EventArgs e)
         private void hastePlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Haste");
-            playerHaste[partyMemberId] = DateTime.Now;
         }
 
         private void haste_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Haste II");
-            playerHaste_II[partyMemberId] = DateTime.Now;
         }
 
         private void AdloquiumPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Adloquium");
-            playerAdloquium[partyMemberId] = DateTime.Now;
         }
 
         private void FlurryPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Flurry");
-            playerFlurry[partyMemberId] = DateTime.Now;
         }
 
         private void Flurry_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Flurry II");
-            playerFlurry_II[partyMemberId] = DateTime.Now;
         }
 
         private void Phalanx_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Phalanx II");
-            playerPhalanx_II[partyMemberId] = DateTime.Now;
         }
 
         private void StormSpellPlayer(byte partyMemberId, string Spell)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, Spell);
-            playerStormspell[partyMemberId] = DateTime.Now;
         }
 
 
@@ -4688,17 +4611,14 @@ private void setinstance_Click(object sender, EventArgs e)
             if (Form2.config.regen3enabled && HasSpell("Regen III") && JobChecker("Regen III") == true && CheckSpellRecast("Regen III") == 0)
             {
                 CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen III");
-                playerRegen[partyMemberId] = DateTime.Now;
             }
             else if (Form2.config.regen2enabled && HasSpell("Regen II") && JobChecker("Regen II") == true && CheckSpellRecast("Regen II") == 0)
             {
                 CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen II");
-                playerRegen[partyMemberId] = DateTime.Now;
             }
             else if (Form2.config.regen1enabled && HasSpell("Regen") && JobChecker("Regen") == true && CheckSpellRecast("Regen") == 0)
             {
                 CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen");
-                playerRegen[partyMemberId] = DateTime.Now;
             }
         }
 
@@ -4706,14 +4626,12 @@ private void setinstance_Click(object sender, EventArgs e)
         {
             string[] refresh_spells = { "Refresh", "Refresh II", "Refresh III" };
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, refresh_spells[Form2.config.autoRefresh_Spell]);
-            playerRefresh[partyMemberId] = DateTime.Now;
         }
 
         private void protectPlayer(byte partyMemberId)
         {
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, protect_spells[Form2.config.autoProtect_Spell]);
-            playerProtect[partyMemberId] = DateTime.Now;
         }
 
         private void shellPlayer(byte partyMemberId)
@@ -4721,7 +4639,6 @@ private void setinstance_Click(object sender, EventArgs e)
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
 
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, shell_spells[Form2.config.autoShell_Spell]);
-            playerShell[partyMemberId] = DateTime.Now;
         }
 
         private bool ActiveSpikes()
@@ -7951,7 +7868,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         if (z.Status == 1)
                         {
                             EliteAPI.XiEntity mob = _ELITEAPIPL.Entity.GetEntity(z.TargetingIndex);
-                            if (mob != null && mob.Type == EliteAPI.EntityType.NPC)
+                            if (mob != null && mob.Type == (EliteAPI.Xi.EntityType)EliteAPI.EntityType.NPC)
                             {
                                 return z.TargetingIndex;
                             }
@@ -7974,14 +7891,14 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                 {
                     EliteAPI.TargetInfo target = _ELITEAPIMonitored.Target.GetTargetInfo();
                     EliteAPI.XiEntity entity = _ELITEAPIMonitored.Entity.GetEntity(Convert.ToInt32(target.TargetIndex));
-                    if (entity != null && entity.Type == EliteAPI.EntityType.NPC)
+                    if (entity != null && entity.Type == (EliteAPI.Xi.EntityType)EliteAPI.EntityType.NPC)
                     {
                         // The target index is from the monitored process. We need to find the corresponding entity
                         // in the PL's process. We can match by ID.
                         for (int i = 0; i < 2048; i++)
                         {
                             EliteAPI.XiEntity plEntity = _ELITEAPIPL.Entity.GetEntity(i);
-                            if (plEntity != null && plEntity.ID == entity.ID)
+                            if (plEntity != null && plEntity.Id == entity.Id)
                             {
                                 return i; // Found it in the PL's entity list. This is the correct index.
                             }
@@ -8760,7 +8677,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                 }
-                catch (Exception error1)
+                catch (Exception)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }
