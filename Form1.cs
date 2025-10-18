@@ -8846,12 +8846,12 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         debug_MSG_show.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not friendly.");
 
                         // Type Check
-                        if (!entityType.HasFlag(TargetType.Enemy))
+                        if (!(entityType.HasFlag(TargetType.Enemy) || entityType.HasFlag(TargetType.NPC)))
                         {
-                            debug_MSG_show.AppendLine($"  -> Skip: Type is '{entityType}', which is not an Enemy.");
+                            debug_MSG_show.AppendLine($"  -> Skip: Type is '{entityType}', which is not an Enemy or NPC.");
                             continue;
                         }
-                        debug_MSG_show.AppendLine("  -> Pass: Type is Enemy.");
+                        debug_MSG_show.AppendLine("  -> Pass: Type is Enemy or NPC.");
 
                         // HP Check
                         if (entity.HealthPercent >= 100)
