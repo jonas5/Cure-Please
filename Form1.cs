@@ -121,6 +121,16 @@
 
         private List<string> characterNames_naRemoval = new List<string>();
 
+        [Flags]
+        public enum TargetType
+        {
+            Player = 0x001,
+            NPC = 0x002,
+            Enemy = 0x004,
+            Pet = 0x008,
+            Ally = 0x010,
+            Self = 0x400
+        }
         public enum LoginStatus
         {
             CharacterLoginScreen = 0,
@@ -8812,17 +8822,6 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                     friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
                 }
 
-                // Add pets of party members to the friendly list
-                foreach (var member in partyMembers)
-                {
-                    EliteAPI.XiEntity petEntity = _ELITEAPIPL.Entity.GetEntity(member.PetIndex);
-                    if (petEntity != null && !string.IsNullOrEmpty(petEntity.Name))
-                    {
-                        friendlyNames.Add(petEntity.Name.ToLower());
-                        debug_MSG_show.AppendLine($"  -> Added pet '{petEntity.Name}' for party member '{member.Name}' to friendly list.");
-                    }
-                }
-
                 friendlyNames = friendlyNames.Distinct().ToList();
                 debug_MSG_show.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
                 bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
@@ -8837,10 +8836,20 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         continue;
                     }
                     string entityNameLower = entity.Name.ToLower();
-                    debug_MSG_show.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status}, Dist: {entity.Distance:F1})");
+                    var entityType = (TargetType)entity.Type;
+                    debug_MSG_show.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status}, Dist: {entity.Distance:F1}, Type: {entityType})");
+
                     if (entity.Status == 1 && !friendlyNames.Contains(entityNameLower))
                     {
                         debug_MSG_show.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not friendly.");
+
+                        // Type Check
+                        if (!entityType.HasFlag(TargetType.Enemy))
+                        {
+                            debug_MSG_show.AppendLine($"  -> Skip: Type is '{entityType}', which is not an Enemy.");
+                            continue;
+                        }
+                        debug_MSG_show.AppendLine("  -> Pass: Type is Enemy.");
 
                         // HP Check
                         if (entity.HealthPercent >= 100)
