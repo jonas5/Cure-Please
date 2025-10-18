@@ -2012,7 +2012,6 @@
             this.groupBox10.TabIndex = 52;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Targetting Control";
-            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             // 
             // label59
             // 
@@ -7971,7 +7970,6 @@
             this.regen1.UseVisualStyleBackColor = true;
             this.regenGroupBox.ResumeLayout(false);
             this.regenGroupBox.PerformLayout();
-            this.autoTargetEnemy = new System.Windows.Forms.CheckBox();
             // 
             // groupBox2
             // 
