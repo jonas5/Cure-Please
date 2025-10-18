@@ -4519,7 +4519,13 @@ private void setinstance_Click(object sender, EventArgs e)
             if (partyMember == null)
                 return false;
 
-            return _ELITEAPIMonitored.Party.GetPartyMember(partyMember.MemberNumber).Buffs.Contains((ushort)buffId);
+            var playerInfo = _ELITEAPIMonitored.Party.GetPartyMember(partyMember.MemberNumber);
+            if (playerInfo != null)
+            {
+                return playerInfo.Buffs.Contains((ushort)buffId);
+            }
+
+            return false;
         }
 
 
