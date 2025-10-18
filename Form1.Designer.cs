@@ -2218,7 +2218,6 @@ namespace CurePlease
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox2.Controls.Add(this.debug);
             this.groupBox2.Controls.Add(this.currentAction);
             this.groupBox2.ForeColor = System.Drawing.SystemColors.GrayText;
             this.groupBox2.Location = new System.Drawing.Point(255, 334);
@@ -2231,17 +2230,19 @@ namespace CurePlease
             // 
             // debug
             // 
-            this.debug.BackColor = System.Drawing.SystemColors.Menu;
+            this.debug.AutoSize = true;
+            this.debug.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.debug.BackColor = System.Drawing.Color.White;
+            this.debug.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.debug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.debug.ForeColor = System.Drawing.Color.Black;
-            this.debug.Location = new System.Drawing.Point(318, 6);
+            this.debug.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.debug.Location = new System.Drawing.Point(652, 8);
             this.debug.Name = "debug";
-            this.debug.Size = new System.Drawing.Size(76, 25);
-            this.debug.TabIndex = 24;
-            this.debug.Text = "debug";
+            this.debug.Size = new System.Drawing.Size(52, 27);
+            this.debug.TabIndex = 34;
+            this.debug.Text = "Debug";
             this.debug.UseVisualStyleBackColor = false;
             this.debug.Click += new System.EventHandler(this.Debug_Click);
-            this.debug.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // currentAction
             // 
@@ -2408,6 +2409,7 @@ namespace CurePlease
             this.Controls.Add(this.party2);
             this.Controls.Add(this.party1);
             this.Controls.Add(this.party0);
+            this.Controls.Add(this.debug);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
