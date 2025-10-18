@@ -8823,7 +8823,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         debug_MSG_show.AppendLine("  -> Pass: Distance < 21.");
 
                         // Enmity Check
-                        EliteAPI.XiEntity targetOfEntity = _ELITEAPIPL.Entity.GetEntity((int)entity.TargetIndex);
+                        EliteAPI.XiEntity targetOfEntity = _ELITEAPIPL.Entity.GetEntity((int)entity.TargetID);
                         if (targetOfEntity == null || string.IsNullOrEmpty(targetOfEntity.Name) || !friendlyNames.Contains(targetOfEntity.Name.ToLower()))
                         {
                             string targetOfEntityName = (targetOfEntity != null && !string.IsNullOrEmpty(targetOfEntity.Name)) ? targetOfEntity.Name : "Nothing/Not Friendly";
