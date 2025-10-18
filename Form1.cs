@@ -4519,13 +4519,7 @@ private void setinstance_Click(object sender, EventArgs e)
             if (partyMember == null)
                 return false;
 
-            var entity = _ELITEAPIMonitored.Entity.GetEntity(partyMember.MemberNumber);
-            if (entity != null)
-            {
-                return entity.Buffs.Contains((ushort)buffId);
-            }
-
-            return false;
+            return _ELITEAPIMonitored.Party.GetPartyMember(partyMember.MemberNumber).Buffs.Contains((ushort)buffId);
         }
 
 
@@ -7868,7 +7862,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         if (z.Status == 1)
                         {
                             EliteAPI.XiEntity mob = _ELITEAPIPL.Entity.GetEntity(z.TargetingIndex);
-                            if (mob != null && mob.Type == (EliteAPI.Xi.EntityType)EliteAPI.EntityType.NPC)
+                            if (mob != null && mob.Type == EliteAPI.EntityType.NPC)
                             {
                                 return z.TargetingIndex;
                             }
@@ -7891,14 +7885,14 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                 {
                     EliteAPI.TargetInfo target = _ELITEAPIMonitored.Target.GetTargetInfo();
                     EliteAPI.XiEntity entity = _ELITEAPIMonitored.Entity.GetEntity(Convert.ToInt32(target.TargetIndex));
-                    if (entity != null && entity.Type == (EliteAPI.Xi.EntityType)EliteAPI.EntityType.NPC)
+                    if (entity != null && entity.Type == EliteAPI.EntityType.NPC)
                     {
                         // The target index is from the monitored process. We need to find the corresponding entity
                         // in the PL's process. We can match by ID.
                         for (int i = 0; i < 2048; i++)
                         {
                             EliteAPI.XiEntity plEntity = _ELITEAPIPL.Entity.GetEntity(i);
-                            if (plEntity != null && plEntity.Id == entity.Id)
+                            if (plEntity != null && plEntity.ID == entity.ID)
                             {
                                 return i; // Found it in the PL's entity list. This is the correct index.
                             }
