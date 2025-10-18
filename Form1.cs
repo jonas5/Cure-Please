@@ -8803,12 +8803,14 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                     if (lockedEntity != null && lockedEntity.HealthPercent > 0 && lockedEntity.Status == 1)
                     {
                         debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
+                        battleTargetLabel.Text = $"{lockedEntity.Name} ({lockedTargetId})";
                         return lockedTargetId;
                     }
                     else
                     {
                         debug_MSG_show.AppendLine("  -> Locked target is no longer valid. Searching for a new one.");
                         lockedTargetId = 0; // Reset locked target
+                        battleTargetLabel.Text = "Inactive";
                     }
                 }
 
@@ -8883,6 +8885,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                             {
                                 debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Locking and returning index: {i}");
                                 lockedTargetId = i;
+                                    battleTargetLabel.Text = $"{entity.Name} ({i})";
                                 return i;
                             }
                             else
@@ -8894,6 +8897,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         {
                             debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Locking and returning index: {i}");
                             lockedTargetId = i;
+                                battleTargetLabel.Text = $"{entity.Name} ({i})";
                             return i;
                         }
                     }

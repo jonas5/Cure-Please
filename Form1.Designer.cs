@@ -2222,12 +2222,35 @@ namespace CurePlease
             this.groupBox2.ForeColor = System.Drawing.SystemColors.GrayText;
             this.groupBox2.Location = new System.Drawing.Point(255, 334);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(394, 31);
+            this.groupBox2.Size = new System.Drawing.Size(200, 31);
             this.groupBox2.TabIndex = 23;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " current action ";
             this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
             // 
+            // groupBox4
+            //
+            this.groupBox4.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox4.Controls.Add(this.battleTargetLabel);
+            this.groupBox4.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.groupBox4.Location = new System.Drawing.Point(461, 334);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(188, 31);
+            this.groupBox4.TabIndex = 24;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Battle Target";
+            this.groupBox4.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
+            //
+            // battleTargetLabel
+            //
+            this.battleTargetLabel.AutoSize = true;
+            this.battleTargetLabel.ForeColor = System.Drawing.Color.Black;
+            this.battleTargetLabel.Location = new System.Drawing.Point(7, 14);
+            this.battleTargetLabel.Name = "battleTargetLabel";
+            this.battleTargetLabel.Size = new System.Drawing.Size(48, 13);
+            this.battleTargetLabel.TabIndex = 0;
+            this.battleTargetLabel.Text = "Inactive";
+            //
             // debug
             // 
             this.debug.AutoSize = true;
@@ -2400,6 +2423,7 @@ namespace CurePlease
             this.Controls.Add(this.ChatLogButton);
             this.Controls.Add(this.OptionsButton);
             this.Controls.Add(this.castingLockLabel);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.debugging_MSGBOX);
             this.Controls.Add(this.groupBox3);
@@ -2438,6 +2462,8 @@ namespace CurePlease
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2656,5 +2682,7 @@ namespace CurePlease
         private System.ComponentModel.BackgroundWorker JobAbility_Delay;
         private Timer EclipticTimer;
         private System.ComponentModel.BackgroundWorker CustomCommand_Tracker;
+        private GroupBox groupBox4;
+        private Label battleTargetLabel;
     }
 }
