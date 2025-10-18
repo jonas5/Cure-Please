@@ -8782,93 +8782,101 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             log.AppendLine(message);
         }
 
-        private int CheckEngagedStatus_Hate()
+
+
+    public enum TargetType
+    {
+        Unknown = 0,
+        Self = 1,
+        Player = 2,
+        Party = 4,
+        Ally = 8,
+        Npc = 16,
+        Enemy = 32
+    }
+
+
+private int CheckEngagedStatus_Hate()
+{
+    var debugLog = new StringBuilder();
+    AppendToDebugLog(debugLog, "--- CheckEngagedStatus_Hate START ---");
+
+    bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
+    string targetName = Form2.config.autoTarget_Target?.ToLower();
+    IDFound = 0;
+
+    float maxDistance = 20.0f;
+
+    // Use monitored player's entity as reference for distance
+    EliteAPI.XiEntity referenceEntity = _ELITEAPIMonitored.Entity.GetEntity(0); // Index 0 is usually the player
+    if (referenceEntity == null)
+    {
+        AppendToDebugLog(debugLog, "Reference entity is null. Returning 0.");
+        debug_MSG_show = debugLog.ToString();
+        return 0;
+    }
+
+    for (int i = 2047; i >= 0; i--)
+    {
+        EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
+        if (entity == null || string.IsNullOrEmpty(entity.Name)) continue;
+
+        string name = entity.Name.ToLower();
+        var type = (TargetType)entity.Type;
+
+        // Filter out invalid targets
+        if ((type & TargetType.Self) != 0 || (type & TargetType.Party) != 0 ||
+            (type & TargetType.Ally) != 0 || (type & TargetType.Npc) != 0 ||
+            (type & TargetType.Player) != 0)
         {
-            var debugLog = new StringBuilder();
-            AppendToDebugLog(debugLog, "--- CheckEngagedStatus_Hate START ---");
+            AppendToDebugLog(debugLog, $"Skipping entity: {entity.Name} (Type: {type})");
+            continue;
+        }
 
-            if (Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target))
+        // Distance check
+        float dx = entity.X - referenceEntity.X;
+        float dy = entity.Y - referenceEntity.Y;
+        float dz = entity.Z - referenceEntity.Z;
+        float distance = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
+
+        if (distance > maxDistance)
+        {
+            AppendToDebugLog(debugLog, $"Entity {entity.Name} is out of range ({distance:F1} > {maxDistance}). Skipping.");
+            continue;
+        }
+
+        // If using specified target, match by name
+        if (useSpecifiedTarget && name == targetName)
+        {
+            AppendToDebugLog(debugLog, $"Matched specified target: {entity.Name} (Status: {entity.Status})");
+            if (entity.Status == 1)
             {
-                AppendToDebugLog(debugLog, $"Mode: AssistSpecifiedTarget, Target: {Form2.config.autoTarget_Target}");
-                IDFound = 0;
-
-                for (int x = 0; x < 2048; x++)
-                {
-                    EliteAPI.XiEntity z = _ELITEAPIPL.Entity.GetEntity(x);
-
-                    if (z != null && z.Name != null && z.Name.Equals(Form2.config.autoTarget_Target, StringComparison.OrdinalIgnoreCase))
-                    {
-                        AppendToDebugLog(debugLog, $"Found potential target: {z.Name} (ID: {z.ID}, Index: {x}, Status: {z.Status})");
-                        if (z.Status == 1)
-                        {
-                            EliteAPI.XiEntity mob = _ELITEAPIPL.Entity.GetEntity(z.TargetingIndex);
-                            if (mob != null && mob.Type == EliteAPI.EntityType.NPC)
-                            {
-                                AppendToDebugLog(debugLog, $"Target is engaged with an NPC. Returning TargetingIndex: {z.TargetingIndex}");
-                                debug_MSG_show = debugLog.ToString();
-                                return z.TargetingIndex;
-                            }
-                            else
-                            {
-                                AppendToDebugLog(debugLog, "Target is engaged, but not with an NPC. Returning 0.");
-                                debug_MSG_show = debugLog.ToString();
-                                return 0;
-                            }
-                        }
-                        else
-                        {
-                            AppendToDebugLog(debugLog, "Target is not engaged. Returning 0.");
-                            debug_MSG_show = debugLog.ToString();
-                            return 0;
-                        }
-                    }
-                }
-                AppendToDebugLog(debugLog, "Specified target not found. Returning 0.");
+                AppendToDebugLog(debugLog, $"Target is engaged. Returning index: {i}");
                 debug_MSG_show = debugLog.ToString();
-                return 0;
+                return i;
             }
             else
             {
-                AppendToDebugLog(debugLog, "Mode: Target main player's target");
-                if (_ELITEAPIMonitored.Player.Status == 1)
-                {
-                    AppendToDebugLog(debugLog, "Monitored player is engaged.");
-                    EliteAPI.TargetInfo target = _ELITEAPIMonitored.Target.GetTargetInfo();
-                    AppendToDebugLog(debugLog, $"Monitored player's target index: {target.TargetIndex}");
-                    EliteAPI.XiEntity entity = _ELITEAPIMonitored.Entity.GetEntity(Convert.ToInt32(target.TargetIndex));
-                    if (entity != null && entity.Type == EliteAPI.EntityType.NPC)
-                    {
-                        // The target index is from the monitored process. We need to find the corresponding entity
-                        // in the PL's process. We can match by ID.
-                        for (int i = 0; i < 2048; i++)
-                        {
-                            EliteAPI.XiEntity plEntity = _ELITEAPIPL.Entity.GetEntity(i);
-                            if (plEntity != null && plEntity.ID == entity.ID)
-                            {
-                                AppendToDebugLog(debugLog, $"Found matching entity in PL process: {plEntity.Name} (Index: {i}). Returning index.");
-                                debug_MSG_show = debugLog.ToString();
-                                return i; // Found it in the PL's entity list. This is the correct index.
-                            }
-                        }
-                        AppendToDebugLog(debugLog, "Could not find matching entity in PL process. Returning 0.");
-                        debug_MSG_show = debugLog.ToString();
-                        return 0; // Not found in PL's entity list.
-                    }
-                    else
-                    {
-                        AppendToDebugLog(debugLog, $"Target entity is null or not an NPC. Type: {(entity != null ? entity.Type.ToString() : "null")}. Returning 0.");
-                        debug_MSG_show = debugLog.ToString();
-                        return 0;
-                    }
-                }
-                else
-                {
-                    AppendToDebugLog(debugLog, "Monitored player is not engaged. Returning 0.");
-                    debug_MSG_show = debugLog.ToString();
-                    return 0;
-                }
+                AppendToDebugLog(debugLog, "Specified target not engaged. Returning 0.");
+                debug_MSG_show = debugLog.ToString();
+                return 0;
             }
         }
+
+        // If not using specified target, return first engaged enemy
+        if (!useSpecifiedTarget && entity.Status == 1 && (type & TargetType.Enemy) != 0)
+        {
+            AppendToDebugLog(debugLog, $"Found engaged enemy: {entity.Name} (Index: {i}). Returning index.");
+            debug_MSG_show = debugLog.ToString();
+            return i;
+        }
+    }
+
+    AppendToDebugLog(debugLog, "No valid engaged target found. Returning 0.");
+    debug_MSG_show = debugLog.ToString();
+    return 0;
+}
+
 
         private int GrabGEOTargetID()
         {
