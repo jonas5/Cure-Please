@@ -1,1 +1,2 @@
-"C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe" CurePlease.sln /p:Configuration=Release /p:Platform=x86
+REM "C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe" CurePlease.sln /p:Configuration=Release /p:Platform=x86
+"C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe" CurePlease.sln /p:Configuration=Debug /p:Platform=x86

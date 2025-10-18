@@ -240,6 +240,7 @@ namespace CurePlease
             this.JobAbility_Delay = new System.ComponentModel.BackgroundWorker();
             this.EclipticTimer = new System.Windows.Forms.Timer(this.components);
             this.CustomCommand_Tracker = new System.ComponentModel.BackgroundWorker();
+            this.battleTargetLabel = new System.Windows.Forms.Label();
             this.party0.SuspendLayout();
             this.playerOptions.SuspendLayout();
             this.party2.SuspendLayout();
@@ -2230,6 +2231,7 @@ namespace CurePlease
             // 
             // groupBox4
             //
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox4.BackColor = System.Drawing.Color.Transparent;
             this.groupBox4.Controls.Add(this.battleTargetLabel);
             this.groupBox4.ForeColor = System.Drawing.SystemColors.GrayText;
