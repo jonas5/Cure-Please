@@ -8801,16 +8801,43 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         continue;
                     }
                     string entityNameLower = entity.Name.ToLower();
-                    debug_MSG_show.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status})");
+                    debug_MSG_show.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status}, Dist: {entity.Distance:F1})");
                     if (entity.Status == 1 && !friendlyNames.Contains(entityNameLower))
                     {
-                        debug_MSG_show.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not on the friendly list.");
+                        debug_MSG_show.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not friendly.");
+
+                        // HP Check
+                        if (entity.HealthPercent >= 100)
+                        {
+                            debug_MSG_show.AppendLine("  -> Skip: HP is 100%.");
+                            continue;
+                        }
+                        debug_MSG_show.AppendLine("  -> Pass: HP < 100%.");
+
+                        // Distance Check
+                        if (entity.Distance >= 21)
+                        {
+                            debug_MSG_show.AppendLine($"  -> Skip: Distance is {entity.Distance:F1} >= 21.");
+                            continue;
+                        }
+                        debug_MSG_show.AppendLine("  -> Pass: Distance < 21.");
+
+                        // Enmity Check
+                        EliteAPI.XiEntity targetOfEntity = _ELITEAPIPL.Entity.GetEntity((int)entity.TargetIndex);
+                        if (targetOfEntity == null || string.IsNullOrEmpty(targetOfEntity.Name) || !friendlyNames.Contains(targetOfEntity.Name.ToLower()))
+                        {
+                            string targetOfEntityName = (targetOfEntity != null && !string.IsNullOrEmpty(targetOfEntity.Name)) ? targetOfEntity.Name : "Nothing/Not Friendly";
+                            debug_MSG_show.AppendLine($"  -> Skip: Target '{targetOfEntityName}' is not a party member.");
+                            continue;
+                        }
+                        debug_MSG_show.AppendLine($"  -> Pass: Is targeting friendly player '{targetOfEntity.Name}'.");
+
                         if (useSpecifiedTarget)
                         {
                             if (entityNameLower == targetName)
                             {
-                                debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Returning TargetingIndex: {entity.TargetingIndex}");
-                                return (int)entity.TargetingIndex;
+                                debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Returning TargetID: {entity.TargetID}");
+                                return (int)entity.TargetID;
                             }
                             else
                             {
@@ -8819,8 +8846,8 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         }
                         else
                         {
-                            debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Returning TargetingIndex: {entity.TargetingIndex}");
-                            return (int)entity.TargetingIndex;
+                            debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Returning TargetID: {entity.TargetID}");
+                            return (int)entity.TargetID;
                         }
                     }
                 }
