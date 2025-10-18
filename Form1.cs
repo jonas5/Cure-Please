@@ -6632,10 +6632,16 @@ private void setinstance_Click(object sender, EventArgs e)
 
                         else if ((Form2.config.autoTarget == true) && (CheckSpellRecast(Form2.config.autoTargetSpell) == 0) && (HasSpell(Form2.config.autoTargetSpell)))
                         {
+                            debug_MSG_show = "";
+                            debug_MSG_show += "AUTO TARGET IS ENABLED...\n";
+                            debug_MSG_show += "AUTO TARGET SPELL IS" + Form2.config.autoTargetSpell + "...\n";
+                            debug_MSG_show += "AUTO TARGET HATE TYPE IS" + Form2.config.Hate_SpellType + "...\n";
+                            debug_MSG_show += "AUTO TARGET ESTABLISHER IS" + Form2.config.autoTarget_Target + "...\n";
+
                             if (Form2.config.Hate_SpellType == 1) // PARTY BASED HATE SPELL
                             {
                                 int enemyID = CheckEngagedStatus_Hate();
-
+                                debug_MSG_show += "ENEMY ID RETURNED IS: " + enemyID + "...\n";
                                 if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
                                 {
                                     CastSpell(Form2.config.autoTarget_Target, Form2.config.autoTargetSpell);
@@ -6645,6 +6651,7 @@ private void setinstance_Click(object sender, EventArgs e)
                             else // ENEMY BASED TARGET
                             {
                                 int enemyID = CheckEngagedStatus_Hate();
+                                debug_MSG_show += "ENEMY ID RETURNED IS: " + enemyID + "...\n";
 
                                 if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
                                 {
@@ -8780,8 +8787,10 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
 
         private int CheckEngagedStatus_Hate()
         {
+            debug_MSG_show += "Hate Check Starting...\n";
             if (Form2.config.AssistSpecifiedTarget == true && Form2.config.autoTarget_Target != String.Empty)
             {
+                debug_MSG_show += "Assist Target is TRUE and Target Name is NOT EMPTY...\n";
                 IDFound = 0;
 
                 for (int x = 0; x < 2048; x++)
@@ -8790,29 +8799,39 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
 
                     if (z.Name != null && z.Name.ToLower() == Form2.config.autoTarget_Target.ToLower())
                     {
+                        debug_MSG_show += "Entity Found: " + z.Name + "...\n";
                         if (z.Status == 1)
                         {
+                            debug_MSG_show += "Entity Status is ENGAGED...\n";
+                            debug_MSG_show += "Targeting Index is: " + z.TargetingIndex + "...\n";
                             return z.TargetingIndex;
                         }
                         else
                         {
+                            debug_MSG_show += "Entity Status is NOT ENGAGED...\n";
                             return 0;
                         }
                     }
                 }
+                debug_MSG_show += "Entity NOT Found...\n";
                 return 0;
             }
             else
             {
+                debug_MSG_show += "Assist Target is FALSE or Target Name is EMPTY...\n";
                 if (_ELITEAPIMonitored.Player.Status == 1)
                 {
+                    debug_MSG_show += "Monitored Player is ENGAGED...\n";
                     EliteAPI.TargetInfo target = _ELITEAPIMonitored.Target.GetTargetInfo();
                     EliteAPI.XiEntity entity = _ELITEAPIMonitored.Entity.GetEntity(Convert.ToInt32(target.TargetIndex));
+                    debug_MSG_show += "Target is: " + entity.Name + "...\n";
+                    debug_MSG_show += "Target's Target ID is: " + entity.TargetID + "...\n";
                     return Convert.ToInt32(entity.TargetID);
 
                 }
                 else
                 {
+                    debug_MSG_show += "Monitored Player is NOT Engaged...\n";
                     return 0;
                 }
             }
