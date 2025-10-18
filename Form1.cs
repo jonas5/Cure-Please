@@ -1,16 +1,5 @@
 ﻿namespace CurePlease
 {
-    [System.Flags]
-    public enum TargetType
-    {
-        Unknown = 0,
-        Self = 1,
-        Player = 2,
-        Party = 4,
-        Ally = 8,
-        Npc = 16,
-        Enemy = 32
-    }
     using CurePlease.Properties;
     using EliteMMO.API;
     using System;
@@ -1554,11 +1543,10 @@
 
             currentAction.Text = string.Empty;
 
-            if (!System.IO.File.Exists("debug"))
+            if (System.IO.File.Exists("debug"))
             {
-                System.IO.File.Create("debug").Close();
+                debug.Visible = true;
             }
-            debug.Visible = true;
 
             JobNames.Add(new JobTitles
             {
@@ -8790,99 +8778,85 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             }
         }
 
-        private void AppendToDebugLog(StringBuilder log, string message)
-        {
-            log.AppendLine(message);
-        }
-
         private int CheckEngagedStatus_Hate()
         {
             var debugLog = new StringBuilder();
-            AppendToDebugLog(debugLog, "--- CheckEngagedStatus_Hate START ---");
-
-            bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
-            string targetName = useSpecifiedTarget ? Form2.config.autoTarget_Target.ToLower() : "N/A";
-            AppendToDebugLog(debugLog, $"Config: useSpecifiedTarget={useSpecifiedTarget}, targetName='{targetName}'");
-
-            float maxDistance = 20.0f;
-            AppendToDebugLog(debugLog, $"Config: maxDistance={maxDistance}");
-
-            EliteAPI.XiEntity referenceEntity = _ELITEAPIMonitored.Entity.GetEntity(0); // Player's own entity for distance calculation
-            if (referenceEntity == null)
+            try
             {
-                AppendToDebugLog(debugLog, "ERROR: Could not get reference entity (monitored player). Aborting.");
+                debugLog.AppendLine("--- CheckEngagedStatus_Hate START ---");
+
+                // Create a list of friendly player names to exclude from targeting
+                List<string> friendlyNames = _ELITEAPIMonitored.Party.GetPartyMembers()
+                    .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name))
+                    .Select(p => p.Name.ToLower())
+                    .ToList();
+                friendlyNames.Add(_ELITEAPIPL.Player.Name.ToLower());
+                if (_ELITEAPIPL.Player.Name.ToLower() != _ELITEAPIMonitored.Player.Name.ToLower())
+                {
+                    friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
+                }
+                friendlyNames = friendlyNames.Distinct().ToList();
+
+                debugLog.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
+
+
+                bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
+                string targetName = useSpecifiedTarget ? Form2.config.autoTarget_Target.ToLower() : "N/A";
+                debugLog.AppendLine($"Config: useSpecifiedTarget={useSpecifiedTarget}, targetName='{targetName}'");
+
+                debugLog.AppendLine("Scanning entities...");
+                for (int i = 0; i < 2048; i++)
+                {
+                    EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
+
+                    if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0)
+                    {
+                        continue;
+                    }
+
+                    string entityNameLower = entity.Name.ToLower();
+
+                    // Log basic info for every entity checked
+                    debugLog.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status})");
+
+                    // Core logic: Is the entity fighting and NOT a friendly player?
+                    if (entity.Status == 1 && !friendlyNames.Contains(entityNameLower))
+                    {
+                        debugLog.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not on the friendly list.");
+
+                        // If a specific target name is configured, we must match it
+                        if (useSpecifiedTarget)
+                        {
+                            if (entityNameLower == targetName)
+                            {
+                                debugLog.AppendLine($"  -> SUCCESS: Matched specified target name. Returning TargetingIndex: {entity.TargetingIndex}");
+                                debug_MSG_show = debugLog.ToString();
+                                return (int)entity.TargetingIndex;
+                            }
+                            else
+                            {
+                                debugLog.AppendLine("  -> Skip: Does not match specified target name.");
+                            }
+                        }
+                        else // Otherwise, the first valid enemy we find is our target
+                        {
+                            debugLog.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Returning TargetingIndex: {entity.TargetingIndex}");
+                            debug_MSG_show = debugLog.ToString();
+                            return (int)entity.TargetingIndex;
+                        }
+                    }
+                }
+
+                debugLog.AppendLine("No matching engaged target found.");
+            }
+            catch (Exception ex)
+            {
+                debugLog.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex.ToString()}");
+            }
+            finally
+            {
+                debugLog.AppendLine("--- CheckEngagedStatus_Hate END ---");
                 debug_MSG_show = debugLog.ToString();
-                return 0;
-            }
-            AppendToDebugLog(debugLog, $"Reference position: (X:{referenceEntity.X:F1}, Y:{referenceEntity.Y:F1}, Z:{referenceEntity.Z:F1})");
-
-            AppendToDebugLog(debugLog, "Scanning entities...");
-            for (int i = 0; i < 2048; i++)
-            {
-                EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-
-                if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0)
-                {
-                    continue;
-                }
-
-                var type = (TargetType)entity.Type;
-                AppendToDebugLog(debugLog, $"[Index:{i}] Checking '{entity.Name}' | Type: {type} | Status: {entity.Status} | HP: {entity.HealthPercent}%");
-
-                // Primary filter: Must be an NPC and an Enemy
-                if (!type.HasFlag(TargetType.Npc) || !type.HasFlag(TargetType.Enemy))
-                {
-                    AppendToDebugLog(debugLog, "  -> Skip: Not an enemy NPC.");
-                    continue;
-                }
-
-                // Must be in fighting status
-                if (entity.Status != 1)
-                {
-                    AppendToDebugLog(debugLog, $"  -> Skip: Not engaged (Status is {entity.Status}, expected 1).");
-                    continue;
-                }
-
-                // Distance check
-                float distance = entity.Distance;
-                AppendToDebugLog(debugLog, $"  -> Info: Distance: {distance:F1}");
-                if (distance > maxDistance)
-                {
-                    AppendToDebugLog(debugLog, "  -> Skip: Out of range.");
-                    continue;
-                }
-
-                // Target logic
-                if (useSpecifiedTarget)
-                {
-                    if (entity.Name.ToLower() == targetName)
-                    {
-                        AppendToDebugLog(debugLog, $"  -> SUCCESS: Matched specified target '{entity.Name}'. Returning its index: {entity.TargetingIndex}");
-                        debug_MSG_show = debugLog.ToString();
-                        return (int)entity.TargetingIndex;
-                    }
-                    else
-                    {
-                        AppendToDebugLog(debugLog, "  -> Skip: Does not match specified target name.");
-                    }
-                }
-                else
-                {
-                    AppendToDebugLog(debugLog, $"  -> SUCCESS: Found first valid engaged enemy '{entity.Name}'. Returning its index: {entity.TargetingIndex}");
-                    debug_MSG_show = debugLog.ToString();
-                    return (int)entity.TargetingIndex;
-                }
-            }
-
-            AppendToDebugLog(debugLog, "--- CheckEngagedStatus_Hate END ---");
-            AppendToDebugLog(debugLog, "No matching engaged target found.");
-            debug_MSG_show = debugLog.ToString();
-
-            // If we used a specified target and looped through everything without finding it, return 0.
-            if (useSpecifiedTarget)
-            {
-                AppendToDebugLog(debugLog, "Specified target was not found among valid entities.");
-                return 0;
             }
 
             return 0;
