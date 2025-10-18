@@ -868,621 +868,6 @@
 
         private DateTime currentTime = DateTime.Now;
 
-        private DateTime[] playerHaste = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerHaste_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerStormspell = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerFlurry = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerFlurry_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerShell = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerProtect = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPhalanx_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerRegen = new DateTime[]
-       {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-       };
-
-        private DateTime[] playerRefresh = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerAdloquium = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong1 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong2 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong3 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong4 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] Last_SongCast_Timer = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo1_1 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo2_1 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo1_2 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo2_2 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private TimeSpan[] playerHasteSpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerStormspellSpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerHaste_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerFlurrySpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerFlurry_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerShell_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerProtect_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerPhalanx_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerRegen_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerRefresh_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-
-        private TimeSpan[] playerAdloquium_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong1_Span = new TimeSpan[]
-      {
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong2_Span = new TimeSpan[]
-      {
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong3_Span = new TimeSpan[]
-      {
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong4_Span = new TimeSpan[]
-     {
-            new TimeSpan()
-     };
-
-        private TimeSpan[] Last_SongCast_Timer_Span = new TimeSpan[]
-     {
-            new TimeSpan()
-     };
-
-        private TimeSpan[] pianissimo1_1_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
-        private TimeSpan[] pianissimo2_1_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
-        private TimeSpan[] pianissimo1_2_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
-        private TimeSpan[] pianissimo2_2_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
         private void PaintBorderlessGroupBox(object sender, PaintEventArgs e)
         {
             GroupBox box = sender as GroupBox;
@@ -5196,6 +4581,23 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
 
+        private bool PartyMemberHasBuff(string characterName, int buffId)
+        {
+            if (string.IsNullOrEmpty(characterName))
+                return false;
+
+            for (int i = 0; i < 2048; i++)
+            {
+                var entity = _ELITEAPIPL.Entity.GetEntity(i);
+                if (entity != null && entity.Name == characterName)
+                {
+                    return entity.Buffs.Contains((ushort)buffId);
+                }
+            }
+
+            return false;
+        }
+
 
         private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
         {
@@ -5407,201 +4809,6 @@ private void setinstance_Click(object sender, EventArgs e)
             // Grab current time for calculations below
 
             currentTime = DateTime.Now;
-            // Calculate time since haste was cast on particular player
-            playerHasteSpan[0] = currentTime.Subtract(playerHaste[0]);
-            playerHasteSpan[1] = currentTime.Subtract(playerHaste[1]);
-            playerHasteSpan[2] = currentTime.Subtract(playerHaste[2]);
-            playerHasteSpan[3] = currentTime.Subtract(playerHaste[3]);
-            playerHasteSpan[4] = currentTime.Subtract(playerHaste[4]);
-            playerHasteSpan[5] = currentTime.Subtract(playerHaste[5]);
-            playerHasteSpan[6] = currentTime.Subtract(playerHaste[6]);
-            playerHasteSpan[7] = currentTime.Subtract(playerHaste[7]);
-            playerHasteSpan[8] = currentTime.Subtract(playerHaste[8]);
-            playerHasteSpan[9] = currentTime.Subtract(playerHaste[9]);
-            playerHasteSpan[10] = currentTime.Subtract(playerHaste[10]);
-            playerHasteSpan[11] = currentTime.Subtract(playerHaste[11]);
-            playerHasteSpan[12] = currentTime.Subtract(playerHaste[12]);
-            playerHasteSpan[13] = currentTime.Subtract(playerHaste[13]);
-            playerHasteSpan[14] = currentTime.Subtract(playerHaste[14]);
-            playerHasteSpan[15] = currentTime.Subtract(playerHaste[15]);
-            playerHasteSpan[16] = currentTime.Subtract(playerHaste[16]);
-            playerHasteSpan[17] = currentTime.Subtract(playerHaste[17]);
-
-            playerHaste_IISpan[0] = currentTime.Subtract(playerHaste_II[0]);
-            playerHaste_IISpan[1] = currentTime.Subtract(playerHaste_II[1]);
-            playerHaste_IISpan[2] = currentTime.Subtract(playerHaste_II[2]);
-            playerHaste_IISpan[3] = currentTime.Subtract(playerHaste_II[3]);
-            playerHaste_IISpan[4] = currentTime.Subtract(playerHaste_II[4]);
-            playerHaste_IISpan[5] = currentTime.Subtract(playerHaste_II[5]);
-            playerHaste_IISpan[6] = currentTime.Subtract(playerHaste_II[6]);
-            playerHaste_IISpan[7] = currentTime.Subtract(playerHaste_II[7]);
-            playerHaste_IISpan[8] = currentTime.Subtract(playerHaste_II[8]);
-            playerHaste_IISpan[9] = currentTime.Subtract(playerHaste_II[9]);
-            playerHaste_IISpan[10] = currentTime.Subtract(playerHaste_II[10]);
-            playerHaste_IISpan[11] = currentTime.Subtract(playerHaste_II[11]);
-            playerHaste_IISpan[12] = currentTime.Subtract(playerHaste_II[12]);
-            playerHaste_IISpan[13] = currentTime.Subtract(playerHaste_II[13]);
-            playerHaste_IISpan[14] = currentTime.Subtract(playerHaste_II[14]);
-            playerHaste_IISpan[15] = currentTime.Subtract(playerHaste_II[15]);
-            playerHaste_IISpan[16] = currentTime.Subtract(playerHaste_II[16]);
-            playerHaste_IISpan[17] = currentTime.Subtract(playerHaste_II[17]);
-
-            playerFlurrySpan[0] = currentTime.Subtract(playerFlurry[0]);
-            playerFlurrySpan[1] = currentTime.Subtract(playerFlurry[1]);
-            playerFlurrySpan[2] = currentTime.Subtract(playerFlurry[2]);
-            playerFlurrySpan[3] = currentTime.Subtract(playerFlurry[3]);
-            playerFlurrySpan[4] = currentTime.Subtract(playerFlurry[4]);
-            playerFlurrySpan[5] = currentTime.Subtract(playerFlurry[5]);
-            playerFlurrySpan[6] = currentTime.Subtract(playerFlurry[6]);
-            playerFlurrySpan[7] = currentTime.Subtract(playerFlurry[7]);
-            playerFlurrySpan[8] = currentTime.Subtract(playerFlurry[8]);
-            playerFlurrySpan[9] = currentTime.Subtract(playerFlurry[9]);
-            playerFlurrySpan[10] = currentTime.Subtract(playerFlurry[10]);
-            playerFlurrySpan[11] = currentTime.Subtract(playerFlurry[11]);
-            playerFlurrySpan[12] = currentTime.Subtract(playerFlurry[12]);
-            playerFlurrySpan[13] = currentTime.Subtract(playerFlurry[13]);
-            playerFlurrySpan[14] = currentTime.Subtract(playerFlurry[14]);
-            playerFlurrySpan[15] = currentTime.Subtract(playerFlurry[15]);
-            playerFlurrySpan[16] = currentTime.Subtract(playerFlurry[16]);
-            playerFlurrySpan[17] = currentTime.Subtract(playerFlurry[17]);
-
-            playerFlurry_IISpan[0] = currentTime.Subtract(playerFlurry_II[0]);
-            playerFlurry_IISpan[1] = currentTime.Subtract(playerFlurry_II[1]);
-            playerFlurry_IISpan[2] = currentTime.Subtract(playerFlurry_II[2]);
-            playerFlurry_IISpan[3] = currentTime.Subtract(playerFlurry_II[3]);
-            playerFlurry_IISpan[4] = currentTime.Subtract(playerFlurry_II[4]);
-            playerFlurry_IISpan[5] = currentTime.Subtract(playerFlurry_II[5]);
-            playerFlurry_IISpan[6] = currentTime.Subtract(playerFlurry_II[6]);
-            playerFlurry_IISpan[7] = currentTime.Subtract(playerFlurry_II[7]);
-            playerFlurry_IISpan[8] = currentTime.Subtract(playerFlurry_II[8]);
-            playerFlurry_IISpan[9] = currentTime.Subtract(playerFlurry_II[9]);
-            playerFlurry_IISpan[10] = currentTime.Subtract(playerFlurry_II[10]);
-            playerFlurry_IISpan[11] = currentTime.Subtract(playerFlurry_II[11]);
-            playerFlurry_IISpan[12] = currentTime.Subtract(playerFlurry_II[12]);
-            playerFlurry_IISpan[13] = currentTime.Subtract(playerFlurry_II[13]);
-            playerFlurry_IISpan[14] = currentTime.Subtract(playerFlurry_II[14]);
-            playerFlurry_IISpan[15] = currentTime.Subtract(playerFlurry_II[15]);
-            playerFlurry_IISpan[16] = currentTime.Subtract(playerFlurry_II[16]);
-            playerFlurry_IISpan[17] = currentTime.Subtract(playerFlurry_II[17]);
-
-            // Calculate time since protect was cast on particular player
-            playerProtect_Span[0] = currentTime.Subtract(playerProtect[0]);
-            playerProtect_Span[1] = currentTime.Subtract(playerProtect[1]);
-            playerProtect_Span[2] = currentTime.Subtract(playerProtect[2]);
-            playerProtect_Span[3] = currentTime.Subtract(playerProtect[3]);
-            playerProtect_Span[4] = currentTime.Subtract(playerProtect[4]);
-            playerProtect_Span[5] = currentTime.Subtract(playerProtect[5]);
-            playerProtect_Span[6] = currentTime.Subtract(playerProtect[6]);
-            playerProtect_Span[7] = currentTime.Subtract(playerProtect[7]);
-            playerProtect_Span[8] = currentTime.Subtract(playerProtect[8]);
-            playerProtect_Span[9] = currentTime.Subtract(playerProtect[9]);
-            playerProtect_Span[10] = currentTime.Subtract(playerProtect[10]);
-            playerProtect_Span[11] = currentTime.Subtract(playerProtect[11]);
-            playerProtect_Span[12] = currentTime.Subtract(playerProtect[12]);
-            playerProtect_Span[13] = currentTime.Subtract(playerProtect[13]);
-            playerProtect_Span[14] = currentTime.Subtract(playerProtect[14]);
-            playerProtect_Span[15] = currentTime.Subtract(playerProtect[15]);
-            playerProtect_Span[16] = currentTime.Subtract(playerProtect[16]);
-            playerProtect_Span[17] = currentTime.Subtract(playerProtect[17]);
-
-            // Calculate time since Stormspell was cast on particular player
-            playerStormspellSpan[0] = currentTime.Subtract(playerStormspell[0]);
-            playerStormspellSpan[1] = currentTime.Subtract(playerStormspell[1]);
-            playerStormspellSpan[2] = currentTime.Subtract(playerStormspell[2]);
-            playerStormspellSpan[3] = currentTime.Subtract(playerStormspell[3]);
-            playerStormspellSpan[4] = currentTime.Subtract(playerStormspell[4]);
-            playerStormspellSpan[5] = currentTime.Subtract(playerStormspell[5]);
-            playerStormspellSpan[6] = currentTime.Subtract(playerStormspell[6]);
-            playerStormspellSpan[7] = currentTime.Subtract(playerStormspell[7]);
-            playerStormspellSpan[8] = currentTime.Subtract(playerStormspell[8]);
-            playerStormspellSpan[9] = currentTime.Subtract(playerStormspell[9]);
-            playerStormspellSpan[10] = currentTime.Subtract(playerStormspell[10]);
-            playerStormspellSpan[11] = currentTime.Subtract(playerStormspell[11]);
-            playerStormspellSpan[12] = currentTime.Subtract(playerStormspell[12]);
-            playerStormspellSpan[13] = currentTime.Subtract(playerStormspell[13]);
-            playerStormspellSpan[14] = currentTime.Subtract(playerStormspell[14]);
-            playerStormspellSpan[15] = currentTime.Subtract(playerStormspell[15]);
-            playerStormspellSpan[16] = currentTime.Subtract(playerStormspell[16]);
-            playerStormspellSpan[17] = currentTime.Subtract(playerStormspell[17]);
-
-            // Calculate time since shell was cast on particular player
-            playerShell_Span[0] = currentTime.Subtract(playerShell[0]);
-            playerShell_Span[1] = currentTime.Subtract(playerShell[1]);
-            playerShell_Span[2] = currentTime.Subtract(playerShell[2]);
-            playerShell_Span[3] = currentTime.Subtract(playerShell[3]);
-            playerShell_Span[4] = currentTime.Subtract(playerShell[4]);
-            playerShell_Span[5] = currentTime.Subtract(playerShell[5]);
-            playerShell_Span[6] = currentTime.Subtract(playerShell[6]);
-            playerShell_Span[7] = currentTime.Subtract(playerShell[7]);
-            playerShell_Span[8] = currentTime.Subtract(playerShell[8]);
-            playerShell_Span[9] = currentTime.Subtract(playerShell[9]);
-            playerShell_Span[10] = currentTime.Subtract(playerShell[10]);
-            playerShell_Span[11] = currentTime.Subtract(playerShell[11]);
-            playerShell_Span[12] = currentTime.Subtract(playerShell[12]);
-            playerShell_Span[13] = currentTime.Subtract(playerShell[13]);
-            playerShell_Span[14] = currentTime.Subtract(playerShell[14]);
-            playerShell_Span[15] = currentTime.Subtract(playerShell[15]);
-            playerShell_Span[16] = currentTime.Subtract(playerShell[16]);
-            playerShell_Span[17] = currentTime.Subtract(playerShell[17]);
-
-            // Calculate time since phalanx II was cast on particular player
-            playerPhalanx_IISpan[0] = currentTime.Subtract(playerPhalanx_II[0]);
-            playerPhalanx_IISpan[1] = currentTime.Subtract(playerPhalanx_II[1]);
-            playerPhalanx_IISpan[2] = currentTime.Subtract(playerPhalanx_II[2]);
-            playerPhalanx_IISpan[3] = currentTime.Subtract(playerPhalanx_II[3]);
-            playerPhalanx_IISpan[4] = currentTime.Subtract(playerPhalanx_II[4]);
-            playerPhalanx_IISpan[5] = currentTime.Subtract(playerPhalanx_II[5]);
-
-            // Calculate time since regen was cast on particular player
-            playerRegen_Span[0] = currentTime.Subtract(playerRegen[0]);
-            playerRegen_Span[1] = currentTime.Subtract(playerRegen[1]);
-            playerRegen_Span[2] = currentTime.Subtract(playerRegen[2]);
-            playerRegen_Span[3] = currentTime.Subtract(playerRegen[3]);
-            playerRegen_Span[4] = currentTime.Subtract(playerRegen[4]);
-            playerRegen_Span[5] = currentTime.Subtract(playerRegen[5]);
-
-            // Calculate time since Refresh was cast on particular player
-            playerRefresh_Span[0] = currentTime.Subtract(playerRefresh[0]);
-            playerRefresh_Span[1] = currentTime.Subtract(playerRefresh[1]);
-            playerRefresh_Span[2] = currentTime.Subtract(playerRefresh[2]);
-            playerRefresh_Span[3] = currentTime.Subtract(playerRefresh[3]);
-            playerRefresh_Span[4] = currentTime.Subtract(playerRefresh[4]);
-            playerRefresh_Span[5] = currentTime.Subtract(playerRefresh[5]);
-
-            // Calculate time since Songs were cast on particular player
-            playerSong1_Span[0] = currentTime.Subtract(playerSong1[0]);
-            playerSong2_Span[0] = currentTime.Subtract(playerSong2[0]);
-            playerSong3_Span[0] = currentTime.Subtract(playerSong3[0]);
-            playerSong4_Span[0] = currentTime.Subtract(playerSong4[0]);
-
-            // Calculate time since Adloquium were cast on particular player
-            playerAdloquium_Span[0] = currentTime.Subtract(playerAdloquium[0]);
-            playerAdloquium_Span[1] = currentTime.Subtract(playerAdloquium[1]);
-            playerAdloquium_Span[2] = currentTime.Subtract(playerAdloquium[2]);
-            playerAdloquium_Span[3] = currentTime.Subtract(playerAdloquium[3]);
-            playerAdloquium_Span[4] = currentTime.Subtract(playerAdloquium[4]);
-            playerAdloquium_Span[5] = currentTime.Subtract(playerAdloquium[5]);
-            playerAdloquium_Span[6] = currentTime.Subtract(playerAdloquium[6]);
-            playerAdloquium_Span[7] = currentTime.Subtract(playerAdloquium[7]);
-            playerAdloquium_Span[8] = currentTime.Subtract(playerAdloquium[8]);
-            playerAdloquium_Span[9] = currentTime.Subtract(playerAdloquium[9]);
-            playerAdloquium_Span[10] = currentTime.Subtract(playerAdloquium[10]);
-            playerAdloquium_Span[11] = currentTime.Subtract(playerAdloquium[11]);
-            playerAdloquium_Span[12] = currentTime.Subtract(playerAdloquium[12]);
-            playerAdloquium_Span[13] = currentTime.Subtract(playerAdloquium[13]);
-            playerAdloquium_Span[14] = currentTime.Subtract(playerAdloquium[14]);
-            playerAdloquium_Span[15] = currentTime.Subtract(playerAdloquium[15]);
-            playerAdloquium_Span[16] = currentTime.Subtract(playerAdloquium[16]);
-            playerAdloquium_Span[17] = currentTime.Subtract(playerAdloquium[17]);
-
-
-            Last_SongCast_Timer_Span[0] = currentTime.Subtract(Last_SongCast_Timer[0]);
-
-            // Calculate time since Piannisimo Songs were cast on particular player
-            pianissimo1_1_Span[0] = currentTime.Subtract(playerPianissimo1_1[0]);
-            pianissimo2_1_Span[0] = currentTime.Subtract(playerPianissimo2_1[0]);
-            pianissimo1_2_Span[0] = currentTime.Subtract(playerPianissimo1_2[0]);
-            pianissimo2_2_Span[0] = currentTime.Subtract(playerPianissimo2_2[0]);
 
             // Set array values for GUI "Enabled" checkboxes
             CheckBox[] enabledBoxes = new CheckBox[18];
@@ -6854,143 +6061,94 @@ private void setinstance_Click(object sender, EventArgs e)
                             // PL BASED BUFFS
                             if (_ELITEAPIPL.Player.Name == charDATA.Name)
                             {
-
-                                if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 && HasSpell("Haste") && JobChecker("Haste") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !plStatusCheck(StatusEffect.Haste) && !plStatusCheck(StatusEffect.Slow))
+                                if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 && HasSpell("Haste") && JobChecker("Haste") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 33) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     hastePlayer(charDATA.MemberNumber);
                                 }
-                                if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 && HasSpell("Haste II") && JobChecker("Haste II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !plStatusCheck(StatusEffect.Haste) && !plStatusCheck(StatusEffect.Slow))
+                                if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 && HasSpell("Haste II") && JobChecker("Haste II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 33) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     haste_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoAdloquium_Enabled[charDATA.MemberNumber] && CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") && JobChecker("Adloquium") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !BuffChecker(170, 0))
+                                if (autoAdloquium_Enabled[charDATA.MemberNumber] && CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") && JobChecker("Adloquium") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 170))
                                 {
                                     AdloquiumPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 && HasSpell("Flurry") && JobChecker("Flurry") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 0) && !plStatusCheck(StatusEffect.Slow))
+                                if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 && HasSpell("Flurry") && JobChecker("Flurry") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 581) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     FlurryPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 && HasSpell("Flurry II") && JobChecker("Flurry II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 0) && !plStatusCheck(StatusEffect.Slow))
+                                if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 && HasSpell("Flurry II") && JobChecker("Flurry II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 581) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     Flurry_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoShell_Enabled[charDATA.MemberNumber] && CheckSpellRecast(shell_spells[Form2.config.autoShell_Spell]) == 0 && HasSpell(shell_spells[Form2.config.autoShell_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Shell))
+                                if (autoShell_Enabled[charDATA.MemberNumber] && CheckSpellRecast(shell_spells[Form2.config.autoShell_Spell]) == 0 && HasSpell(shell_spells[Form2.config.autoShell_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 41))
                                 {
                                     shellPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoProtect_Enabled[charDATA.MemberNumber] && CheckSpellRecast(protect_spells[Form2.config.autoProtect_Spell]) == 0 && HasSpell(protect_spells[Form2.config.autoProtect_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Protect))
+                                if (autoProtect_Enabled[charDATA.MemberNumber] && CheckSpellRecast(protect_spells[Form2.config.autoProtect_Spell]) == 0 && HasSpell(protect_spells[Form2.config.autoProtect_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 40))
                                 {
                                     protectPlayer(charDATA.MemberNumber);
                                 }
-                                if ((autoPhalanx_IIEnabled[charDATA.MemberNumber]) && (CheckSpellRecast("Phalanx II") == 0) && (HasSpell("Phalanx II")) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Phalanx))
+                                if ((autoPhalanx_IIEnabled[charDATA.MemberNumber]) && (CheckSpellRecast("Phalanx II") == 0) && (HasSpell("Phalanx II")) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 116))
                                 {
                                     Phalanx_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Regen))
+                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 42))
                                 {
                                     Regen_Player(charDATA.MemberNumber);
                                 }
-                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Refresh))
+                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 43))
                                 {
                                     Refresh_Player(charDATA.MemberNumber);
                                 }
-                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !BuffChecker(PTstormspell.buffID, 0) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true)
-                                {
-                                    StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
-                                }
-                            }
-                            // MONITORED PLAYER BASED BUFFS
-                            else if (_ELITEAPIMonitored.Player.Name == charDATA.Name)
-                            {
-                                if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 && HasSpell("Haste") && JobChecker("Haste") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !monitoredStatusCheck(StatusEffect.Haste) && !monitoredStatusCheck(StatusEffect.Slow))
-                                {
-                                    hastePlayer(charDATA.MemberNumber);
-                                }
-                                if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 && HasSpell("Haste II") && JobChecker("Haste II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !monitoredStatusCheck(StatusEffect.Haste) && !monitoredStatusCheck(StatusEffect.Slow))
-                                {
-                                    haste_IIPlayer(charDATA.MemberNumber);
-                                }
-                                if (autoAdloquium_Enabled[charDATA.MemberNumber] && CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") && JobChecker("Adloquium") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !BuffChecker(170, 1))
-                                {
-                                    AdloquiumPlayer(charDATA.MemberNumber);
-                                }
-                                if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 && HasSpell("Flurry") && JobChecker("Flurry") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 1) && !monitoredStatusCheck(StatusEffect.Slow))
-                                {
-                                    FlurryPlayer(charDATA.MemberNumber);
-                                }
-                                if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 && HasSpell("Flurry II") && JobChecker("Flurry II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 1) && !monitoredStatusCheck(StatusEffect.Slow))
-                                {
-                                    Flurry_IIPlayer(charDATA.MemberNumber);
-                                }
-                                if (autoShell_Enabled[charDATA.MemberNumber] && CheckSpellRecast(shell_spells[Form2.config.autoShell_Spell]) == 0 && HasSpell(shell_spells[Form2.config.autoShell_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Shell))
-                                {
-                                    shellPlayer(charDATA.MemberNumber);
-                                }
-                                if (autoProtect_Enabled[charDATA.MemberNumber] && CheckSpellRecast(protect_spells[Form2.config.autoProtect_Spell]) == 0 && HasSpell(protect_spells[Form2.config.autoProtect_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Protect))
-                                {
-                                    protectPlayer(charDATA.MemberNumber);
-                                }
-                                if ((autoPhalanx_IIEnabled[charDATA.MemberNumber]) && (CheckSpellRecast("Phalanx II") == 0) && (HasSpell("Phalanx II")) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Phalanx))
-                                {
-                                    Phalanx_IIPlayer(charDATA.MemberNumber);
-                                }
-                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Regen))
-                                {
-                                    Regen_Player(charDATA.MemberNumber);
-                                }
-                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Refresh))
-                                {
-                                    Refresh_Player(charDATA.MemberNumber);
-                                }
-                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !BuffChecker(PTstormspell.buffID, 1) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true)
+                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, PTstormspell.buffID) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true)
                                 {
                                     StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
                                 }
                             }
                             else
                             {
-                                if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 && HasSpell("Haste") && JobChecker("Haste") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && playerHasteSpan[charDATA.MemberNumber].Minutes >= Form2.config.autoHasteMinutes)
+                                if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 && HasSpell("Haste") && JobChecker("Haste") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 33) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     hastePlayer(charDATA.MemberNumber);
                                 }
-                                if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 && HasSpell("Haste II") && JobChecker("Haste II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && playerHaste_IISpan[charDATA.MemberNumber].Minutes >= Form2.config.autoHasteMinutes)
+                                if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 && HasSpell("Haste II") && JobChecker("Haste II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 33) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     haste_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoAdloquium_Enabled[charDATA.MemberNumber] && CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") && JobChecker("Adloquium") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && playerAdloquium_Span[charDATA.MemberNumber].Minutes >= Form2.config.autoAdloquiumMinutes)
+                                if (autoAdloquium_Enabled[charDATA.MemberNumber] && CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") && JobChecker("Adloquium") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 170))
                                 {
                                     AdloquiumPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 && HasSpell("Flurry") && JobChecker("Flurry") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && playerFlurrySpan[charDATA.MemberNumber].Minutes >= Form2.config.autoHasteMinutes)
+                                if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 && HasSpell("Flurry") && JobChecker("Flurry") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 581) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     FlurryPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 && HasSpell("Flurry II") && JobChecker("Flurry II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && playerHasteSpan[charDATA.MemberNumber].Minutes >= Form2.config.autoHasteMinutes)
+                                if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 && HasSpell("Flurry II") && JobChecker("Flurry II") == true && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && !PartyMemberHasBuff(charDATA.Name, 581) && !PartyMemberHasBuff(charDATA.Name, 13))
                                 {
                                     Flurry_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoShell_Enabled[charDATA.MemberNumber] && CheckSpellRecast(shell_spells[Form2.config.autoShell_Spell]) == 0 && HasSpell(shell_spells[Form2.config.autoShell_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && playerShell_Span[charDATA.MemberNumber].Minutes >= Form2.config.autoShellMinutes)
+                                if (autoShell_Enabled[charDATA.MemberNumber] && CheckSpellRecast(shell_spells[Form2.config.autoShell_Spell]) == 0 && HasSpell(shell_spells[Form2.config.autoShell_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 41))
                                 {
                                     shellPlayer(charDATA.MemberNumber);
                                 }
-                                if (autoProtect_Enabled[charDATA.MemberNumber] && CheckSpellRecast(protect_spells[Form2.config.autoProtect_Spell]) == 0 && HasSpell(protect_spells[Form2.config.autoProtect_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && playerProtect_Span[charDATA.MemberNumber].Minutes >= Form2.config.autoProtect_Minutes)
+                                if (autoProtect_Enabled[charDATA.MemberNumber] && CheckSpellRecast(protect_spells[Form2.config.autoProtect_Spell]) == 0 && HasSpell(protect_spells[Form2.config.autoProtect_Spell]) && _ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue && castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 40))
                                 {
                                     protectPlayer(charDATA.MemberNumber);
                                 }
-                                if ((autoPhalanx_IIEnabled[charDATA.MemberNumber]) && (CheckSpellRecast("Phalanx II") == 0) && (HasSpell("Phalanx II")) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerPhalanx_IISpan[charDATA.MemberNumber].Minutes >= Form2.config.autoPhalanxIIMinutes)
+                                if ((autoPhalanx_IIEnabled[charDATA.MemberNumber]) && (CheckSpellRecast("Phalanx II") == 0) && (HasSpell("Phalanx II")) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 116))
                                 {
                                     Phalanx_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRegen_Span[charDATA.MemberNumber].Minutes >= Form2.config.autoRegen_Minutes)
+                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[Form2.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[Form2.config.autoRegen_Spell])) && JobChecker(regen_spells[Form2.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 42))
                                 {
                                     Regen_Player(charDATA.MemberNumber);
                                 }
-                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRefresh_Span[charDATA.MemberNumber].Minutes >= Form2.config.autoRefresh_Minutes)
+                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[Form2.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[Form2.config.autoRefresh_Spell])) && JobChecker(refresh_spells[Form2.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, 43))
                                 {
                                     Refresh_Player(charDATA.MemberNumber);
                                 }
-                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true && playerStormspellSpan[charDATA.MemberNumber].Minutes >= Form2.config.autoStormspellMinutes)
+                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > Form2.config.mpMinCastValue) && (castingPossible(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !PartyMemberHasBuff(charDATA.Name, PTstormspell.buffID) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true)
                                 {
                                     StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
                                 }
@@ -8795,7 +7953,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                             EliteAPI.XiEntity mob = _ELITEAPIPL.Entity.GetEntity(z.TargetingIndex);
                             if (mob != null && mob.Type == EliteAPI.EntityType.NPC)
                             {
-                                return Convert.ToInt32(mob.TargetID);
+                                return z.TargetingIndex;
                             }
                             else
                             {
@@ -8818,7 +7976,17 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                     EliteAPI.XiEntity entity = _ELITEAPIMonitored.Entity.GetEntity(Convert.ToInt32(target.TargetIndex));
                     if (entity != null && entity.Type == EliteAPI.EntityType.NPC)
                     {
-                        return Convert.ToInt32(entity.TargetID);
+                        // The target index is from the monitored process. We need to find the corresponding entity
+                        // in the PL's process. We can match by ID.
+                        for (int i = 0; i < 2048; i++)
+                        {
+                            EliteAPI.XiEntity plEntity = _ELITEAPIPL.Entity.GetEntity(i);
+                            if (plEntity != null && plEntity.ID == entity.ID)
+                            {
+                                return i; // Found it in the PL's entity list. This is the correct index.
+                            }
+                        }
+                        return 0; // Not found in PL's entity list.
                     }
                     else
                     {
@@ -9163,8 +8331,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         {
                             CastSpell("<me>", song_4.song_name);
                             Last_Song_Cast = song_4.song_name;
-                            Last_SongCast_Timer[0] = DateTime.Now;
-                            playerSong4[0] = DateTime.Now;
                             song_casting = 0;
                         }
                     }
@@ -9192,8 +8358,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         {
                             CastSpell("<me>", song_3.song_name);
                             Last_Song_Cast = song_3.song_name;
-                            Last_SongCast_Timer[0] = DateTime.Now;
-                            playerSong3[0] = DateTime.Now;
                             song_casting = 3;
                         }
                     }
@@ -9211,8 +8375,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     {
                         CastSpell("<me>", song_2.song_name);
                         Last_Song_Cast = song_2.song_name;
-                        Last_SongCast_Timer[0] = DateTime.Now;
-                        playerSong2[0] = DateTime.Now;
                         song_casting = 2;
                     }
                 }
@@ -9228,8 +8390,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     {
                         CastSpell("<me>", song_1.song_name);
                         Last_Song_Cast = song_1.song_name;
-                        Last_SongCast_Timer[0] = DateTime.Now;
-                        playerSong1[0] = DateTime.Now;
                         song_casting = 1;
                     }
 
@@ -9241,55 +8401,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
 
                 // ONCE ALL SONGS HAVE BEEN CAST ONLY RECAST THEM WHEN THEY MEET THE THRESHOLD SET ON SONG RECAST AND BLOCK IF IT'S SET AT LAUNCH DEFAULTS
-                if (playerSong1[0] != DefaultTime && playerSong1_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)) && JobChecker(song_1.song_name) == true)
-                        {
-                            CastSpell("<me>", song_1.song_name);
-                            playerSong1[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong2[0] != DefaultTime && playerSong2_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)) && JobChecker(song_2.song_name) == true)
-                        {
-                            CastSpell("<me>", song_2.song_name);
-                            playerSong2[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong3[0] != DefaultTime && playerSong3_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)) && JobChecker(song_3.song_name) == true)
-                        {
-                            CastSpell("<me>", song_3.song_name);
-                            playerSong3[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong4[0] != DefaultTime && playerSong4_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)) && JobChecker(song_4.song_name) == true)
-                        {
-                            CastSpell("<me>", song_4.song_name);
-                            playerSong4[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-
 
             }
         }
