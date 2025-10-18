@@ -8801,78 +8801,90 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             AppendToDebugLog(debugLog, "--- CheckEngagedStatus_Hate START ---");
 
             bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
-            string targetName = Form2.config.autoTarget_Target?.ToLower();
-            IDFound = 0;
+            string targetName = useSpecifiedTarget ? Form2.config.autoTarget_Target.ToLower() : "N/A";
+            AppendToDebugLog(debugLog, $"Config: useSpecifiedTarget={useSpecifiedTarget}, targetName='{targetName}'");
 
             float maxDistance = 20.0f;
+            AppendToDebugLog(debugLog, $"Config: maxDistance={maxDistance}");
 
-            // Use monitored player's entity as reference for distance
-            EliteAPI.XiEntity referenceEntity = _ELITEAPIMonitored.Entity.GetEntity(0); // Index 0 is usually the player
+            EliteAPI.XiEntity referenceEntity = _ELITEAPIMonitored.Entity.GetEntity(0); // Player's own entity for distance calculation
             if (referenceEntity == null)
             {
-                AppendToDebugLog(debugLog, "Reference entity is null. Returning 0.");
+                AppendToDebugLog(debugLog, "ERROR: Could not get reference entity (monitored player). Aborting.");
                 debug_MSG_show = debugLog.ToString();
                 return 0;
             }
+            AppendToDebugLog(debugLog, $"Reference position: (X:{referenceEntity.X:F1}, Y:{referenceEntity.Y:F1}, Z:{referenceEntity.Z:F1})");
 
-            for (int i = 2047; i >= 0; i--)
+            AppendToDebugLog(debugLog, "Scanning entities...");
+            for (int i = 0; i < 2048; i++)
             {
                 EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-                if (entity == null || string.IsNullOrEmpty(entity.Name)) continue;
 
-                string name = entity.Name.ToLower();
-                var type = (TargetType)entity.Type;
-
-                // Filter out invalid targets
-                if ((type & TargetType.Self) != 0 || (type & TargetType.Party) != 0 ||
-                    (type & TargetType.Ally) != 0 || (type & TargetType.Npc) != 0 ||
-                    (type & TargetType.Player) != 0)
+                if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0)
                 {
-                    AppendToDebugLog(debugLog, $"Skipping entity: {entity.Name} (Type: {type})");
+                    continue;
+                }
+
+                var type = (TargetType)entity.Type;
+                AppendToDebugLog(debugLog, $"[Index:{i}] Checking '{entity.Name}' | Type: {type} | Status: {entity.Status} | HP: {entity.HealthPercent}%");
+
+                // Primary filter: Must be an NPC and an Enemy
+                if (!type.HasFlag(TargetType.Npc) || !type.HasFlag(TargetType.Enemy))
+                {
+                    AppendToDebugLog(debugLog, "  -> Skip: Not an enemy NPC.");
+                    continue;
+                }
+
+                // Must be in fighting status
+                if (entity.Status != 1)
+                {
+                    AppendToDebugLog(debugLog, $"  -> Skip: Not engaged (Status is {entity.Status}, expected 1).");
                     continue;
                 }
 
                 // Distance check
-                float dx = entity.X - referenceEntity.X;
-                float dy = entity.Y - referenceEntity.Y;
-                float dz = entity.Z - referenceEntity.Z;
-                float distance = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
-
+                float distance = entity.Distance;
+                AppendToDebugLog(debugLog, $"  -> Info: Distance: {distance:F1}");
                 if (distance > maxDistance)
                 {
-                    AppendToDebugLog(debugLog, $"Entity {entity.Name} is out of range ({distance:F1} > {maxDistance}). Skipping.");
+                    AppendToDebugLog(debugLog, "  -> Skip: Out of range.");
                     continue;
                 }
 
-                // If using specified target, match by name
-                if (useSpecifiedTarget && name == targetName)
+                // Target logic
+                if (useSpecifiedTarget)
                 {
-                    AppendToDebugLog(debugLog, $"Matched specified target: {entity.Name} (Status: {entity.Status})");
-                    if (entity.Status == 1)
+                    if (entity.Name.ToLower() == targetName)
                     {
-                        AppendToDebugLog(debugLog, $"Target is engaged. Returning index: {i}");
+                        AppendToDebugLog(debugLog, $"  -> SUCCESS: Matched specified target '{entity.Name}'. Returning its index: {entity.TargetingIndex}");
                         debug_MSG_show = debugLog.ToString();
-                        return i;
+                        return (int)entity.TargetingIndex;
                     }
                     else
                     {
-                        AppendToDebugLog(debugLog, "Specified target not engaged. Returning 0.");
-                        debug_MSG_show = debugLog.ToString();
-                        return 0;
+                        AppendToDebugLog(debugLog, "  -> Skip: Does not match specified target name.");
                     }
                 }
-
-                // If not using specified target, return first engaged enemy
-                if (!useSpecifiedTarget && entity.Status == 1 && (type & TargetType.Enemy) != 0)
+                else
                 {
-                    AppendToDebugLog(debugLog, $"Found engaged enemy: {entity.Name} (Index: {i}). Returning index.");
+                    AppendToDebugLog(debugLog, $"  -> SUCCESS: Found first valid engaged enemy '{entity.Name}'. Returning its index: {entity.TargetingIndex}");
                     debug_MSG_show = debugLog.ToString();
-                    return i;
+                    return (int)entity.TargetingIndex;
                 }
             }
 
-            AppendToDebugLog(debugLog, "No valid engaged target found. Returning 0.");
+            AppendToDebugLog(debugLog, "--- CheckEngagedStatus_Hate END ---");
+            AppendToDebugLog(debugLog, "No matching engaged target found.");
             debug_MSG_show = debugLog.ToString();
+
+            // If we used a specified target and looped through everything without finding it, return 0.
+            if (useSpecifiedTarget)
+            {
+                AppendToDebugLog(debugLog, "Specified target was not found among valid entities.");
+                return 0;
+            }
+
             return 0;
         }
 

@@ -2240,7 +2240,6 @@ namespace CurePlease
             this.debug.TabIndex = 24;
             this.debug.Text = "debug";
             this.debug.UseVisualStyleBackColor = false;
-            this.debug.Visible = false;
             this.debug.Click += new System.EventHandler(this.Debug_Click);
             this.debug.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
