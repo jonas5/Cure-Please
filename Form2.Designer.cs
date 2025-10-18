@@ -2005,6 +2005,7 @@
             this.groupBox10.Controls.Add(this.TargetRemoval_Delay);
             this.groupBox10.Controls.Add(this.label58);
             this.groupBox10.Controls.Add(this.DisableTargettingCancel);
+            this.groupBox10.Controls.Add(this.autoTargetEnemy);
             this.groupBox10.Location = new System.Drawing.Point(368, 481);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(431, 100);
@@ -7970,6 +7971,7 @@
             this.regen1.UseVisualStyleBackColor = true;
             this.regenGroupBox.ResumeLayout(false);
             this.regenGroupBox.PerformLayout();
+            this.autoTargetEnemy = new System.Windows.Forms.CheckBox();
             // 
             // groupBox2
             // 
