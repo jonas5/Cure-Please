@@ -5396,6 +5396,7 @@ private void setinstance_Click(object sender, EventArgs e)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            CheckEngagedStatus_Hate();
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -6640,9 +6641,9 @@ private void setinstance_Click(object sender, EventArgs e)
 
                         else if ((Form2.config.autoTarget == true) && (CheckSpellRecast(Form2.config.autoTargetSpell) == 0) && (HasSpell(Form2.config.autoTargetSpell)))
                         {
+                            int enemyID = lockedTargetId;
                             if (Form2.config.Hate_SpellType == 1) // PARTY BASED HATE SPELL
                             {
-                                int enemyID = CheckEngagedStatus_Hate();
 
                                 if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
                                 {
@@ -6652,8 +6653,6 @@ private void setinstance_Click(object sender, EventArgs e)
                             }
                             else // ENEMY BASED TARGET
                             {
-                                int enemyID = CheckEngagedStatus_Hate();
-
                                 if (enemyID != 0 && enemyID != lastKnownEstablisherTarget)
                                 {
                                     _ELITEAPIPL.Target.SetTarget(enemyID);
