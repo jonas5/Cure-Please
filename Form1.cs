@@ -78,7 +78,7 @@
 
         private int currentSCHCharges = 0;
 
-        private string debug_MSG_show = string.Empty;
+        private StringBuilder debug_MSG_show = new StringBuilder();
 
         private int lastCommand = 0;
 
@@ -8079,8 +8079,8 @@ private void setinstance_Click(object sender, EventArgs e)
                 MessageBox.Show("Attach to process before pressing this button", "Error");
                 return;
             }
-
-            MessageBox.Show(debug_MSG_show);
+            MessageBox.Show(debug_MSG_show.ToString());
+            debug_MSG_show.Clear();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -8777,85 +8777,62 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
 
         private int CheckEngagedStatus_Hate()
         {
-            var debugLog = new StringBuilder();
             try
             {
-                debugLog.AppendLine("--- CheckEngagedStatus_Hate START ---");
-
-                // Create a list of friendly player names to exclude from targeting
-                List<string> friendlyNames = _ELITEAPIMonitored.Party.GetPartyMembers()
-                    .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name))
-                    .Select(p => p.Name.ToLower())
-                    .ToList();
+                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
+                List<string> friendlyNames = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).Select(p => p.Name.ToLower()).ToList();
                 friendlyNames.Add(_ELITEAPIPL.Player.Name.ToLower());
                 if (_ELITEAPIPL.Player.Name.ToLower() != _ELITEAPIMonitored.Player.Name.ToLower())
                 {
                     friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
                 }
                 friendlyNames = friendlyNames.Distinct().ToList();
-
-                debugLog.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
-
-
+                debug_MSG_show.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
                 bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
                 string targetName = useSpecifiedTarget ? Form2.config.autoTarget_Target.ToLower() : "N/A";
-                debugLog.AppendLine($"Config: useSpecifiedTarget={useSpecifiedTarget}, targetName='{targetName}'");
-
-                debugLog.AppendLine("Scanning entities...");
+                debug_MSG_show.AppendLine($"Config: useSpecifiedTarget={useSpecifiedTarget}, targetName='{targetName}'");
+                debug_MSG_show.AppendLine("Scanning entities...");
                 for (int i = 0; i < 2048; i++)
                 {
                     EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-
                     if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0)
                     {
                         continue;
                     }
-
                     string entityNameLower = entity.Name.ToLower();
-
-                    // Log basic info for every entity checked
-                    debugLog.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status})");
-
-                    // Core logic: Is the entity fighting and NOT a friendly player?
+                    debug_MSG_show.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status})");
                     if (entity.Status == 1 && !friendlyNames.Contains(entityNameLower))
                     {
-                        debugLog.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not on the friendly list.");
-
-                        // If a specific target name is configured, we must match it
+                        debug_MSG_show.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not on the friendly list.");
                         if (useSpecifiedTarget)
                         {
                             if (entityNameLower == targetName)
                             {
-                                debugLog.AppendLine($"  -> SUCCESS: Matched specified target name. Returning TargetingIndex: {entity.TargetingIndex}");
-                                debug_MSG_show = debugLog.ToString();
+                                debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Returning TargetingIndex: {entity.TargetingIndex}");
                                 return (int)entity.TargetingIndex;
                             }
                             else
                             {
-                                debugLog.AppendLine("  -> Skip: Does not match specified target name.");
+                                debug_MSG_show.AppendLine("  -> Skip: Does not match specified target name.");
                             }
                         }
-                        else // Otherwise, the first valid enemy we find is our target
+                        else
                         {
-                            debugLog.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Returning TargetingIndex: {entity.TargetingIndex}");
-                            debug_MSG_show = debugLog.ToString();
+                            debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Returning TargetingIndex: {entity.TargetingIndex}");
                             return (int)entity.TargetingIndex;
                         }
                     }
                 }
-
-                debugLog.AppendLine("No matching engaged target found.");
+                debug_MSG_show.AppendLine("No matching engaged target found.");
             }
             catch (Exception ex)
             {
-                debugLog.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex.ToString()}");
+                debug_MSG_show.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex.ToString()}");
             }
             finally
             {
-                debugLog.AppendLine("--- CheckEngagedStatus_Hate END ---");
-                debug_MSG_show = debugLog.ToString();
+                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate END ---");
             }
-
             return 0;
         }
 
@@ -9114,8 +9091,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
             if ((Form2.config.enableSinging) && _ELITEAPIPL.Player.Status != 33)
             {
-
-                debug_MSG_show = "ORDER: " + song_casting;
 
                 SongData song_1 = SongInfo.Where(c => c.song_position == Form2.config.song1).FirstOrDefault();
                 SongData song_2 = SongInfo.Where(c => c.song_position == Form2.config.song2).FirstOrDefault();
