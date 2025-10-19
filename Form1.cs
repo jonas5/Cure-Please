@@ -8807,7 +8807,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                     }
                     else
                     {
-                        debug_MSG_show.AppendLine("  -> Locked target is no longer valid. Searching for a new one.");
+                        debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is no longer valid (HP: {lockedEntity.HealthPercent}%, Status: {lockedEntity.Status}). Searching for a new one.");
                         lockedTargetId = 0; // Reset locked target
                         battleTargetLabel.Text = "Inactive";
                     }
@@ -8826,11 +8826,21 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                 friendlyNames = friendlyNames.Distinct().ToList();
 
                 List<uint> friendlyIds = partyMembers.Select(p => p.ID).ToList();
-                friendlyIds.Add(_ELITEAPIPL.Player.ID);
-                if (_ELITEAPIPL.Player.ID != _ELITEAPIMonitored.Player.ID)
+
+                // Add the controlling player's ID. GetPartyMember(0) refers to the player.
+                var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                if (plInfo != null)
                 {
-                    friendlyIds.Add(_ELITEAPIMonitored.Player.ID);
+                    friendlyIds.Add(plInfo.ID);
                 }
+
+                // Add the monitored player's ID. This might be redundant if they're in a party, but Distinct() will handle it.
+                var monitoredInfo = _ELITEAPIMonitored.Party.GetPartyMember(0);
+                if (monitoredInfo != null)
+                {
+                    friendlyIds.Add(monitoredInfo.ID);
+                }
+
                 friendlyIds = friendlyIds.Distinct().ToList();
 
                 debug_MSG_show.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
@@ -9192,7 +9202,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 int Monitoreddistance = 50;
 
 
-                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Player.TargetID);
+                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Player.TargetIndex);
                 Monitoreddistance = (int)monitoredTarget.Distance;
 
                 int Songs_Possible = 0;
@@ -9738,7 +9748,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                 }
-                catch (Exception error1)
+                catch (Exception)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }
