@@ -8090,7 +8090,8 @@ private void setinstance_Click(object sender, EventArgs e)
                 return;
             }
             CheckEngagedStatus_Hate();
-            MessageBox.Show(debug_MSG_show.ToString());
+            DebugForm debugForm = new DebugForm(debug_MSG_show.ToString());
+            debugForm.ShowDialog();
             debug_MSG_show.Clear();
         }
 
@@ -10007,6 +10008,38 @@ private void updateInstances_Tick(object sender, EventArgs e)
             box.SelectionColor = color;
             box.AppendText(text);
             box.SelectionColor = box.ForeColor;
+        }
+    }
+    public class DebugForm : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.RichTextBox richTextBox1;
+
+        public DebugForm(string debugText)
+        {
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.SuspendLayout();
+            //
+            // richTextBox1
+            //
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(400, 300);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = debugText;
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //
+            // DebugForm
+            //
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(400, 300);
+            this.Controls.Add(this.richTextBox1);
+            this.Name = "DebugForm";
+            this.Text = "Debug Log";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.ResumeLayout(false);
         }
     }
 }
