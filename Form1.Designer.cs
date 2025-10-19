@@ -232,7 +232,6 @@ namespace CurePlease
             this.ChatLogButton = new System.Windows.Forms.Button();
             this.PartyBuffsButton = new System.Windows.Forms.Button();
             this.AboutButton = new System.Windows.Forms.Button();
-            this.AddonReader = new System.ComponentModel.BackgroundWorker();
             this.JobAbilityDelay = new System.ComponentModel.BackgroundWorker();
             this.FullCircle_Timer = new System.Windows.Forms.Timer(this.components);
             this.AddOnStatus = new System.Windows.Forms.Button();
