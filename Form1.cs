@@ -7970,18 +7970,27 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
 
+        public event Action<string> LogMessageReceived;
+        private DebugForm _debugForm;
         private void Debug_Click(object sender, EventArgs e)
         {
             if (_ELITEAPIMonitored == null)
             {
-
                 MessageBox.Show("Attach to process before pressing this button", "Error");
                 return;
             }
+
             CheckEngagedStatus_Hate();
-            DebugForm debugForm = new DebugForm(debug_MSG_show.ToString());
-            debugForm.ShowDialog();
-            debug_MSG_show.Clear();
+
+            if (_debugForm == null || _debugForm.IsDisposed)
+            {
+                _debugForm = new DebugForm(this);
+                _debugForm.Show();
+            }
+            else
+            {
+                _debugForm.BringToFront();
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -9507,6 +9516,13 @@ private void updateInstances_Tick(object sender, EventArgs e)
             AddOnStatus.Text = "Addon";
         }
 
+        private void UpdateDebugForm(string message)
+        {
+            if (_debugForm != null && !_debugForm.IsDisposed)
+            {
+                _debugForm.AppendLog(message);
+            }
+        }
         private void PipeClient_MessageReceived(string message)
         {
             if (InvokeRequired)
@@ -9583,6 +9599,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                 case "LOG":
                     debug_MSG_show.AppendLine(data);
+                    UpdateDebugForm(data);
                     break;
             }
         }
@@ -9815,6 +9832,15 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             CustomCommand_Tracker.RunWorkerAsync();
         }
+        public string GetDebugMessages()
+        {
+            return debug_MSG_show.ToString();
+        }
+
+        public void ClearDebugMessages()
+        {
+            debug_MSG_show.Clear();
+        }
     }
 
     // END OF THE FORM SCRIPT
@@ -9835,8 +9861,16 @@ private void updateInstances_Tick(object sender, EventArgs e)
     {
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button clearButton;
+        private Form1 _mainForm;
 
-        public DebugForm(string debugText)
+        public DebugForm(Form1 mainForm)
+        {
+            _mainForm = mainForm;
+            InitializeComponent();
+            this.richTextBox1.Text = _mainForm.GetDebugMessages();
+        }
+
+        private void InitializeComponent()
         {
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.clearButton = new System.Windows.Forms.Button();
@@ -9849,7 +9883,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(400, 270);
             this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = debugText;
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             //
@@ -9877,9 +9910,21 @@ private void updateInstances_Tick(object sender, EventArgs e)
             this.ResumeLayout(false);
         }
 
+        public void AppendLog(string message)
+        {
+            if (this.richTextBox1.InvokeRequired)
+            {
+                this.richTextBox1.Invoke(new Action<string>(AppendLog), message);
+                return;
+            }
+            this.richTextBox1.AppendText(message + Environment.NewLine);
+            this.richTextBox1.ScrollToCaret();
+        }
+
         private void ClearButton_Click(object sender, EventArgs e)
         {
             this.richTextBox1.Clear();
+            _mainForm.ClearDebugMessages();
         }
     }
 }

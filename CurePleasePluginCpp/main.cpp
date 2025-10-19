@@ -1,48 +1,53 @@
 #include "../Ashita-v4beta/plugins/sdk/Ashita.h"
 #include <windows.h>
 #include <string>
-#include <iostream>
-#include <fstream>
 #include <vector>
 #include <thread>
 #include <mutex>
 #include <chrono>
 #include <iomanip>
+#include <sstream>
+
+// Plugin Information
+const char* g_PluginName = "CurePleasePluginCpp";
+const char* g_PluginAuthor = "Jules";
+const char* g_PluginDescription = "Packet listener for CurePlease.";
+const double g_PluginVersion = 1.0;
+
+// Forward Declarations
+std::string GetTimestamp();
 
 class CurePleasePlugin : public IPlugin
 {
 private:
     IAshitaCore* m_AshitaCore;
-    HANDLE m_Pipe;
-    bool m_PipeConnected;
-    std::ofstream m_LogFile;
+    HANDLE m_hPipe;
     std::thread m_PipeThread;
     std::mutex m_PipeMutex;
+    bool m_PipeConnected;
 
 public:
-    CurePleasePlugin() : m_AshitaCore(nullptr), m_Pipe(INVALID_HANDLE_VALUE), m_PipeConnected(false)
-    {
-        m_LogFile.open("CurePleasePlugin.log", std::ios::out | std::ios::app);
-    }
+    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false) {}
     ~CurePleasePlugin()
     {
         if (m_PipeThread.joinable())
         {
-            m_PipeThread.join();
+            m_PipeThread.detach(); // Or a more graceful shutdown mechanism
         }
-        if (m_Pipe != INVALID_HANDLE_VALUE)
+        if (m_hPipe != INVALID_HANDLE_VALUE)
         {
-            DisconnectNamedPipe(m_Pipe);
-            CloseHandle(m_Pipe);
+            DisconnectNamedPipe(m_hPipe);
+            CloseHandle(m_hPipe);
         }
     }
 
-    const char* GetName() const override { return "CurePleasePlugin"; }
-    const char* GetAuthor() const override { return "Jules"; }
-    const char* GetDescription() const override { return "Packet listener for CurePlease."; }
-    double GetVersion() const override { return 1.0; }
+    const char* GetName() const override { return g_PluginName; }
+    const char* GetAuthor() const override { return g_PluginAuthor; }
+    const char* GetDescription() const override { return g_PluginDescription; }
+    double GetVersion() const override { return g_PluginVersion; }
+    uint32_t GetFlags() const override { return (uint32_t)Ashita::PluginFlags::UsePackets; }
 
-    bool Initialize(IAshitaCore* core) override
+    bool Initialize(IAshitaCore* core, ILogManager* logger, uint32_t id) override
     {
         m_AshitaCore = core;
         m_PipeThread = std::thread(&CurePleasePlugin::PipeThread, this);
@@ -53,37 +58,29 @@ public:
     {
         if (m_PipeThread.joinable())
         {
-            m_PipeThread.join();
+            m_PipeThread.detach();
         }
-        if (m_Pipe != INVALID_HANDLE_VALUE)
+        if (m_hPipe != INVALID_HANDLE_VALUE)
         {
-            DisconnectNamedPipe(m_Pipe);
-            CloseHandle(m_Pipe);
+            DisconnectNamedPipe(m_hPipe);
+            CloseHandle(m_hPipe);
         }
     }
 
-    bool HandleCommand(const char* command, int type) override
-    {
-        return false;
-    }
+    bool HandleCommand(int32_t mode, const char* command, bool injected) override { return false; }
 
-    bool HandleIncomingPacket(int id, int size, const unsigned char* data) override
+    bool HandleIncomingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified, bool injected, bool blocked) override
     {
-        std::lock_guard<std::mutex> lock(m_PipeMutex);
-        if (m_LogFile.is_open())
-        {
-            m_LogFile << "Incoming Packet: ID=" << std::hex << id << " Size=" << size << std::endl;
-        }
+        if (!m_PipeConnected) return false;
+        if (!m_AshitaCore) return false;
 
-        if (!m_PipeConnected)
-        {
-            return false;
-        }
+        auto* party = m_AshitaCore->GetDataManager()->GetParty();
+        if (!party) return false;
 
         if (id == 0x28) // Action Packet
         {
-            uint32_t actor = *(uint32_t*)(data + 4);
-            if (actor == m_AshitaCore->GetDataManager()->GetParty()->GetMemberServerId(0))
+            uint32_t actor = *reinterpret_cast<const uint32_t*>(data + 4);
+            if (actor == party->GetMember(0).ServerId)
             {
                 int category = (data[10] >> 2) & 0x0F;
                 if (category == 4)
@@ -93,7 +90,7 @@ public:
                 }
                 else if (category == 8)
                 {
-                    uint16_t param = *(uint16_t*)(data + 8);
+                    uint16_t param = *reinterpret_cast<const uint16_t*>(data + 8);
                     if (param == 28787)
                     {
                         WriteToPipe("CAST_INTERRUPT|0\n");
@@ -110,9 +107,10 @@ public:
         else if (id == 0x076) // Buff packet
         {
             WriteToPipe("LOG|" + GetTimestamp() + " Processing status effect update (0x076).\n");
+            auto* entity = m_AshitaCore->GetDataManager()->GetEntity();
             for (int k = 0; k < 5; k++)
             {
-                uint16_t Uid = *(uint16_t*)(data + 8 + (k * 0x30));
+                uint16_t Uid = *reinterpret_cast<const uint16_t*>(data + 8 + (k * 0x30));
                 if (Uid != 0)
                 {
                     std::vector<int> buffs;
@@ -127,13 +125,15 @@ public:
 
                     if (!buffs.empty())
                     {
-                        const char* characterName = m_AshitaCore->GetDataManager()->GetEntity()->GetName(Uid);
+                        const char* characterName = entity->GetName(Uid);
                         if (characterName)
                         {
                             std::string buff_str;
-                            for (size_t i = 0; i < buffs.size(); ++i) {
+                            for (size_t i = 0; i < buffs.size(); ++i)
+                            {
                                 buff_str += std::to_string(buffs[i]);
-                                if (i < buffs.size() - 1) {
+                                if (i < buffs.size() - 1)
+                                {
                                     buff_str += ",";
                                 }
                             }
@@ -147,88 +147,91 @@ public:
         return false;
     }
 
-    bool HandleOutgoingPacket(int id, int size, const unsigned char* data) override
-    {
-        return false;
-    }
+    bool HandleOutgoingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified, bool injected, bool blocked) override { return false; }
 
 private:
     void PipeThread()
     {
         while (true)
         {
+            m_hPipe = CreateNamedPipe(
+                L"\\\\.\\pipe\\CurePleasePipe",
+                PIPE_ACCESS_OUTBOUND,
+                PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
+                1, 4096, 4096, 0, NULL);
+
+            if (m_hPipe == INVALID_HANDLE_VALUE)
             {
-                std::lock_guard<std::mutex> lock(m_PipeMutex);
-                m_Pipe = CreateNamedPipe(
-                    L"\\\\.\\pipe\\CurePleasePipe",
-                    PIPE_ACCESS_OUTBOUND,
-                    PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
-                    1,
-                    4096,
-                    4096,
-                    0,
-                    NULL);
+                Sleep(5000);
+                continue;
             }
 
-            if (m_Pipe == INVALID_HANDLE_VALUE)
+            if (ConnectNamedPipe(m_hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED))
             {
-                // Handle error
-                return;
-            }
+                {
+                    std::lock_guard<std::mutex> lock(m_PipeMutex);
+                    m_PipeConnected = true;
+                }
+                WriteToPipe("LOG|" + GetTimestamp() + " Packet listener connected.\n");
 
-            BOOL connected = ConnectNamedPipe(m_Pipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
-            if (connected)
-            {
-                std::lock_guard<std::mutex> lock(m_PipeMutex);
-                m_PipeConnected = true;
-                WriteToPipe("LOG|" + GetTimestamp() + " Packet listener started.\n");
-
-                // Keep the pipe open until the client disconnects
                 while (true)
                 {
-                    DWORD bytesRead = 0, bytesWritten = 0, bytesAvail = 0;
-                    BOOL success = PeekNamedPipe(m_Pipe, NULL, 0, &bytesRead, &bytesAvail, NULL);
-                    if (!success || bytesRead > 0)
-                    {
-                        break; // Pipe was closed or has data to read (which it shouldn't)
-                    }
-                    Sleep(100);
-                }
+                    DWORD dwError = 0;
+                    DWORD dwBytesRead = 0, dwTotalBytesAvail = 0, dwBytesLeftThisMessage = 0;
 
-                std::lock_guard<std::mutex> lock2(m_PipeMutex);
-                m_PipeConnected = false;
-                DisconnectNamedPipe(m_Pipe);
-                CloseHandle(m_Pipe);
+                    if (!PeekNamedPipe(m_hPipe, NULL, 0, &dwBytesRead, &dwTotalBytesAvail, &dwBytesLeftThisMessage))
+                    {
+                        dwError = GetLastError();
+                        if (dwError == ERROR_BROKEN_PIPE || dwError == ERROR_PIPE_NOT_CONNECTED)
+                        {
+                            break;
+                        }
+                    }
+                    Sleep(500);
+                }
             }
-            else
+
             {
-                CloseHandle(m_Pipe);
+                std::lock_guard<std::mutex> lock(m_PipeMutex);
+                m_PipeConnected = false;
             }
+            DisconnectNamedPipe(m_hPipe);
+            CloseHandle(m_hPipe);
+            m_hPipe = INVALID_HANDLE_VALUE;
         }
     }
 
     void WriteToPipe(const std::string& message)
     {
-        if (!m_PipeConnected) return;
+        std::lock_guard<std::mutex> lock(m_PipeMutex);
+        if (!m_PipeConnected || m_hPipe == INVALID_HANDLE_VALUE) return;
 
         DWORD bytesWritten = 0;
-        WriteFile(m_Pipe, message.c_str(), message.length(), &bytesWritten, NULL);
-    }
-
-    std::string GetTimestamp()
-    {
-        auto now = std::chrono::system_clock::now();
-        auto in_time_t = std::chrono::system_clock::to_time_t(now);
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
-
-        std::stringstream ss;
-        ss << std::put_time(std::localtime(&in_time_t), "[%H:%M:%S");
-        ss << '.' << std::setfill('0') << std::setw(3) << ms.count() << "]";
-        return ss.str();
+        WriteFile(m_hPipe, message.c_str(), message.length(), &bytesWritten, NULL);
     }
 };
 
-extern "C" __declspec(dllexport) IPlugin* __cdecl CreatePlugin()
+std::string GetTimestamp()
+{
+    auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+    std::tm buf;
+    localtime_s(&buf, &in_time_t);
+
+    std::stringstream ss;
+    ss << std::put_time(&buf, "[%H:%M:%S");
+    ss << '.' << std::setfill('0') << std::setw(3) << ms.count() << "]";
+    return ss.str();
+}
+
+extern "C" __declspec(dllexport) IPlugin* __stdcall expCreatePlugin(const char* args)
 {
     return new CurePleasePlugin();
+}
+
+extern "C" __declspec(dllexport) uint32_t __stdcall expGetInterfaceVersion(void)
+{
+    return ASHITA_INTERFACE_VERSION;
 }
