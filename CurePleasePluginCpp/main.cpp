@@ -7,6 +7,7 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
+#include <atomic>
 
 // Plugin Information
 const char* g_PluginName = "CurePleasePluginCpp";
@@ -25,19 +26,18 @@ private:
     std::thread m_PipeThread;
     std::mutex m_PipeMutex;
     bool m_PipeConnected;
+    std::atomic<bool> m_Shutdown;
 
 public:
-    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false) {}
+    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false) {}
     ~CurePleasePlugin()
     {
         if (m_PipeThread.joinable())
         {
-            m_PipeThread.detach(); // Or a more graceful shutdown mechanism
-        }
-        if (m_hPipe != INVALID_HANDLE_VALUE)
-        {
-            DisconnectNamedPipe(m_hPipe);
-            CloseHandle(m_hPipe);
+            m_Shutdown = true;
+            // Attempt a clean shutdown, but destructor context can be tricky.
+            // Release() is the primary shutdown point.
+            m_PipeThread.join();
         }
     }
 
@@ -56,30 +56,42 @@ public:
 
     void Release() override
     {
+        m_Shutdown = true;
+
+        // Create a dummy connection to unblock a waiting ConnectNamedPipe call.
+        HANDLE hDummyPipe = CreateFile(
+            L"\\\\.\\pipe\\CurePleasePipe",
+            GENERIC_WRITE,
+            0,
+            NULL,
+            OPEN_EXISTING,
+            0,
+            NULL);
+        if (hDummyPipe != INVALID_HANDLE_VALUE)
+        {
+            CloseHandle(hDummyPipe);
+        }
+
         if (m_PipeThread.joinable())
         {
-            m_PipeThread.detach();
-        }
-        if (m_hPipe != INVALID_HANDLE_VALUE)
-        {
-            DisconnectNamedPipe(m_hPipe);
-            CloseHandle(m_hPipe);
+            m_PipeThread.join();
         }
     }
 
-    bool HandleCommand(int32_t mode, const char* command, bool injected) override { return false; }
+    bool HandleCommand(const char* command, int32_t type) override { return false; }
 
-    bool HandleIncomingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified, bool injected, bool blocked) override
+    bool HandleIncomingPacket(uint16_t id, uint32_t size, const void* vdata, void* vmodified, bool injected, bool* pblocked) override
     {
+        const uint8_t* data = static_cast<const uint8_t*>(vdata);
+
         if (!m_PipeConnected) return false;
         if (!m_AshitaCore) return false;
 
-        // Log every packet ID for diagnostics
         std::stringstream ss;
         ss << "LOG|" << GetTimestamp() << " Incoming Packet ID: 0x" << std::hex << std::setw(4) << std::setfill('0') << id << "\n";
         WriteToPipe(ss.str());
 
-        auto* party = m_AshitaCore->GetDataManager()->GetParty();
+        auto* party = m_AshitaCore->GetPartyManager();
         if (!party) return false;
 
         if (id == 0x28) // Action Packet
@@ -112,7 +124,7 @@ public:
         else if (id == 0x076) // Buff packet
         {
             WriteToPipe("LOG|" + GetTimestamp() + " Processing status effect update (0x076).\n");
-            auto* entity = m_AshitaCore->GetDataManager()->GetEntity();
+            auto* entity = m_AshitaCore->GetEntityManager();
             for (int k = 0; k < 5; k++)
             {
                 uint16_t Uid = *reinterpret_cast<const uint16_t*>(data + 8 + (k * 0x30));
@@ -152,12 +164,12 @@ public:
         return false;
     }
 
-    bool HandleOutgoingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified, bool injected, bool blocked) override { return false; }
+    bool HandleOutgoingPacket(uint16_t id, uint32_t size, const void* vdata, void* vmodified, bool injected, bool* pblocked) override { return false; }
 
 private:
     void PipeThread()
     {
-        while (true)
+        while (!m_Shutdown)
         {
             m_hPipe = CreateNamedPipe(
                 L"\\\\.\\pipe\\CurePleasePipe",
@@ -167,11 +179,22 @@ private:
 
             if (m_hPipe == INVALID_HANDLE_VALUE)
             {
+                if (m_Shutdown) break;
                 Sleep(5000);
                 continue;
             }
 
-            if (ConnectNamedPipe(m_hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED))
+            BOOL fConnected = ConnectNamedPipe(m_hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+
+            if (m_Shutdown)
+            {
+                if (fConnected) DisconnectNamedPipe(m_hPipe);
+                CloseHandle(m_hPipe);
+                m_hPipe = INVALID_HANDLE_VALUE;
+                break;
+            }
+
+            if (fConnected)
             {
                 {
                     std::lock_guard<std::mutex> lock(m_PipeMutex);
@@ -179,12 +202,10 @@ private:
                 }
                 WriteToPipe("LOG|" + GetTimestamp() + " Packet listener connected.\n");
 
-                while (true)
+                while (!m_Shutdown)
                 {
                     DWORD dwError = 0;
-                    DWORD dwBytesRead = 0, dwTotalBytesAvail = 0, dwBytesLeftThisMessage = 0;
-
-                    if (!PeekNamedPipe(m_hPipe, NULL, 0, &dwBytesRead, &dwTotalBytesAvail, &dwBytesLeftThisMessage))
+                    if (!PeekNamedPipe(m_hPipe, NULL, 0, NULL, NULL, NULL))
                     {
                         dwError = GetLastError();
                         if (dwError == ERROR_BROKEN_PIPE || dwError == ERROR_PIPE_NOT_CONNECTED)
@@ -200,9 +221,12 @@ private:
                 std::lock_guard<std::mutex> lock(m_PipeMutex);
                 m_PipeConnected = false;
             }
-            DisconnectNamedPipe(m_hPipe);
-            CloseHandle(m_hPipe);
-            m_hPipe = INVALID_HANDLE_VALUE;
+
+            if(m_hPipe != INVALID_HANDLE_VALUE) {
+               if (fConnected) DisconnectNamedPipe(m_hPipe);
+               CloseHandle(m_hPipe);
+               m_hPipe = INVALID_HANDLE_VALUE;
+            }
         }
     }
 
