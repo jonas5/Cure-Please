@@ -109,7 +109,7 @@ public:
         }
         else if (id == 0x076) // Buff packet
         {
-            WriteToPipe("LOG|" + GetTimestamp() + " Registering buffs.\n");
+            WriteToPipe("LOG|" + GetTimestamp() + " Processing status effect update (0x076).\n");
             for (int k = 0; k < 5; k++)
             {
                 uint16_t Uid = *(uint16_t*)(data + 8 + (k * 0x30));
