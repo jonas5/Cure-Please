@@ -2368,11 +2368,6 @@ namespace CurePlease
             this.AboutButton.UseVisualStyleBackColor = false;
             this.AboutButton.Click += new System.EventHandler(this.AboutButton_Click);
             // 
-            // AddonReader
-            // 
-            this.AddonReader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.AddonReader_DoWork);
-            this.AddonReader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.AddonReader_RunWorkerCompleted);
-            // 
             // FullCircle_Timer
             // 
             this.FullCircle_Timer.Interval = 5000;

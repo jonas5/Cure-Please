@@ -1541,6 +1541,7 @@
         }
 
 
+        private NamedPipeClient _pipeClient;
         public Form1()
         {
 
@@ -1548,6 +1549,12 @@
             StartPosition = FormStartPosition.CenterScreen;
 
             InitializeComponent();
+
+            _pipeClient = new NamedPipeClient("CurePleasePipe");
+            _pipeClient.Connected += PipeClient_Connected;
+            _pipeClient.Disconnected += PipeClient_Disconnected;
+            _pipeClient.MessageReceived += PipeClient_MessageReceived;
+            _pipeClient.Connect();
 
 
 
@@ -3091,7 +3098,6 @@ private void setinstance_Click(object sender, EventArgs e)
     if (firstTime_Pause == 0)
     {
         Follow_BGW.RunWorkerAsync();
-        AddonReader.RunWorkerAsync();
         firstTime_Pause = 1;
     }
 
@@ -3137,49 +3143,7 @@ private void setinstance_Click(object sender, EventArgs e)
         }
     }
 
-    if (LUA_Plugin_Loaded == 0 && !Form2.config.pauseOnStartBox && _ELITEAPIMonitored != null)
-    {
-        Thread.Sleep(500);
-
-        List<string> commands = new List<string>();
-
-        if (WindowerMode == "Windower")
-        {
-            commands.Add("//lua load CurePlease_addon");
-            commands.Add("//cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-            commands.Add("//cpaddon verify");
-
-            if (Form2.config.enableHotKeys)
-            {
-                commands.Add("//bind ^!F1 cureplease toggle");
-                commands.Add("//bind ^!F2 cureplease start");
-                commands.Add("//bind ^!F3 cureplease pause");
-            }
-        }
-        else if (WindowerMode == "Ashita")
-        {
-            commands.Add("/addon load CurePlease_addon");
-            commands.Add("/cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-            commands.Add("/cpaddon verify");
-
-            if (Form2.config.enableHotKeys)
-            {
-                commands.Add("/bind ^!F1 /cureplease toggle");
-                commands.Add("/bind ^!F2 /cureplease start");
-                commands.Add("/bind ^!F3 /cureplease pause");
-            }
-        }
-
-        foreach (string cmd in commands)
-        {
-            _ELITEAPIPL.ThirdParty.SendString(cmd);
-            Thread.Sleep(100);
-        }
-
-        AddOnStatus_Click(sender, e);
-        currentAction.Text = "LUA Addon loaded. ( " + Form2.config.ipAddress + " - " + Form2.config.listeningPort + " )";
-        LUA_Plugin_Loaded = 1;
-    }
+    // LUA Plugin loading code removed. The new C# plugin is loaded automatically by Ashita.
 }
 
 
@@ -3218,48 +3182,8 @@ private void setinstance_Click(object sender, EventArgs e)
                 }
             }
 
-            if (LUA_Plugin_Loaded == 0 && !Form2.config.pauseOnStartBox && _ELITEAPIPL != null)
-            {
-                // Wait a milisecond and then load and set the config.
-                Thread.Sleep(500);
-                if (WindowerMode == "Windower")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("//lua load CurePlease_addon");
-                    Thread.Sleep(1500);
-                    _ELITEAPIPL.ThirdParty.SendString("//cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-                    Thread.Sleep(100);
-                    _ELITEAPIPL.ThirdParty.SendString("//cpaddon verify");
-
-                    if (Form2.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F1 cureplease toggle");
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F2 cureplease start");
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F3 cureplease pause");
-                    }
-                }
-                else if (WindowerMode == "Ashita")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("/addon load CurePlease_addon");
-                    Thread.Sleep(1500);
-                    _ELITEAPIPL.ThirdParty.SendString("/cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-                    Thread.Sleep(100);
-                    _ELITEAPIPL.ThirdParty.SendString("/cpaddon verify");
-                    if (Form2.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /cureplease toggle");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /cureplease start");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /cureplease pause");
-                    }
-                }
-
-                currentAction.Text = "LUA Addon loaded. ( " + Form2.config.ipAddress + " - " + Form2.config.listeningPort + " )";
-
-                LUA_Plugin_Loaded = 1;
-
-                AddOnStatus_Click(sender, e);
-
-                lastCommand = _ELITEAPIMonitored.ThirdParty.ConsoleIsNewCommand();
-            }
+            // LUA Plugin loading code removed. The new C# plugin is loaded automatically by Ashita.
+            lastCommand = _ELITEAPIMonitored.ThirdParty.ConsoleIsNewCommand();
         }
 
         private bool CheckForDLLFiles()
@@ -8042,42 +7966,7 @@ private void setinstance_Click(object sender, EventArgs e)
                     WindowState = FormWindowState.Minimized;
                 }
 
-                if (Form2.config.EnableAddOn && LUA_Plugin_Loaded == 0)
-                {
-                    if (WindowerMode == "Windower")
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("//lua load CurePlease_addon");
-                        Thread.Sleep(1500);
-                        _ELITEAPIPL.ThirdParty.SendString("//cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-                        Thread.Sleep(100);
-                        if (Form2.config.enableHotKeys)
-                        {
-                            _ELITEAPIPL.ThirdParty.SendString("//bind ^!F1 cureplease toggle");
-                            _ELITEAPIPL.ThirdParty.SendString("//bind ^!F2 cureplease start");
-                            _ELITEAPIPL.ThirdParty.SendString("//bind ^!F3 cureplease pause");
-                        }
-                    }
-                    else if (WindowerMode == "Ashita")
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("/addon load CurePlease_addon");
-                        Thread.Sleep(1500);
-                        _ELITEAPIPL.ThirdParty.SendString("/cpaddon settings " + Form2.config.ipAddress + " " + Form2.config.listeningPort);
-                        Thread.Sleep(100);
-                        if (Form2.config.enableHotKeys)
-                        {
-                            _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /cureplease toggle");
-                            _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /cureplease start");
-                            _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /cureplease pause");
-                        }
-                    }
-
-                    AddOnStatus_Click(sender, e);
-
-
-                    LUA_Plugin_Loaded = 1;
-
-
-                }
+                // LUA Plugin loading code removed.
             }
         }
 
@@ -8450,33 +8339,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             notifyIcon1.Dispose();
-
-            if (_ELITEAPIPL != null)
-            {
-                if (WindowerMode == "Ashita")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("/addon unload CurePlease_addon");
-                    if (Form2.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("/unbind ^!F1");
-                        _ELITEAPIPL.ThirdParty.SendString("/unbind ^!F2");
-                        _ELITEAPIPL.ThirdParty.SendString("/unbind ^!F3");
-                    }
-                }
-                else if (WindowerMode == "Windower")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("//lua unload CurePlease_addon");
-
-                    if (Form2.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("//unbind ^!F1");
-                        _ELITEAPIPL.ThirdParty.SendString("//unbind ^!F2");
-                        _ELITEAPIPL.ThirdParty.SendString("//unbind ^!F3");
-                    }
-
-                }
-            }
-
+            _pipeClient.Stop();
         }
 
         private int followID()
@@ -9203,7 +9066,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 int Monitoreddistance = 50;
 
 
-                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Target.GetTargetInfo().TargetIndex);
+                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Player.TargetIndex);
                 Monitoreddistance = (int)monitoredTarget.Distance;
 
                 int Songs_Possible = 0;
@@ -9622,148 +9485,106 @@ private void updateInstances_Tick(object sender, EventArgs e)
             new Form3().Show();
         }
 
-        private void AddonReader_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void PipeClient_Connected()
         {
-            if (Form2.config.EnableAddOn == true && pauseActions == false && _ELITEAPIMonitored != null && _ELITEAPIPL != null)
+            if (InvokeRequired)
             {
-
-                bool done = false;
-
-                UdpClient listener = new UdpClient(Convert.ToInt32(Form2.config.listeningPort));
-                IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(Form2.config.ipAddress), Convert.ToInt32(Form2.config.listeningPort));
-                string received_data;
-                byte[] receive_byte_array;
-                try
-                {
-                    while (!done)
-                    {
-
-                        receive_byte_array = listener.Receive(ref groupEP);
-
-                        received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
-
-
-
-                        string[] commands = received_data.Split('_');
-
-                        // MessageBox.Show(commands[1] + " " + commands[2]);
-                        if (commands[1] == "casting" && commands.Count() == 3 && Form2.config.trackCastingPackets == true)
-                        {
-                            if (commands[2] == "blocked")
-                            {
-                                Invoke((MethodInvoker)(() =>
-                          {
-                              CastingBackground_Check = true;
-                              castingLockLabel.Text = "PACKET: Casting is LOCKED";
-                          }));
-
-                                if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
-                            }
-                            else if (commands[2] == "interrupted")
-                            {
-                                Invoke((MethodInvoker)(async () =>
-                          {
-                              ProtectCasting.CancelAsync();
-                              castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
-                              await Task.Delay(TimeSpan.FromSeconds(3));
-                              castingLockLabel.Text = "Casting is UNLOCKED";
-                              CastingBackground_Check = false;
-                          }));
-                            }
-                            else if (commands[2] == "finished")
-                            {
-
-                                Invoke((MethodInvoker)(async () =>
-                          {
-                              ProtectCasting.CancelAsync();
-                              castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
-                              await Task.Delay(TimeSpan.FromSeconds(3));
-                              castingLockLabel.Text = "Casting is UNLOCKED";
-                              currentAction.Text = string.Empty;
-                              castingSpell = string.Empty;
-                              CastingBackground_Check = false;
-                          }));
-                            }
-                        }
-                        else if (commands[1] == "confirmed")
-                        {
-                            AddOnStatus.BackColor = Color.ForestGreen;
-                        }
-                        else if (commands[1] == "command")
-                        {
-
-
-
-                            // MessageBox.Show(commands[2]);
-                            if (commands[2] == "start" || commands[2] == "unpause")
-                            {
-                                Invoke((MethodInvoker)(() =>
-                                {
-                                    pauseButton.Text = "Pause";
-                                    pauseButton.ForeColor = Color.Black;
-                                    actionTimer.Enabled = true;
-                                    pauseActions = false;
-                                    song_casting = 0;
-                                    ForceSongRecast = true;
-                                }));
-                            }
-                            if (commands[2] == "stop" || commands[2] == "pause")
-                            {
-                                Invoke((MethodInvoker)(() =>
-                                {
-
-                                    pauseButton.Text = "Paused!";
-                                    pauseButton.ForeColor = Color.Red;
-                                    actionTimer.Enabled = false;
-                                    ActiveBuffs.Clear();
-                                    pauseActions = true;
-                                    if (Form2.config.FFXIDefaultAutoFollow == false)
-                                    {
-                                        _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
-                                    }
-
-                                }));
-                            }
-                            if (commands[2] == "toggle")
-                            {
-                                Invoke((MethodInvoker)(() =>
-                                {
-                                    pauseButton.PerformClick();
-                                }));
-                            }
-                        }
-                        else if (commands[1] == "buffs" && commands.Count() == 4)
-                        {
-                            lock (ActiveBuffs)
-                            {
-
-                                ActiveBuffs.RemoveAll(buf => buf.CharacterName == commands[2]);
-
-                                ActiveBuffs.Add(new BuffStorage
-                                {
-                                    CharacterName = commands[2],
-                                    CharacterBuffs = commands[3]
-                                });
-                            }
-
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    //  Console.WriteLine(error1.ToString());
-                }
-
-                listener.Close();
-
+                Invoke(new Action(PipeClient_Connected));
+                return;
             }
-
-            Thread.Sleep(TimeSpan.FromSeconds(0.3));
+            AddOnStatus.BackColor = Color.ForestGreen;
+            AddOnStatus.Text = "Connected";
         }
 
-        private void AddonReader_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void PipeClient_Disconnected()
         {
-            AddonReader.RunWorkerAsync();
+            if (InvokeRequired)
+            {
+                Invoke(new Action(PipeClient_Disconnected));
+                return;
+            }
+            AddOnStatus.BackColor = Color.DarkRed;
+            AddOnStatus.Text = "Addon";
+        }
+
+        private void PipeClient_MessageReceived(string message)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(PipeClient_MessageReceived), message);
+                return;
+            }
+
+            var parts = message.Split('|');
+            if (parts.Length < 2) return;
+
+            string command = parts[0];
+            string data = parts[1];
+
+            switch (command)
+            {
+                case "CAST_START":
+                    CastingBackground_Check = true;
+                    castingLockLabel.Text = "PACKET: Casting is LOCKED";
+                    if (!ProtectCasting.IsBusy) ProtectCasting.RunWorkerAsync();
+                    break;
+
+                case "CAST_INTERRUPT":
+                    ProtectCasting.CancelAsync();
+                    castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
+                    Task.Delay(3000).ContinueWith(_ =>
+                    {
+                        if (castingLockLabel.Text == "PACKET: Casting is INTERRUPTED")
+                        {
+                            castingLockLabel.Text = "Casting is UNLOCKED";
+                            CastingBackground_Check = false;
+                        }
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                    break;
+
+                case "CAST_BLOCKED":
+                    ProtectCasting.CancelAsync();
+                    castingLockLabel.Text = "PACKET: Casting is BLOCKED";
+                    Task.Delay(3000).ContinueWith(_ =>
+                    {
+                        if (castingLockLabel.Text == "PACKET: Casting is BLOCKED")
+                        {
+                            castingLockLabel.Text = "Casting is UNLOCKED";
+                            CastingBackground_Check = false;
+                        }
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                    break;
+
+                case "CAST_FINISH":
+                    ProtectCasting.CancelAsync();
+                    castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
+                    Task.Delay(3000).ContinueWith(_ =>
+                    {
+                        castingLockLabel.Text = "Casting is UNLOCKED";
+                        currentAction.Text = string.Empty;
+                        castingSpell = string.Empty;
+                        CastingBackground_Check = false;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                    break;
+
+                case "BUFF_UPDATE":
+                    var buffParts = data.Split(new[] { ':' }, 2);
+                    if (buffParts.Length == 2)
+                    {
+                        string characterName = buffParts[0];
+                        string buffs = buffParts[1];
+                        lock (ActiveBuffs)
+                        {
+                            ActiveBuffs.RemoveAll(buf => buf.CharacterName == characterName);
+                            ActiveBuffs.Add(new BuffStorage { CharacterName = characterName, CharacterBuffs = buffs });
+                        }
+                    }
+                    break;
+
+                case "LOG":
+                    debug_MSG_show.AppendLine(data);
+                    break;
+            }
         }
 
 
@@ -10013,10 +9834,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
     public class DebugForm : System.Windows.Forms.Form
     {
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button clearButton;
 
         public DebugForm(string debugText)
         {
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.clearButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             //
             // richTextBox1
@@ -10024,11 +9847,22 @@ private void updateInstances_Tick(object sender, EventArgs e)
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(400, 300);
+            this.richTextBox1.Size = new System.Drawing.Size(400, 270);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = debugText;
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //
+            // clearButton
+            //
+            this.clearButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.clearButton.Location = new System.Drawing.Point(0, 270);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(400, 30);
+            this.clearButton.TabIndex = 1;
+            this.clearButton.Text = "Clear";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.ClearButton_Click);
             //
             // DebugForm
             //
@@ -10036,10 +9870,16 @@ private void updateInstances_Tick(object sender, EventArgs e)
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 300);
             this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.clearButton);
             this.Name = "DebugForm";
             this.Text = "Debug Log";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.ResumeLayout(false);
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            this.richTextBox1.Clear();
         }
     }
 }

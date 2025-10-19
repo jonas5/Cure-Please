@@ -1,0 +1,169 @@
+#include "../Ashita-v4beta/plugins/sdk/Ashita.h"
+#include <windows.h>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+class CurePleasePlugin : public IPlugin
+{
+private:
+    IAshitaCore* m_AshitaCore;
+    HANDLE m_Pipe;
+    bool m_PipeConnected;
+    std::ofstream m_LogFile;
+
+public:
+    CurePleasePlugin() : m_AshitaCore(nullptr), m_Pipe(INVALID_HANDLE_VALUE), m_PipeConnected(false)
+    {
+        m_LogFile.open("CurePleasePlugin.log", std::ios::out | std::ios::app);
+    }
+    ~CurePleasePlugin()
+    {
+        if (m_Pipe != INVALID_HANDLE_VALUE)
+        {
+            DisconnectNamedPipe(m_Pipe);
+            CloseHandle(m_Pipe);
+        }
+    }
+
+    const char* GetName() const override { return "CurePleasePlugin"; }
+    const char* GetAuthor() const override { return "Jules"; }
+    const char* GetDescription() const override { return "Packet listener for CurePlease."; }
+    double GetVersion() const override { return 1.0; }
+
+    bool Initialize(IAshitaCore* core) override
+    {
+        m_AshitaCore = core;
+        CreatePipeAndConnect();
+        return true;
+    }
+
+    void Release() override
+    {
+        if (m_Pipe != INVALID_HANDLE_VALUE)
+        {
+            DisconnectNamedPipe(m_Pipe);
+            CloseHandle(m_Pipe);
+        }
+    }
+
+    bool HandleCommand(const char* command, int type) override
+    {
+        return false;
+    }
+
+    bool HandleIncomingPacket(int id, int size, const unsigned char* data) override
+    {
+        WriteToPipe("LOG|Incoming Packet: ID=" + std::to_string(id) + " Size=" + std::to_string(size) + "\n");
+
+        if (!m_PipeConnected)
+        {
+            return false;
+        }
+
+        if (id == 0x28) // Action Packet
+        {
+            uint32_t actor = *(uint32_t*)(data + 4);
+            if (actor == m_AshitaCore->GetDataManager()->GetParty()->GetMemberServerId(0))
+            {
+                int category = (data[10] >> 2) & 0x0F;
+                if (category == 4)
+                {
+                    WriteToPipe("CAST_FINISH|0\n");
+                    if (m_LogFile.is_open()) m_LogFile << "  Action: CAST_FINISH" << std::endl;
+                }
+                else if (category == 8)
+                {
+                    uint16_t param = *(uint16_t*)(data + 8);
+                    if (param == 28787)
+                    {
+                        WriteToPipe("CAST_INTERRUPT|0\n");
+                        if (m_LogFile.is_open()) m_LogFile << "  Action: CAST_INTERRUPT" << std::endl;
+                    }
+                    else if (param == 24931)
+                    {
+                        WriteToPipe("CAST_BLOCKED|0\n");
+                        if (m_LogFile.is_open()) m_LogFile << "  Action: CAST_BLOCKED" << std::endl;
+                    }
+                }
+            }
+        }
+        else if (id == 0x076) // Buff packet
+        {
+            for (int k = 0; k < 5; k++)
+            {
+                uint16_t Uid = *(uint16_t*)(data + 8 + (k * 0x30));
+                if (Uid != 0)
+                {
+                    std::vector<int> buffs;
+                    for (int i = 0; i < 32; i++)
+                    {
+                        int current_buff = data[k * 48 + 5 + 16 + i] + 256 * ((data[k * 48 + 5 + 8 + (i / 4)] >> ((i % 4) * 2)) & 3);
+                        if (current_buff != 255 && current_buff != 0)
+                        {
+                            buffs.push_back(current_buff);
+                        }
+                    }
+
+                    if (!buffs.empty())
+                    {
+                        const char* characterName = m_AshitaCore->GetDataManager()->GetEntity()->GetName(Uid);
+                        if (characterName)
+                        {
+                            std::string buff_str;
+                            for (size_t i = 0; i < buffs.size(); ++i) {
+                                buff_str += std::to_string(buffs[i]);
+                                if (i < buffs.size() - 1) {
+                                    buff_str += ",";
+                                }
+                            }
+                            std::string message = "BUFF_UPDATE|" + std::string(characterName) + ":" + buff_str + "\n";
+                            WriteToPipe(message);
+                            if (m_LogFile.is_open()) m_LogFile << "  Buff Update: " << message;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    bool HandleOutgoingPacket(int id, int size, const unsigned char* data) override
+    {
+        return false;
+    }
+
+private:
+    void CreatePipeAndConnect()
+    {
+        m_Pipe = CreateNamedPipe(
+            L"\\\\.\\pipe\\CurePleasePipe",
+            PIPE_ACCESS_OUTBOUND,
+            PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
+            1,
+            4096,
+            4096,
+            0,
+            NULL);
+
+        if (m_Pipe != INVALID_HANDLE_VALUE)
+        {
+            ConnectToNewClient(m_Pipe, NULL);
+            m_PipeConnected = true;
+        }
+    }
+
+    void WriteToPipe(const std::string& message)
+    {
+        if (!m_PipeConnected) return;
+
+        DWORD bytesWritten = 0;
+        WriteFile(m_Pipe, message.c_str(), message.length(), &bytesWritten, NULL);
+    }
+};
+
+extern "C" __declspec(dllexport) IPlugin* __cdecl CreatePlugin()
+{
+    return new CurePleasePlugin();
+}
