@@ -80,8 +80,6 @@
 
         private StringBuilder debug_MSG_show = new StringBuilder();
 
-        private PacketHandler packetHandler = new PacketHandler();
-
         private int lastCommand = 0;
 
         private int lastKnownEstablisherTarget = 0;
@@ -1550,10 +1548,6 @@
             StartPosition = FormStartPosition.CenterScreen;
 
             InitializeComponent();
-
-            _ELITEAPIPL.Network.IncomingPacket += OnIncomingPacket;
-            packetHandler.CastingFinished += OnCastingFinished;
-            packetHandler.BuffsChanged += OnBuffsChanged;
 
 
 
@@ -3060,8 +3054,6 @@ private void setinstance_Click(object sender, EventArgs e)
     plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
     Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Cure Please v" + Application.ProductVersion;
 
-    packetHandler.SetPlayerId(_ELITEAPIPL.Party.GetPartyMember(0).ID);
-
     plLabel.ForeColor = Color.Green;
     POLID.BackColor = Color.White;
     plPosition.Enabled = true;
@@ -3099,6 +3091,7 @@ private void setinstance_Click(object sender, EventArgs e)
     if (firstTime_Pause == 0)
     {
         Follow_BGW.RunWorkerAsync();
+        AddonReader.RunWorkerAsync();
         firstTime_Pause = 1;
     }
 
@@ -9210,7 +9203,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 int Monitoreddistance = 50;
 
 
-                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Player.TargetIndex);
+                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Target.GetTargetInfo().TargetIndex);
                 Monitoreddistance = (int)monitoredTarget.Distance;
 
                 int Songs_Possible = 0;
@@ -9629,6 +9622,149 @@ private void updateInstances_Tick(object sender, EventArgs e)
             new Form3().Show();
         }
 
+        private void AddonReader_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            if (Form2.config.EnableAddOn == true && pauseActions == false && _ELITEAPIMonitored != null && _ELITEAPIPL != null)
+            {
+
+                bool done = false;
+
+                UdpClient listener = new UdpClient(Convert.ToInt32(Form2.config.listeningPort));
+                IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(Form2.config.ipAddress), Convert.ToInt32(Form2.config.listeningPort));
+                string received_data;
+                byte[] receive_byte_array;
+                try
+                {
+                    while (!done)
+                    {
+
+                        receive_byte_array = listener.Receive(ref groupEP);
+
+                        received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
+
+
+
+                        string[] commands = received_data.Split('_');
+
+                        // MessageBox.Show(commands[1] + " " + commands[2]);
+                        if (commands[1] == "casting" && commands.Count() == 3 && Form2.config.trackCastingPackets == true)
+                        {
+                            if (commands[2] == "blocked")
+                            {
+                                Invoke((MethodInvoker)(() =>
+                          {
+                              CastingBackground_Check = true;
+                              castingLockLabel.Text = "PACKET: Casting is LOCKED";
+                          }));
+
+                                if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
+                            }
+                            else if (commands[2] == "interrupted")
+                            {
+                                Invoke((MethodInvoker)(async () =>
+                          {
+                              ProtectCasting.CancelAsync();
+                              castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
+                              await Task.Delay(TimeSpan.FromSeconds(3));
+                              castingLockLabel.Text = "Casting is UNLOCKED";
+                              CastingBackground_Check = false;
+                          }));
+                            }
+                            else if (commands[2] == "finished")
+                            {
+
+                                Invoke((MethodInvoker)(async () =>
+                          {
+                              ProtectCasting.CancelAsync();
+                              castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
+                              await Task.Delay(TimeSpan.FromSeconds(3));
+                              castingLockLabel.Text = "Casting is UNLOCKED";
+                              currentAction.Text = string.Empty;
+                              castingSpell = string.Empty;
+                              CastingBackground_Check = false;
+                          }));
+                            }
+                        }
+                        else if (commands[1] == "confirmed")
+                        {
+                            AddOnStatus.BackColor = Color.ForestGreen;
+                        }
+                        else if (commands[1] == "command")
+                        {
+
+
+
+                            // MessageBox.Show(commands[2]);
+                            if (commands[2] == "start" || commands[2] == "unpause")
+                            {
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    pauseButton.Text = "Pause";
+                                    pauseButton.ForeColor = Color.Black;
+                                    actionTimer.Enabled = true;
+                                    pauseActions = false;
+                                    song_casting = 0;
+                                    ForceSongRecast = true;
+                                }));
+                            }
+                            if (commands[2] == "stop" || commands[2] == "pause")
+                            {
+                                Invoke((MethodInvoker)(() =>
+                                {
+
+                                    pauseButton.Text = "Paused!";
+                                    pauseButton.ForeColor = Color.Red;
+                                    actionTimer.Enabled = false;
+                                    ActiveBuffs.Clear();
+                                    pauseActions = true;
+                                    if (Form2.config.FFXIDefaultAutoFollow == false)
+                                    {
+                                        _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
+                                    }
+
+                                }));
+                            }
+                            if (commands[2] == "toggle")
+                            {
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    pauseButton.PerformClick();
+                                }));
+                            }
+                        }
+                        else if (commands[1] == "buffs" && commands.Count() == 4)
+                        {
+                            lock (ActiveBuffs)
+                            {
+
+                                ActiveBuffs.RemoveAll(buf => buf.CharacterName == commands[2]);
+
+                                ActiveBuffs.Add(new BuffStorage
+                                {
+                                    CharacterName = commands[2],
+                                    CharacterBuffs = commands[3]
+                                });
+                            }
+
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    //  Console.WriteLine(error1.ToString());
+                }
+
+                listener.Close();
+
+            }
+
+            Thread.Sleep(TimeSpan.FromSeconds(0.3));
+        }
+
+        private void AddonReader_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            AddonReader.RunWorkerAsync();
+        }
 
 
         private void FullCircle_Timer_Tick(object sender, EventArgs e)
@@ -9857,65 +9993,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private void CustomCommand_Tracker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             CustomCommand_Tracker.RunWorkerAsync();
-        }
-
-        private void OnIncomingPacket(ushort id, byte[] data)
-        {
-            packetHandler.HandleIncomingPacket(id, data);
-        }
-
-        private void OnCastingFinished(object sender, CastingEventArgs e)
-        {
-            switch (e.State)
-            {
-                case CastingState.Blocked:
-                    Invoke((MethodInvoker)(() =>
-                    {
-                        CastingBackground_Check = true;
-                        castingLockLabel.Text = "PACKET: Casting is LOCKED";
-                    }));
-                    if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
-                    break;
-                case CastingState.Interrupted:
-                    Invoke((MethodInvoker)(async () =>
-                    {
-                        ProtectCasting.CancelAsync();
-                        castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
-                        await Task.Delay(TimeSpan.FromSeconds(3));
-                        castingLockLabel.Text = "Casting is UNLOCKED";
-                        CastingBackground_Check = false;
-                    }));
-                    break;
-                case CastingState.Finished:
-                    Invoke((MethodInvoker)(async () =>
-                    {
-                        ProtectCasting.CancelAsync();
-                        castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
-                        await Task.Delay(TimeSpan.FromSeconds(3));
-                        castingLockLabel.Text = "Casting is UNLOCKED";
-                        currentAction.Text = string.Empty;
-                        castingSpell = string.Empty;
-                        CastingBackground_Check = false;
-                    }));
-                    break;
-            }
-        }
-
-        private void OnBuffsChanged(object sender, BuffsChangedEventArgs e)
-        {
-            lock (ActiveBuffs)
-            {
-                string characterName = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.ID == e.CharacterId)?.Name;
-                if (characterName != null)
-                {
-                    ActiveBuffs.RemoveAll(buf => buf.CharacterName == characterName);
-                    ActiveBuffs.Add(new BuffStorage
-                    {
-                        CharacterName = characterName,
-                        CharacterBuffs = string.Join(",", e.Buffs)
-                    });
-                }
-            }
         }
     }
 

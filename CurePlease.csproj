@@ -114,7 +114,6 @@
       <DependentUpon>Form4.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="PacketHandler.cs" />
     <Compile Include="PartyBuffs.cs">
       <SubType>Form</SubType>
     </Compile>
