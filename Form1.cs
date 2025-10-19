@@ -84,6 +84,7 @@
 
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
+        private PartyState partyState = new PartyState();
 
         // BARD SONG VARIABLES
         private int song_casting = 0;
@@ -3418,6 +3419,16 @@ private void setinstance_Click(object sender, EventArgs e)
                 return;
             }
 
+            // Update PartyState with current party members
+            for (int i = 0; i < 18; i++)
+            {
+                var member = _ELITEAPIMonitored.Party.GetPartyMember((byte)i);
+                if (member != null && member.Active >= 1 && !string.IsNullOrEmpty(member.Name))
+                {
+                    partyState.AddOrUpdateMember(member.Name, member.ID);
+                }
+            }
+
             if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
             {
                 if (Form2.config.pauseOnZoneBox == true)
@@ -5073,13 +5084,20 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
 
-        private bool castingPossible(byte partyMemberId)
+        private bool castingPossible(int partyMemberIndex)
         {
-            if ((_ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].TargetIndex).Distance < 21) && (_ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].TargetIndex).Distance > 0) && (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP > 0) || (_ELITEAPIPL.Party.GetPartyMember(0).ID == _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].ID) && (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP > 0))
-            {
-                return true;
-            }
-            return false;
+            if (partyMemberIndex < 0 || partyMemberIndex >= 18) return false;
+
+            var member = _ELITEAPIMonitored.Party.GetPartyMember((byte)partyMemberIndex);
+            if (member == null || member.Active == 0 || member.CurrentHP == 0) return false;
+
+            // If the target is the player themselves, they are always in range.
+            if (_ELITEAPIPL.Player.Name == member.Name) return true;
+
+            var entity = _ELITEAPIPL.Entity.GetEntity((int)member.TargetIndex);
+            if (entity == null) return false;
+
+            return entity.Distance < 21 && entity.Distance > 0;
         }
 
         private bool plStatusCheck(StatusEffect requestedStatus)
@@ -5318,8 +5336,110 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
 
+        private Dictionary<string, int> targetBuffs = new Dictionary<string, int>
+        {
+            { "Regen", 42 },
+            { "Haste", 33 },
+            { "Refresh", 43 },
+            { "Phalanx", 116 },
+            { "Protect", 40 },
+            { "Shell", 41 }
+        };
+
+        private async Task CheckAndApplyBuffs()
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
+
+            foreach (var memberState in partyState.Members.Values)
+            {
+                var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.ID == memberState.ServerId && p.Active != 0);
+                if (partyMember == null) continue;
+
+                byte memberIndex = partyMember.MemberNumber;
+
+                if (!castingPossible(memberIndex)) continue;
+
+                // Regen
+                if (autoRegen_Enabled[memberIndex] && !memberState.Buffs.Contains(targetBuffs["Regen"]))
+                {
+                    string[] regen_spells = { "Regen", "Regen II", "Regen III", "Regen IV", "Regen V" };
+                    string spellToCast = regen_spells[Form2.config.autoRegen_Spell];
+                    if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
+                    {
+                        CastSpell(memberState.Name, spellToCast);
+                        return;
+                    }
+                }
+
+                // Haste
+                if (autoHaste_IIEnabled[memberIndex] && !memberState.Buffs.Contains(targetBuffs["Haste"]))
+                {
+                    if (CheckSpellRecast("Haste II") == 0 && HasSpell("Haste II"))
+                    {
+                        CastSpell(memberState.Name, "Haste II");
+                        return;
+                    }
+                }
+                else if (autoHasteEnabled[memberIndex] && !memberState.Buffs.Contains(targetBuffs["Haste"]))
+                {
+                    if (CheckSpellRecast("Haste") == 0 && HasSpell("Haste"))
+                    {
+                        CastSpell(memberState.Name, "Haste");
+                        return;
+                    }
+                }
+
+                // Refresh
+                if (autoRefreshEnabled[memberIndex] && !memberState.Buffs.Contains(targetBuffs["Refresh"]))
+                {
+                    string[] refresh_spells = { "Refresh", "Refresh II", "Refresh III" };
+                    string spellToCast = refresh_spells[Form2.config.autoRefresh_Spell];
+                    if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
+                    {
+                        CastSpell(memberState.Name, spellToCast);
+                        return;
+                    }
+                }
+
+                // Phalanx
+                if (autoPhalanx_IIEnabled[memberIndex] && !memberState.Buffs.Contains(targetBuffs["Phalanx"]))
+                {
+                    if (CheckSpellRecast("Phalanx II") == 0 && HasSpell("Phalanx II"))
+                    {
+                        CastSpell(memberState.Name, "Phalanx II");
+                        return;
+                    }
+                }
+
+                // Protect
+                if (autoProtect_Enabled[memberIndex] && !memberState.Buffs.Contains(targetBuffs["Protect"]))
+                {
+                    string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
+                    string spellToCast = protect_spells[Form2.config.autoProtect_Spell];
+                    if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
+                    {
+                        CastSpell(memberState.Name, spellToCast);
+                        return;
+                    }
+                }
+
+                // Shell
+                if (autoShell_Enabled[memberIndex] && !memberState.Buffs.Contains(targetBuffs["Shell"]))
+                {
+                    string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
+                    string spellToCast = shell_spells[Form2.config.autoShell_Spell];
+                    if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
+                    {
+                        CastSpell(memberState.Name, spellToCast);
+                        return;
+                    }
+                }
+            }
+        }
+
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            await CheckAndApplyBuffs();
             CheckEngagedStatus_Hate();
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
@@ -9588,11 +9708,15 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     if (buffParts.Length == 2)
                     {
                         string characterName = buffParts[0];
-                        string buffs = buffParts[1];
+                        string buffsString = buffParts[1];
+                        List<int> buffs = buffsString.Split(',').Select(int.Parse).ToList();
+                        partyState.UpdateMemberBuffs(characterName, buffs);
+
+                        // Keep old logic for now to avoid breaking anything
                         lock (ActiveBuffs)
                         {
                             ActiveBuffs.RemoveAll(buf => buf.CharacterName == characterName);
-                            ActiveBuffs.Add(new BuffStorage { CharacterName = characterName, CharacterBuffs = buffs });
+                            ActiveBuffs.Add(new BuffStorage { CharacterName = characterName, CharacterBuffs = buffsString });
                         }
                     }
                     break;

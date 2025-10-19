@@ -102,16 +102,44 @@ public:
 
         if (id == 0x28) // Action Packet
         {
-            uint32_t actor = *reinterpret_cast<const uint32_t*>(data + 4);
-            if (actor == myServerId)
+            uint32_t casterId = *reinterpret_cast<const uint32_t*>(data + 4);
+            uint8_t numTargets = data[8];
+            uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 82, 4));
+
+            // Handle spell cast completions for detailed logging
+            if (category == 4 && numTargets > 0)
             {
-                int category = (data[10] >> 2) & 0x0F;
-                if (category == 4)
+                auto entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+                auto resourceMgr = m_AshitaCore->GetResourceManager();
+                if (entityMgr && resourceMgr)
+                {
+                    uint16_t casterIndex = GetIndexFromServerId(casterId);
+                    const char* casterName = (casterIndex != 0) ? entityMgr->GetName(casterIndex) : "Unknown";
+
+                    uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 12);
+                    uint16_t targetIndex = GetIndexFromServerId(targetId);
+                    const char* targetName = (targetIndex != 0) ? entityMgr->GetName(targetIndex) : "Unknown";
+
+                    uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 86, 10));
+                    const ISpell* spell = resourceMgr->GetSpellById(spellId);
+                    const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
+
+                    std::stringstream logMsg;
+                    logMsg << "LOG|" << GetTimestamp() << " [Action] Caster: " << (casterName ? casterName : "Unknown")
+                           << ", Spell: " << spellName << " (ID: " << spellId << ")"
+                           << ", Target: " << (targetName ? targetName : "Unknown") << ". (Duration not available in packet).\n";
+                    WriteToPipe(logMsg.str());
+                }
+            }
+
+            // Handle own cast finish/interrupt/block for C# logic
+            if (casterId == myServerId)
+            {
+                if (category == 4) // Magic Finish
                 {
                     WriteToPipe("CAST_FINISH|0\n");
-                    WriteToPipe("LOG|" + GetTimestamp() + " Spell cast finished.\n");
                 }
-                else if (category == 8)
+                else if (category == 8) // Action Message
                 {
                     uint16_t param = *reinterpret_cast<const uint16_t*>(data + 8);
                     if (param == 28787)

@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NamedPipeClient.cs" />
+    <Compile Include="PartyState.cs" />
     <Compile Include="PartyBuffs.cs">
       <SubType>Form</SubType>
     </Compile>
