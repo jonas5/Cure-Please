@@ -6,6 +6,8 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <chrono>
+#include <iomanip>
 
 class CurePleasePlugin : public IPlugin
 {
@@ -87,7 +89,7 @@ public:
                 if (category == 4)
                 {
                     WriteToPipe("CAST_FINISH|0\n");
-                    if (m_LogFile.is_open()) m_LogFile << "  Action: CAST_FINISH" << std::endl;
+                    WriteToPipe("LOG|" + GetTimestamp() + " Spell cast finished.\n");
                 }
                 else if (category == 8)
                 {
@@ -95,18 +97,19 @@ public:
                     if (param == 28787)
                     {
                         WriteToPipe("CAST_INTERRUPT|0\n");
-                        if (m_LogFile.is_open()) m_LogFile << "  Action: CAST_INTERRUPT" << std::endl;
+                        WriteToPipe("LOG|" + GetTimestamp() + " Spell cast interrupted.\n");
                     }
                     else if (param == 24931)
                     {
                         WriteToPipe("CAST_BLOCKED|0\n");
-                        if (m_LogFile.is_open()) m_LogFile << "  Action: CAST_BLOCKED" << std::endl;
+                        WriteToPipe("LOG|" + GetTimestamp() + " Spell cast blocked.\n");
                     }
                 }
             }
         }
         else if (id == 0x076) // Buff packet
         {
+            WriteToPipe("LOG|" + GetTimestamp() + " Registering buffs.\n");
             for (int k = 0; k < 5; k++)
             {
                 uint16_t Uid = *(uint16_t*)(data + 8 + (k * 0x30));
@@ -136,7 +139,6 @@ public:
                             }
                             std::string message = "BUFF_UPDATE|" + std::string(characterName) + ":" + buff_str + "\n";
                             WriteToPipe(message);
-                            if (m_LogFile.is_open()) m_LogFile << "  Buff Update: " << message;
                         }
                     }
                 }
@@ -179,6 +181,7 @@ private:
             {
                 std::lock_guard<std::mutex> lock(m_PipeMutex);
                 m_PipeConnected = true;
+                WriteToPipe("LOG|" + GetTimestamp() + " Packet listener started.\n");
 
                 // Keep the pipe open until the client disconnects
                 while (true)
@@ -210,6 +213,18 @@ private:
 
         DWORD bytesWritten = 0;
         WriteFile(m_Pipe, message.c_str(), message.length(), &bytesWritten, NULL);
+    }
+
+    std::string GetTimestamp()
+    {
+        auto now = std::chrono::system_clock::now();
+        auto in_time_t = std::chrono::system_clock::to_time_t(now);
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+        std::stringstream ss;
+        ss << std::put_time(std::localtime(&in_time_t), "[%H:%M:%S");
+        ss << '.' << std::setfill('0') << std::setw(3) << ms.count() << "]";
+        return ss.str();
     }
 };
 
