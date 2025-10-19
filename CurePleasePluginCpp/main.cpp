@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <thread>
+#include <mutex>
 
 class CurePleasePlugin : public IPlugin
 {
@@ -12,6 +14,8 @@ private:
     HANDLE m_Pipe;
     bool m_PipeConnected;
     std::ofstream m_LogFile;
+    std::thread m_PipeThread;
+    std::mutex m_PipeMutex;
 
 public:
     CurePleasePlugin() : m_AshitaCore(nullptr), m_Pipe(INVALID_HANDLE_VALUE), m_PipeConnected(false)
@@ -20,6 +24,10 @@ public:
     }
     ~CurePleasePlugin()
     {
+        if (m_PipeThread.joinable())
+        {
+            m_PipeThread.join();
+        }
         if (m_Pipe != INVALID_HANDLE_VALUE)
         {
             DisconnectNamedPipe(m_Pipe);
@@ -35,12 +43,16 @@ public:
     bool Initialize(IAshitaCore* core) override
     {
         m_AshitaCore = core;
-        CreatePipeAndConnect();
+        m_PipeThread = std::thread(&CurePleasePlugin::PipeThread, this);
         return true;
     }
 
     void Release() override
     {
+        if (m_PipeThread.joinable())
+        {
+            m_PipeThread.join();
+        }
         if (m_Pipe != INVALID_HANDLE_VALUE)
         {
             DisconnectNamedPipe(m_Pipe);
@@ -55,7 +67,11 @@ public:
 
     bool HandleIncomingPacket(int id, int size, const unsigned char* data) override
     {
-        WriteToPipe("LOG|Incoming Packet: ID=" + std::to_string(id) + " Size=" + std::to_string(size) + "\n");
+        std::lock_guard<std::mutex> lock(m_PipeMutex);
+        if (m_LogFile.is_open())
+        {
+            m_LogFile << "Incoming Packet: ID=" << std::hex << id << " Size=" << size << std::endl;
+        }
 
         if (!m_PipeConnected)
         {
@@ -135,22 +151,56 @@ public:
     }
 
 private:
-    void CreatePipeAndConnect()
+    void PipeThread()
     {
-        m_Pipe = CreateNamedPipe(
-            L"\\\\.\\pipe\\CurePleasePipe",
-            PIPE_ACCESS_OUTBOUND,
-            PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
-            1,
-            4096,
-            4096,
-            0,
-            NULL);
-
-        if (m_Pipe != INVALID_HANDLE_VALUE)
+        while (true)
         {
-            ConnectToNewClient(m_Pipe, NULL);
-            m_PipeConnected = true;
+            {
+                std::lock_guard<std::mutex> lock(m_PipeMutex);
+                m_Pipe = CreateNamedPipe(
+                    L"\\\\.\\pipe\\CurePleasePipe",
+                    PIPE_ACCESS_OUTBOUND,
+                    PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
+                    1,
+                    4096,
+                    4096,
+                    0,
+                    NULL);
+            }
+
+            if (m_Pipe == INVALID_HANDLE_VALUE)
+            {
+                // Handle error
+                return;
+            }
+
+            BOOL connected = ConnectNamedPipe(m_Pipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+            if (connected)
+            {
+                std::lock_guard<std::mutex> lock(m_PipeMutex);
+                m_PipeConnected = true;
+
+                // Keep the pipe open until the client disconnects
+                while (true)
+                {
+                    DWORD bytesRead = 0, bytesWritten = 0, bytesAvail = 0;
+                    BOOL success = PeekNamedPipe(m_Pipe, NULL, 0, &bytesRead, &bytesAvail, NULL);
+                    if (!success || bytesRead > 0)
+                    {
+                        break; // Pipe was closed or has data to read (which it shouldn't)
+                    }
+                    Sleep(100);
+                }
+
+                std::lock_guard<std::mutex> lock2(m_PipeMutex);
+                m_PipeConnected = false;
+                DisconnectNamedPipe(m_Pipe);
+                CloseHandle(m_Pipe);
+            }
+            else
+            {
+                CloseHandle(m_Pipe);
+            }
         }
     }
 
