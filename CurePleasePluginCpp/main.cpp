@@ -74,6 +74,11 @@ public:
         if (!m_PipeConnected) return false;
         if (!m_AshitaCore) return false;
 
+        // Log every packet ID for diagnostics
+        std::stringstream ss;
+        ss << "LOG|" << GetTimestamp() << " Incoming Packet ID: 0x" << std::hex << std::setw(4) << std::setfill('0') << id << "\n";
+        WriteToPipe(ss.str());
+
         auto* party = m_AshitaCore->GetDataManager()->GetParty();
         if (!party) return false;
 
