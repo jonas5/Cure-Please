@@ -222,8 +222,8 @@ namespace CurePlease
             this.checkSCHCharges = new System.Windows.Forms.Timer(this.components);
             this.AutomaticChecks = new System.Windows.Forms.Timer(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.debug = new System.Windows.Forms.Button();
             this.currentAction = new System.Windows.Forms.Label();
+            this.debug = new System.Windows.Forms.Button();
             this.updateInstances = new System.Windows.Forms.Timer(this.components);
             this.checkCustomActions = new System.Windows.Forms.Timer(this.components);
             this.castingLockLabel = new System.Windows.Forms.Label();
@@ -241,6 +241,7 @@ namespace CurePlease
             this.EclipticTimer = new System.Windows.Forms.Timer(this.components);
             this.CustomCommand_Tracker = new System.ComponentModel.BackgroundWorker();
             this.battleTargetLabel = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.party0.SuspendLayout();
             this.playerOptions.SuspendLayout();
             this.party2.SuspendLayout();
@@ -251,6 +252,7 @@ namespace CurePlease
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // player0optionsButton
@@ -800,64 +802,64 @@ namespace CurePlease
             this.enableDebuffRemovalToolStripMenuItem,
             this.toolStripSeperator13});
             this.playerOptions.Name = "player0rightclick";
-            this.playerOptions.Size = new System.Drawing.Size(226, 342);
+            this.playerOptions.Size = new System.Drawing.Size(227, 342);
             // 
             // followToolStripMenuItem
             // 
             this.followToolStripMenuItem.Name = "followToolStripMenuItem";
-            this.followToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.followToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.followToolStripMenuItem.Text = "/follow";
             this.followToolStripMenuItem.Click += new System.EventHandler(this.followToolStripMenuItem_Click);
             // 
             // stopfollowToolStripMenuItem
             // 
             this.stopfollowToolStripMenuItem.Name = "stopfollowToolStripMenuItem";
-            this.stopfollowToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.stopfollowToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.stopfollowToolStripMenuItem.Text = "Cancel /follow";
             this.stopfollowToolStripMenuItem.Click += new System.EventHandler(this.stopfollowToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(222, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(223, 6);
             // 
             // EntrustTargetToolStripMenuItem
             // 
             this.EntrustTargetToolStripMenuItem.Name = "EntrustTargetToolStripMenuItem";
-            this.EntrustTargetToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.EntrustTargetToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.EntrustTargetToolStripMenuItem.Text = "Make Entrusted Target";
             this.EntrustTargetToolStripMenuItem.Click += new System.EventHandler(this.EntrustTargetToolStripMenuItem_Click);
             // 
             // GeoTargetToolStripMenuItem
             // 
             this.GeoTargetToolStripMenuItem.Name = "GeoTargetToolStripMenuItem";
-            this.GeoTargetToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.GeoTargetToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.GeoTargetToolStripMenuItem.Text = "Make GEO-Spell Target";
             this.GeoTargetToolStripMenuItem.Click += new System.EventHandler(this.GeoTargetToolStripMenuItem_Click);
             // 
             // DevotionTargetToolStripMenuItem
             // 
             this.DevotionTargetToolStripMenuItem.Name = "DevotionTargetToolStripMenuItem";
-            this.DevotionTargetToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.DevotionTargetToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.DevotionTargetToolStripMenuItem.Text = "Make Devotion Target";
             this.DevotionTargetToolStripMenuItem.Click += new System.EventHandler(this.DevotionTargetToolStripMenuItem_Click);
             // 
             // HateEstablisherToolStripMenuItem
             // 
             this.HateEstablisherToolStripMenuItem.Name = "HateEstablisherToolStripMenuItem";
-            this.HateEstablisherToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.HateEstablisherToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.HateEstablisherToolStripMenuItem.Text = "Make Hate Establisher Target";
             this.HateEstablisherToolStripMenuItem.Click += new System.EventHandler(this.HateEstablisherToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(222, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(223, 6);
             // 
             // autoHasteToolStripMenuItem
             // 
             this.autoHasteToolStripMenuItem.Name = "autoHasteToolStripMenuItem";
-            this.autoHasteToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.autoHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.autoHasteToolStripMenuItem.Text = "Auto Haste";
             this.autoHasteToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
             this.autoHasteToolStripMenuItem.Click += new System.EventHandler(this.autoHasteToolStripMenuItem_Click);
@@ -865,7 +867,7 @@ namespace CurePlease
             // autoHasteIIToolStripMenuItem
             // 
             this.autoHasteIIToolStripMenuItem.Name = "autoHasteIIToolStripMenuItem";
-            this.autoHasteIIToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.autoHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.autoHasteIIToolStripMenuItem.Text = "Auto Haste II";
             this.autoHasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
             this.autoHasteIIToolStripMenuItem.Click += new System.EventHandler(this.autoHasteIIToolStripMenuItem_Click);
@@ -873,7 +875,7 @@ namespace CurePlease
             // autoAdloquiumToolStripMenuItem
             // 
             this.autoAdloquiumToolStripMenuItem.Name = "autoAdloquiumToolStripMenuItem";
-            this.autoAdloquiumToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.autoAdloquiumToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.autoAdloquiumToolStripMenuItem.Text = "Auto Adloquium";
             this.autoAdloquiumToolStripMenuItem.ToolTipText = "Auto Adloquium (Default 3 minutes)";
             this.autoAdloquiumToolStripMenuItem.Click += new System.EventHandler(this.autoAdloquiumToolStripMenuItem_Click);
@@ -881,7 +883,7 @@ namespace CurePlease
             // autoFlurryToolStripMenuItem
             // 
             this.autoFlurryToolStripMenuItem.Name = "autoFlurryToolStripMenuItem";
-            this.autoFlurryToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.autoFlurryToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.autoFlurryToolStripMenuItem.Text = "Auto Flurry";
             this.autoFlurryToolStripMenuItem.ToolTipText = "Auto Flurry (Default 3 minutes)";
             this.autoFlurryToolStripMenuItem.Click += new System.EventHandler(this.autoFlurryToolStripMenuItem_Click);
@@ -889,7 +891,7 @@ namespace CurePlease
             // autoFlurryIIToolStripMenuItem
             // 
             this.autoFlurryIIToolStripMenuItem.Name = "autoFlurryIIToolStripMenuItem";
-            this.autoFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.autoFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.autoFlurryIIToolStripMenuItem.Text = "Auto Flurry II";
             this.autoFlurryIIToolStripMenuItem.ToolTipText = "Auto Flurry II (Default 3 minutes)";
             this.autoFlurryIIToolStripMenuItem.Click += new System.EventHandler(this.autoFlurryIIToolStripMenuItem_Click);
@@ -897,38 +899,38 @@ namespace CurePlease
             // autoShellToolStripMenuItem
             // 
             this.autoShellToolStripMenuItem.Name = "autoShellToolStripMenuItem";
-            this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.autoShellToolStripMenuItem.Text = "Auto Shell";
             this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
             // 
             // autoProtectToolStripMenuItem
             // 
             this.autoProtectToolStripMenuItem.Name = "autoProtectToolStripMenuItem";
-            this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.autoProtectToolStripMenuItem.Text = "Auto Protect";
             this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(222, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(223, 6);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(222, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 6);
             // 
             // enableDebuffRemovalToolStripMenuItem
             // 
             this.enableDebuffRemovalToolStripMenuItem.Name = "enableDebuffRemovalToolStripMenuItem";
-            this.enableDebuffRemovalToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.enableDebuffRemovalToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.enableDebuffRemovalToolStripMenuItem.Text = "Enable Debuff Removal";
             this.enableDebuffRemovalToolStripMenuItem.Click += new System.EventHandler(this.enableDebuffRemovalToolStripMenuItem_Click);
             // 
             // toolStripSeperator13
             // 
             this.toolStripSeperator13.Name = "toolStripSeperator13";
-            this.toolStripSeperator13.Size = new System.Drawing.Size(222, 6);
+            this.toolStripSeperator13.Size = new System.Drawing.Size(223, 6);
             // 
             // stormspellToolStripMenuItem
             // 
@@ -2056,87 +2058,87 @@ namespace CurePlease
             this.ThunderstormToolStripMenuItem,
             this.HailstormToolStripMenuItem});
             this.autoOptions.Name = "proshellOptions";
-            this.autoOptions.Size = new System.Drawing.Size(179, 252);
+            this.autoOptions.Size = new System.Drawing.Size(180, 252);
             // 
             // autoPhalanxIIToolStripMenuItem1
             // 
             this.autoPhalanxIIToolStripMenuItem1.Name = "autoPhalanxIIToolStripMenuItem1";
-            this.autoPhalanxIIToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
+            this.autoPhalanxIIToolStripMenuItem1.Size = new System.Drawing.Size(179, 22);
             this.autoPhalanxIIToolStripMenuItem1.Text = "Auto Phalanx II";
             this.autoPhalanxIIToolStripMenuItem1.Click += new System.EventHandler(this.autoPhalanxIIToolStripMenuItem1_Click);
             // 
             // autoRegenVToolStripMenuItem
             // 
             this.autoRegenVToolStripMenuItem.Name = "autoRegenVToolStripMenuItem";
-            this.autoRegenVToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.autoRegenVToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.autoRegenVToolStripMenuItem.Text = "Auto Regen";
             this.autoRegenVToolStripMenuItem.Click += new System.EventHandler(this.autoRegenVToolStripMenuItem_Click);
             // 
             // autoRefreshIIToolStripMenuItem
             // 
             this.autoRefreshIIToolStripMenuItem.Name = "autoRefreshIIToolStripMenuItem";
-            this.autoRefreshIIToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.autoRefreshIIToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.autoRefreshIIToolStripMenuItem.Text = "Auto Refresh";
             this.autoRefreshIIToolStripMenuItem.Click += new System.EventHandler(this.autoRefreshIIToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(176, 6);
             // 
             // SandstormToolStripMenuItem
             // 
             this.SandstormToolStripMenuItem.Name = "SandstormToolStripMenuItem";
-            this.SandstormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.SandstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.SandstormToolStripMenuItem.Text = "Auto Sandstorm";
             this.SandstormToolStripMenuItem.Click += new System.EventHandler(this.SandstormToolStripMenuItem_Click);
             // 
             // RainstormToolStripMenuItem
             // 
             this.RainstormToolStripMenuItem.Name = "RainstormToolStripMenuItem";
-            this.RainstormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.RainstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.RainstormToolStripMenuItem.Text = "Auto Rainstorm";
             this.RainstormToolStripMenuItem.Click += new System.EventHandler(this.RainstormToolStripMenuItem_Click);
             // 
             // WindstormToolStripMenuItem
             // 
             this.WindstormToolStripMenuItem.Name = "WindstormToolStripMenuItem";
-            this.WindstormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.WindstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.WindstormToolStripMenuItem.Text = "Auto Windstorm";
             this.WindstormToolStripMenuItem.Click += new System.EventHandler(this.WindstormToolStripMenuItem_Click);
             // 
             // FirestormToolStripMenuItem
             // 
             this.FirestormToolStripMenuItem.Name = "FirestormToolStripMenuItem";
-            this.FirestormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.FirestormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.FirestormToolStripMenuItem.Text = "Auto Firestorm";
             this.FirestormToolStripMenuItem.Click += new System.EventHandler(this.FirestormToolStripMenuItem_Click);
             // 
             // AurorastormToolStripMenuItem
             // 
             this.AurorastormToolStripMenuItem.Name = "AurorastormToolStripMenuItem";
-            this.AurorastormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.AurorastormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.AurorastormToolStripMenuItem.Text = "Auto Aurorastorm";
             this.AurorastormToolStripMenuItem.Click += new System.EventHandler(this.AurorastormToolStripMenuItem_Click);
             // 
             // VoidstormToolStripMenuItem
             // 
             this.VoidstormToolStripMenuItem.Name = "VoidstormToolStripMenuItem";
-            this.VoidstormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.VoidstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.VoidstormToolStripMenuItem.Text = "Auto Voidstorm";
             this.VoidstormToolStripMenuItem.Click += new System.EventHandler(this.VoidstormToolStripMenuItem_Click);
             // 
             // ThunderstormToolStripMenuItem
             // 
             this.ThunderstormToolStripMenuItem.Name = "ThunderstormToolStripMenuItem";
-            this.ThunderstormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.ThunderstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.ThunderstormToolStripMenuItem.Text = "Auto Thunderstorm";
             this.ThunderstormToolStripMenuItem.Click += new System.EventHandler(this.ThunderstormToolStripMenuItem_Click);
             // 
             // HailstormToolStripMenuItem
             // 
             this.HailstormToolStripMenuItem.Name = "HailstormToolStripMenuItem";
-            this.HailstormToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.HailstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.HailstormToolStripMenuItem.Text = "Auto Hailstorm";
             this.HailstormToolStripMenuItem.Click += new System.EventHandler(this.HailstormToolStripMenuItem_Click);
             // 
@@ -2223,51 +2225,11 @@ namespace CurePlease
             this.groupBox2.ForeColor = System.Drawing.SystemColors.GrayText;
             this.groupBox2.Location = new System.Drawing.Point(255, 334);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 31);
+            this.groupBox2.Size = new System.Drawing.Size(194, 31);
             this.groupBox2.TabIndex = 23;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " current action ";
             this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
-            // 
-            // groupBox4
-            //
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox4.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox4.Controls.Add(this.battleTargetLabel);
-            this.groupBox4.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.groupBox4.Location = new System.Drawing.Point(461, 334);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(188, 31);
-            this.groupBox4.TabIndex = 24;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Battle Target";
-            this.groupBox4.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
-            //
-            // battleTargetLabel
-            //
-            this.battleTargetLabel.AutoSize = true;
-            this.battleTargetLabel.ForeColor = System.Drawing.Color.Black;
-            this.battleTargetLabel.Location = new System.Drawing.Point(7, 14);
-            this.battleTargetLabel.Name = "battleTargetLabel";
-            this.battleTargetLabel.Size = new System.Drawing.Size(48, 13);
-            this.battleTargetLabel.TabIndex = 0;
-            this.battleTargetLabel.Text = "Inactive";
-            //
-            // debug
-            // 
-            this.debug.AutoSize = true;
-            this.debug.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.debug.BackColor = System.Drawing.Color.White;
-            this.debug.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.debug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.debug.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.debug.Location = new System.Drawing.Point(652, 8);
-            this.debug.Name = "debug";
-            this.debug.Size = new System.Drawing.Size(52, 27);
-            this.debug.TabIndex = 34;
-            this.debug.Text = "Debug";
-            this.debug.UseVisualStyleBackColor = false;
-            this.debug.Click += new System.EventHandler(this.Debug_Click);
             // 
             // currentAction
             // 
@@ -2278,6 +2240,22 @@ namespace CurePlease
             this.currentAction.Size = new System.Drawing.Size(103, 13);
             this.currentAction.TabIndex = 0;
             this.currentAction.Text = "CURRENT ACTION";
+            // 
+            // debug
+            // 
+            this.debug.AutoSize = true;
+            this.debug.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.debug.BackColor = System.Drawing.Color.White;
+            this.debug.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.debug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.debug.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.debug.Location = new System.Drawing.Point(240, 8);
+            this.debug.Name = "debug";
+            this.debug.Size = new System.Drawing.Size(56, 27);
+            this.debug.TabIndex = 34;
+            this.debug.Text = "Debug";
+            this.debug.UseVisualStyleBackColor = false;
+            this.debug.Click += new System.EventHandler(this.Debug_Click);
             // 
             // updateInstances
             // 
@@ -2406,6 +2384,29 @@ namespace CurePlease
             // 
             this.CustomCommand_Tracker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CustomCommand_Tracker_DoWork);
             this.CustomCommand_Tracker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.CustomCommand_Tracker_RunWorkerCompleted);
+            // 
+            // battleTargetLabel
+            // 
+            this.battleTargetLabel.AutoSize = true;
+            this.battleTargetLabel.ForeColor = System.Drawing.Color.Black;
+            this.battleTargetLabel.Location = new System.Drawing.Point(7, 14);
+            this.battleTargetLabel.Name = "battleTargetLabel";
+            this.battleTargetLabel.Size = new System.Drawing.Size(45, 13);
+            this.battleTargetLabel.TabIndex = 0;
+            this.battleTargetLabel.Text = "Inactive";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox4.Controls.Add(this.battleTargetLabel);
+            this.groupBox4.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.groupBox4.Location = new System.Drawing.Point(455, 334);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(194, 31);
+            this.groupBox4.TabIndex = 24;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Battle Target";
+            this.groupBox4.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
             // 
             // Form1
             // 
