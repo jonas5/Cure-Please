@@ -28,6 +28,20 @@ private:
     bool m_PipeConnected;
     std::atomic<bool> m_Shutdown;
 
+    uint16_t GetIndexFromServerId(uint32_t serverId)
+    {
+        if (!m_AshitaCore) return 0;
+        auto entMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+        if (!entMgr) return 0;
+
+        for (int i = 0; i < 2048; i++) // Iterate through entity list
+        {
+            if (entMgr->GetServerId(i) == serverId)
+                return i;
+        }
+        return 0;
+    }
+
 public:
     CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false) {}
     ~CurePleasePlugin()
@@ -121,7 +135,7 @@ public:
 
             for (int k = 0; k < 5; k++)
             {
-                uint16_t Uid = *reinterpret_cast<const uint16_t*>(data + 8 + (k * 0x30));
+                uint32_t Uid = *reinterpret_cast<const uint32_t*>(data + 8 + (k * 0x30));
                 if (Uid != 0)
                 {
                     std::vector<int> buffs;
@@ -136,20 +150,24 @@ public:
 
                     if (!buffs.empty())
                     {
-                        const char* characterName = entityMgr->GetName(entityMgr->GetEntityIndexById(Uid));
-                        if (characterName)
+                        uint16_t entityIndex = GetIndexFromServerId(Uid);
+                        if (entityIndex != 0)
                         {
-                            std::string buff_str;
-                            for (size_t i = 0; i < buffs.size(); ++i)
+                            const char* characterName = entityMgr->GetName(entityIndex);
+                            if (characterName)
                             {
-                                buff_str += std::to_string(buffs[i]);
-                                if (i < buffs.size() - 1)
+                                std::string buff_str;
+                                for (size_t i = 0; i < buffs.size(); ++i)
                                 {
-                                    buff_str += ",";
+                                    buff_str += std::to_string(buffs[i]);
+                                    if (i < buffs.size() - 1)
+                                    {
+                                        buff_str += ",";
+                                    }
                                 }
+                                std::string message = "BUFF_UPDATE|" + std::string(characterName) + ":" + buff_str + "\n";
+                                WriteToPipe(message);
                             }
-                            std::string message = "BUFF_UPDATE|" + std::string(characterName) + ":" + buff_str + "\n";
-                            WriteToPipe(message);
                         }
                     }
                 }
