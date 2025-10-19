@@ -33,7 +33,7 @@ public class NamedPipeClient
             try
             {
                 _pipeClient = new NamedPipeClientStream(".", _pipeName, PipeDirection.In);
-                await _pipeClient.ConnectAsync(5000, cancellationToken);
+                _pipeClient.Connect(5000);
                 Connected?.Invoke();
 
                 using (var reader = new StreamReader(_pipeClient, Encoding.UTF8))
