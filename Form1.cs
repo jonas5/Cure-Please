@@ -9520,64 +9520,32 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     break;
 
                 case "LOG":
-                    if (data.Contains("[Action]"))
+                    debug_MSG_show.AppendLine(data);
+                    UpdateDebugForm(data);
+                    break;
+                case "ACTION":
+                case "ABILITY":
+                    try
                     {
-                        try
-                        {
-                            string[] mainParts = data.Split(new[] { "ActorID: " }, StringSplitOptions.None);
-                            string timestampAndAction = mainParts[0];
+                        var actionParts = data.Split(',');
+                        var timestamp = actionParts[0];
+                        uint actorId = uint.Parse(actionParts[1].Split(':')[1]);
+                        uint targetId = uint.Parse(actionParts[2].Split(':')[1]);
+                        ushort actionId = ushort.Parse(actionParts[3].Split(':')[1]);
 
-                            string[] actorSplit = mainParts[1].Split(new[] { ", " }, 2, StringSplitOptions.None);
-                            uint actorId = uint.Parse(actorSplit[0]);
+                        string actorName = GetEntityNameById(actorId);
+                        string targetName = GetEntityNameById(targetId);
+                        string actionName = command == "ACTION" ? GetSpellNameById(actionId) : GetAbilityNameById(actionId);
 
-                            string rest = actorSplit[1];
-                            int targetIdIndex = rest.LastIndexOf("TargetID: ");
-
-                            string actionInfo;
-                            uint targetId = 0;
-
-                            if (targetIdIndex != -1)
-                            {
-                                actionInfo = rest.Substring(0, targetIdIndex).Trim();
-                                if (actionInfo.EndsWith(","))
-                                {
-                                    actionInfo = actionInfo.Substring(0, actionInfo.Length - 1).Trim();
-                                }
-
-                                string targetIdStr = rest.Substring(targetIdIndex + "TargetID: ".Length);
-                                if (targetIdStr.EndsWith("."))
-                                {
-                                    targetIdStr = targetIdStr.Substring(0, targetIdStr.Length - 1);
-                                }
-                                uint.TryParse(targetIdStr, out targetId);
-                            }
-                            else
-                            {
-                                actionInfo = rest;
-                                if (actionInfo.EndsWith("."))
-                                {
-                                    actionInfo = actionInfo.Substring(0, actionInfo.Length - 1).Trim();
-                                }
-                            }
-
-                            string actorName = GetEntityNameById(actorId);
-                            string targetName = GetEntityNameById(targetId);
-
-                            string formattedMessage = $"{timestampAndAction} Actor: {actorName}, {actionInfo}, Target: {targetName}.";
-                            debug_MSG_show.AppendLine(formattedMessage);
-                            UpdateDebugForm(formattedMessage);
-                        }
-                        catch (Exception ex)
-                        {
-                            string errorMsg = $"Error parsing action log: '{data}'\n{ex.ToString()}";
-                            debug_MSG_show.AppendLine(errorMsg);
-                            UpdateDebugForm(errorMsg);
-                        }
+                        string formattedMessage = $"{timestamp} [{command}] {actionName} - Actor: {actorName}, Target: {targetName}";
+                        debug_MSG_show.AppendLine(formattedMessage);
+                        UpdateDebugForm(formattedMessage);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        debug_MSG_show.AppendLine(data);
-                        UpdateDebugForm(data);
+                        string errorMsg = $"Error parsing {command} log: '{data}'\n{ex.ToString()}";
+                        debug_MSG_show.AppendLine(errorMsg);
+                        UpdateDebugForm(errorMsg);
                     }
                     break;
 
@@ -9834,6 +9802,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private string GetEntityNameById(uint id)
         {
             if (_ELITEAPIPL == null) return "Unknown";
+            if (id == 0) return "None";
             for (int i = 0; i < 2048; i++)
             {
                 var entity = _ELITEAPIPL.Entity.GetEntity(i);
@@ -9843,6 +9812,19 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 }
             }
             return "Unknown";
+        }
+        private string GetSpellNameById(ushort id)
+        {
+            if (_ELITEAPIPL == null) return "Unknown Spell";
+            var spell = _ELITEAPIPL.Resources.GetSpell(id);
+            return spell != null ? spell.Name[0] : $"Unknown Spell ({id})";
+        }
+
+        private string GetAbilityNameById(ushort id)
+        {
+            if (_ELITEAPIPL == null) return "Unknown Ability";
+            var ability = _ELITEAPIPL.Resources.GetAbility(id, 0);
+            return ability != null ? ability.Name[0] : $"Unknown Ability ({id})";
         }
     }
 

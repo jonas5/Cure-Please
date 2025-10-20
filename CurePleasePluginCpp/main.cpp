@@ -118,76 +118,41 @@ public:
         uint32_t myServerId = party->GetMemberServerId(0);
         if (myServerId == 0) return false;
 
-        if (id == 0x28 || id == 0x29) // Action and Ability/WS packets
+        if (id == 0x28) // Action packet
         {
-            auto entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
-            auto resourceMgr = m_AshitaCore->GetResourceManager();
-            if (!entityMgr || !resourceMgr) return false;
-
-            const uint8_t* actionData = (id == 0x28 && sizeChunk > 0) ? dataChunk : data;
-            uint32_t actionSize = (id == 0x28 && sizeChunk > 0) ? sizeChunk : size;
-
-            if (actionSize < 12) return false;
-
-            uint32_t actorId = *reinterpret_cast<const uint32_t*>(actionData + 4);
-            uint8_t numTargets = actionData[8];
-            uint8_t category = (id == 0x28) ? (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(actionData), 82, 4)) : 0;
-
+            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
             uint32_t targetId = 0;
-
-            if (numTargets > 0)
-            {
-                if (actionSize < 16) return false;
-                targetId = *reinterpret_cast<const uint32_t*>(actionData + 12);
-            }
-            else
-            {
+            uint8_t numTargets = data[8];
+            if (numTargets > 0 && size >= 16) {
+                targetId = *reinterpret_cast<const uint32_t*>(data + 12);
+            } else {
                 targetId = actorId;
             }
+            uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
 
-            std::stringstream logMsg;
-            logMsg << "LOG|" << GetTimestamp() << " [Action] ActorID: " << actorId;
+            char buffer[256];
+            snprintf(buffer, sizeof(buffer), "ACTION|%s,ActorID:%u,TargetID:%u,ActionID:%u",
+                GetTimestamp().c_str(), actorId, targetId, spellId);
+            WriteToPipe(buffer);
 
-            bool actionFound = false;
+        }
+        else if (id == 0x29) // Ability/WS packet
+        {
+            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
+            uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 8);
+            uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
 
-            // Spell Cast
-            if (id == 0x28 && category == 4)
-            {
-                actionFound = true;
-                uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(actionData), 86, 10));
-                auto it = spells.find(spellId);
-                if (it != spells.end()) {
-                    const Spell& spell = it->second;
-                    logMsg << ", Spell: " << spell.name << " (ID: " << spell.id << ")"
-                        << ", MP: " << spell.mp_cost
-                        << ", Cast Time: " << spell.cast_time << "s"
-                        << ", Recast: " << spell.recast_time << "s";
-                } else {
-                    const ISpell* spell = resourceMgr->GetSpellById(spellId);
-                    const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
-                    logMsg << ", Spell: " << spellName << " (ID: " << spellId << ")";
-                }
-            }
-            // Weapon Skill or Job Ability
-            else if (id == 0x29)
-            {
-                actionFound = true;
-                if (actionSize < 14) return false;
-                uint16_t abilityId = *reinterpret_cast<const uint16_t*>(actionData + 12);
-                const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
-                const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
-                logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
-            }
+            char buffer[256];
+            snprintf(buffer, sizeof(buffer), "ABILITY|%s,ActorID:%u,TargetID:%u,ActionID:%u",
+                GetTimestamp().c_str(), actorId, targetId, abilityId);
+            WriteToPipe(buffer);
+        }
 
-            if (!actionFound)
-            {
-                logMsg << ", Action: Unknown";
-            }
+        if (id == 0x28) // Action packet for player's own cast status
+        {
+            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
+            uint32_t myServerId = m_AshitaCore->GetMemoryManager()->GetParty()->GetMemberServerId(0);
 
-            logMsg << ", TargetID: " << targetId << ".\n";
-            WriteToPipe(logMsg.str());
-
-            // Handle own cast finish/interrupt/block for C# logic
             if (actorId == myServerId && id == 0x28)
             {
                 if (category == 4) // Magic Finish
