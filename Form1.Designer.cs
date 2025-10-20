@@ -2683,5 +2683,6 @@ namespace CurePlease
         private System.ComponentModel.BackgroundWorker CustomCommand_Tracker;
         private GroupBox groupBox4;
         private Label battleTargetLabel;
+        private Timer buffUpdateTimer;
     }
 }
