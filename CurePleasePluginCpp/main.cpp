@@ -13,10 +13,20 @@
 const char* g_PluginName = "CurePleasePluginCpp";
 const char* g_PluginAuthor = "Jules";
 const char* g_PluginDescription = "Packet listener for CurePlease.";
-const double g_PluginVersion = 1.6;
+const double g_PluginVersion = 1.7;
 
 // Forward Declarations
 std::string GetTimestamp();
+
+// Helper to convert byte array to a hex string for logging
+std::string ByteArrayToString(const uint8_t* data, uint32_t size) {
+    std::stringstream ss;
+    ss << std::hex << std::setfill('0');
+    for (uint32_t i = 0; i < size; ++i) {
+        ss << std::setw(2) << static_cast<unsigned>(data[i]) << " ";
+    }
+    return ss.str();
+}
 
 class CurePleasePlugin : public IPlugin
 {
@@ -119,7 +129,16 @@ public:
 
         if (id == 0x28) // Action packet
         {
+            // Diagnostic Logging
+            std::string dataStr = ByteArrayToString(data, size);
+            std::string dataChunkStr = ByteArrayToString(dataChunk, sizeChunk);
+            WriteToPipe("LOG|" + GetTimestamp() + " [DIAG 0x28] data: " + dataStr + "\n");
+            WriteToPipe("LOG|" + GetTimestamp() + " [DIAG 0x28] dataChunk: " + dataChunkStr + "\n");
+
             uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
+
+            // Log parsed category for diagnostics
+            WriteToPipe("LOG|" + GetTimestamp() + " [DIAG 0x28] Category: " + std::to_string(category) + "\n");
 
             if (category == 4 && sizeChunk > 0) // Magic Finish
             {
@@ -127,6 +146,12 @@ public:
                 uint16_t spellIdRaw = *reinterpret_cast<const uint16_t*>(dataChunk + 12);
                 uint16_t spellId = spellIdRaw & 0x3FF; // Lower 10 bits are the spell ID
                 uint32_t targetId = *reinterpret_cast<const uint32_t*>(dataChunk + 16);
+
+                // Log parsed IDs for diagnostics
+                std::stringstream diag_ss;
+                diag_ss << "LOG|" << GetTimestamp() << " [DIAG 0x28] Parsed - ActorID: " << actorId
+                        << ", TargetID: " << targetId << ", SpellID: " << spellId << " (Raw: " << spellIdRaw << ")\n";
+                WriteToPipe(diag_ss.str());
 
                 char buffer[256];
                 snprintf(buffer, sizeof(buffer), "ACTION|%s,ActorID:%u,TargetID:%u,ActionID:%u\n",
