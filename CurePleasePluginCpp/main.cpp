@@ -14,7 +14,7 @@
 const char* g_PluginName = "CurePleasePluginCpp";
 const char* g_PluginAuthor = "Jules";
 const char* g_PluginDescription = "Packet listener for CurePlease.";
-const double g_PluginVersion = 1.3;
+const double g_PluginVersion = 1.4;
 
 // Forward Declarations
 std::string GetTimestamp();
@@ -124,9 +124,14 @@ public:
             auto resourceMgr = m_AshitaCore->GetResourceManager();
             if (!entityMgr || !resourceMgr) return false;
 
-            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
-            uint8_t numTargets = data[8];
-            uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
+            const uint8_t* actionData = (id == 0x28 && sizeChunk > 0) ? dataChunk : data;
+            uint32_t actionSize = (id == 0x28 && sizeChunk > 0) ? sizeChunk : size;
+
+            if (actionSize < 12) return false;
+
+            uint32_t actorId = *reinterpret_cast<const uint32_t*>(actionData + 4);
+            uint8_t numTargets = actionData[8];
+            uint8_t category = (id == 0x28) ? (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(actionData), 82, 4)) : 0;
 
             uint16_t actorIndex = GetIndexFromServerId(actorId);
             const char* actorName = (actorIndex != 0) ? entityMgr->GetName(actorIndex) : "Unknown";
@@ -137,7 +142,8 @@ public:
 
             if (numTargets > 0)
             {
-                targetId = *reinterpret_cast<const uint32_t*>(data + 12);
+                if (actionSize < 16) return false;
+                targetId = *reinterpret_cast<const uint32_t*>(actionData + 12);
                 targetIndex = GetIndexFromServerId(targetId);
                 targetName = (targetIndex != 0) ? entityMgr->GetName(targetIndex) : "Unknown";
             }
@@ -154,7 +160,7 @@ public:
             // Spell Cast
             if (id == 0x28 && category == 4)
             {
-                uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
+                uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(actionData), 86, 10));
                 auto it = spells.find(spellId);
                 if (it != spells.end()) {
                     const Spell& spell = it->second;
@@ -171,7 +177,8 @@ public:
             // Weapon Skill or Job Ability
             else if (id == 0x29)
             {
-                    uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
+                if (actionSize < 14) return false;
+                uint16_t abilityId = *reinterpret_cast<const uint16_t*>(actionData + 12);
                 const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
                 const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
                 logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
