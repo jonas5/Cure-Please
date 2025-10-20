@@ -8,7 +8,6 @@
 #include <iomanip>
 #include <sstream>
 #include <atomic>
-#include "spells.h"
 
 // Plugin Information
 const char* g_PluginName = "CurePleasePluginCpp";
@@ -131,7 +130,7 @@ public:
             uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
 
             char buffer[256];
-            snprintf(buffer, sizeof(buffer), "ACTION|%s,ActorID:%u,TargetID:%u,ActionID:%u",
+            snprintf(buffer, sizeof(buffer), "ACTION|%s,ActorID:%u,TargetID:%u,ActionID:%u\n",
                 GetTimestamp().c_str(), actorId, targetId, spellId);
             WriteToPipe(buffer);
 
@@ -167,7 +166,7 @@ public:
             uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
 
             char buffer[256];
-            snprintf(buffer, sizeof(buffer), "ABILITY|%s,ActorID:%u,TargetID:%u,ActionID:%u",
+            snprintf(buffer, sizeof(buffer), "ABILITY|%s,ActorID:%u,TargetID:%u,ActionID:%u\n",
                 GetTimestamp().c_str(), actorId, targetId, abilityId);
             WriteToPipe(buffer);
         }
