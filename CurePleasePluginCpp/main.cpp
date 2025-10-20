@@ -343,7 +343,9 @@ private:
             if (m_PipeConnected && m_AshitaCore && !m_isZoning)
             {
                 auto* party = m_AshitaCore->GetMemoryManager()->GetParty();
-                if (party)
+                auto* entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+
+                if (party && entityMgr)
                 {
                     for (int i = 0; i < 18; ++i)
                     {
@@ -352,13 +354,18 @@ private:
                             const char* name = party->GetMemberName(i);
                             if (name && strlen(name) > 0)
                             {
+                                uint32_t serverId = party->GetMemberServerId(i);
+                                uint16_t entityIndex = GetIndexFromServerId(serverId);
+
                                 std::vector<int> buffs;
-                                for (int j = 0; j < 32; ++j)
-                                {
-                                    uint16_t buff_id = party->GetMemberBuff(i, j);
-                                    if (buff_id != 0 && buff_id != 255)
+                                if (entityIndex != 0) {
+                                    for (int j = 0; j < 32; ++j)
                                     {
-                                        buffs.push_back(buff_id);
+                                        uint16_t buff_id = entityMgr->GetBuff(entityIndex, j);
+                                        if (buff_id != 0 && buff_id != 255)
+                                        {
+                                            buffs.push_back(buff_id);
+                                        }
                                     }
                                 }
 
