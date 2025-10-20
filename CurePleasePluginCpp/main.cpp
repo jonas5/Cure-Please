@@ -14,7 +14,7 @@
 const char* g_PluginName = "CurePleasePluginCpp";
 const char* g_PluginAuthor = "Jules";
 const char* g_PluginDescription = "Packet listener for CurePlease.";
-const double g_PluginVersion = 1.5;
+const double g_PluginVersion = 1.6;
 
 // Forward Declarations
 std::string GetTimestamp();
@@ -148,9 +148,12 @@ public:
             std::stringstream logMsg;
             logMsg << "LOG|" << GetTimestamp() << " [Action] ActorID: " << actorId;
 
+            bool actionFound = false;
+
             // Spell Cast
             if (id == 0x28 && category == 4)
             {
+                actionFound = true;
                 uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(actionData), 86, 10));
                 auto it = spells.find(spellId);
                 if (it != spells.end()) {
@@ -168,11 +171,17 @@ public:
             // Weapon Skill or Job Ability
             else if (id == 0x29)
             {
+                actionFound = true;
                 if (actionSize < 14) return false;
                 uint16_t abilityId = *reinterpret_cast<const uint16_t*>(actionData + 12);
                 const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
                 const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
                 logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
+            }
+
+            if (!actionFound)
+            {
+                logMsg << ", Action: Unknown";
             }
 
             logMsg << ", TargetID: " << targetId << ".\n";

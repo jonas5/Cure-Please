@@ -9522,19 +9522,56 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 case "LOG":
                     if (data.Contains("[Action]"))
                     {
-                        var actionParts = data.Split(new[] { "ActorID: ", ", ", "TargetID: ", "." }, StringSplitOptions.RemoveEmptyEntries);
-                        if (actionParts.Length >= 4)
+                        try
                         {
-                            uint actorId = uint.Parse(actionParts[1]);
-                            string spellInfo = actionParts[2];
-                            uint targetId = uint.Parse(actionParts[3]);
+                            string[] mainParts = data.Split(new[] { "ActorID: " }, StringSplitOptions.None);
+                            string timestampAndAction = mainParts[0];
+
+                            string[] actorSplit = mainParts[1].Split(new[] { ", " }, 2, StringSplitOptions.None);
+                            uint actorId = uint.Parse(actorSplit[0]);
+
+                            string rest = actorSplit[1];
+                            int targetIdIndex = rest.LastIndexOf("TargetID: ");
+
+                            string actionInfo;
+                            uint targetId = 0;
+
+                            if (targetIdIndex != -1)
+                            {
+                                actionInfo = rest.Substring(0, targetIdIndex).Trim();
+                                if (actionInfo.EndsWith(","))
+                                {
+                                    actionInfo = actionInfo.Substring(0, actionInfo.Length - 1).Trim();
+                                }
+
+                                string targetIdStr = rest.Substring(targetIdIndex + "TargetID: ".Length);
+                                if (targetIdStr.EndsWith("."))
+                                {
+                                    targetIdStr = targetIdStr.Substring(0, targetIdStr.Length - 1);
+                                }
+                                uint.TryParse(targetIdStr, out targetId);
+                            }
+                            else
+                            {
+                                actionInfo = rest;
+                                if (actionInfo.EndsWith("."))
+                                {
+                                    actionInfo = actionInfo.Substring(0, actionInfo.Length - 1).Trim();
+                                }
+                            }
 
                             string actorName = GetEntityNameById(actorId);
                             string targetName = GetEntityNameById(targetId);
 
-                            string formattedMessage = $"{actionParts[0]} Actor: {actorName}, {spellInfo}, Target: {targetName}.";
+                            string formattedMessage = $"{timestampAndAction} Actor: {actorName}, {actionInfo}, Target: {targetName}.";
                             debug_MSG_show.AppendLine(formattedMessage);
                             UpdateDebugForm(formattedMessage);
+                        }
+                        catch (Exception ex)
+                        {
+                            string errorMsg = $"Error parsing action log: '{data}'\n{ex.ToString()}";
+                            debug_MSG_show.AppendLine(errorMsg);
+                            UpdateDebugForm(errorMsg);
                         }
                     }
                     else
