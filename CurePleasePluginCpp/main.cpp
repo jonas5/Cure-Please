@@ -14,7 +14,7 @@
 const char* g_PluginName = "CurePleasePluginCpp";
 const char* g_PluginAuthor = "Jules";
 const char* g_PluginDescription = "Packet listener for CurePlease.";
-const double g_PluginVersion = 1.0;
+const double g_PluginVersion = 1.1;
 
 // Forward Declarations
 std::string GetTimestamp();
@@ -311,7 +311,9 @@ private:
                     std::lock_guard<std::mutex> lock(m_PipeMutex);
                     m_PipeConnected = true;
                 }
-                WriteToPipe("LOG|" + GetTimestamp() + " Packet listener connected.\n");
+                std::stringstream ss;
+                ss << "LOG|" << GetTimestamp() << " Packet listener v" << std::fixed << std::setprecision(1) << g_PluginVersion << " connected.\n";
+                WriteToPipe(ss.str());
 
                 while (!m_Shutdown)
                 {
