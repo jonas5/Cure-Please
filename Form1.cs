@@ -94,6 +94,7 @@
 
         private System.Collections.Concurrent.ConcurrentQueue<RecastRequest> recastQueue = new System.Collections.Concurrent.ConcurrentQueue<RecastRequest>();
 
+        private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
         // BARD SONG VARIABLES
         private int song_casting = 0;
 
@@ -5346,9 +5347,9 @@ private void setinstance_Click(object sender, EventArgs e)
 
         private Dictionary<string, List<int>> targetBuffs = new Dictionary<string, List<int>>
         {
-            { "Regen", new List<int> { 42 } },
-            { "Haste", new List<int> { 33, 214, 581, 598 } },
-            { "Refresh", new List<int> { 43, 187, 188 } },
+            { "Regen", new List<int> { 42, 597, 598 } },
+            { "Haste", new List<int> { 33, 562 } },
+            { "Refresh", new List<int> { 43, 631, 632 } },
             { "Phalanx", new List<int> { 116 } },
             { "Protect", new List<int> { 40 } },
             { "Shell", new List<int> { 41 } }
@@ -5368,81 +5369,94 @@ private void setinstance_Click(object sender, EventArgs e)
                 if (!castingPossible(memberIndex)) continue;
 
                 // Regen
-                if (autoRegen_Enabled[memberIndex] && !targetBuffs["Regen"].Any(b => memberState.Buffs.Contains(b)))
+                string regenCooldownKey = $"{memberState.Name}:Regen";
+                if (autoRegen_Enabled[memberIndex] && !targetBuffs["Regen"].Any(b => memberState.Buffs.Contains(b)) && (!buffCooldowns.ContainsKey(regenCooldownKey) || DateTime.Now >= buffCooldowns[regenCooldownKey]))
                 {
                     string[] regen_spells = { "Regen", "Regen II", "Regen III", "Regen IV", "Regen V" };
                     string spellToCast = regen_spells[Form2.config.autoRegen_Spell];
                     if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
+                        buffCooldowns[regenCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
 
                 // Haste
-                if ((autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) && !targetBuffs["Haste"].Any(b => memberState.Buffs.Contains(b)))
+                string hasteCooldownKey = $"{memberState.Name}:Haste";
+                if ((autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) && !targetBuffs["Haste"].Any(b => memberState.Buffs.Contains(b)) && (!buffCooldowns.ContainsKey(hasteCooldownKey) || DateTime.Now >= buffCooldowns[hasteCooldownKey]))
                 {
                     if (autoHaste_IIEnabled[memberIndex] && CheckSpellRecast("Haste II") == 0 && HasSpell("Haste II"))
                     {
                         CastSpell(memberState.Name, "Haste II");
+                        buffCooldowns[hasteCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                     else if (autoHasteEnabled[memberIndex] && CheckSpellRecast("Haste") == 0 && HasSpell("Haste"))
                     {
                         CastSpell(memberState.Name, "Haste");
+                        buffCooldowns[hasteCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
 
                 // Refresh
-                if (autoRefreshEnabled[memberIndex] && !targetBuffs["Refresh"].Any(b => memberState.Buffs.Contains(b)))
+                string refreshCooldownKey = $"{memberState.Name}:Refresh";
+                if (autoRefreshEnabled[memberIndex] && !targetBuffs["Refresh"].Any(b => memberState.Buffs.Contains(b)) && (!buffCooldowns.ContainsKey(refreshCooldownKey) || DateTime.Now >= buffCooldowns[refreshCooldownKey]))
                 {
                     string[] refresh_spells = { "Refresh", "Refresh II", "Refresh III" };
                     string spellToCast = refresh_spells[Form2.config.autoRefresh_Spell];
                     if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
+                        buffCooldowns[refreshCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
 
                 // Phalanx
-                if (autoPhalanx_IIEnabled[memberIndex] && !targetBuffs["Phalanx"].Any(b => memberState.Buffs.Contains(b)))
+                string phalanxCooldownKey = $"{memberState.Name}:Phalanx";
+                if (autoPhalanx_IIEnabled[memberIndex] && !targetBuffs["Phalanx"].Any(b => memberState.Buffs.Contains(b)) && (!buffCooldowns.ContainsKey(phalanxCooldownKey) || DateTime.Now >= buffCooldowns[phalanxCooldownKey]))
                 {
                     if (CheckSpellRecast("Phalanx II") == 0 && HasSpell("Phalanx II"))
                     {
                         CastSpell(memberState.Name, "Phalanx II");
+                        buffCooldowns[phalanxCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
 
                 // Protect
-                if (autoProtect_Enabled[memberIndex] && !targetBuffs["Protect"].Any(b => memberState.Buffs.Contains(b)))
+                string protectCooldownKey = $"{memberState.Name}:Protect";
+                if (autoProtect_Enabled[memberIndex] && !targetBuffs["Protect"].Any(b => memberState.Buffs.Contains(b)) && (!buffCooldowns.ContainsKey(protectCooldownKey) || DateTime.Now >= buffCooldowns[protectCooldownKey]))
                 {
                     string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
                     string spellToCast = protect_spells[Form2.config.autoProtect_Spell];
                     if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
+                        buffCooldowns[protectCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
 
                 // Shell
-                if (autoShell_Enabled[memberIndex] && !targetBuffs["Shell"].Any(b => memberState.Buffs.Contains(b)))
+                string shellCooldownKey = $"{memberState.Name}:Shell";
+                if (autoShell_Enabled[memberIndex] && !targetBuffs["Shell"].Any(b => memberState.Buffs.Contains(b)) && (!buffCooldowns.ContainsKey(shellCooldownKey) || DateTime.Now >= buffCooldowns[shellCooldownKey]))
                 {
                     string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
                     string spellToCast = shell_spells[Form2.config.autoShell_Spell];
                     if (CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
+                        buffCooldowns[shellCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
             }
         }
 
-        private string GetSpellForBuff(string buffName)
+        private string GetSpellForBuff(string buffName, string playerName)
         {
             if (buffName.Contains("Regen"))
             {
@@ -5451,9 +5465,14 @@ private void setinstance_Click(object sender, EventArgs e)
             }
             if (buffName.Contains("Haste"))
             {
-                // Prioritize Haste II if available and enabled
-                if (autoHaste_IIEnabled.Any(x => x) && HasSpell("Haste II")) return "Haste II";
-                return "Haste";
+                var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == playerName && p.Active != 0);
+                if (partyMember != null)
+                {
+                    byte memberIndex = partyMember.MemberNumber;
+                    if (autoHaste_IIEnabled[memberIndex] && HasSpell("Haste II")) return "Haste II";
+                    if (autoHasteEnabled[memberIndex] && HasSpell("Haste")) return "Haste";
+                }
+                return "Haste"; // Fallback
             }
             if (buffName.Contains("Protect"))
             {
@@ -5479,20 +5498,26 @@ private void setinstance_Click(object sender, EventArgs e)
             RecastRequest request;
             if (recastQueue.TryDequeue(out request))
             {
-                string spellToCast = GetSpellForBuff(request.BuffName);
+                string cooldownKey = $"{request.PlayerName}:{request.BuffName}";
+                if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey])
+                {
+                    recastQueue.Enqueue(request); // Re-queue for later
+                    return;
+                }
+
+                string spellToCast = GetSpellForBuff(request.BuffName, request.PlayerName);
 
                 if (!string.IsNullOrEmpty(spellToCast) && CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
                 {
-                    // Find the party member to ensure they are still valid
                     var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == request.PlayerName && p.Active != 0);
                     if (partyMember != null && castingPossible(partyMember.MemberNumber))
                     {
                         CastSpell(request.PlayerName, spellToCast);
+                        buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(5);
                     }
                 }
                 else
                 {
-                    // If the spell is not ready or known, re-queue the request for a later attempt
                     recastQueue.Enqueue(request);
                 }
             }
