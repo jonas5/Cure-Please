@@ -131,44 +131,54 @@ public:
             uint16_t actorIndex = GetIndexFromServerId(actorId);
             const char* actorName = (actorIndex != 0) ? entityMgr->GetName(actorIndex) : "Unknown";
 
+            uint32_t targetId = 0;
+            uint16_t targetIndex = 0;
+            const char* targetName = "Unknown";
+
             if (numTargets > 0)
             {
-                uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 12);
-                uint16_t targetIndex = GetIndexFromServerId(targetId);
-                const char* targetName = (targetIndex != 0) ? entityMgr->GetName(targetIndex) : "Unknown";
-
-                std::stringstream logMsg;
-                logMsg << "LOG|" << GetTimestamp() << " [Action] Actor: " << (actorName ? actorName : "Unknown");
-
-                // Spell Cast
-                if (id == 0x28 && category == 4)
-                {
-                    uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
-                    auto it = spells.find(spellId);
-                    if (it != spells.end()) {
-                        const Spell& spell = it->second;
-                        logMsg << ", Spell: " << spell.name << " (ID: " << spell.id << ")"
-                            << ", MP: " << spell.mp_cost
-                            << ", Cast Time: " << spell.cast_time << "s"
-                            << ", Recast: " << spell.recast_time << "s";
-                    } else {
-                        const ISpell* spell = resourceMgr->GetSpellById(spellId);
-                        const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
-                        logMsg << ", Spell: " << spellName << " (ID: " << spellId << ")";
-                    }
-                }
-                // Weapon Skill or Job Ability
-                else if (id == 0x29)
-                {
-                    uint16_t abilityId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
-                    const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
-                    const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
-                    logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
-                }
-
-                logMsg << ", Target: " << (targetName ? targetName : "Unknown") << ".\n";
-                WriteToPipe(logMsg.str());
+                targetId = *reinterpret_cast<const uint32_t*>(data + 12);
+                targetIndex = GetIndexFromServerId(targetId);
+                targetName = (targetIndex != 0) ? entityMgr->GetName(targetIndex) : "Unknown";
             }
+            else
+            {
+                targetId = actorId;
+                targetIndex = actorIndex;
+                targetName = actorName;
+            }
+
+            std::stringstream logMsg;
+            logMsg << "LOG|" << GetTimestamp() << " [Action] Actor: " << (actorName ? actorName : "Unknown");
+
+            // Spell Cast
+            if (id == 0x28 && category == 4)
+            {
+                uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
+                auto it = spells.find(spellId);
+                if (it != spells.end()) {
+                    const Spell& spell = it->second;
+                    logMsg << ", Spell: " << spell.name << " (ID: " << spell.id << ")"
+                        << ", MP: " << spell.mp_cost
+                        << ", Cast Time: " << spell.cast_time << "s"
+                        << ", Recast: " << spell.recast_time << "s";
+                } else {
+                    const ISpell* spell = resourceMgr->GetSpellById(spellId);
+                    const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
+                    logMsg << ", Spell: " << spellName << " (ID: " << spellId << ")";
+                }
+            }
+            // Weapon Skill or Job Ability
+            else if (id == 0x29)
+            {
+                uint16_t abilityId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
+                const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
+                const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
+                logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
+            }
+
+            logMsg << ", Target: " << (targetName ? targetName : "Unknown") << ".\n";
+            WriteToPipe(logMsg.str());
 
             // Handle own cast finish/interrupt/block for C# logic
             if (actorId == myServerId && id == 0x28)
