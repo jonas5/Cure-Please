@@ -9057,6 +9057,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
             if (FormWindowState.Minimized == WindowState)
             {
                 notifyIcon1.Visible = true;
+                notifyIcon1.BalloonTipTitle = "Cure Please";
+                notifyIcon1.BalloonTipText = "CurePlease has been minimized.";
                 notifyIcon1.ShowBalloonTip(500);
                 Hide();
             }
