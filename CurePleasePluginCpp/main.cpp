@@ -359,12 +359,15 @@ private:
 
                                 std::vector<int> buffs;
                                 if (entityIndex != 0) {
-                                    for (int j = 0; j < 32; ++j)
-                                    {
-                                        uint16_t buff_id = entityMgr->GetBuff(entityIndex, j);
-                                        if (buff_id != 0 && buff_id != 255)
+                                    const auto* player = entityMgr->GetPlayer(entityIndex);
+                                    if (player != nullptr) {
+                                        for (int j = 0; j < 32; ++j)
                                         {
-                                            buffs.push_back(buff_id);
+                                            uint16_t buff_id = player->Buffs[j];
+                                            if (buff_id != 0 && buff_id != 255)
+                                            {
+                                                buffs.push_back(buff_id);
+                                            }
                                         }
                                     }
                                 }
