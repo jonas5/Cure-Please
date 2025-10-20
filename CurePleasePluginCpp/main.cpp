@@ -100,40 +100,51 @@ public:
         uint32_t myServerId = party->GetMemberServerId(0);
         if (myServerId == 0) return false;
 
-        if (id == 0x28) // Action Packet
+        if (id == 0x28 || id == 0x29) // Action and Ability/WS packets
         {
-            uint32_t casterId = *reinterpret_cast<const uint32_t*>(data + 4);
+            auto entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+            auto resourceMgr = m_AshitaCore->GetResourceManager();
+            if (!entityMgr || !resourceMgr) return false;
+
+            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
             uint8_t numTargets = data[8];
             uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 82, 4));
 
-            // Handle spell cast completions for detailed logging
-            if (category == 4 && numTargets > 0)
+            uint16_t actorIndex = GetIndexFromServerId(actorId);
+            const char* actorName = (actorIndex != 0) ? entityMgr->GetName(actorIndex) : "Unknown";
+
+            if (numTargets > 0)
             {
-                auto entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
-                auto resourceMgr = m_AshitaCore->GetResourceManager();
-                if (entityMgr && resourceMgr)
+                uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 12);
+                uint16_t targetIndex = GetIndexFromServerId(targetId);
+                const char* targetName = (targetIndex != 0) ? entityMgr->GetName(targetIndex) : "Unknown";
+
+                std::stringstream logMsg;
+                logMsg << "LOG|" << GetTimestamp() << " [Action] Actor: " << (actorName ? actorName : "Unknown");
+
+                // Spell Cast
+                if (id == 0x28 && category == 4)
                 {
-                    uint16_t casterIndex = GetIndexFromServerId(casterId);
-                    const char* casterName = (casterIndex != 0) ? entityMgr->GetName(casterIndex) : "Unknown";
-
-                    uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 12);
-                    uint16_t targetIndex = GetIndexFromServerId(targetId);
-                    const char* targetName = (targetIndex != 0) ? entityMgr->GetName(targetIndex) : "Unknown";
-
                     uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 86, 10));
                     const ISpell* spell = resourceMgr->GetSpellById(spellId);
                     const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
-
-                    std::stringstream logMsg;
-                    logMsg << "LOG|" << GetTimestamp() << " [Action] Caster: " << (casterName ? casterName : "Unknown")
-                           << ", Spell: " << spellName << " (ID: " << spellId << ")"
-                           << ", Target: " << (targetName ? targetName : "Unknown") << ". (Duration not available in packet).\n";
-                    WriteToPipe(logMsg.str());
+                    logMsg << ", Spell: " << spellName << " (ID: " << spellId << ")";
                 }
+                // Weapon Skill or Job Ability
+                else if (id == 0x29)
+                {
+                    uint16_t abilityId = (uint16_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 86, 10));
+                    const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
+                    const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
+                    logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
+                }
+
+                logMsg << ", Target: " << (targetName ? targetName : "Unknown") << ".\n";
+                WriteToPipe(logMsg.str());
             }
 
             // Handle own cast finish/interrupt/block for C# logic
-            if (casterId == myServerId)
+            if (actorId == myServerId && id == 0x28)
             {
                 if (category == 4) // Magic Finish
                 {
