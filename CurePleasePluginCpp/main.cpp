@@ -135,26 +135,11 @@ public:
                 GetTimestamp().c_str(), actorId, targetId, spellId);
             WriteToPipe(buffer);
 
-        }
-        else if (id == 0x29) // Ability/WS packet
-        {
-            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
-            uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 8);
-            uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
-
-            char buffer[256];
-            snprintf(buffer, sizeof(buffer), "ABILITY|%s,ActorID:%u,TargetID:%u,ActionID:%u",
-                GetTimestamp().c_str(), actorId, targetId, abilityId);
-            WriteToPipe(buffer);
-        }
-
-        if (id == 0x28) // Action packet for player's own cast status
-        {
-            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
+            // Handle own cast finish/interrupt/block for C# logic
             uint32_t myServerId = m_AshitaCore->GetMemoryManager()->GetParty()->GetMemberServerId(0);
-
-            if (actorId == myServerId && id == 0x28)
+            if (actorId == myServerId)
             {
+                uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
                 if (category == 4) // Magic Finish
                 {
                     WriteToPipe("CAST_FINISH|0\n");
@@ -174,6 +159,17 @@ public:
                     }
                 }
             }
+        }
+        else if (id == 0x29) // Ability/WS packet
+        {
+            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
+            uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 8);
+            uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
+
+            char buffer[256];
+            snprintf(buffer, sizeof(buffer), "ABILITY|%s,ActorID:%u,TargetID:%u,ActionID:%u",
+                GetTimestamp().c_str(), actorId, targetId, abilityId);
+            WriteToPipe(buffer);
         }
         else if (id == 0x00E) // Chat Message
         {

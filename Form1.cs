@@ -9823,7 +9823,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private string GetAbilityNameById(ushort id)
         {
             if (_ELITEAPIPL == null) return "Unknown Ability";
-            var ability = _ELITEAPIPL.Resources.GetAbility(id, 0);
+            var ability = _ELITEAPIPL.Resources.GetAbility(id.ToString(), 0);
             return ability != null ? ability.Name[0] : $"Unknown Ability ({id})";
         }
     }
