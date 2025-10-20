@@ -85,6 +85,7 @@
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
         private PartyState partyState = new PartyState();
+        private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
 
         public class RecastRequest
         {
@@ -1565,6 +1566,10 @@
             _pipeClient.Disconnected += PipeClient_Disconnected;
             _pipeClient.MessageReceived += PipeClient_MessageReceived;
             _pipeClient.Connect();
+
+            buffUpdateTimer.Interval = 2000; // Update every 2 seconds
+            buffUpdateTimer.Tick += BuffUpdateTimer_Tick;
+            buffUpdateTimer.Start();
 
 
 
@@ -3429,12 +3434,32 @@ private void setinstance_Click(object sender, EventArgs e)
             }
 
             // Update PartyState with current party members
+            var allProcesses = GetFFXIProcesses(requireVisibleWindow: true);
+            var processMap = allProcesses.ToDictionary(p => p.MainWindowTitle, p => p.Id);
+
             for (int i = 0; i < 18; i++)
             {
                 var member = _ELITEAPIMonitored.Party.GetPartyMember((byte)i);
                 if (member != null && member.Active >= 1 && !string.IsNullOrEmpty(member.Name))
                 {
                     partyState.AddOrUpdateMember(member.Name, member.ID);
+
+                    if (!partyMemberAPIs.ContainsKey(member.Name))
+                    {
+                        if (processMap.ContainsKey(member.Name))
+                        {
+                            int processId = processMap[member.Name];
+                            try
+                            {
+                                partyMemberAPIs[member.Name] = new EliteAPI(processId);
+                                debug_MSG_show.AppendLine($"Successfully created EliteAPI instance for {member.Name} (PID: {processId})");
+                            }
+                            catch (Exception ex)
+                            {
+                                debug_MSG_show.AppendLine($"Failed to create EliteAPI for {member.Name}: {ex.Message}");
+                            }
+                        }
+                    }
                 }
             }
 
@@ -5358,10 +5383,9 @@ private void setinstance_Click(object sender, EventArgs e)
         private void CheckAndApplyBuffs()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
-            debug_MSG_show.AppendLine($"--- CheckAndApplyBuffs Cycle ---");
+
             foreach (var memberState in partyState.Members.Values)
             {
-                debug_MSG_show.AppendLine($"Checking buffs for {memberState.Name}. Current tracked buffs: [{string.Join(", ", memberState.Buffs)}]");
                 var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.ID == memberState.ServerId && p.Active != 0);
                 if (partyMember == null) continue;
 
@@ -9412,6 +9436,29 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 _debugForm.AppendLog(message);
             }
         }
+        private void BuffUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            if (partyMemberAPIs == null || partyMemberAPIs.Count == 0) return;
+
+            foreach (var entry in partyMemberAPIs)
+            {
+                string characterName = entry.Key;
+                EliteAPI api = entry.Value;
+
+                if (api != null && api.Player != null)
+                {
+                    try
+                    {
+                        var buffs = api.Player.GetPlayerInfo().Buffs.Select(b => (int)b).ToList();
+                        partyState.UpdateMemberBuffs(characterName, buffs);
+                    }
+                    catch (Exception ex)
+                    {
+                        debug_MSG_show.AppendLine($"Error updating buffs for {characterName}: {ex.Message}");
+                    }
+                }
+            }
+        }
         private void PipeClient_MessageReceived(string message)
         {
             if (InvokeRequired)
@@ -9470,24 +9517,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         castingSpell = string.Empty;
                         CastingBackground_Check = false;
                     }, TaskScheduler.FromCurrentSynchronizationContext());
-                    break;
-
-                case "BUFF_UPDATE":
-                    var buffParts = data.Split(new[] { ':' }, 2);
-                    if (buffParts.Length == 2)
-                    {
-                        string characterName = buffParts[0];
-                        string buffsString = buffParts[1];
-                        List<int> buffs = buffsString.Split(',').Select(int.Parse).ToList();
-                        partyState.UpdateMemberBuffs(characterName, buffs);
-
-                        // Keep old logic for now to avoid breaking anything
-                        lock (ActiveBuffs)
-                        {
-                            ActiveBuffs.RemoveAll(buf => buf.CharacterName == characterName);
-                            ActiveBuffs.Add(new BuffStorage { CharacterName = characterName, CharacterBuffs = buffsString });
-                        }
-                    }
                     break;
 
                 case "LOG":

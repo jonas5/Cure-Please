@@ -24,11 +24,9 @@ private:
     IAshitaCore* m_AshitaCore;
     HANDLE m_hPipe;
     std::thread m_PipeThread;
-    std::thread m_BuffThread;
     std::mutex m_PipeMutex;
     bool m_PipeConnected;
     std::atomic<bool> m_Shutdown;
-    std::atomic<bool> m_BuffThreadShutdown;
     bool m_isZoning;
 
     uint16_t GetIndexFromServerId(uint32_t serverId)
@@ -46,18 +44,13 @@ private:
     }
 
 public:
-    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false), m_BuffThreadShutdown(true), m_isZoning(false) {}
+    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false), m_isZoning(false) {}
     ~CurePleasePlugin()
     {
         m_Shutdown = true;
-        m_BuffThreadShutdown = true;
         if (m_PipeThread.joinable())
         {
             m_PipeThread.join();
-        }
-        if (m_BuffThread.joinable())
-        {
-            m_BuffThread.join();
         }
     }
 
@@ -77,7 +70,6 @@ public:
     void Release() override
     {
         m_Shutdown = true;
-        m_BuffThreadShutdown = true;
         HANDLE hDummyPipe = CreateFile(
             L"\\\\.\\pipe\\CurePleasePipe", GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
         if (hDummyPipe != INVALID_HANDLE_VALUE)
@@ -87,10 +79,6 @@ public:
         if (m_PipeThread.joinable())
         {
             m_PipeThread.join();
-        }
-        if (m_BuffThread.joinable())
-        {
-            m_BuffThread.join();
         }
     }
 
@@ -296,12 +284,6 @@ private:
                 }
                 WriteToPipe("LOG|" + GetTimestamp() + " Packet listener connected.\n");
 
-                m_BuffThreadShutdown = false;
-                if (!m_BuffThread.joinable())
-                {
-                    m_BuffThread = std::thread(&CurePleasePlugin::SendPartyBuffs, this);
-                }
-
                 while (!m_Shutdown)
                 {
                     DWORD dwError = 0;
@@ -317,12 +299,6 @@ private:
                 }
             }
 
-            m_BuffThreadShutdown = true;
-            if (m_BuffThread.joinable())
-            {
-                m_BuffThread.join();
-            }
-
             {
                 std::lock_guard<std::mutex> lock(m_PipeMutex);
                 m_PipeConnected = false;
@@ -333,67 +309,6 @@ private:
                CloseHandle(m_hPipe);
                m_hPipe = INVALID_HANDLE_VALUE;
             }
-        }
-    }
-
-    void SendPartyBuffs()
-    {
-        while (!m_BuffThreadShutdown)
-        {
-            if (m_PipeConnected && m_AshitaCore && !m_isZoning)
-            {
-                auto* party = m_AshitaCore->GetMemoryManager()->GetParty();
-                auto* entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
-
-                if (party && entityMgr)
-                {
-                    for (int i = 0; i < 18; ++i)
-                    {
-                        if (party->GetMemberIsActive(i))
-                        {
-                            const char* name = party->GetMemberName(i);
-                            if (name && strlen(name) > 0)
-                            {
-                                uint32_t serverId = party->GetMemberServerId(i);
-                                uint16_t entityIndex = GetIndexFromServerId(serverId);
-
-                                std::vector<int> buffs;
-                                if (entityIndex != 0) {
-                                    const auto* player = entityMgr->GetPlayer(entityIndex);
-                                    if (player != nullptr) {
-                                        for (int j = 0; j < 32; ++j)
-                                        {
-                                            uint16_t buff_id = player->Buffs[j];
-                                            if (buff_id != 0 && buff_id != 255)
-                                            {
-                                                buffs.push_back(buff_id);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // Always send an update, even if buffs are gone
-                                std::string buff_str;
-                                for (size_t k = 0; k < buffs.size(); ++k)
-                                {
-                                    buff_str += std::to_string(buffs[k]);
-                                    if (k < buffs.size() - 1)
-                                    {
-                                        buff_str += ",";
-                                    }
-                                }
-                                std::string message = "BUFF_UPDATE|" + std::string(name) + ":" + buff_str + "\n";
-                                WriteToPipe(message);
-
-                                // Raw diagnostic log
-                                std::string logMsg = "LOG|" + GetTimestamp() + " [RAW BUFFS] Player: " + std::string(name) + ", IDs: [" + buff_str + "]\n";
-                                WriteToPipe(logMsg);
-                            }
-                        }
-                    }
-                }
-            }
-            std::this_thread::sleep_for(std::chrono::seconds(2));
         }
     }
 
