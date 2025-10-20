@@ -24,9 +24,11 @@ private:
     IAshitaCore* m_AshitaCore;
     HANDLE m_hPipe;
     std::thread m_PipeThread;
+    std::thread m_BuffThread;
     std::mutex m_PipeMutex;
     bool m_PipeConnected;
     std::atomic<bool> m_Shutdown;
+    std::atomic<bool> m_BuffThreadShutdown;
     bool m_isZoning;
 
     uint16_t GetIndexFromServerId(uint32_t serverId)
@@ -44,13 +46,18 @@ private:
     }
 
 public:
-    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false), m_isZoning(false) {}
+    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false), m_BuffThreadShutdown(true), m_isZoning(false) {}
     ~CurePleasePlugin()
     {
+        m_Shutdown = true;
+        m_BuffThreadShutdown = true;
         if (m_PipeThread.joinable())
         {
-            m_Shutdown = true;
             m_PipeThread.join();
+        }
+        if (m_BuffThread.joinable())
+        {
+            m_BuffThread.join();
         }
     }
 
@@ -70,6 +77,7 @@ public:
     void Release() override
     {
         m_Shutdown = true;
+        m_BuffThreadShutdown = true;
         HANDLE hDummyPipe = CreateFile(
             L"\\\\.\\pipe\\CurePleasePipe", GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
         if (hDummyPipe != INVALID_HANDLE_VALUE)
@@ -79,6 +87,10 @@ public:
         if (m_PipeThread.joinable())
         {
             m_PipeThread.join();
+        }
+        if (m_BuffThread.joinable())
+        {
+            m_BuffThread.join();
         }
     }
 
@@ -179,52 +191,6 @@ public:
                     {
                         WriteToPipe("CAST_BLOCKED|0\n");
                         WriteToPipe("LOG|" + GetTimestamp() + " Spell cast blocked.\n");
-                    }
-                }
-            }
-        }
-        else if (id == 0x076) // Buff packet
-        {
-            WriteToPipe("LOG|" + GetTimestamp() + " Processing status effect update (0x076).\n");
-            auto* entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
-            if (!entityMgr) return false;
-
-            for (int k = 0; k < 5; k++)
-            {
-                uint32_t Uid = *reinterpret_cast<const uint32_t*>(data + 8 + (k * 0x30));
-                if (Uid != 0)
-                {
-                    std::vector<int> buffs;
-                    for (int i = 0; i < 32; i++)
-                    {
-                        int current_buff = data[k * 48 + 5 + 16 + i] + 256 * ((data[k * 48 + 5 + 8 + (i / 4)] >> ((i % 4) * 2)) & 3);
-                        if (current_buff != 255 && current_buff != 0)
-                        {
-                            buffs.push_back(current_buff);
-                        }
-                    }
-
-                    if (!buffs.empty())
-                    {
-                        uint16_t entityIndex = GetIndexFromServerId(Uid);
-                        if (entityIndex != 0)
-                        {
-                            const char* characterName = entityMgr->GetName(entityIndex);
-                            if (characterName)
-                            {
-                                std::string buff_str;
-                                for (size_t i = 0; i < buffs.size(); ++i)
-                                {
-                                    buff_str += std::to_string(buffs[i]);
-                                    if (i < buffs.size() - 1)
-                                    {
-                                        buff_str += ",";
-                                    }
-                                }
-                                std::string message = "BUFF_UPDATE|" + std::string(characterName) + ":" + buff_str + "\n";
-                                WriteToPipe(message);
-                            }
-                        }
                     }
                 }
             }
@@ -330,6 +296,12 @@ private:
                 }
                 WriteToPipe("LOG|" + GetTimestamp() + " Packet listener connected.\n");
 
+                m_BuffThreadShutdown = false;
+                if (!m_BuffThread.joinable())
+                {
+                    m_BuffThread = std::thread(&CurePleasePlugin::SendPartyBuffs, this);
+                }
+
                 while (!m_Shutdown)
                 {
                     DWORD dwError = 0;
@@ -345,6 +317,12 @@ private:
                 }
             }
 
+            m_BuffThreadShutdown = true;
+            if (m_BuffThread.joinable())
+            {
+                m_BuffThread.join();
+            }
+
             {
                 std::lock_guard<std::mutex> lock(m_PipeMutex);
                 m_PipeConnected = false;
@@ -355,6 +333,63 @@ private:
                CloseHandle(m_hPipe);
                m_hPipe = INVALID_HANDLE_VALUE;
             }
+        }
+    }
+
+    void SendPartyBuffs()
+    {
+        while (!m_BuffThreadShutdown)
+        {
+            if (m_PipeConnected && m_AshitaCore && !m_isZoning)
+            {
+                auto* party = m_AshitaCore->GetMemoryManager()->GetParty();
+                auto* entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+                auto* resourceMgr = m_AshitaCore->GetResourceManager();
+
+                if (party && entityMgr && resourceMgr)
+                {
+                    for (int i = 0; i < 18; ++i)
+                    {
+                        if (party->GetMemberIsActive(i))
+                        {
+                            const char* name = party->GetMemberName(i);
+                            if (name && strlen(name) > 0)
+                            {
+                                std::vector<int> buffs;
+                                for (int j = 0; j < 32; ++j)
+                                {
+                                    uint16_t buff_id = party->GetMemberBuff(i, j);
+                                    if (buff_id != 0 && buff_id != 255)
+                                    {
+                                        buffs.push_back(buff_id);
+                                        const IStatusEffect* effect = resourceMgr->GetStatusEffect(buff_id);
+                                        if (effect != nullptr && effect->Name[0] != nullptr) {
+                                            std::string logMsg = "LOG|" + GetTimestamp() + " [Buff Discovery] Player: " + std::string(name) + ", Buff: " + effect->Name[0] + " (ID: " + std::to_string(buff_id) + ")\n";
+                                            WriteToPipe(logMsg);
+                                        }
+                                    }
+                                }
+
+                                if (!buffs.empty())
+                                {
+                                    std::string buff_str;
+                                    for (size_t k = 0; k < buffs.size(); ++k)
+                                    {
+                                        buff_str += std::to_string(buffs[k]);
+                                        if (k < buffs.size() - 1)
+                                        {
+                                            buff_str += ",";
+                                        }
+                                    }
+                                    std::string message = "BUFF_UPDATE|" + std::string(name) + ":" + buff_str + "\n";
+                                    WriteToPipe(message);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(2));
         }
     }
 

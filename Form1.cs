@@ -5358,9 +5358,10 @@ private void setinstance_Click(object sender, EventArgs e)
         private void CheckAndApplyBuffs()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
-
+            debug_MSG_show.AppendLine($"--- CheckAndApplyBuffs Cycle ---");
             foreach (var memberState in partyState.Members.Values)
             {
+                debug_MSG_show.AppendLine($"Checking buffs for {memberState.Name}. Current tracked buffs: [{string.Join(", ", memberState.Buffs)}]");
                 var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.ID == memberState.ServerId && p.Active != 0);
                 if (partyMember == null) continue;
 
