@@ -128,6 +128,11 @@ public:
             uint8_t numTargets = data[8];
             uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
 
+            // Diagnostic log for category
+            std::stringstream categoryLog;
+            categoryLog << "LOG|" << GetTimestamp() << " [Action Packet] ID: 0x" << std::hex << id << ", Category: " << (int)category << "\n";
+            WriteToPipe(categoryLog.str());
+
             uint16_t actorIndex = GetIndexFromServerId(actorId);
             const char* actorName = (actorIndex != 0) ? entityMgr->GetName(actorIndex) : "Unknown";
 
