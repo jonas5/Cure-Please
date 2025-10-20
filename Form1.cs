@@ -5346,7 +5346,7 @@ private void setinstance_Click(object sender, EventArgs e)
             { "Shell", 41 }
         };
 
-        private async Task CheckAndApplyBuffs()
+        private void CheckAndApplyBuffs()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
 
@@ -5439,7 +5439,7 @@ private void setinstance_Click(object sender, EventArgs e)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
-            await CheckAndApplyBuffs();
+            CheckAndApplyBuffs();
             CheckEngagedStatus_Hate();
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
@@ -8090,7 +8090,6 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
 
-        public event Action<string> LogMessageReceived;
         private DebugForm _debugForm;
         private void Debug_Click(object sender, EventArgs e)
         {
