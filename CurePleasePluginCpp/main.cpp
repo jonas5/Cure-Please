@@ -13,7 +13,7 @@
 const char* g_PluginName = "CurePleasePluginCpp";
 const char* g_PluginAuthor = "Jules";
 const char* g_PluginDescription = "Packet listener for CurePlease.";
-const double g_PluginVersion = 1.8;
+const double g_PluginVersion = 2.6;
 
 // Forward Declarations
 std::string GetTimestamp();
@@ -119,48 +119,28 @@ public:
 
         if (id == 0x28) // Action packet
         {
+            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
+
             uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
+            uint16_t param = *reinterpret_cast<const uint16_t*>(data + 14);
 
-            if (category == 4) // Magic Finish
-            {
-                uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
-                uint16_t spellId = *reinterpret_cast<const uint16_t*>(data + 28);
+            if (param == 28787) {
+                WriteToPipe("CAST_INTERRUPT|Magic interrupted.\n");
+            } else if (param == 24931) {
+                WriteToPipe("CAST_BLOCKED|Magic blocked.\n");
+            } else if (category == 3) {
+                WriteToPipe("CAST_START|Magic cast started.\n");
+            } else if (category == 4 && sizeChunk > 0) { // Magic Finish
+                uint32_t finishActorId = *reinterpret_cast<const uint32_t*>(dataChunk + 8);
+                uint16_t actionId = (uint16_t)Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(dataChunk), 96, 10);
+                uint32_t targetId = *reinterpret_cast<const uint32_t*>(dataChunk + 16);
+                if (targetId == 0) targetId = finishActorId;
 
-                uint32_t targetId = 0;
-                uint8_t numTargets = data[8];
-                if (numTargets > 0) {
-                    targetId = *reinterpret_cast<const uint32_t*>(data + 32);
-                } else {
-                    targetId = actorId; // Self-cast
-                }
+                std::stringstream ss;
+                ss << "ACTION|" << finishActorId << "|" << targetId << "|" << actionId << "\n";
+                WriteToPipe(ss.str());
 
-                char buffer[256];
-                snprintf(buffer, sizeof(buffer), "ACTION|%s,ActorID:%u,TargetID:%u,ActionID:%u\n",
-                    GetTimestamp().c_str(), actorId, targetId, spellId);
-                WriteToPipe(buffer);
-
-                if (actorId == myServerId)
-                {
-                    WriteToPipe("CAST_FINISH|0\n");
-                }
-            }
-            else if (category == 8) // Action Message (Interrupted, Blocked, etc.)
-            {
-                uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
-                if (actorId == myServerId)
-                {
-                    uint16_t param = *reinterpret_cast<const uint16_t*>(data + 8);
-                    if (param == 28787)
-                    {
-                        WriteToPipe("CAST_INTERRUPT|0\n");
-                        WriteToPipe("LOG|" + GetTimestamp() + " Spell cast interrupted.\n");
-                    }
-                    else if (param == 24931)
-                    {
-                        WriteToPipe("CAST_BLOCKED|0\n");
-                        WriteToPipe("LOG|" + GetTimestamp() + " Spell cast blocked.\n");
-                    }
-                }
+                WriteToPipe("CAST_FINISH|Magic cast finished.\n");
             }
         }
         else if (id == 0x29) // Ability/WS packet
@@ -168,11 +148,11 @@ public:
             uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
             uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 8);
             uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
+            if (targetId == 0) targetId = actorId;
 
-            char buffer[256];
-            snprintf(buffer, sizeof(buffer), "ABILITY|%s,ActorID:%u,TargetID:%u,ActionID:%u\n",
-                GetTimestamp().c_str(), actorId, targetId, abilityId);
-            WriteToPipe(buffer);
+            std::stringstream ss;
+            ss << "ABILITY|" << actorId << "|" << targetId << "|" << abilityId << "\n";
+            WriteToPipe(ss.str());
         }
         else if (id == 0x00E) // Chat Message
         {

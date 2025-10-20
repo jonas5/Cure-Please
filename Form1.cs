@@ -9524,28 +9524,47 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     UpdateDebugForm(data);
                     break;
                 case "ACTION":
-                case "ABILITY":
-                    try
+                    if (parts.Length == 4)
                     {
-                        var actionParts = data.Split(',');
-                        var timestamp = actionParts[0];
-                        uint actorId = uint.Parse(actionParts[1].Split(':')[1]);
-                        uint targetId = uint.Parse(actionParts[2].Split(':')[1]);
-                        ushort actionId = ushort.Parse(actionParts[3].Split(':')[1]);
+                        if (uint.TryParse(parts[1], out uint actorId) &&
+                            uint.TryParse(parts[2], out uint targetId) &&
+                            ushort.TryParse(parts[3], out ushort actionId))
+                        {
+                            string actorName = GetEntityNameById(actorId);
+                            string targetName = GetEntityNameById(targetId);
+                            string spellName = GetSpellNameById(actionId);
 
-                        string actorName = GetEntityNameById(actorId);
-                        string targetName = GetEntityNameById(targetId);
-                        string actionName = command == "ACTION" ? GetSpellNameById(actionId) : GetAbilityNameById(actionId);
-
-                        string formattedMessage = $"{timestamp} [{command}] {actionName} - Actor: {actorName}, Target: {targetName}";
-                        debug_MSG_show.AppendLine(formattedMessage);
-                        UpdateDebugForm(formattedMessage);
+                            string logMessage = $"[ACTION] Actor: {actorName} ({actorId}), Target: {targetName} ({targetId}), Spell: {spellName} ({actionId})";
+                            debug_MSG_show.AppendLine(logMessage);
+                            UpdateDebugForm(logMessage);
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        string errorMsg = $"Error parsing {command} log: '{data}'\n{ex.ToString()}";
-                        debug_MSG_show.AppendLine(errorMsg);
-                        UpdateDebugForm(errorMsg);
+                        debug_MSG_show.AppendLine($"[ACTION] Unexpected message format: {message}");
+                        UpdateDebugForm($"[ACTION] Unexpected message format: {message}");
+                    }
+                    break;
+                case "ABILITY":
+                    if (parts.Length == 4)
+                    {
+                        if (uint.TryParse(parts[1], out uint actorId) &&
+                            uint.TryParse(parts[2], out uint targetId) &&
+                            ushort.TryParse(parts[3], out ushort abilityId))
+                        {
+                            string actorName = GetEntityNameById(actorId);
+                            string targetName = GetEntityNameById(targetId);
+                            string abilityName = GetAbilityNameById(abilityId);
+
+                            string logMessage = $"[ABILITY] Actor: {actorName} ({actorId}), Target: {targetName} ({targetId}), Ability: {abilityName} ({abilityId})";
+                            debug_MSG_show.AppendLine(logMessage);
+                            UpdateDebugForm(logMessage);
+                        }
+                    }
+                    else
+                    {
+                        debug_MSG_show.AppendLine($"[ABILITY] Unexpected message format: {message}");
+                        UpdateDebugForm($"[ABILITY] Unexpected message format: {message}");
                     }
                     break;
 
@@ -9823,7 +9842,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private string GetAbilityNameById(ushort id)
         {
             if (_ELITEAPIPL == null) return "Unknown Ability";
-            var ability = _ELITEAPIPL.Resources.GetAbility(id.ToString(), 0);
+            var ability = _ELITEAPIPL.Resources.GetAbility(id);
             return ability != null ? ability.Name[0] : $"Unknown Ability ({id})";
         }
     }
