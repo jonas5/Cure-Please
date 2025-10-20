@@ -6,17 +6,23 @@ using System.Threading.Tasks;
 
 namespace CurePlease
 {
+    public class ActiveBuff
+    {
+        public int Id { get; set; }
+        public DateTime Expiration { get; set; }
+    }
+
     public class PartyMemberState
     {
         public string Name { get; set; }
         public uint ServerId { get; set; }
-        public List<int> Buffs { get; set; }
+        public List<ActiveBuff> Buffs { get; set; }
 
         public PartyMemberState(string name, uint serverId)
         {
             Name = name;
             ServerId = serverId;
-            Buffs = new List<int>();
+            Buffs = new List<ActiveBuff>();
         }
     }
 
@@ -49,12 +55,20 @@ namespace CurePlease
             }
         }
 
-        public void UpdateMemberBuffs(string name, List<int> buffs)
+        public void UpdateMemberBuffs(string name, List<ActiveBuff> buffs)
         {
             if (Members.ContainsKey(name))
             {
                 Members[name].Buffs = buffs;
             }
+        }
+        public PartyMemberState GetPartyMember(string name)
+        {
+            if (Members.TryGetValue(name, out PartyMemberState member))
+            {
+                return member;
+            }
+            return null;
         }
     }
 }
