@@ -27,6 +27,7 @@ private:
     std::mutex m_PipeMutex;
     bool m_PipeConnected;
     std::atomic<bool> m_Shutdown;
+    bool m_isZoning;
 
     uint16_t GetIndexFromServerId(uint32_t serverId)
     {
@@ -43,7 +44,7 @@ private:
     }
 
 public:
-    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false) {}
+    CurePleasePlugin() : m_AshitaCore(nullptr), m_hPipe(INVALID_HANDLE_VALUE), m_PipeConnected(false), m_Shutdown(false), m_isZoning(false) {}
     ~CurePleasePlugin()
     {
         if (m_PipeThread.joinable())
@@ -88,6 +89,22 @@ public:
 
     bool HandleIncomingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified, uint32_t sizeChunk, const uint8_t* dataChunk, bool injected, bool blocked) override
     {
+        if (id == 0x0B) {
+            m_isZoning = true;
+            WriteToPipe("LOG|" + GetTimestamp() + " Zoning started. Pausing packet processing.\n");
+            return false;
+        }
+
+        if (id == 0x0A) {
+            m_isZoning = false;
+            WriteToPipe("LOG|" + GetTimestamp() + " Zoning finished. Resuming packet processing.\n");
+            return false;
+        }
+
+        if (m_isZoning) {
+            return false;
+        }
+
         if (!m_PipeConnected || !m_AshitaCore) return false;
 
         std::stringstream ss;
