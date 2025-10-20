@@ -125,7 +125,7 @@ public:
 
             uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
             uint8_t numTargets = data[8];
-            uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 82, 4));
+            uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
 
             uint16_t actorIndex = GetIndexFromServerId(actorId);
             const char* actorName = (actorIndex != 0) ? entityMgr->GetName(actorIndex) : "Unknown";
@@ -142,7 +142,7 @@ public:
                 // Spell Cast
                 if (id == 0x28 && category == 4)
                 {
-                    uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 86, 10));
+                    uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
                     const ISpell* spell = resourceMgr->GetSpellById(spellId);
                     const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
                     logMsg << ", Spell: " << spellName << " (ID: " << spellId << ")";
@@ -150,7 +150,7 @@ public:
                 // Weapon Skill or Job Ability
                 else if (id == 0x29)
                 {
-                    uint16_t abilityId = (uint16_t)(Ashita::BinaryData::UnpackBitsBE(const_cast<uint8_t*>(data), 86, 10));
+                    uint16_t abilityId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
                     const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
                     const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
                     logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
