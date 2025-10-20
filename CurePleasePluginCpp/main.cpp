@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <sstream>
 #include <atomic>
+#include "spells.h"
 
 // Plugin Information
 const char* g_PluginName = "CurePleasePluginCpp";
@@ -143,9 +144,18 @@ public:
                 if (id == 0x28 && category == 4)
                 {
                     uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
-                    const ISpell* spell = resourceMgr->GetSpellById(spellId);
-                    const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
-                    logMsg << ", Spell: " << spellName << " (ID: " << spellId << ")";
+                    auto it = spells.find(spellId);
+                    if (it != spells.end()) {
+                        const Spell& spell = it->second;
+                        logMsg << ", Spell: " << spell.name << " (ID: " << spell.id << ")"
+                            << ", MP: " << spell.mp_cost
+                            << ", Cast Time: " << spell.cast_time << "s"
+                            << ", Recast: " << spell.recast_time << "s";
+                    } else {
+                        const ISpell* spell = resourceMgr->GetSpellById(spellId);
+                        const char* spellName = (spell != nullptr && spell->Name[2] != nullptr) ? spell->Name[2] : "Unknown Spell";
+                        logMsg << ", Spell: " << spellName << " (ID: " << spellId << ")";
+                    }
                 }
                 // Weapon Skill or Job Ability
                 else if (id == 0x29)
