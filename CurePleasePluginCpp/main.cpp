@@ -130,7 +130,11 @@ public:
 
             // Diagnostic log for category
             std::stringstream categoryLog;
-            categoryLog << "LOG|" << GetTimestamp() << " [Action Packet] ID: 0x" << std::hex << id << ", Category: " << (int)category << "\n";
+            categoryLog << "LOG|" << GetTimestamp() << " [Action Packet] ID: 0x" << std::hex << id << ", Category: " << (int)category << ". Data:";
+            for (int i = 0; i < 64 && i < size; ++i) {
+                categoryLog << " " << std::setw(2) << std::setfill('0') << (int)data[i];
+            }
+            categoryLog << "\n";
             WriteToPipe(categoryLog.str());
 
             uint16_t actorIndex = GetIndexFromServerId(actorId);
