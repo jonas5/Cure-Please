@@ -86,6 +86,14 @@
         private int lockedTargetId = 0;
         private PartyState partyState = new PartyState();
 
+        public class RecastRequest
+        {
+            public string PlayerName { get; set; }
+            public string BuffName { get; set; }
+        }
+
+        private System.Collections.Concurrent.ConcurrentQueue<RecastRequest> recastQueue = new System.Collections.Concurrent.ConcurrentQueue<RecastRequest>();
+
         // BARD SONG VARIABLES
         private int song_casting = 0;
 
@@ -5434,8 +5442,65 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
 
+        private string GetSpellForBuff(string buffName)
+        {
+            if (buffName.Contains("Regen"))
+            {
+                string[] regen_spells = { "Regen", "Regen II", "Regen III", "Regen IV", "Regen V" };
+                return regen_spells[Form2.config.autoRegen_Spell];
+            }
+            if (buffName.Contains("Haste"))
+            {
+                // Prioritize Haste II if available and enabled
+                if (autoHaste_IIEnabled.Any(x => x) && HasSpell("Haste II")) return "Haste II";
+                return "Haste";
+            }
+            if (buffName.Contains("Protect"))
+            {
+                string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
+                return protect_spells[Form2.config.autoProtect_Spell];
+            }
+            if (buffName.Contains("Shell"))
+            {
+                string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
+                return shell_spells[Form2.config.autoShell_Spell];
+            }
+            if (buffName.Contains("Phalanx"))
+            {
+                return "Phalanx II";
+            }
+            return null;
+        }
+
+        private void ProcessRecastQueue()
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check) return;
+
+            RecastRequest request;
+            if (recastQueue.TryDequeue(out request))
+            {
+                string spellToCast = GetSpellForBuff(request.BuffName);
+
+                if (!string.IsNullOrEmpty(spellToCast) && CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
+                {
+                    // Find the party member to ensure they are still valid
+                    var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == request.PlayerName && p.Active != 0);
+                    if (partyMember != null && castingPossible(partyMember.MemberNumber))
+                    {
+                        CastSpell(request.PlayerName, spellToCast);
+                    }
+                }
+                else
+                {
+                    // If the spell is not ready or known, re-queue the request for a later attempt
+                    recastQueue.Enqueue(request);
+                }
+            }
+        }
+
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            ProcessRecastQueue();
             CheckAndApplyBuffs();
             CheckEngagedStatus_Hate();
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
@@ -9402,6 +9467,16 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 case "LOG":
                     debug_MSG_show.AppendLine(data);
                     UpdateDebugForm(data);
+                    break;
+
+                case "BUFF_FADE":
+                    var fadeParts = data.Split(':');
+                    if (fadeParts.Length == 2)
+                    {
+                        string playerName = fadeParts[0];
+                        string buffName = fadeParts[1];
+                        recastQueue.Enqueue(new RecastRequest { PlayerName = playerName, BuffName = buffName });
+                    }
                     break;
             }
         }

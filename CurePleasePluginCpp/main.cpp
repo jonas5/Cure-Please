@@ -212,6 +212,65 @@ public:
                 }
             }
         }
+        else if (id == 0x00E) // Chat Message
+        {
+            if (size <= 4) return false;
+
+            // The message starts at offset 4.
+            const char* start = reinterpret_cast<const char*>(data + 4);
+            const char* end = (const char*)memchr(start, '\0', size - 4);
+            size_t len = (end == nullptr) ? (size - 4) : (end - start);
+            std::string message(start, len);
+
+            // Clean the FFXI message string
+            std::string cleanedMessage;
+            for (size_t i = 0; i < message.length(); ++i) {
+                if (static_cast<unsigned char>(message[i]) == 0xEF || static_cast<unsigned char>(message[i]) == 0x1E) {
+                    i += 2; // Skip multi-byte control codes
+                } else if (static_cast<unsigned char>(message[i]) >= 32) {
+                    cleanedMessage += message[i];
+                }
+            }
+
+            // Check for buff fade messages
+            const std::string wearOffStr = "The effect of ";
+            size_t pos = cleanedMessage.find(wearOffStr);
+            if (pos != std::string::npos)
+            {
+                size_t buffStart = pos + wearOffStr.length();
+                const std::string wearOffMidStr = " wears off ";
+                size_t buffEnd = cleanedMessage.find(wearOffMidStr);
+
+                if (buffEnd != std::string::npos)
+                {
+                    std::string buffName = cleanedMessage.substr(buffStart, buffEnd - buffStart);
+
+                    size_t playerStart = buffEnd + wearOffMidStr.length();
+                    std::string playerName = cleanedMessage.substr(playerStart);
+                    if (!playerName.empty() && playerName.back() == '.')
+                    {
+                        playerName.pop_back();
+                    }
+
+                    const std::vector<std::string> targetBuffs = {"Regen", "Haste", "Protect", "Shell", "Phalanx"};
+                    bool isTargetBuff = false;
+                    for(const auto& target : targetBuffs) {
+                        if (buffName.find(target) != std::string::npos) {
+                            isTargetBuff = true;
+                            break;
+                        }
+                    }
+
+                    if (isTargetBuff) {
+                        std::string pipeMsg = "BUFF_FADE|" + playerName + ":" + buffName + "\n";
+                        WriteToPipe(pipeMsg);
+
+                        std::string logMsg = "LOG|" + GetTimestamp() + " [Buff Fade] Player: " + playerName + ", Buff: " + buffName + "\n";
+                        WriteToPipe(logMsg);
+                    }
+                }
+            }
+        }
         return false;
     }
 
