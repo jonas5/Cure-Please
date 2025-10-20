@@ -128,15 +128,6 @@ public:
             uint8_t numTargets = data[8];
             uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
 
-            // Diagnostic log for category
-            std::stringstream categoryLog;
-            categoryLog << "LOG|" << GetTimestamp() << " [Action Packet] ID: 0x" << std::hex << id << ", Category: " << (int)category << ". Data:";
-            for (int i = 0; i < 64 && i < size; ++i) {
-                categoryLog << " " << std::setw(2) << std::setfill('0') << (int)data[i];
-            }
-            categoryLog << "\n";
-            WriteToPipe(categoryLog.str());
-
             uint16_t actorIndex = GetIndexFromServerId(actorId);
             const char* actorName = (actorIndex != 0) ? entityMgr->GetName(actorIndex) : "Unknown";
 
@@ -180,7 +171,7 @@ public:
             // Weapon Skill or Job Ability
             else if (id == 0x29)
             {
-                uint16_t abilityId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
+                    uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
                 const IAbility* ability = resourceMgr->GetAbilityById(abilityId);
                 const char* abilityName = (ability != nullptr && ability->Name[2] != nullptr) ? ability->Name[2] : "Unknown Ability";
                 logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
