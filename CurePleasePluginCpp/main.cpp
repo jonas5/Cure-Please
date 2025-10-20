@@ -14,7 +14,7 @@
 const char* g_PluginName = "CurePleasePluginCpp";
 const char* g_PluginAuthor = "Jules";
 const char* g_PluginDescription = "Packet listener for CurePlease.";
-const double g_PluginVersion = 1.4;
+const double g_PluginVersion = 1.5;
 
 // Forward Declarations
 std::string GetTimestamp();
@@ -133,29 +133,20 @@ public:
             uint8_t numTargets = actionData[8];
             uint8_t category = (id == 0x28) ? (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(actionData), 82, 4)) : 0;
 
-            uint16_t actorIndex = GetIndexFromServerId(actorId);
-            const char* actorName = (actorIndex != 0) ? entityMgr->GetName(actorIndex) : "Unknown";
-
             uint32_t targetId = 0;
-            uint16_t targetIndex = 0;
-            const char* targetName = "Unknown";
 
             if (numTargets > 0)
             {
                 if (actionSize < 16) return false;
                 targetId = *reinterpret_cast<const uint32_t*>(actionData + 12);
-                targetIndex = GetIndexFromServerId(targetId);
-                targetName = (targetIndex != 0) ? entityMgr->GetName(targetIndex) : "Unknown";
             }
             else
             {
                 targetId = actorId;
-                targetIndex = actorIndex;
-                targetName = actorName;
             }
 
             std::stringstream logMsg;
-            logMsg << "LOG|" << GetTimestamp() << " [Action] Actor: " << (actorName ? actorName : "Unknown");
+            logMsg << "LOG|" << GetTimestamp() << " [Action] ActorID: " << actorId;
 
             // Spell Cast
             if (id == 0x28 && category == 4)
@@ -184,7 +175,7 @@ public:
                 logMsg << ", Ability: " << abilityName << " (ID: " << abilityId << ")";
             }
 
-            logMsg << ", Target: " << (targetName ? targetName : "Unknown") << ".\n";
+            logMsg << ", TargetID: " << targetId << ".\n";
             WriteToPipe(logMsg.str());
 
             // Handle own cast finish/interrupt/block for C# logic

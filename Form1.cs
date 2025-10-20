@@ -9520,8 +9520,28 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     break;
 
                 case "LOG":
-                    debug_MSG_show.AppendLine(data);
-                    UpdateDebugForm(data);
+                    if (data.Contains("[Action]"))
+                    {
+                        var parts = data.Split(new[] { "ActorID: ", ", ", "TargetID: ", "." }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length >= 4)
+                        {
+                            uint actorId = uint.Parse(parts[1]);
+                            string spellInfo = parts[2];
+                            uint targetId = uint.Parse(parts[3]);
+
+                            string actorName = GetEntityNameById(actorId);
+                            string targetName = GetEntityNameById(targetId);
+
+                            string formattedMessage = $"{parts[0]} Actor: {actorName}, {spellInfo}, Target: {targetName}.";
+                            debug_MSG_show.AppendLine(formattedMessage);
+                            UpdateDebugForm(formattedMessage);
+                        }
+                    }
+                    else
+                    {
+                        debug_MSG_show.AppendLine(data);
+                        UpdateDebugForm(data);
+                    }
                     break;
 
                 case "BUFF_FADE":
@@ -9772,6 +9792,20 @@ private void updateInstances_Tick(object sender, EventArgs e)
         public void ClearDebugMessages()
         {
             debug_MSG_show.Clear();
+        }
+
+        private string GetEntityNameById(uint id)
+        {
+            if (_ELITEAPIPL == null) return "Unknown";
+            for (int i = 0; i < 2048; i++)
+            {
+                var entity = _ELITEAPIPL.Entity.GetEntity(i);
+                if (entity != null && entity.ServerID == id)
+                {
+                    return entity.Name;
+                }
+            }
+            return "Unknown";
         }
     }
 
