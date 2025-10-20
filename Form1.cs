@@ -9522,17 +9522,17 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 case "LOG":
                     if (data.Contains("[Action]"))
                     {
-                        var parts = data.Split(new[] { "ActorID: ", ", ", "TargetID: ", "." }, StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length >= 4)
+                        var actionParts = data.Split(new[] { "ActorID: ", ", ", "TargetID: ", "." }, StringSplitOptions.RemoveEmptyEntries);
+                        if (actionParts.Length >= 4)
                         {
-                            uint actorId = uint.Parse(parts[1]);
-                            string spellInfo = parts[2];
-                            uint targetId = uint.Parse(parts[3]);
+                            uint actorId = uint.Parse(actionParts[1]);
+                            string spellInfo = actionParts[2];
+                            uint targetId = uint.Parse(actionParts[3]);
 
                             string actorName = GetEntityNameById(actorId);
                             string targetName = GetEntityNameById(targetId);
 
-                            string formattedMessage = $"{parts[0]} Actor: {actorName}, {spellInfo}, Target: {targetName}.";
+                            string formattedMessage = $"{actionParts[0]} Actor: {actorName}, {spellInfo}, Target: {targetName}.";
                             debug_MSG_show.AppendLine(formattedMessage);
                             UpdateDebugForm(formattedMessage);
                         }
