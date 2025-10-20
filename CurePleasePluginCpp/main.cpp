@@ -343,10 +343,7 @@ private:
             if (m_PipeConnected && m_AshitaCore && !m_isZoning)
             {
                 auto* party = m_AshitaCore->GetMemoryManager()->GetParty();
-                auto* entityMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
-                auto* resourceMgr = m_AshitaCore->GetResourceManager();
-
-                if (party && entityMgr && resourceMgr)
+                if (party)
                 {
                     for (int i = 0; i < 18; ++i)
                     {
@@ -362,28 +359,25 @@ private:
                                     if (buff_id != 0 && buff_id != 255)
                                     {
                                         buffs.push_back(buff_id);
-                                        const IStatusEffect* effect = resourceMgr->GetStatusEffect(buff_id);
-                                        if (effect != nullptr && effect->Name[0] != nullptr) {
-                                            std::string logMsg = "LOG|" + GetTimestamp() + " [Buff Discovery] Player: " + std::string(name) + ", Buff: " + effect->Name[0] + " (ID: " + std::to_string(buff_id) + ")\n";
-                                            WriteToPipe(logMsg);
-                                        }
                                     }
                                 }
 
-                                if (!buffs.empty())
+                                // Always send an update, even if buffs are gone
+                                std::string buff_str;
+                                for (size_t k = 0; k < buffs.size(); ++k)
                                 {
-                                    std::string buff_str;
-                                    for (size_t k = 0; k < buffs.size(); ++k)
+                                    buff_str += std::to_string(buffs[k]);
+                                    if (k < buffs.size() - 1)
                                     {
-                                        buff_str += std::to_string(buffs[k]);
-                                        if (k < buffs.size() - 1)
-                                        {
-                                            buff_str += ",";
-                                        }
+                                        buff_str += ",";
                                     }
-                                    std::string message = "BUFF_UPDATE|" + std::string(name) + ":" + buff_str + "\n";
-                                    WriteToPipe(message);
                                 }
+                                std::string message = "BUFF_UPDATE|" + std::string(name) + ":" + buff_str + "\n";
+                                WriteToPipe(message);
+
+                                // Raw diagnostic log
+                                std::string logMsg = "LOG|" + GetTimestamp() + " [RAW BUFFS] Player: " + std::string(name) + ", IDs: [" + buff_str + "]\n";
+                                WriteToPipe(logMsg);
                             }
                         }
                     }
