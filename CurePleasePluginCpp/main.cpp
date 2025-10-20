@@ -119,31 +119,29 @@ public:
 
         if (id == 0x28) // Action packet
         {
-            uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
-            uint32_t targetId = 0;
-            uint8_t numTargets = data[8];
-            if (numTargets > 0 && size >= 16) {
-                targetId = *reinterpret_cast<const uint32_t*>(data + 12);
-            } else {
-                targetId = actorId;
-            }
-            uint16_t spellId = (uint16_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 86, 10));
+            uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
 
-            char buffer[256];
-            snprintf(buffer, sizeof(buffer), "ACTION|%s,ActorID:%u,TargetID:%u,ActionID:%u\n",
-                GetTimestamp().c_str(), actorId, targetId, spellId);
-            WriteToPipe(buffer);
-
-            // Handle own cast finish/interrupt/block for C# logic
-            uint32_t myServerId = m_AshitaCore->GetMemoryManager()->GetParty()->GetMemberServerId(0);
-            if (actorId == myServerId)
+            if (category == 4 && sizeChunk > 0) // Magic Finish
             {
-                uint8_t category = (uint8_t)(Ashita::BinaryData::UnpackBitsLE(const_cast<uint8_t*>(data), 82, 4));
-                if (category == 4) // Magic Finish
+                uint32_t actorId = *reinterpret_cast<const uint32_t*>(dataChunk + 8);
+                uint16_t spellIdRaw = *reinterpret_cast<const uint16_t*>(dataChunk + 12);
+                uint16_t spellId = spellIdRaw & 0x3FF; // Lower 10 bits are the spell ID
+                uint32_t targetId = *reinterpret_cast<const uint32_t*>(dataChunk + 16);
+
+                char buffer[256];
+                snprintf(buffer, sizeof(buffer), "ACTION|%s,ActorID:%u,TargetID:%u,ActionID:%u\n",
+                    GetTimestamp().c_str(), actorId, targetId, spellId);
+                WriteToPipe(buffer);
+
+                if (actorId == myServerId)
                 {
                     WriteToPipe("CAST_FINISH|0\n");
                 }
-                else if (category == 8) // Action Message
+            }
+            else if (category == 8) // Action Message (Interrupted, Blocked, etc.)
+            {
+                uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
+                if (actorId == myServerId)
                 {
                     uint16_t param = *reinterpret_cast<const uint16_t*>(data + 8);
                     if (param == 28787)
