@@ -4616,6 +4616,12 @@
             this.groupBox1.Controls.Add(this.autoHasteMinutes);
             this.groupBox1.Controls.Add(this.autoPhalanxIILabel);
             this.groupBox1.Controls.Add(this.autoHasteLabel);
+            this.groupBox1.Controls.Add(this.regenDuration);
+            this.groupBox1.Controls.Add(this.protectDuration);
+            this.groupBox1.Controls.Add(this.shellDuration);
+            this.groupBox1.Controls.Add(this.hasteDuration);
+            this.groupBox1.Controls.Add(this.refreshDuration);
+            this.groupBox1.Controls.Add(this.phalanxDuration);
             this.groupBox1.Location = new System.Drawing.Point(5, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(460, 250);
@@ -4972,6 +4978,60 @@
             this.autoHasteLabel.Size = new System.Drawing.Size(201, 15);
             this.autoHasteLabel.TabIndex = 1;
             this.autoHasteLabel.Text = "Recast Haste I/II and Flurry I/II every ";
+            //
+            // regenDuration
+            //
+            this.regenDuration = new System.Windows.Forms.NumericUpDown();
+            this.regenDuration.Location = new System.Drawing.Point(420, 140);
+            this.regenDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            this.regenDuration.Name = "regenDuration";
+            this.regenDuration.Size = new System.Drawing.Size(50, 21);
+            this.regenDuration.TabIndex = 58;
+            //
+            // protectDuration
+            //
+            this.protectDuration = new System.Windows.Forms.NumericUpDown();
+            this.protectDuration.Location = new System.Drawing.Point(420, 166);
+            this.protectDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            this.protectDuration.Name = "protectDuration";
+            this.protectDuration.Size = new System.Drawing.Size(50, 21);
+            this.protectDuration.TabIndex = 59;
+            //
+            // shellDuration
+            //
+            this.shellDuration = new System.Windows.Forms.NumericUpDown();
+            this.shellDuration.Location = new System.Drawing.Point(420, 193);
+            this.shellDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            this.shellDuration.Name = "shellDuration";
+            this.shellDuration.Size = new System.Drawing.Size(50, 21);
+            this.shellDuration.TabIndex = 60;
+            //
+            // hasteDuration
+            //
+            this.hasteDuration = new System.Windows.Forms.NumericUpDown();
+            this.hasteDuration.Location = new System.Drawing.Point(350, 18);
+            this.hasteDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            this.hasteDuration.Name = "hasteDuration";
+            this.hasteDuration.Size = new System.Drawing.Size(50, 21);
+            this.hasteDuration.TabIndex = 61;
+            //
+            // refreshDuration
+            //
+            this.refreshDuration = new System.Windows.Forms.NumericUpDown();
+            this.refreshDuration.Location = new System.Drawing.Point(420, 114);
+            this.refreshDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            this.refreshDuration.Name = "refreshDuration";
+            this.refreshDuration.Size = new System.Drawing.Size(50, 21);
+            this.refreshDuration.TabIndex = 62;
+            //
+            // phalanxDuration
+            //
+            this.phalanxDuration = new System.Windows.Forms.NumericUpDown();
+            this.phalanxDuration.Location = new System.Drawing.Point(350, 45);
+            this.phalanxDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            this.phalanxDuration.Name = "phalanxDuration";
+            this.phalanxDuration.Size = new System.Drawing.Size(50, 21);
+            this.phalanxDuration.TabIndex = 63;
             //
             // plBuffGroup
             // 
@@ -7896,69 +7956,6 @@
             this.curaga3Enabled.TabIndex = 11;
             this.curaga3Enabled.Text = "Curaga III";
             this.curaga3Enabled.UseVisualStyleBackColor = true;
-            //
-            // regenGroupBox
-            //
-            this.regenGroupBox = new CurePlease.GroupBoxEx();
-            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
-            this.regen3 = new System.Windows.Forms.CheckBox();
-            this.regen2 = new System.Windows.Forms.CheckBox();
-            this.regen1 = new System.Windows.Forms.CheckBox();
-            this.regenGroupBox.SuspendLayout();
-            this.SuspendLayout();
-            //
-            this.regenGroupBox.Controls.Add(this.cureBeforeRegen);
-            this.regenGroupBox.Controls.Add(this.regen3);
-            this.regenGroupBox.Controls.Add(this.regen2);
-            this.regenGroupBox.Controls.Add(this.regen1);
-            this.regenGroupBox.Location = new System.Drawing.Point(172, 103);
-            this.regenGroupBox.Name = "regenGroupBox";
-            this.regenGroupBox.Size = new System.Drawing.Size(200, 125);
-            this.regenGroupBox.TabIndex = 15;
-            this.regenGroupBox.TabStop = false;
-            this.regenGroupBox.Text = "Regen";
-            //
-            // cureBeforeRegen
-            //
-            this.cureBeforeRegen.AutoSize = true;
-            this.cureBeforeRegen.Location = new System.Drawing.Point(6, 95);
-            this.cureBeforeRegen.Name = "cureBeforeRegen";
-            this.cureBeforeRegen.Size = new System.Drawing.Size(126, 19);
-            this.cureBeforeRegen.TabIndex = 3;
-            this.cureBeforeRegen.Text = "Cure before Regen";
-            this.cureBeforeRegen.UseVisualStyleBackColor = true;
-            //
-            // regen3
-            //
-            this.regen3.AutoSize = true;
-            this.regen3.Location = new System.Drawing.Point(6, 70);
-            this.regen3.Name = "regen3";
-            this.regen3.Size = new System.Drawing.Size(75, 19);
-            this.regen3.TabIndex = 2;
-            this.regen3.Text = "Regen III";
-            this.regen3.UseVisualStyleBackColor = true;
-            //
-            // regen2
-            //
-            this.regen2.AutoSize = true;
-            this.regen2.Location = new System.Drawing.Point(6, 45);
-            this.regen2.Name = "regen2";
-            this.regen2.Size = new System.Drawing.Size(72, 19);
-            this.regen2.TabIndex = 1;
-            this.regen2.Text = "Regen II";
-            this.regen2.UseVisualStyleBackColor = true;
-            //
-            // regen1
-            //
-            this.regen1.AutoSize = true;
-            this.regen1.Location = new System.Drawing.Point(6, 20);
-            this.regen1.Name = "regen1";
-            this.regen1.Size = new System.Drawing.Size(63, 19);
-            this.regen1.TabIndex = 0;
-            this.regen1.Text = "Regen";
-            this.regen1.UseVisualStyleBackColor = true;
-            this.regenGroupBox.ResumeLayout(false);
-            this.regenGroupBox.PerformLayout();
             // 
             // groupBox2
             // 
@@ -7985,9 +7982,6 @@
             this.groupBox2.Controls.Add(this.curePercentageValueLabel);
             this.groupBox2.Controls.Add(this.cure3amount);
             this.groupBox2.Controls.Add(this.curePercentageLabel);
-            this.groupBox2.Controls.Add(this.cure2amount);
-            this.groupBox2.Controls.Add(this.cure1amount);
-            this.groupBox2.Controls.Add(this.regenGroupBox);
             this.groupBox2.Location = new System.Drawing.Point(6, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(797, 298);
@@ -8298,8 +8292,6 @@
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.requiredCuragaNumbers)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox35.ResumeLayout(false);
             this.groupBox35.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.curePotency)).EndInit();
@@ -8832,5 +8824,11 @@
         private System.Windows.Forms.CheckBox plAmnesia;
         private System.Windows.Forms.ComboBox plSpikes_Spell;
         private System.Windows.Forms.CheckBox plSpikes;
+        private System.Windows.Forms.NumericUpDown regenDuration;
+        private System.Windows.Forms.NumericUpDown protectDuration;
+        private System.Windows.Forms.NumericUpDown shellDuration;
+        private System.Windows.Forms.NumericUpDown hasteDuration;
+        private System.Windows.Forms.NumericUpDown refreshDuration;
+        private System.Windows.Forms.NumericUpDown phalanxDuration;
     }
 }
