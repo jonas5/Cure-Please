@@ -29,10 +29,17 @@ namespace CurePlease
     public class PartyState
     {
         public Dictionary<string, PartyMemberState> Members { get; private set; }
+        private Dictionary<string, BuffInfo> buff_definitions;
 
         public PartyState()
         {
             Members = new Dictionary<string, PartyMemberState>();
+            buff_definitions = new Dictionary<string, BuffInfo>();
+        }
+
+        public void UpdateBuffDefinitions(Dictionary<string, BuffInfo> newBuffDefinitions)
+        {
+            this.buff_definitions = newBuffDefinitions;
         }
 
         public void AddOrUpdateMember(string name, uint serverId)
@@ -70,12 +77,12 @@ namespace CurePlease
             }
             return null;
         }
-        public void ResetBuffTimer(string memberName, string buffType, Dictionary<string, BuffInfo> buffDefinitions)
+        public void ResetBuffTimer(string memberName, string buffType)
         {
-            if (Members.TryGetValue(memberName, out PartyMemberState member))
+            if (Members.TryGetValue(memberName, out PartyMemberState member) && this.buff_definitions != null)
             {
                 // Find the buff definition to get the duration and all associated IDs
-                if (buffDefinitions.TryGetValue(buffType, out BuffInfo buffInfo))
+                if (this.buff_definitions.TryGetValue(buffType, out BuffInfo buffInfo))
                 {
                     // Remove all existing instances of this buff type
                     member.Buffs.RemoveAll(b => buffInfo.Ids.Contains(b.Id));

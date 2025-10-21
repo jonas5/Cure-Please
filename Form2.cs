@@ -262,13 +262,6 @@ namespace CurePlease
                 get; set;
             }
 
-            public decimal RegenDuration { get; set; }
-            public decimal ProtectDuration { get; set; }
-            public decimal ShellDuration { get; set; }
-            public decimal HasteDuration { get; set; }
-            public decimal RefreshDuration { get; set; }
-            public decimal PhalanxDuration { get; set; }
-
             public int autoStorm_Spell
             {
                 get; set;
@@ -2002,7 +1995,6 @@ namespace CurePlease
                 config.autoStormspellMinutes = 3;
                 config.autoRefresh_Minutes = 2;
                 config.autoRegen_Minutes = 1;
-                config.autoRefresh_Minutes = 2;
                 config.plProtect = false;
                 config.plShell = false;
                 config.plBlink = false;
@@ -2355,13 +2347,6 @@ namespace CurePlease
                 config.enableFastCast_Mode = false;
                 config.trackCastingPackets = false;
 
-                config.RegenDuration = 180;
-                config.ProtectDuration = 1800;
-                config.ShellDuration = 1800;
-                config.HasteDuration = 180;
-                config.RefreshDuration = 150;
-                config.PhalanxDuration = 180;
-
                 // OTHERS
 
                 config.settingsSet = true;
@@ -2408,7 +2393,7 @@ namespace CurePlease
 
         #region "== All Settings Saved"
 
-        public void button4_Click ( object sender, EventArgs e )
+        private void ApplySettingsToConfig()
         {
             // HEALING MAGIC
             config.cure1enabled = cure1enabled.Checked;
@@ -2417,12 +2402,12 @@ namespace CurePlease
             config.cure4enabled = cure4enabled.Checked;
             config.cure5enabled = cure5enabled.Checked;
             config.cure6enabled = cure6enabled.Checked;
-            config.cure1amount = Convert.ToInt32 ( cure1amount.Value );
-            config.cure2amount = Convert.ToInt32 ( cure2amount.Value );
-            config.cure3amount = Convert.ToInt32 ( cure3amount.Value );
-            config.cure4amount = Convert.ToInt32 ( cure4amount.Value );
-            config.cure5amount = Convert.ToInt32 ( cure5amount.Value );
-            config.cure6amount = Convert.ToInt32 ( cure6amount.Value );
+            config.cure1amount = Convert.ToInt32(cure1amount.Value);
+            config.cure2amount = Convert.ToInt32(cure2amount.Value);
+            config.cure3amount = Convert.ToInt32(cure3amount.Value);
+            config.cure4amount = Convert.ToInt32(cure4amount.Value);
+            config.cure5amount = Convert.ToInt32(cure5amount.Value);
+            config.cure6amount = Convert.ToInt32(cure6amount.Value);
             config.curePercentage = curePercentage.Value;
             config.priorityCurePercentage = priorityCurePercentage.Value;
             config.monitoredCurePercentage = monitoredCurePercentage.Value;
@@ -2432,11 +2417,11 @@ namespace CurePlease
             config.curaga3enabled = curaga3Enabled.Checked;
             config.curaga4enabled = curaga4Enabled.Checked;
             config.curaga5enabled = curaga5Enabled.Checked;
-            config.curagaAmount = Convert.ToInt32 ( curagaAmount.Value );
-            config.curaga2Amount = Convert.ToInt32 ( curaga2Amount.Value );
-            config.curaga3Amount = Convert.ToInt32 ( curaga3Amount.Value );
-            config.curaga4Amount = Convert.ToInt32 ( curaga4Amount.Value );
-            config.curaga5Amount = Convert.ToInt32 ( curaga5Amount.Value );
+            config.curagaAmount = Convert.ToInt32(curagaAmount.Value);
+            config.curaga2Amount = Convert.ToInt32(curaga2Amount.Value);
+            config.curaga3Amount = Convert.ToInt32(curaga3Amount.Value);
+            config.curaga4Amount = Convert.ToInt32(curaga4Amount.Value);
+            config.curaga5Amount = Convert.ToInt32(curaga5Amount.Value);
             config.curagaCurePercentage = curagaCurePercentage.Value;
             config.curagaTargetType = curagaTargetType.SelectedIndex;
             config.curagaTargetName = curagaTargetName.Text;
@@ -2462,40 +2447,40 @@ namespace CurePlease
             config.plShell = plShell.Checked;
             config.plBlink = plBlink.Checked;
             config.plReraise = plReraise.Checked;
-            if ( plReraiseLevel1.Checked )
+            if (plReraiseLevel1.Checked)
             {
                 config.plReraise_Level = 1;
             }
-            else if ( plReraiseLevel2.Checked )
+            else if (plReraiseLevel2.Checked)
             {
                 config.plReraise_Level = 2;
             }
-            else if ( plReraiseLevel3.Checked )
+            else if (plReraiseLevel3.Checked)
             {
                 config.plReraise_Level = 3;
             }
-            else if ( plReraiseLevel4.Checked )
+            else if (plReraiseLevel4.Checked)
             {
                 config.plReraise_Level = 4;
             }
             config.plRegen = plRegen.Checked;
-            if ( plRegenLevel1.Checked )
+            if (plRegenLevel1.Checked)
             {
                 config.plRegen_Level = 1;
             }
-            else if ( plRegenLevel2.Checked )
+            else if (plRegenLevel2.Checked)
             {
                 config.plRegen_Level = 2;
             }
-            else if ( plRegenLevel3.Checked )
+            else if (plRegenLevel3.Checked)
             {
                 config.plRegen_Level = 3;
             }
-            else if ( plRegenLevel4.Checked )
+            else if (plRegenLevel4.Checked)
             {
                 config.plRegen_Level = 4;
             }
-            else if ( plRegenLevel5.Checked )
+            else if (plRegenLevel5.Checked)
             {
                 config.plRegen_Level = 5;
             }
@@ -2511,11 +2496,11 @@ namespace CurePlease
             config.autoStorm_Spell = autoStorm.SelectedIndex;
             config.autoProtect_Spell = autoProtect.SelectedIndex;
             config.plTemper = plTemper.Checked;
-            if ( plTemperLevel1.Checked )
+            if (plTemperLevel1.Checked)
             {
                 config.plTemper_Level = 1;
             }
-            else if ( plTemperLevel2.Checked )
+            else if (plTemperLevel2.Checked)
             {
                 config.plTemper_Level = 2;
             }
@@ -2537,11 +2522,11 @@ namespace CurePlease
             config.plAquaveil = plAquaveil.Checked;
 
             config.plHaste = plHaste.Checked;
-            if ( plHasteLevel1.Checked )
+            if (plHasteLevel1.Checked)
             {
                 config.plHaste_Level = 1;
             }
-            else if ( plHasteLevel2.Checked )
+            else if (plHasteLevel2.Checked)
             {
                 config.plHaste_Level = 2;
             }
@@ -2551,15 +2536,15 @@ namespace CurePlease
 
             config.plUtsusemi = plUtsusemi.Checked;
             config.plRefresh = plRefresh.Checked;
-            if ( plRefreshLevel1.Checked )
+            if (plRefreshLevel1.Checked)
             {
                 config.plRefresh_Level = 1;
             }
-            else if ( plRefreshLevel2.Checked )
+            else if (plRefreshLevel2.Checked)
             {
                 config.plRefresh_Level = 2;
             }
-            else if ( plRefreshLevel3.Checked )
+            else if (plRefreshLevel3.Checked)
             {
                 config.plRefresh_Level = 3;
             }
@@ -2875,13 +2860,11 @@ namespace CurePlease
 
             config.enableFastCast_Mode = enableFastCast_Mode.Checked;
             config.trackCastingPackets = trackCastingPackets.Checked;
+        }
 
-            config.RegenDuration = regenDuration.Value;
-            config.ProtectDuration = protectDuration.Value;
-            config.ShellDuration = shellDuration.Value;
-            config.HasteDuration = hasteDuration.Value;
-            config.RefreshDuration = refreshDuration.Value;
-            config.PhalanxDuration = phalanxDuration.Value;
+        public void button4_Click(object sender, EventArgs e)
+        {
+            ApplySettingsToConfig();
 
             if (mainForm != null)
             {
@@ -2922,32 +2905,26 @@ namespace CurePlease
                 MessageBox.Show("Failed to auto-save settings:\n" + ex.Message, "Save Error");
             }
 
-            // OTHERS
-
-            string path = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings");
-
-            if ( loadJobSettings.Checked == true )
+            // Handle the 'loadSettings' flag file
+            string loadSettingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings", "loadSettings");
+            try
             {
-                string fileName = "loadSettings";
-                FileStream stream = File.Create(path + "/" + fileName);
-                stream.Close ( );
-                stream.Dispose ( );
-            }
-            else if ( loadJobSettings.Checked == false && System.IO.File.Exists ( path + "/loadSettings" ) )
-            {
-                try
+                if (loadJobSettings.Checked)
                 {
-                    System.IO.File.Delete ( path + "/loadSettings" );
+                    // Ensure the file is closed immediately after creation
+                    using (FileStream stream = File.Create(loadSettingsFilePath)) { }
                 }
-                catch ( System.IO.IOException )
+                else if (File.Exists(loadSettingsFilePath))
                 {
-                    //Console.WriteLine(e.Message);
-                    return;
+                    File.Delete(loadSettingsFilePath);
                 }
             }
+            catch (IOException)
+            {
+                // Ignore errors related to the flag file, not critical for core functionality
+            }
 
-            Close ( );
-            //MessageBox.Show("Saved!", "All Settings");
+            Close();
         }
 
         #endregion "== All Settings Saved"
@@ -3436,7 +3413,7 @@ namespace CurePlease
 
         private void saveAsButton_Click ( object sender, EventArgs e )
         {
-            button4_Click ( sender, e );
+            ApplySettingsToConfig();
 
             SaveFileDialog savefile = new SaveFileDialog();
 
@@ -4006,13 +3983,6 @@ namespace CurePlease
 
             enableFastCast_Mode.Checked = config.enableFastCast_Mode;
             trackCastingPackets.Checked = config.trackCastingPackets;
-
-            regenDuration.Value = config.RegenDuration;
-            protectDuration.Value = config.ProtectDuration;
-            shellDuration.Value = config.ShellDuration;
-            hasteDuration.Value = config.HasteDuration;
-            refreshDuration.Value = config.RefreshDuration;
-            phalanxDuration.Value = config.PhalanxDuration;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )

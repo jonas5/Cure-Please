@@ -3143,14 +3143,19 @@ private void setinstance_Click(object sender, EventArgs e)
                 {
                     try
                     {
+                        Form2.MySettings loadedSettings;
                         using (var reader = new StreamReader(configFile))
                         {
                             var serializer = new XmlSerializer(typeof(Form2.MySettings));
-                            var config = (Form2.MySettings)serializer.Deserialize(reader);
-                            Form2.updateForm(config);
-                            Form2.button4_Click(sender, e);
+                            loadedSettings = (Form2.MySettings)serializer.Deserialize(reader);
                         }
-                        ReloadSettings();
+
+                        if (loadedSettings != null)
+                        {
+                            Form2.config = loadedSettings;
+                            Form2.updateForm(Form2.config);
+                            ReloadSettings();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -5425,13 +5430,14 @@ private string GetBestSpellTier(string buffType, string targetName)
 
             buff_definitions = new Dictionary<string, BuffInfo>
             {
-                { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = (int)Form2.config.RegenDuration } },
-                { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = (int)Form2.config.HasteDuration } },
-                { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)Form2.config.RefreshDuration } },
-                { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)Form2.config.PhalanxDuration } },
-                { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)Form2.config.ProtectDuration } },
-                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)Form2.config.ShellDuration } }
+                { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = (int)(Form2.config.autoRegenMinutes * 60) } },
+                { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = (int)(Form2.config.autoHasteMinutes * 60) } },
+                { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefreshMinutes * 60) } },
+                { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxMinutes * 60) } },
+                { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtectMinutes * 60) } },
+                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
             };
+            partyState.UpdateBuffDefinitions(buff_definitions);
         }
 
         private void CheckAndApplyBuffs()
@@ -9718,7 +9724,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                                 if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
                                 {
                                     DateTime expiration = DateTime.Now.AddSeconds(buff_definitions[buffType].Duration);
-                                    partyState.ResetBuffTimer(targetName, buffType, buff_definitions);
+                                    partyState.ResetBuffTimer(targetName, buffType);
                                     string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer to expire at {expiration:HH:mm:ss}.";
                                     debug_MSG_show.AppendLine(logMessage);
                                     UpdateDebugForm(logMessage);
@@ -9759,7 +9765,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                                 if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
                                 {
-                                    partyState.ResetBuffTimer(targetName, buffType, buff_definitions);
+                                    partyState.ResetBuffTimer(targetName, buffType);
                                     string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [ACTION] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
                                     debug_MSG_show.AppendLine(logMessage);
                                     UpdateDebugForm(logMessage);

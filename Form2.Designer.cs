@@ -1990,7 +1990,6 @@
             this.tabPage5.Controls.Add(this.groupBox29);
             this.tabPage5.Controls.Add(this.groupBox11);
             this.tabPage5.Controls.Add(this.groupBox4);
-            this.tabPage5.Controls.Add(this.buffDurationGroupBox);
             this.tabPage5.Location = new System.Drawing.Point(4, 26);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -2398,142 +2397,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MP Settings";
             //
-            // buffDurationGroupBox
-            //
-            this.buffDurationGroupBox = new CurePlease.GroupBoxEx();
-            this.buffDurationGroupBox.BorderColor = System.Drawing.Color.SlateGray;
-            this.buffDurationGroupBox.Controls.Add(this.regenDurationLabel);
-            this.buffDurationGroupBox.Controls.Add(this.regenDuration);
-            this.buffDurationGroupBox.Controls.Add(this.protectDurationLabel);
-            this.buffDurationGroupBox.Controls.Add(this.protectDuration);
-            this.buffDurationGroupBox.Controls.Add(this.shellDurationLabel);
-            this.buffDurationGroupBox.Controls.Add(this.shellDuration);
-            this.buffDurationGroupBox.Controls.Add(this.hasteDurationLabel);
-            this.buffDurationGroupBox.Controls.Add(this.hasteDuration);
-            this.buffDurationGroupBox.Controls.Add(this.refreshDurationLabel);
-            this.buffDurationGroupBox.Controls.Add(this.refreshDuration);
-            this.buffDurationGroupBox.Controls.Add(this.phalanxDurationLabel);
-            this.buffDurationGroupBox.Controls.Add(this.phalanxDuration);
-            this.buffDurationGroupBox.Location = new System.Drawing.Point(368, 112);
-            this.buffDurationGroupBox.Name = "buffDurationGroupBox";
-            this.buffDurationGroupBox.Size = new System.Drawing.Size(431, 123);
-            this.buffDurationGroupBox.TabIndex = 51;
-            this.buffDurationGroupBox.TabStop = false;
-            this.buffDurationGroupBox.Text = "Buff Durations (seconds)";
-            //
-            // regenDurationLabel
-            //
-            this.regenDurationLabel = new System.Windows.Forms.Label();
-            this.regenDurationLabel.AutoSize = true;
-            this.regenDurationLabel.Location = new System.Drawing.Point(6, 20);
-            this.regenDurationLabel.Name = "regenDurationLabel";
-            this.regenDurationLabel.Size = new System.Drawing.Size(48, 15);
-            this.regenDurationLabel.TabIndex = 0;
-            this.regenDurationLabel.Text = "Regen:";
-            //
-            // regenDuration
-            //
-            this.regenDuration = new System.Windows.Forms.NumericUpDown();
-            this.regenDuration.Location = new System.Drawing.Point(60, 18);
-            this.regenDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.regenDuration.Name = "regenDuration";
-            this.regenDuration.Size = new System.Drawing.Size(50, 21);
-            this.regenDuration.TabIndex = 1;
-            //
-            // protectDurationLabel
-            //
-            this.protectDurationLabel = new System.Windows.Forms.Label();
-            this.protectDurationLabel.AutoSize = true;
-            this.protectDurationLabel.Location = new System.Drawing.Point(6, 45);
-            this.protectDurationLabel.Name = "protectDurationLabel";
-            this.protectDurationLabel.Size = new System.Drawing.Size(48, 15);
-            this.protectDurationLabel.TabIndex = 2;
-            this.protectDurationLabel.Text = "Protect:";
-            //
-            // protectDuration
-            //
-            this.protectDuration = new System.Windows.Forms.NumericUpDown();
-            this.protectDuration.Location = new System.Drawing.Point(60, 43);
-            this.protectDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.protectDuration.Name = "protectDuration";
-            this.protectDuration.Size = new System.Drawing.Size(50, 21);
-            this.protectDuration.TabIndex = 3;
-            //
-            // shellDurationLabel
-            //
-            this.shellDurationLabel = new System.Windows.Forms.Label();
-            this.shellDurationLabel.AutoSize = true;
-            this.shellDurationLabel.Location = new System.Drawing.Point(6, 70);
-            this.shellDurationLabel.Name = "shellDurationLabel";
-            this.shellDurationLabel.Size = new System.Drawing.Size(38, 15);
-            this.shellDurationLabel.TabIndex = 4;
-            this.shellDurationLabel.Text = "Shell:";
-            //
-            // shellDuration
-            //
-            this.shellDuration = new System.Windows.Forms.NumericUpDown();
-            this.shellDuration.Location = new System.Drawing.Point(60, 68);
-            this.shellDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.shellDuration.Name = "shellDuration";
-            this.shellDuration.Size = new System.Drawing.Size(50, 21);
-            this.shellDuration.TabIndex = 5;
-            //
-            // hasteDurationLabel
-            //
-            this.hasteDurationLabel = new System.Windows.Forms.Label();
-            this.hasteDurationLabel.AutoSize = true;
-            this.hasteDurationLabel.Location = new System.Drawing.Point(120, 20);
-            this.hasteDurationLabel.Name = "hasteDurationLabel";
-            this.hasteDurationLabel.Size = new System.Drawing.Size(42, 15);
-            this.hasteDurationLabel.TabIndex = 6;
-            this.hasteDurationLabel.Text = "Haste:";
-            //
-            // hasteDuration
-            //
-            this.hasteDuration = new System.Windows.Forms.NumericUpDown();
-            this.hasteDuration.Location = new System.Drawing.Point(174, 18);
-            this.hasteDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.hasteDuration.Name = "hasteDuration";
-            this.hasteDuration.Size = new System.Drawing.Size(50, 21);
-            this.hasteDuration.TabIndex = 7;
-            //
-            // refreshDurationLabel
-            //
-            this.refreshDurationLabel = new System.Windows.Forms.Label();
-            this.refreshDurationLabel.AutoSize = true;
-            this.refreshDurationLabel.Location = new System.Drawing.Point(120, 45);
-            this.refreshDurationLabel.Name = "refreshDurationLabel";
-            this.refreshDurationLabel.Size = new System.Drawing.Size(53, 15);
-            this.refreshDurationLabel.TabIndex = 8;
-            this.refreshDurationLabel.Text = "Refresh:";
-            //
-            // refreshDuration
-            //
-            this.refreshDuration = new System.Windows.Forms.NumericUpDown();
-            this.refreshDuration.Location = new System.Drawing.Point(174, 43);
-            this.refreshDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.refreshDuration.Name = "refreshDuration";
-            this.refreshDuration.Size = new System.Drawing.Size(50, 21);
-            this.refreshDuration.TabIndex = 9;
-            //
-            // phalanxDurationLabel
-            //
-            this.phalanxDurationLabel = new System.Windows.Forms.Label();
-            this.phalanxDurationLabel.AutoSize = true;
-            this.phalanxDurationLabel.Location = new System.Drawing.Point(120, 70);
-            this.phalanxDurationLabel.Name = "phalanxDurationLabel";
-            this.phalanxDurationLabel.Size = new System.Drawing.Size(55, 15);
-            this.phalanxDurationLabel.TabIndex = 10;
-            this.phalanxDurationLabel.Text = "Phalanx:";
-            //
-            // phalanxDuration
-            //
-            this.phalanxDuration = new System.Windows.Forms.NumericUpDown();
-            this.phalanxDuration.Location = new System.Drawing.Point(174, 68);
-            this.phalanxDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.phalanxDuration.Name = "phalanxDuration";
-            this.phalanxDuration.Size = new System.Drawing.Size(50, 21);
-            this.phalanxDuration.TabIndex = 11;
             // lowMPcheckBox
             // 
             this.lowMPcheckBox.AutoSize = true;
@@ -8345,14 +8208,6 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mpMinCastValue)).EndInit();
-            this.buffDurationGroupBox.ResumeLayout(false);
-            this.buffDurationGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.regenDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.protectDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.shellDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hasteDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.refreshDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.phalanxDuration)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.groupBox24.ResumeLayout(false);
             this.groupBox24.PerformLayout();
@@ -8988,18 +8843,5 @@
         private System.Windows.Forms.CheckBox regen3;
         private System.Windows.Forms.CheckBox regen2;
         private System.Windows.Forms.CheckBox regen1;
-        private GroupBoxEx buffDurationGroupBox;
-        private System.Windows.Forms.Label regenDurationLabel;
-        private System.Windows.Forms.NumericUpDown regenDuration;
-        private System.Windows.Forms.Label protectDurationLabel;
-        private System.Windows.Forms.NumericUpDown protectDuration;
-        private System.Windows.Forms.Label shellDurationLabel;
-        private System.Windows.Forms.NumericUpDown shellDuration;
-        private System.Windows.Forms.Label hasteDurationLabel;
-        private System.Windows.Forms.NumericUpDown hasteDuration;
-        private System.Windows.Forms.Label refreshDurationLabel;
-        private System.Windows.Forms.NumericUpDown refreshDuration;
-        private System.Windows.Forms.Label phalanxDurationLabel;
-        private System.Windows.Forms.NumericUpDown phalanxDuration;
     }
 }
