@@ -4622,6 +4622,10 @@
             this.groupBox1.Controls.Add(this.hasteDuration);
             this.groupBox1.Controls.Add(this.refreshDuration);
             this.groupBox1.Controls.Add(this.phalanxDuration);
+            this.groupBox1.Controls.Add(this.cureBeforeRegen);
+            this.groupBox1.Controls.Add(this.regen1enabled);
+            this.groupBox1.Controls.Add(this.regen2enabled);
+            this.groupBox1.Controls.Add(this.regen3enabled);
             this.groupBox1.Location = new System.Drawing.Point(5, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(460, 250);
@@ -5032,6 +5036,46 @@
             this.phalanxDuration.Name = "phalanxDuration";
             this.phalanxDuration.Size = new System.Drawing.Size(50, 21);
             this.phalanxDuration.TabIndex = 63;
+            //
+            // cureBeforeRegen
+            //
+            this.cureBeforeRegen.AutoSize = true;
+            this.cureBeforeRegen.Location = new System.Drawing.Point(300, 140);
+            this.cureBeforeRegen.Name = "cureBeforeRegen";
+            this.cureBeforeRegen.Size = new System.Drawing.Size(150, 19);
+            this.cureBeforeRegen.TabIndex = 58;
+            this.cureBeforeRegen.Text = "Cure Before Regen";
+            this.cureBeforeRegen.UseVisualStyleBackColor = true;
+            //
+            // regen1enabled
+            //
+            this.regen1enabled.AutoSize = true;
+            this.regen1enabled.Location = new System.Drawing.Point(300, 160);
+            this.regen1enabled.Name = "regen1enabled";
+            this.regen1enabled.Size = new System.Drawing.Size(120, 19);
+            this.regen1enabled.TabIndex = 59;
+            this.regen1enabled.Text = "Enable Regen I";
+            this.regen1enabled.UseVisualStyleBackColor = true;
+            //
+            // regen2enabled
+            //
+            this.regen2enabled.AutoSize = true;
+            this.regen2enabled.Location = new System.Drawing.Point(300, 180);
+            this.regen2enabled.Name = "regen2enabled";
+            this.regen2enabled.Size = new System.Drawing.Size(120, 19);
+            this.regen2enabled.TabIndex = 60;
+            this.regen2enabled.Text = "Enable Regen II";
+            this.regen2enabled.UseVisualStyleBackColor = true;
+            //
+            // regen3enabled
+            //
+            this.regen3enabled.AutoSize = true;
+            this.regen3enabled.Location = new System.Drawing.Point(300, 200);
+            this.regen3enabled.Name = "regen3enabled";
+            this.regen3enabled.Size = new System.Drawing.Size(120, 19);
+            this.regen3enabled.TabIndex = 61;
+            this.regen3enabled.Text = "Enable Regen III";
+            this.regen3enabled.UseVisualStyleBackColor = true;
             //
             // plBuffGroup
             // 
@@ -8830,5 +8874,9 @@
         private System.Windows.Forms.NumericUpDown hasteDuration;
         private System.Windows.Forms.NumericUpDown refreshDuration;
         private System.Windows.Forms.NumericUpDown phalanxDuration;
+        private System.Windows.Forms.CheckBox cureBeforeRegen;
+        private System.Windows.Forms.CheckBox regen1enabled;
+        private System.Windows.Forms.CheckBox regen2enabled;
+        private System.Windows.Forms.CheckBox regen3enabled;
     }
 }

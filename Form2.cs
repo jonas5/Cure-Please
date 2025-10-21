@@ -180,6 +180,22 @@ namespace CurePlease
             {
                 get; set;
             }
+            public bool cureBeforeRegen
+            {
+                get; set;
+            }
+            public bool regen1enabled
+            {
+                get; set;
+            }
+            public bool regen2enabled
+            {
+                get; set;
+            }
+            public bool regen3enabled
+            {
+                get; set;
+            }
 
             // ENHANCING MAGIC TAB / BASIC
             public decimal autoHasteMinutes
@@ -1964,6 +1980,11 @@ namespace CurePlease
                 config.curagaTargetName = "";
                 config.curagaRequiredMembers = 3;
 
+                config.cureBeforeRegen = false;
+                config.regen1enabled = true;
+                config.regen2enabled = true;
+                config.regen3enabled = true;
+
                 // ENHANCING MAGIC
 
                 // BASIC ENHANCING
@@ -2406,6 +2427,11 @@ namespace CurePlease
             config.curagaTargetType = curagaTargetType.SelectedIndex;
             config.curagaTargetName = curagaTargetName.Text;
             config.curagaRequiredMembers = requiredCuragaNumbers.Value;
+
+            config.cureBeforeRegen = cureBeforeRegen.Checked;
+            config.regen1enabled = regen1enabled.Checked;
+            config.regen2enabled = regen2enabled.Checked;
+            config.regen3enabled = regen3enabled.Checked;
 
             // ENHANCING MAGIC
 
@@ -3489,6 +3515,11 @@ namespace CurePlease
             curagaTargetType.SelectedIndex = config.curagaTargetType;
             curagaTargetName.Text = config.curagaTargetName;
             requiredCuragaNumbers.Value = config.curagaRequiredMembers;
+
+            cureBeforeRegen.Checked = config.cureBeforeRegen;
+            regen1enabled.Checked = config.regen1enabled;
+            regen2enabled.Checked = config.regen2enabled;
+            regen3enabled.Checked = config.regen3enabled;
 
             // ENHANCING MAGIC
 
