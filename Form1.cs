@@ -5455,7 +5455,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[regenCooldownKey] = DateTime.Now.AddSeconds(10);
+                        buffCooldowns[regenCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Regen"].Duration - 5));
                         return;
                     }
                 }
@@ -5469,7 +5469,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[hasteCooldownKey] = DateTime.Now.AddSeconds(10);
+                        buffCooldowns[hasteCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Haste"].Duration - 5));
                         return;
                     }
                 }
@@ -5483,7 +5483,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[refreshCooldownKey] = DateTime.Now.AddSeconds(10);
+                        buffCooldowns[refreshCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Refresh"].Duration - 5));
                         return;
                     }
                 }
@@ -5497,7 +5497,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[phalanxCooldownKey] = DateTime.Now.AddSeconds(10);
+                        buffCooldowns[phalanxCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Phalanx"].Duration - 5));
                         return;
                     }
                 }
@@ -5511,7 +5511,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[protectCooldownKey] = DateTime.Now.AddSeconds(10);
+                        buffCooldowns[protectCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Protect"].Duration - 5));
                         return;
                     }
                 }
@@ -5525,7 +5525,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[shellCooldownKey] = DateTime.Now.AddSeconds(10);
+                        buffCooldowns[shellCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Shell"].Duration - 5));
                         return;
                     }
                 }
@@ -5580,7 +5580,17 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (partyMember != null && castingPossible(partyMember.MemberNumber))
                     {
                         CastSpell(request.PlayerName, spellToCast);
-                        buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(5);
+
+                        // Use the same duration-based cooldown logic here
+                        string buffType = GetBuffNameForSpellId((ushort)_ELITEAPIPL.Resources.GetSpell(spellToCast, 0).Index);
+                        if (buffType != null && buff_definitions.ContainsKey(buffType))
+                        {
+                            buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions[buffType].Duration - 5));
+                        }
+                        else
+                        {
+                            buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(5); // Fallback for buffs not in our definition list
+                        }
                     }
                 }
                 else
