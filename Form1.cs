@@ -9538,7 +9538,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 return _ELITEAPIPL.Player.Name;
             }
 
-            var partyMember = _ELITEAPIMonitored?.Party.GetPartyMembers().FirstOrDefault(p => p.ServerId == id);
+            var partyMember = _ELITEAPIMonitored?.Party.GetPartyMembers().FirstOrDefault(p => p.ID == id);
             if (partyMember != null && !string.IsNullOrEmpty(partyMember.Name))
             {
                 return partyMember.Name;
@@ -9547,7 +9547,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
             for (int i = 0; i < 2048; i++)
             {
                 var entity = _ELITEAPIPL.Entity.GetEntity(i);
-                if (entity != null && entity.ServerId == id && !string.IsNullOrEmpty(entity.Name))
+                if (entity != null && entity.ID == id && !string.IsNullOrEmpty(entity.Name))
                 {
                     return entity.Name;
                 }
@@ -9656,7 +9656,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                             ushort.TryParse(parts[3], out ushort spellId))
                         {
                             var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                            if (plInfo != null && actorId == plInfo.ServerId)
+                            if (plInfo != null && actorId == plInfo.ID)
                             {
                                 string targetName = GetEntityNameById(targetId);
                                 string buffType = GetBuffNameForSpellId(spellId);
