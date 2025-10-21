@@ -9630,11 +9630,43 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     break;
 
                 case "LOG":
-                     if (parts.Length > 1) {
+                    if (parts.Length > 1)
+                    {
                         string logData = parts[1];
                         debug_MSG_show.AppendLine(logData);
                         UpdateDebugForm(logData);
-                     }
+
+                        // Check if this is a player magic cast log
+                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                        if (plInfo != null && logData.Contains("[MAGIC]") && logData.Contains("Actor: " + plInfo.Name))
+                        {
+                            try
+                            {
+                                // Parse: [MAGIC] Regen (108) - Actor: Thareria, Target[0]: Thareria
+                                int spellIdStart = logData.IndexOf('(') + 1;
+                                int spellIdEnd = logData.IndexOf(')');
+                                ushort spellId = ushort.Parse(logData.Substring(spellIdStart, spellIdEnd - spellIdStart));
+
+                                int targetNameStart = logData.IndexOf("Target[0]: ") + "Target[0]: ".Length;
+                                string targetName = logData.Substring(targetNameStart).Trim();
+
+                                string buffType = GetBuffNameForSpellId(spellId);
+
+                                if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
+                                {
+                                    partyState.ResetBuffTimer(targetName, buffType);
+                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PARSED LOG] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
+                                    debug_MSG_show.AppendLine(logMessage);
+                                    UpdateDebugForm(logMessage);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log parsing errors without crashing
+                                debug_MSG_show.AppendLine($"Error parsing LOG message: {ex.Message}");
+                            }
+                        }
+                    }
                     break;
 
                 case "BUFF_FADE":
