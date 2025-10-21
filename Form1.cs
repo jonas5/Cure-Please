@@ -9534,27 +9534,26 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                         if (memberState == null) continue;
 
-                        var oldBuffs = memberState.Buffs.ToDictionary(b => b.Id);
-                        var newBuffs = oldBuffs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                        var currentBuffs = memberState.Buffs.ToDictionary(b => b.Id);
 
-                        // Log initial state for comparison
-                        string oldBuffsLog = string.Join(", ", oldBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
+                        string oldBuffsLog = string.Join(", ", currentBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Polling for {characterName}. Polled IDs: [{string.Join(", ", polledBuffIds)}]. Before merge: [{oldBuffsLog}]");
 
-                        // 1. Remove buffs that are gone from the API AND have expired in our state.
-                        foreach (var oldBuff in oldBuffs.Values)
+                        // Remove buffs that are no longer present in the API and have expired according to our timer
+                        memberState.Buffs.RemoveAll(buff =>
                         {
-                            if (!polledBuffIds.Contains(oldBuff.Id) && oldBuff.Expiration <= DateTime.Now)
+                            bool shouldRemove = !polledBuffIds.Contains(buff.Id) && buff.Expiration <= DateTime.Now;
+                            if (shouldRemove)
                             {
-                                newBuffs.Remove(oldBuff.Id);
-                                debug_MSG_show.AppendLine($"    -> Removing expired buff {oldBuff.Id} (Expired at {oldBuff.Expiration:HH:mm:ss})");
+                                debug_MSG_show.AppendLine($"    -> Removing expired buff {buff.Id} (Expired at {buff.Expiration:HH:mm:ss})");
                             }
-                        }
+                            return shouldRemove;
+                        });
 
-                        // 2. Add new buffs that appeared in the API but we weren't tracking.
+                        // Add new buffs that appeared in the API (e.g., cast by another player)
                         foreach (var polledId in polledBuffIds)
                         {
-                            if (!newBuffs.ContainsKey(polledId))
+                            if (!memberState.Buffs.Any(b => b.Id == polledId))
                             {
                                 foreach (var def in buff_definitions)
                                 {
@@ -9565,7 +9564,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                                             Id = polledId,
                                             Expiration = DateTime.Now.AddSeconds(def.Value.Duration)
                                         };
-                                        newBuffs[polledId] = newBuff;
+                                        memberState.Buffs.Add(newBuff);
                                         debug_MSG_show.AppendLine($"    -> Adding new buff {polledId} (cast by other?). Expires at {newBuff.Expiration:HH:mm:ss}");
                                         break;
                                     }
@@ -9573,11 +9572,10 @@ private void updateInstances_Tick(object sender, EventArgs e)
                             }
                         }
 
-                        partyState.UpdateMemberBuffs(characterName, newBuffs.Values.ToList());
-                        string newBuffsLog = string.Join(", ", newBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
+                        string newBuffsLog = string.Join(", ", memberState.Buffs.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
                         if (oldBuffsLog != newBuffsLog)
                         {
-                           debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] State for {characterName} changed. After merge: [{newBuffsLog}]");
+                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] State for {characterName} changed. After merge: [{newBuffsLog}]");
                         }
                     }
                     catch (Exception ex)

@@ -2355,12 +2355,12 @@ namespace CurePlease
                 config.enableFastCast_Mode = false;
                 config.trackCastingPackets = false;
 
-            config.RegenDuration = 120;
-            config.ProtectDuration = 1800;
-            config.ShellDuration = 1800;
-            config.HasteDuration = 180;
-            config.RefreshDuration = 150;
-            config.PhalanxDuration = 120;
+                config.RegenDuration = 180;
+                config.ProtectDuration = 1800;
+                config.ShellDuration = 1800;
+                config.HasteDuration = 180;
+                config.RefreshDuration = 150;
+                config.PhalanxDuration = 180;
 
                 // OTHERS
 
