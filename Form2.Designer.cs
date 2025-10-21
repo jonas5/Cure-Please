@@ -4616,12 +4616,6 @@
             this.groupBox1.Controls.Add(this.autoHasteMinutes);
             this.groupBox1.Controls.Add(this.autoPhalanxIILabel);
             this.groupBox1.Controls.Add(this.autoHasteLabel);
-            this.groupBox1.Controls.Add(this.regenDuration);
-            this.groupBox1.Controls.Add(this.protectDuration);
-            this.groupBox1.Controls.Add(this.shellDuration);
-            this.groupBox1.Controls.Add(this.hasteDuration);
-            this.groupBox1.Controls.Add(this.refreshDuration);
-            this.groupBox1.Controls.Add(this.phalanxDuration);
             this.groupBox1.Controls.Add(this.cureBeforeRegen);
             this.groupBox1.Controls.Add(this.regen1enabled);
             this.groupBox1.Controls.Add(this.regen2enabled);
@@ -4983,59 +4977,6 @@
             this.autoHasteLabel.TabIndex = 1;
             this.autoHasteLabel.Text = "Recast Haste I/II and Flurry I/II every ";
             //
-            // regenDuration
-            //
-            this.regenDuration = new System.Windows.Forms.NumericUpDown();
-            this.regenDuration.Location = new System.Drawing.Point(420, 140);
-            this.regenDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.regenDuration.Name = "regenDuration";
-            this.regenDuration.Size = new System.Drawing.Size(50, 21);
-            this.regenDuration.TabIndex = 58;
-            //
-            // protectDuration
-            //
-            this.protectDuration = new System.Windows.Forms.NumericUpDown();
-            this.protectDuration.Location = new System.Drawing.Point(420, 166);
-            this.protectDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.protectDuration.Name = "protectDuration";
-            this.protectDuration.Size = new System.Drawing.Size(50, 21);
-            this.protectDuration.TabIndex = 59;
-            //
-            // shellDuration
-            //
-            this.shellDuration = new System.Windows.Forms.NumericUpDown();
-            this.shellDuration.Location = new System.Drawing.Point(420, 193);
-            this.shellDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.shellDuration.Name = "shellDuration";
-            this.shellDuration.Size = new System.Drawing.Size(50, 21);
-            this.shellDuration.TabIndex = 60;
-            //
-            // hasteDuration
-            //
-            this.hasteDuration = new System.Windows.Forms.NumericUpDown();
-            this.hasteDuration.Location = new System.Drawing.Point(350, 18);
-            this.hasteDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.hasteDuration.Name = "hasteDuration";
-            this.hasteDuration.Size = new System.Drawing.Size(50, 21);
-            this.hasteDuration.TabIndex = 61;
-            //
-            // refreshDuration
-            //
-            this.refreshDuration = new System.Windows.Forms.NumericUpDown();
-            this.refreshDuration.Location = new System.Drawing.Point(420, 114);
-            this.refreshDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.refreshDuration.Name = "refreshDuration";
-            this.refreshDuration.Size = new System.Drawing.Size(50, 21);
-            this.refreshDuration.TabIndex = 62;
-            //
-            // phalanxDuration
-            //
-            this.phalanxDuration = new System.Windows.Forms.NumericUpDown();
-            this.phalanxDuration.Location = new System.Drawing.Point(350, 45);
-            this.phalanxDuration.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.phalanxDuration.Name = "phalanxDuration";
-            this.phalanxDuration.Size = new System.Drawing.Size(50, 21);
-            this.phalanxDuration.TabIndex = 63;
             //
             // cureBeforeRegen
             //
@@ -8876,8 +8817,6 @@
         private System.Windows.Forms.NumericUpDown protectDuration;
         private System.Windows.Forms.NumericUpDown shellDuration;
         private System.Windows.Forms.NumericUpDown hasteDuration;
-        private System.Windows.Forms.NumericUpDown refreshDuration;
-        private System.Windows.Forms.NumericUpDown phalanxDuration;
         private System.Windows.Forms.CheckBox cureBeforeRegen;
         private System.Windows.Forms.CheckBox regen1enabled;
         private System.Windows.Forms.CheckBox regen2enabled;
