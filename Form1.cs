@@ -3192,13 +3192,12 @@ private string GetBestSpellTier(string buffType, string targetName)
              if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
             break;
         case "regen":
-            // Tiered selection based on settings
+            // Tiered selection based on settings, highest preferred first.
+            spellTiers.Add("Regen V");
+            spellTiers.Add("Regen IV");
             if (Form2.config.regen3enabled) spellTiers.Add("Regen III");
             if (Form2.config.regen2enabled) spellTiers.Add("Regen II");
             if (Form2.config.regen1enabled) spellTiers.Add("Regen");
-            // Always consider higher tiers if available, as a fallback
-            spellTiers.Insert(0, "Regen V");
-            spellTiers.Insert(1, "Regen IV");
             break;
         case "refresh":
             spellTiers.AddRange(new[] { "Refresh III", "Refresh II", "Refresh" });
@@ -5464,16 +5463,27 @@ private string GetBestSpellTier(string buffType, string targetName)
 
                 var buffsToCheck = new[]
                 {
-            new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) },
-            new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] },
-            new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] },
-            new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] },
-            new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] }
-        };
+                    new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) },
+                    new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] },
+                    new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] },
+                    new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] },
+                    new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] },
+                    new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] }
+                };
 
                 foreach (var buffInfo in buffsToCheck)
                 {
                     if (!buffInfo.Enabled) continue;
+
+                    if (buffInfo.Name == "Regen")
+                    {
+                        var partyMemberForHPCheck = _ELITEAPIMonitored.Party.GetPartyMember(memberIndex);
+                        bool needsCure = partyMemberForHPCheck.CurrentHPP <= Form2.config.curePercentage;
+                        if (partyMemberForHPCheck.CurrentHPP >= 95 || needsCure)
+                        {
+                            continue;
+                        }
+                    }
 
                     string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
                     bool onCooldown = buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey];
