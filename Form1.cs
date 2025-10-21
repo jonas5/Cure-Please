@@ -9547,7 +9547,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
             for (int i = 0; i < 2048; i++)
             {
                 var entity = _ELITEAPIPL.Entity.GetEntity(i);
-                if (entity != null && entity.ID == id && !string.IsNullOrEmpty(entity.Name))
+                if (entity != null && entity.TargetID == id && !string.IsNullOrEmpty(entity.Name))
                 {
                     return entity.Name;
                 }
