@@ -8813,10 +8813,6 @@
         private System.Windows.Forms.CheckBox plAmnesia;
         private System.Windows.Forms.ComboBox plSpikes_Spell;
         private System.Windows.Forms.CheckBox plSpikes;
-        private System.Windows.Forms.NumericUpDown regenDuration;
-        private System.Windows.Forms.NumericUpDown protectDuration;
-        private System.Windows.Forms.NumericUpDown shellDuration;
-        private System.Windows.Forms.NumericUpDown hasteDuration;
         private System.Windows.Forms.CheckBox cureBeforeRegen;
         private System.Windows.Forms.CheckBox regen1enabled;
         private System.Windows.Forms.CheckBox regen2enabled;

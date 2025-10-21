@@ -84,6 +84,7 @@
 
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
+        private int _lastBuffedMemberIndex = -1;
         private PartyState partyState = new PartyState();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
 
@@ -3191,7 +3192,13 @@ private string GetBestSpellTier(string buffType, string targetName)
              if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
             break;
         case "regen":
-            spellTiers.AddRange(new[] { "Regen V", "Regen IV", "Regen III", "Regen II", "Regen" });
+            // Tiered selection based on settings
+            if (Form2.config.regen3enabled) spellTiers.Add("Regen III");
+            if (Form2.config.regen2enabled) spellTiers.Add("Regen II");
+            if (Form2.config.regen1enabled) spellTiers.Add("Regen");
+            // Always consider higher tiers if available, as a fallback
+            spellTiers.Insert(0, "Regen V");
+            spellTiers.Insert(1, "Regen IV");
             break;
         case "refresh":
             spellTiers.AddRange(new[] { "Refresh III", "Refresh II", "Refresh" });
@@ -5320,19 +5327,10 @@ private string GetBestSpellTier(string buffType, string targetName)
                 CureCalculator(partyMemberId, false);
             }
 
-            if (Form2.config.regen3enabled && HasSpell("Regen III") && JobChecker("Regen III") == true && CheckSpellRecast("Regen III") == 0)
+            string spellToCast = GetBestSpellTier("Regen", _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name);
+            if (!string.IsNullOrEmpty(spellToCast))
             {
-                CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen III");
-                playerRegen[partyMemberId] = DateTime.Now;
-            }
-            else if (Form2.config.regen2enabled && HasSpell("Regen II") && JobChecker("Regen II") == true && CheckSpellRecast("Regen II") == 0)
-            {
-                CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen II");
-                playerRegen[partyMemberId] = DateTime.Now;
-            }
-            else if (Form2.config.regen1enabled && HasSpell("Regen") && JobChecker("Regen") == true && CheckSpellRecast("Regen") == 0)
-            {
-                CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Regen");
+                CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, spellToCast);
                 playerRegen[partyMemberId] = DateTime.Now;
             }
         }
@@ -5444,126 +5442,57 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
 
-            foreach (var memberState in partyState.Members.Values)
-            {
-                var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.ID == memberState.ServerId && p.Active != 0);
-                if (partyMember == null) continue;
+            var activePartyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
+                                        .Where(p => p.Active != 0 && partyState.Members.ContainsKey(p.Name))
+                                        .OrderBy(p => p.MemberNumber)
+                                        .ToList();
 
-                byte memberIndex = partyMember.MemberNumber;
+            if (activePartyMembers.Count == 0) return;
+
+            // Start search from the member after the last one buffed
+            int startIndex = (_lastBuffedMemberIndex + 1) % activePartyMembers.Count;
+
+            for (int i = 0; i < activePartyMembers.Count; i++)
+            {
+                int memberIndexInPartyList = (startIndex + i) % activePartyMembers.Count;
+                var partyMember = activePartyMembers[memberIndexInPartyList];
+                var memberState = partyState.Members[partyMember.Name];
+                byte memberIndex = partyMember.MemberNumber; // This is the 0-17 index
 
                 if (!castingPossible(memberIndex)) continue;
 
-                // Regen
-                string regenCooldownKey = $"{memberState.Name}:Regen";
-                var regenBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Regen"].Ids.Contains(b.Id));
-                bool needsRegen = autoRegen_Enabled[memberIndex] && (regenBuff == null || regenBuff.Expiration <= DateTime.Now);
-                bool regenOnCooldown = buffCooldowns.ContainsKey(regenCooldownKey) && DateTime.Now < buffCooldowns[regenCooldownKey];
-
-                if (needsRegen && !regenOnCooldown)
+                var buffsToCheck = new[]
                 {
-                    string reason = regenBuff == null ? "buff not found" : $"buff expiring at {regenBuff.Expiration:HH:mm:ss}";
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Regen ({reason}). Attempting recast.");
-                    string spellToCast = GetBestSpellTier("Regen", memberState.Name);
-                    if (!string.IsNullOrEmpty(spellToCast))
-                    {
-                        CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[regenCooldownKey] = DateTime.Now.AddSeconds(10);
-                        return;
-                    }
-                }
+            new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] },
+            new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) },
+            new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] },
+            new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] },
+            new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] },
+            new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] }
+        };
 
-                // Haste
-                string hasteCooldownKey = $"{memberState.Name}:Haste";
-                var hasteBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Haste"].Ids.Contains(b.Id));
-                bool needsHaste = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) && (hasteBuff == null || hasteBuff.Expiration <= DateTime.Now);
-                bool hasteOnCooldown = buffCooldowns.ContainsKey(hasteCooldownKey) && DateTime.Now < buffCooldowns[hasteCooldownKey];
-
-                if (needsHaste && !hasteOnCooldown)
+                foreach (var buffInfo in buffsToCheck)
                 {
-                    string reason = hasteBuff == null ? "buff not found" : $"buff expiring at {hasteBuff.Expiration:HH:mm:ss}";
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Haste ({reason}). Attempting recast.");
-                    string spellToCast = GetBestSpellTier("Haste", memberState.Name);
-                    if (!string.IsNullOrEmpty(spellToCast))
+                    if (!buffInfo.Enabled) continue;
+
+                    string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
+                    bool onCooldown = buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey];
+                    if (onCooldown) continue;
+
+                    var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
+                    if (buff == null || buff.Expiration <= DateTime.Now)
                     {
-                        CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[hasteCooldownKey] = DateTime.Now.AddSeconds(10);
-                        return;
-                    }
-                }
+                        string reason = buff == null ? "buff not found" : $"buff expiring at {buff.Expiration:HH:mm:ss}";
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] Rotating to {memberState.Name} who needs {buffInfo.Name} ({reason}).");
 
-                // Refresh
-                string refreshCooldownKey = $"{memberState.Name}:Refresh";
-                var refreshBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Refresh"].Ids.Contains(b.Id));
-                bool needsRefresh = autoRefreshEnabled[memberIndex] && (refreshBuff == null || refreshBuff.Expiration <= DateTime.Now);
-                bool refreshOnCooldown = buffCooldowns.ContainsKey(refreshCooldownKey) && DateTime.Now < buffCooldowns[refreshCooldownKey];
-
-                if (needsRefresh && !refreshOnCooldown)
-                {
-                    string reason = refreshBuff == null ? "buff not found" : $"buff expiring at {refreshBuff.Expiration:HH:mm:ss}";
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Refresh ({reason}). Attempting recast.");
-                    string spellToCast = GetBestSpellTier("Refresh", memberState.Name);
-                    if (!string.IsNullOrEmpty(spellToCast))
-                    {
-                        CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[refreshCooldownKey] = DateTime.Now.AddSeconds(10);
-                        return;
-                    }
-                }
-
-                // Phalanx
-                string phalanxCooldownKey = $"{memberState.Name}:Phalanx";
-                var phalanxBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Phalanx"].Ids.Contains(b.Id));
-                bool needsPhalanx = autoPhalanx_IIEnabled[memberIndex] && (phalanxBuff == null || phalanxBuff.Expiration <= DateTime.Now);
-                bool phalanxOnCooldown = buffCooldowns.ContainsKey(phalanxCooldownKey) && DateTime.Now < buffCooldowns[phalanxCooldownKey];
-
-                if (needsPhalanx && !phalanxOnCooldown)
-                {
-                    string reason = phalanxBuff == null ? "buff not found" : $"buff expiring at {phalanxBuff.Expiration:HH:mm:ss}";
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Phalanx ({reason}). Attempting recast.");
-                    string spellToCast = GetBestSpellTier("Phalanx", memberState.Name);
-                    if (!string.IsNullOrEmpty(spellToCast))
-                    {
-                        CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[phalanxCooldownKey] = DateTime.Now.AddSeconds(10);
-                        return;
-                    }
-                }
-
-                // Protect
-                string protectCooldownKey = $"{memberState.Name}:Protect";
-                var protectBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Protect"].Ids.Contains(b.Id));
-                bool needsProtect = autoProtect_Enabled[memberIndex] && (protectBuff == null || protectBuff.Expiration <= DateTime.Now);
-                bool protectOnCooldown = buffCooldowns.ContainsKey(protectCooldownKey) && DateTime.Now < buffCooldowns[protectCooldownKey];
-
-                if (needsProtect && !protectOnCooldown)
-                {
-                    string reason = protectBuff == null ? "buff not found" : $"buff expiring at {protectBuff.Expiration:HH:mm:ss}";
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Protect ({reason}). Attempting recast.");
-                    string spellToCast = GetBestSpellTier("Protect", memberState.Name);
-                    if (!string.IsNullOrEmpty(spellToCast))
-                    {
-                        CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[protectCooldownKey] = DateTime.Now.AddSeconds(10);
-                        return;
-                    }
-                }
-
-                // Shell
-                string shellCooldownKey = $"{memberState.Name}:Shell";
-                var shellBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Shell"].Ids.Contains(b.Id));
-                bool needsShell = autoShell_Enabled[memberIndex] && (shellBuff == null || shellBuff.Expiration <= DateTime.Now);
-                bool shellOnCooldown = buffCooldowns.ContainsKey(shellCooldownKey) && DateTime.Now < buffCooldowns[shellCooldownKey];
-
-                if (needsShell && !shellOnCooldown)
-                {
-                    string reason = shellBuff == null ? "buff not found" : $"buff expiring at {shellBuff.Expiration:HH:mm:ss}";
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Shell ({reason}). Attempting recast.");
-                    string spellToCast = GetBestSpellTier("Shell", memberState.Name);
-                    if (!string.IsNullOrEmpty(spellToCast))
-                    {
-                        CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[shellCooldownKey] = DateTime.Now.AddSeconds(10);
-                        return;
+                        string spellToCast = GetBestSpellTier(buffInfo.Name, memberState.Name);
+                        if (!string.IsNullOrEmpty(spellToCast))
+                        {
+                            CastSpell(memberState.Name, spellToCast);
+                            buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10); // Static 10s cooldown
+                            _lastBuffedMemberIndex = memberIndexInPartyList; // Update the index to the position in our active members list
+                            return; // Cast one spell per tick
+                        }
                     }
                 }
             }
