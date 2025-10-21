@@ -5441,6 +5441,7 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void CheckAndApplyBuffs()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
+            if (_ELITEAPIPL.Player.Status == 33) return;
 
             var activePartyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
                                         .Where(p => p.Active != 0 && partyState.Members.ContainsKey(p.Name))
@@ -5482,6 +5483,12 @@ private string GetBestSpellTier(string buffType, string targetName)
                     var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
                     if (buff == null || buff.Expiration <= DateTime.Now)
                     {
+                        // HP check for Regen
+                        if (buffInfo.Name == "Regen" && partyMember.CurrentHPP >= 95)
+                        {
+                            continue;
+                        }
+
                         string reason = buff == null ? "buff not found" : $"buff expiring at {buff.Expiration:HH:mm:ss}";
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] Rotating to {memberState.Name} who needs {buffInfo.Name} ({reason}).");
 
