@@ -9489,7 +9489,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 {
                     try
                     {
-                        var currentBuffIds = api.Player.GetPlayerInfo().Buffs.Select(b => (int)b).ToHashSet();
+                        var currentBuffIds = new HashSet<int>(api.Player.GetPlayerInfo().Buffs.Select(b => (int)b));
                         PartyMemberState memberState = partyState.GetPartyMember(characterName);
 
                         if (memberState == null) continue;
