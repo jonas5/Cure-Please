@@ -22,6 +22,20 @@
 
         private Form2 Form2 = new CurePlease.Form2();
 
+        // Outside Party Controls
+        private GroupBox outsidePartyBox;
+        private ComboBox[] oop_playerComboBoxes = new ComboBox[6];
+        private ProgressBar[] oop_hpProgressBars = new ProgressBar[6];
+        private NumericUpDown[] oop_maxHpNumerics = new NumericUpDown[6];
+        private Button[] oop_optionsButtons = new Button[6];
+        private OutOfPartyPlayer[] oop_players = new OutOfPartyPlayer[6];
+
+        public class OutOfPartyPlayer
+        {
+            public string Name { get; set; }
+            public int MaxHP { get; set; }
+        }
+
         public class BuffStorage : List<BuffStorage>
         {
             public string CharacterName { get; set; }
@@ -488,7 +502,25 @@
         // ABILITY CHECKER CODE: (GetAbilityRecast("") == 0) && (HasAbility(""))
         // PIANISSIMO TIME FORMAT
         // SONGNUMBER_SONGSET (Example: 1_2 = Song #1 in Set #2
-        private bool[] autoHasteEnabled = new bool[]
+        private bool[] oop_autoHasteEnabled = new bool[6];
+        private bool[] oop_autoHaste_IIEnabled = new bool[6];
+        private bool[] oop_autoAdloquium_Enabled = new bool[6];
+        private bool[] oop_autoFlurryEnabled = new bool[6];
+        private bool[] oop_autoFlurry_IIEnabled = new bool[6];
+        private bool[] oop_autoProtect_Enabled = new bool[6];
+        private bool[] oop_autoShell_Enabled = new bool[6];
+        private bool[] oop_autoPhalanx_IIEnabled = new bool[6];
+        private bool[] oop_autoRegen_Enabled = new bool[6];
+        private bool[] oop_autoRefreshEnabled = new bool[6];
+        private bool[] oop_autoSandstormEnabled = new bool[6];
+        private bool[] oop_autoRainstormEnabled = new bool[6];
+        private bool[] oop_autoWindstormEnabled = new bool[6];
+        private bool[] oop_autoFirestormEnabled = new bool[6];
+        private bool[] oop_autoHailstormEnabled = new bool[6];
+        private bool[] oop_autoThunderstormEnabled = new bool[6];
+        private bool[] oop_autoVoidstormEnabled = new bool[6];
+        private bool[] oop_autoAurorastormEnabled = new bool[6];
+      private bool[] autoHasteEnabled = new bool[]
       {
             false,
             false,
@@ -1553,6 +1585,7 @@
 
 
         private NamedPipeClient _pipeClient;
+        private List<string> outOfPartyPlayers = new List<string>();
         public Form1()
         {
 
@@ -1560,6 +1593,7 @@
             StartPosition = FormStartPosition.CenterScreen;
 
             InitializeComponent();
+            InitializeOutsidePartyControls();
 
             _pipeClient = new NamedPipeClient("CurePleasePipe");
             _pipeClient.Connected += PipeClient_Connected;
@@ -3478,6 +3512,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 return;
             }
 
+
             // Update PartyState with current party members
             var allProcesses = GetFFXIProcesses(requireVisibleWindow: true);
             var processMap = allProcesses.ToDictionary(p => p.MainWindowTitle, p => p.Id);
@@ -4039,19 +4074,18 @@ private string GetBestSpellTier(string buffType, string targetName)
             }
         }
 
-        private void CureCalculator(byte partyMemberId, bool HP)
+        private void CureCalculator_Unified(string playerName, uint currentHP, uint maxHP, bool HP)
         {
-            // FIRST GET HOW MUCH HP IS MISSING FROM THE CURRENT PARTY MEMBER
-            if (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP > 0)
+            if (currentHP > 0)
             {
-                uint HP_Loss = (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP * 100) / (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP) - (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP);
+                uint HP_Loss = maxHP - currentHP;
 
                 if (Form2.config.cure6enabled && HP_Loss >= Form2.config.cure6amount && _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobChecker("Cure VI") == true)
                 {
                     string cureSpell = CureTiers("Cure VI", HP);
                     if (cureSpell != "false")
                     {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+                        CastSpell(playerName, cureSpell);
                     }
                 }
                 else if (Form2.config.cure5enabled && HP_Loss >= Form2.config.cure5amount && _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobChecker("Cure V") == true)
@@ -4059,7 +4093,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     string cureSpell = CureTiers("Cure V", HP);
                     if (cureSpell != "false")
                     {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+                        CastSpell(playerName, cureSpell);
                     }
                 }
                 else if (Form2.config.cure4enabled && HP_Loss >= Form2.config.cure4amount && _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobChecker("Cure IV") == true)
@@ -4067,7 +4101,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     string cureSpell = CureTiers("Cure IV", HP);
                     if (cureSpell != "false")
                     {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+                        CastSpell(playerName, cureSpell);
                     }
                 }
                 else if (Form2.config.cure3enabled && HP_Loss >= Form2.config.cure3amount && _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobChecker("Cure III") == true)
@@ -4076,7 +4110,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     string cureSpell = CureTiers("Cure III", HP);
                     if (cureSpell != "false")
                     {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+                        CastSpell(playerName, cureSpell);
                     }
                 }
                 else if (Form2.config.cure2enabled && HP_Loss >= Form2.config.cure2amount && _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobChecker("Cure II") == true)
@@ -4085,7 +4119,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     string cureSpell = CureTiers("Cure II", HP);
                     if (cureSpell != "false")
                     {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+                        CastSpell(playerName, cureSpell);
                     }
                 }
                 else if (Form2.config.cure1enabled && HP_Loss >= Form2.config.cure1amount && _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobChecker("Cure") == true)
@@ -4094,7 +4128,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     string cureSpell = CureTiers("Cure", HP);
                     if (cureSpell != "false")
                     {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+                        CastSpell(playerName, cureSpell);
                     }
                 }
             }
@@ -5593,6 +5627,7 @@ private string GetBestSpellTier(string buffType, string targetName)
             ProcessRecastQueue();
             CheckAndApplyBuffs();
             CheckEngagedStatus_Hate();
+            UpdateOOPUI();
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -5997,7 +6032,8 @@ private string GetBestSpellTier(string buffType, string targetName)
 
                     if (Form2.config.enableMonitoredPriority && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].Name == _ELITEAPIMonitored.Player.Name && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHPP <= Form2.config.monitoredCurePercentage))
                     {
-                        CureCalculator(playerMonitoredHp, false);
+                        var member = _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp];
+                        CureCalculator_Unified(member.Name, member.CurrentHP, (uint)(member.CurrentHP * 100 / member.CurrentHPP), false);
                     }
                     else
                     {
@@ -6006,7 +6042,8 @@ private string GetBestSpellTier(string buffType, string targetName)
                         {
                             if ((highPriorityBoxes[id].Checked) && _ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <= Form2.config.priorityCurePercentage))
                             {
-                                CureCalculator(id, true);
+                                var member = _ELITEAPIMonitored.Party.GetPartyMembers()[id];
+                                CureCalculator_Unified(member.Name, member.CurrentHP, (uint)(member.CurrentHP * 100 / member.CurrentHPP), true);
                                 break;
                             }
                         }
@@ -6019,7 +6056,8 @@ private string GetBestSpellTier(string buffType, string targetName)
                             {
                                 if ((_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <= Form2.config.curePercentage) && (castingPossible(id)))
                                 {
-                                    CureCalculator(id, false);
+                                    var member = _ELITEAPIMonitored.Party.GetPartyMembers()[id];
+                                    CureCalculator_Unified(member.Name, member.CurrentHP, (uint)(member.CurrentHP * 100 / member.CurrentHPP), false);
                                     break;
                                 }
                             }
@@ -7161,8 +7199,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             settings.Show();
         }
 
+        private bool isOopMenu = false;
         private void player0optionsButton_Click(object sender, EventArgs e)
         {
+            isOopMenu = false;
             playerOptionsSelected = 0;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[0];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[0];
@@ -7598,78 +7638,173 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void autoHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHasteEnabled[playerOptionsSelected] = !autoHasteEnabled[playerOptionsSelected];
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            if (isOopMenu)
+            {
+                oop_autoHasteEnabled[playerOptionsSelected] = !oop_autoHasteEnabled[playerOptionsSelected];
+                oop_autoHaste_IIEnabled[playerOptionsSelected] = false;
+                oop_autoFlurryEnabled[playerOptionsSelected] = false;
+                oop_autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            }
+            else
+            {
+                autoHasteEnabled[playerOptionsSelected] = !autoHasteEnabled[playerOptionsSelected];
+                autoHaste_IIEnabled[playerOptionsSelected] = false;
+                autoFlurryEnabled[playerOptionsSelected] = false;
+                autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            }
         }
 
         private void autoHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHaste_IIEnabled[playerOptionsSelected] = !autoHaste_IIEnabled[playerOptionsSelected];
-            autoHasteEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            if (isOopMenu)
+            {
+                oop_autoHaste_IIEnabled[playerOptionsSelected] = !oop_autoHaste_IIEnabled[playerOptionsSelected];
+                oop_autoHasteEnabled[playerOptionsSelected] = false;
+                oop_autoFlurryEnabled[playerOptionsSelected] = false;
+                oop_autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            }
+            else
+            {
+                autoHaste_IIEnabled[playerOptionsSelected] = !autoHaste_IIEnabled[playerOptionsSelected];
+                autoHasteEnabled[playerOptionsSelected] = false;
+                autoFlurryEnabled[playerOptionsSelected] = false;
+                autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            }
         }
 
         private void autoAdloquiumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoAdloquium_Enabled[playerOptionsSelected] = !autoAdloquium_Enabled[playerOptionsSelected];
+            if (isOopMenu)
+            {
+                oop_autoAdloquium_Enabled[playerOptionsSelected] = !oop_autoAdloquium_Enabled[playerOptionsSelected];
+            }
+            else
+            {
+                autoAdloquium_Enabled[playerOptionsSelected] = !autoAdloquium_Enabled[playerOptionsSelected];
+            }
         }
 
         private void autoFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurryEnabled[playerOptionsSelected] = !autoFlurryEnabled[playerOptionsSelected];
-            autoHasteEnabled[playerOptionsSelected] = false;
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            if (isOopMenu)
+            {
+                oop_autoFlurryEnabled[playerOptionsSelected] = !oop_autoFlurryEnabled[playerOptionsSelected];
+                oop_autoHasteEnabled[playerOptionsSelected] = false;
+                oop_autoHaste_IIEnabled[playerOptionsSelected] = false;
+                oop_autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            }
+            else
+            {
+                autoFlurryEnabled[playerOptionsSelected] = !autoFlurryEnabled[playerOptionsSelected];
+                autoHasteEnabled[playerOptionsSelected] = false;
+                autoHaste_IIEnabled[playerOptionsSelected] = false;
+                autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            }
         }
 
         private void autoFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurry_IIEnabled[playerOptionsSelected] = !autoFlurry_IIEnabled[playerOptionsSelected];
-            autoHasteEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
+            if (isOopMenu)
+            {
+                oop_autoFlurry_IIEnabled[playerOptionsSelected] = !oop_autoFlurry_IIEnabled[playerOptionsSelected];
+                oop_autoHasteEnabled[playerOptionsSelected] = false;
+                oop_autoFlurryEnabled[playerOptionsSelected] = false;
+                oop_autoHaste_IIEnabled[playerOptionsSelected] = false;
+            }
+            else
+            {
+                autoFlurry_IIEnabled[playerOptionsSelected] = !autoFlurry_IIEnabled[playerOptionsSelected];
+                autoHasteEnabled[playerOptionsSelected] = false;
+                autoFlurryEnabled[playerOptionsSelected] = false;
+                autoHaste_IIEnabled[playerOptionsSelected] = false;
+            }
         }
 
         private void autoProtectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoProtect_Enabled[playerOptionsSelected] = !autoProtect_Enabled[playerOptionsSelected];
+            if (isOopMenu)
+            {
+                oop_autoProtect_Enabled[playerOptionsSelected] = !oop_autoProtect_Enabled[playerOptionsSelected];
+            }
+            else
+            {
+                autoProtect_Enabled[playerOptionsSelected] = !autoProtect_Enabled[playerOptionsSelected];
+            }
         }
 
         private void enableDebuffRemovalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string generated_name = _ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name.ToLower();
-            characterNames_naRemoval.Add(generated_name);
+            if (!isOopMenu)
+            {
+                string generated_name = _ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name.ToLower();
+                characterNames_naRemoval.Add(generated_name);
+            }
         }
 
         private void autoShellToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoShell_Enabled[playerOptionsSelected] = !autoShell_Enabled[playerOptionsSelected];
+            if (isOopMenu)
+            {
+                oop_autoShell_Enabled[playerOptionsSelected] = !oop_autoShell_Enabled[playerOptionsSelected];
+            }
+            else
+            {
+                autoShell_Enabled[playerOptionsSelected] = !autoShell_Enabled[playerOptionsSelected];
+            }
         }
 
         private void autoHasteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            autoHasteEnabled[autoOptionsSelected] = !autoHasteEnabled[autoOptionsSelected];
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            if (isOopMenu)
+            {
+                oop_autoHasteEnabled[autoOptionsSelected] = !oop_autoHasteEnabled[autoOptionsSelected];
+                oop_autoHaste_IIEnabled[autoOptionsSelected] = false;
+                oop_autoFlurryEnabled[autoOptionsSelected] = false;
+                oop_autoFlurry_IIEnabled[autoOptionsSelected] = false;
+            }
+            else
+            {
+                autoHasteEnabled[autoOptionsSelected] = !autoHasteEnabled[autoOptionsSelected];
+                autoHaste_IIEnabled[autoOptionsSelected] = false;
+                autoFlurryEnabled[autoOptionsSelected] = false;
+                autoFlurry_IIEnabled[autoOptionsSelected] = false;
+            }
         }
 
         private void autoPhalanxIIToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            autoPhalanx_IIEnabled[autoOptionsSelected] = !autoPhalanx_IIEnabled[autoOptionsSelected];
+            if (isOopMenu)
+            {
+                oop_autoPhalanx_IIEnabled[autoOptionsSelected] = !oop_autoPhalanx_IIEnabled[autoOptionsSelected];
+            }
+            else
+            {
+                autoPhalanx_IIEnabled[autoOptionsSelected] = !autoPhalanx_IIEnabled[autoOptionsSelected];
+            }
         }
 
         private void autoRegenVToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoRegen_Enabled[autoOptionsSelected] = !autoRegen_Enabled[autoOptionsSelected];
+            if (isOopMenu)
+            {
+                oop_autoRegen_Enabled[autoOptionsSelected] = !oop_autoRegen_Enabled[autoOptionsSelected];
+            }
+            else
+            {
+                autoRegen_Enabled[autoOptionsSelected] = !autoRegen_Enabled[autoOptionsSelected];
+            }
         }
 
         private void autoRefreshIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoRefreshEnabled[autoOptionsSelected] = !autoRefreshEnabled[autoOptionsSelected];
+            if (isOopMenu)
+            {
+                oop_autoRefreshEnabled[autoOptionsSelected] = !oop_autoRefreshEnabled[autoOptionsSelected];
+            }
+            else
+            {
+                autoRefreshEnabled[autoOptionsSelected] = !autoRefreshEnabled[autoOptionsSelected];
+            }
         }
 
         private void hasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -9678,6 +9813,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                     break;
+                case "PLAYER_LIST":
+                    if (parts.Length > 1)
+                    {
+                        outOfPartyPlayers = parts[1].Split(',').ToList();
+                    }
+                    break;
             }
         }
 
@@ -9917,6 +10058,153 @@ private void updateInstances_Tick(object sender, EventArgs e)
         public void ClearDebugMessages()
         {
             debug_MSG_show.Clear();
+        }
+
+
+        private void UpdateOOPUI()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                var player = oop_players[i];
+                if (player != null && !string.IsNullOrEmpty(player.Name))
+                {
+                    bool playerFound = false;
+                    // Find player in entity list
+                    for (int j = 0; j < 2048; j++)
+                    {
+                        EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(j);
+                        if (entity != null && entity.Name == player.Name)
+                        {
+                            playerFound = true;
+                            // Update HP bar
+                            UpdateHPProgressBar(oop_hpProgressBars[i], entity.HealthPercent);
+
+                            // Check if cure is needed
+                            if (entity.HealthPercent <= Form2.config.curePercentage)
+                            {
+                                CureCalculator_Unified(player.Name, (uint)(player.MaxHP * entity.HealthPercent / 100), (uint)player.MaxHP, false);
+                            }
+                            break;
+                        }
+                    }
+                    if (!playerFound)
+                    {
+                        oop_hpProgressBars[i].Value = 0;
+                    }
+                }
+                else
+                {
+                    // No player selected, reset HP bar
+                    oop_hpProgressBars[i].Value = 0;
+                }
+            }
+        }
+
+        private void InitializeOutsidePartyControls()
+        {
+            // Create the GroupBox
+            outsidePartyBox = new GroupBox();
+            outsidePartyBox.SuspendLayout();
+            this.Controls.Add(outsidePartyBox);
+            outsidePartyBox.Location = new System.Drawing.Point(12, 530);
+            outsidePartyBox.Name = "outsidePartyBox";
+            outsidePartyBox.Size = new System.Drawing.Size(560, 100);
+            outsidePartyBox.TabIndex = 4;
+            outsidePartyBox.TabStop = false;
+            outsidePartyBox.Text = "Outside Party";
+
+            for (int i = 0; i < 6; i++)
+            {
+                oop_players[i] = new OutOfPartyPlayer();
+                // Create ComboBox for player selection
+                oop_playerComboBoxes[i] = new ComboBox();
+                oop_playerComboBoxes[i].FormattingEnabled = true;
+                oop_playerComboBoxes[i].Location = new System.Drawing.Point(10 + (i * 90), 20);
+                oop_playerComboBoxes[i].Name = "oop_playerComboBox" + i;
+                oop_playerComboBoxes[i].Size = new System.Drawing.Size(80, 21);
+                oop_playerComboBoxes[i].TabIndex = i * 4;
+                oop_playerComboBoxes[i].Tag = i;
+                oop_playerComboBoxes[i].SelectedIndexChanged += oop_playerComboBox_SelectedIndexChanged;
+                oop_playerComboBoxes[i].DropDown += oop_playerComboBox_DropDown;
+                outsidePartyBox.Controls.Add(oop_playerComboBoxes[i]);
+
+                // Create ProgressBar for HP
+                oop_hpProgressBars[i] = new ProgressBar();
+                oop_hpProgressBars[i].Location = new System.Drawing.Point(10 + (i * 90), 45);
+                oop_hpProgressBars[i].Name = "oop_hpProgressBar" + i;
+                oop_hpProgressBars[i].Size = new System.Drawing.Size(80, 10);
+                oop_hpProgressBars[i].TabIndex = i * 4 + 1;
+                outsidePartyBox.Controls.Add(oop_hpProgressBars[i]);
+
+                // Create NumericUpDown for Max HP
+                oop_maxHpNumerics[i] = new NumericUpDown();
+                oop_maxHpNumerics[i].Location = new System.Drawing.Point(10 + (i * 90), 60);
+                oop_maxHpNumerics[i].Name = "oop_maxHpNumeric" + i;
+                oop_maxHpNumerics[i].Size = new System.Drawing.Size(50, 20);
+                oop_maxHpNumerics[i].TabIndex = i * 4 + 2;
+                oop_maxHpNumerics[i].Maximum = 9999;
+                oop_maxHpNumerics[i].Value = 800;
+                oop_maxHpNumerics[i].Tag = i;
+                oop_maxHpNumerics[i].ValueChanged += oop_maxHpNumeric_ValueChanged;
+                outsidePartyBox.Controls.Add(oop_maxHpNumerics[i]);
+
+                // Create Button for options
+                oop_optionsButtons[i] = new Button();
+                oop_optionsButtons[i].Location = new System.Drawing.Point(65 + (i * 90), 60);
+                oop_optionsButtons[i].Name = "oop_optionsButton" + i;
+                oop_optionsButtons[i].Size = new System.Drawing.Size(25, 20);
+                oop_optionsButtons[i].TabIndex = i * 4 + 3;
+                oop_optionsButtons[i].Text = "...";
+                oop_optionsButtons[i].UseVisualStyleBackColor = true;
+                oop_optionsButtons[i].Tag = i;
+                oop_optionsButtons[i].Click += oop_optionsButton_Click;
+                outsidePartyBox.Controls.Add(oop_optionsButtons[i]);
+            }
+            outsidePartyBox.ResumeLayout(false);
+
+            // Adjust form size
+            this.Size = new System.Drawing.Size(this.Size.Width, this.Size.Height + 100);
+        }
+
+        private void oop_playerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+            int index = (int)comboBox.Tag;
+            oop_players[index].Name = comboBox.Text;
+        }
+
+        private void oop_maxHpNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            var numericUpDown = (NumericUpDown)sender;
+            int index = (int)numericUpDown.Tag;
+            oop_players[index].MaxHP = (int)numericUpDown.Value;
+        }
+
+        private void oop_optionsButton_Click(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            isOopMenu = true;
+            playerOptionsSelected = (byte)(int)button.Tag;
+            autoHasteToolStripMenuItem.Checked = oop_autoHasteEnabled[playerOptionsSelected];
+            autoHasteIIToolStripMenuItem.Checked = oop_autoHaste_IIEnabled[playerOptionsSelected];
+            autoAdloquiumToolStripMenuItem.Checked = oop_autoAdloquium_Enabled[playerOptionsSelected];
+            autoFlurryToolStripMenuItem.Checked = oop_autoFlurryEnabled[playerOptionsSelected];
+            autoFlurryIIToolStripMenuItem.Checked = oop_autoFlurry_IIEnabled[playerOptionsSelected];
+            autoProtectToolStripMenuItem.Checked = oop_autoProtect_Enabled[playerOptionsSelected];
+            autoShellToolStripMenuItem.Checked = oop_autoShell_Enabled[playerOptionsSelected];
+            playerOptions.Show(button, new Point(0, button.Height));
+        }
+        private void oop_playerComboBox_DropDown(object sender, EventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+            var selected = comboBox.SelectedItem;
+            comboBox.Items.Clear();
+            comboBox.Items.Add("");
+            comboBox.Items.AddRange(outOfPartyPlayers.ToArray());
+            if (selected != null && comboBox.Items.Contains(selected))
+            {
+                comboBox.SelectedItem = selected;
+            }
         }
     }
 

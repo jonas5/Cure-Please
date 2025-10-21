@@ -38,6 +38,78 @@ private:
     std::atomic<bool> m_Shutdown = false;
     bool m_PipeConnected = false;
     bool m_isZoning = false;
+    std::thread m_PlayerScanThread;
+
+    void PlayerScanThread()
+    {
+        while (!m_Shutdown)
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            if (!m_PipeConnected || m_isZoning || !m_AshitaCore)
+                continue;
+
+            auto entMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+            auto partyMgr = m_AshitaCore->GetMemoryManager()->GetParty();
+            auto allianceMgr = m_AshitaCore->GetMemoryManager()->GetAlliance(); // Assuming this is the correct method
+            if (!entMgr || !partyMgr)
+                continue;
+
+            std::string playerList = "PLAYER_LIST|";
+            std::vector<std::string> partyAndAllianceNames;
+            for (int i = 0; i < partyMgr->GetMemberCount(); ++i)
+            {
+                auto member = partyMgr->GetMember(i);
+                if (member && member->Name[0] != '\0')
+                {
+                    partyAndAllianceNames.push_back(member->Name);
+                }
+            }
+
+            if (allianceMgr)
+            {
+                for (int i = 0; i < allianceMgr->GetMemberCount(); ++i)
+                {
+                    auto member = allianceMgr->GetMember(i);
+                    if (member && member->Name[0] != '\0')
+                    {
+                        partyAndAllianceNames.push_back(member->Name);
+                    }
+                }
+            }
+
+            for (int i = 0; i < 2048; ++i)
+            {
+                if (entMgr->GetServerId(i) != 0 && (entMgr->GetEntityType(i) & 0x01) == 0x01) // Player type check
+                {
+                    const char* name = entMgr->GetName(i);
+                    if (name && strlen(name) > 0)
+                    {
+                        bool isExcluded = false;
+                        for (const auto& memberName : partyAndAllianceNames)
+                        {
+                            if (memberName == name)
+                            {
+                                isExcluded = true;
+                                break;
+                            }
+                        }
+                        if (!isExcluded)
+                        {
+                            playerList += name;
+                            playerList += ",";
+                        }
+                    }
+                }
+            }
+            if (playerList.back() == ',')
+            {
+                playerList.pop_back();
+            }
+            playerList += "\n";
+
+            WriteToPipe(playerList);
+        }
+    }
 
     std::string GetEntityNameById(uint32_t id)
     {
@@ -112,6 +184,7 @@ public:
     ~CurePleasePlugin() {
         m_Shutdown = true;
         if (m_PipeThread.joinable()) m_PipeThread.join();
+        if (m_PlayerScanThread.joinable()) m_PlayerScanThread.join();
     }
 
     const char* GetName() const override { return g_PluginName; }
@@ -123,6 +196,7 @@ public:
     bool Initialize(IAshitaCore* core, ILogManager* logger, uint32_t id) override {
         m_AshitaCore = core;
         m_PipeThread = std::thread(&CurePleasePlugin::PipeThread, this);
+        m_PlayerScanThread = std::thread(&CurePleasePlugin::PlayerScanThread, this);
         return true;
     }
 
@@ -131,6 +205,7 @@ public:
         HANDLE hDummyPipe = CreateFileW(PipeName.c_str(), GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
         if (hDummyPipe != INVALID_HANDLE_VALUE) CloseHandle(hDummyPipe);
         if (m_PipeThread.joinable()) m_PipeThread.join();
+        if (m_PlayerScanThread.joinable()) m_PlayerScanThread.join();
     }
 
     bool HandleCommand(int32_t mode, const char* command, bool injected) override {
