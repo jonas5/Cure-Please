@@ -5450,7 +5450,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Regen
                 string regenCooldownKey = $"{memberState.Name}:Regen";
                 var regenBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Regen"].Ids.Contains(b.Id));
-                bool needsRegen = autoRegen_Enabled[memberIndex] && (regenBuff == null || regenBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool needsRegen = autoRegen_Enabled[memberIndex] && (regenBuff == null || regenBuff.Expiration <= DateTime.Now);
                 bool regenOnCooldown = buffCooldowns.ContainsKey(regenCooldownKey) && DateTime.Now < buffCooldowns[regenCooldownKey];
 
                 if (needsRegen && !regenOnCooldown)
@@ -5469,7 +5469,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Haste
                 string hasteCooldownKey = $"{memberState.Name}:Haste";
                 var hasteBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Haste"].Ids.Contains(b.Id));
-                bool needsHaste = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) && (hasteBuff == null || hasteBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool needsHaste = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) && (hasteBuff == null || hasteBuff.Expiration <= DateTime.Now);
                 bool hasteOnCooldown = buffCooldowns.ContainsKey(hasteCooldownKey) && DateTime.Now < buffCooldowns[hasteCooldownKey];
 
                 if (needsHaste && !hasteOnCooldown)
@@ -5488,7 +5488,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Refresh
                 string refreshCooldownKey = $"{memberState.Name}:Refresh";
                 var refreshBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Refresh"].Ids.Contains(b.Id));
-                bool needsRefresh = autoRefreshEnabled[memberIndex] && (refreshBuff == null || refreshBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool needsRefresh = autoRefreshEnabled[memberIndex] && (refreshBuff == null || refreshBuff.Expiration <= DateTime.Now);
                 bool refreshOnCooldown = buffCooldowns.ContainsKey(refreshCooldownKey) && DateTime.Now < buffCooldowns[refreshCooldownKey];
 
                 if (needsRefresh && !refreshOnCooldown)
@@ -5507,7 +5507,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Phalanx
                 string phalanxCooldownKey = $"{memberState.Name}:Phalanx";
                 var phalanxBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Phalanx"].Ids.Contains(b.Id));
-                bool needsPhalanx = autoPhalanx_IIEnabled[memberIndex] && (phalanxBuff == null || phalanxBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool needsPhalanx = autoPhalanx_IIEnabled[memberIndex] && (phalanxBuff == null || phalanxBuff.Expiration <= DateTime.Now);
                 bool phalanxOnCooldown = buffCooldowns.ContainsKey(phalanxCooldownKey) && DateTime.Now < buffCooldowns[phalanxCooldownKey];
 
                 if (needsPhalanx && !phalanxOnCooldown)
@@ -5526,7 +5526,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Protect
                 string protectCooldownKey = $"{memberState.Name}:Protect";
                 var protectBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Protect"].Ids.Contains(b.Id));
-                bool needsProtect = autoProtect_Enabled[memberIndex] && (protectBuff == null || protectBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool needsProtect = autoProtect_Enabled[memberIndex] && (protectBuff == null || protectBuff.Expiration <= DateTime.Now);
                 bool protectOnCooldown = buffCooldowns.ContainsKey(protectCooldownKey) && DateTime.Now < buffCooldowns[protectCooldownKey];
 
                 if (needsProtect && !protectOnCooldown)
@@ -5545,7 +5545,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Shell
                 string shellCooldownKey = $"{memberState.Name}:Shell";
                 var shellBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Shell"].Ids.Contains(b.Id));
-                bool needsShell = autoShell_Enabled[memberIndex] && (shellBuff == null || shellBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool needsShell = autoShell_Enabled[memberIndex] && (shellBuff == null || shellBuff.Expiration <= DateTime.Now);
                 bool shellOnCooldown = buffCooldowns.ContainsKey(shellCooldownKey) && DateTime.Now < buffCooldowns[shellCooldownKey];
 
                 if (needsShell && !shellOnCooldown)

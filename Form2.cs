@@ -2888,6 +2888,40 @@ namespace CurePlease
                 mainForm.ReloadSettings();
             }
 
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
+                Directory.CreateDirectory(path);
+
+                if (mainForm != null && Form1._ELITEAPIPL != null && Form1._ELITEAPIPL.Player.MainJob != 0 && Form1._ELITEAPIPL.Player.SubJob != 0)
+                {
+                    JobTitles mainJob = JobNames.FirstOrDefault(c => c.job_number == Form1._ELITEAPIPL.Player.MainJob);
+                    JobTitles subJob = JobNames.FirstOrDefault(c => c.job_number == Form1._ELITEAPIPL.Player.SubJob);
+
+                    if (mainJob != null && subJob != null)
+                    {
+                        string charFilename = Path.Combine(path, Form1._ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml");
+                        string jobFilename = Path.Combine(path, mainJob.job_name + "_" + subJob.job_name + ".xml");
+
+                        string fileToSave = charFilename;
+                        if (!File.Exists(charFilename) && File.Exists(jobFilename))
+                        {
+                            fileToSave = jobFilename;
+                        }
+
+                        XmlSerializer mySerializer = new XmlSerializer(typeof(MySettings));
+                        using (StreamWriter myWriter = new StreamWriter(fileToSave))
+                        {
+                            mySerializer.Serialize(myWriter, config);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to auto-save settings:\n" + ex.Message, "Save Error");
+            }
+
             // OTHERS
 
             string path = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings");
