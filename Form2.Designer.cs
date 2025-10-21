@@ -4616,12 +4616,6 @@
             this.groupBox1.Controls.Add(this.autoHasteMinutes);
             this.groupBox1.Controls.Add(this.autoPhalanxIILabel);
             this.groupBox1.Controls.Add(this.autoHasteLabel);
-            this.groupBox1.Controls.Add(this.regenDuration);
-            this.groupBox1.Controls.Add(this.protectDuration);
-            this.groupBox1.Controls.Add(this.shellDuration);
-            this.groupBox1.Controls.Add(this.hasteDuration);
-            this.groupBox1.Controls.Add(this.refreshDuration);
-            this.groupBox1.Controls.Add(this.phalanxDuration);
             this.groupBox1.Location = new System.Drawing.Point(5, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(460, 250);
@@ -8838,10 +8832,5 @@
         private System.Windows.Forms.CheckBox plAmnesia;
         private System.Windows.Forms.ComboBox plSpikes_Spell;
         private System.Windows.Forms.CheckBox plSpikes;
-        private GroupBoxEx regenGroupBox;
-        private System.Windows.Forms.CheckBox cureBeforeRegen;
-        private System.Windows.Forms.CheckBox regen3;
-        private System.Windows.Forms.CheckBox regen2;
-        private System.Windows.Forms.CheckBox regen1;
     }
 }

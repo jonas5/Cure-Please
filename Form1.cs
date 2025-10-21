@@ -5430,11 +5430,11 @@ private string GetBestSpellTier(string buffType, string targetName)
 
             buff_definitions = new Dictionary<string, BuffInfo>
             {
-                { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = (int)(Form2.config.autoRegenMinutes * 60) } },
+                { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = (int)(Form2.config.autoRegen_Minutes * 60) } },
                 { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = (int)(Form2.config.autoHasteMinutes * 60) } },
-                { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefreshMinutes * 60) } },
-                { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxMinutes * 60) } },
-                { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtectMinutes * 60) } },
+                { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefresh_Minutes * 60) } },
+                { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxIIMinutes * 60) } },
+                { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtect_Minutes * 60) } },
                 { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
             };
             partyState.UpdateBuffDefinitions(buff_definitions);
