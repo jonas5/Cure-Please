@@ -5623,6 +5623,13 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            debug_MSG_show.AppendLine($"---\n[{DateTime.Now:HH:mm:ss.fff}] [actionTimer_TickAsync] Start of tick.");
+            foreach (var memberState in partyState.Members.Values)
+            {
+                var buffs = memberState.Buffs.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})");
+                debug_MSG_show.AppendLine($"    -> State for {memberState.Name}: [{string.Join(", ", buffs)}]");
+            }
+
             ProcessRecastQueue();
             CheckAndApplyBuffs();
             CheckEngagedStatus_Hate();
@@ -9527,43 +9534,50 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                         if (memberState == null) continue;
 
-                        var trackedBuffs = memberState.Buffs.ToList(); // Work with a copy
+                        var oldBuffs = memberState.Buffs.ToDictionary(b => b.Id);
+                        var newBuffs = oldBuffs.ToDictionary(entry => entry.Key, entry => entry.Value);
+
+                        // Log initial state for comparison
+                        string oldBuffsLog = string.Join(", ", oldBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Polling for {characterName}. Polled IDs: [{string.Join(", ", polledBuffIds)}]. Before merge: [{oldBuffsLog}]");
 
                         // 1. Remove buffs that are gone from the API AND have expired in our state.
-                        // This prevents removing a buff that was just cast but hasn't appeared in the API yet.
-                        trackedBuffs.RemoveAll(buff =>
-                            !polledBuffIds.Contains(buff.Id) && buff.Expiration <= DateTime.Now);
+                        foreach (var oldBuff in oldBuffs.Values)
+                        {
+                            if (!polledBuffIds.Contains(oldBuff.Id) && oldBuff.Expiration <= DateTime.Now)
+                            {
+                                newBuffs.Remove(oldBuff.Id);
+                                debug_MSG_show.AppendLine($"    -> Removing expired buff {oldBuff.Id} (Expired at {oldBuff.Expiration:HH:mm:ss})");
+                            }
+                        }
 
                         // 2. Add new buffs that appeared in the API but we weren't tracking.
-                        // (e.g., buffs cast by other players)
-                        var trackedBuffIds = new HashSet<int>(trackedBuffs.Select(b => b.Id));
                         foreach (var polledId in polledBuffIds)
                         {
-                            if (!trackedBuffIds.Contains(polledId))
+                            if (!newBuffs.ContainsKey(polledId))
                             {
-                                // This is a new buff, add it with a default duration.
                                 foreach (var def in buff_definitions)
                                 {
                                     if (def.Value.Ids.Contains(polledId))
                                     {
-                                        trackedBuffs.Add(new ActiveBuff
+                                        var newBuff = new ActiveBuff
                                         {
                                             Id = polledId,
                                             Expiration = DateTime.Now.AddSeconds(def.Value.Duration)
-                                        });
+                                        };
+                                        newBuffs[polledId] = newBuff;
+                                        debug_MSG_show.AppendLine($"    -> Adding new buff {polledId} (cast by other?). Expires at {newBuff.Expiration:HH:mm:ss}");
                                         break;
                                     }
                                 }
                             }
                         }
 
-                        var oldBuffs = new HashSet<int>(memberState.Buffs.Select(b => b.Id));
-                        partyState.UpdateMemberBuffs(characterName, trackedBuffs);
-                        var newBuffs = new HashSet<int>(trackedBuffs.Select(b => b.Id));
-
-                        if (!oldBuffs.SetEquals(newBuffs))
+                        partyState.UpdateMemberBuffs(characterName, newBuffs.Values.ToList());
+                        string newBuffsLog = string.Join(", ", newBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
+                        if (oldBuffsLog != newBuffsLog)
                         {
-                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Buff state for {characterName} changed. Before: [{string.Join(", ", oldBuffs)}], After: [{string.Join(", ", newBuffs)}]");
+                           debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] State for {characterName} changed. After merge: [{newBuffsLog}]");
                         }
                     }
                     catch (Exception ex)
@@ -9705,8 +9719,9 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                                 if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
                                 {
+                                    DateTime expiration = DateTime.Now.AddSeconds(buff_definitions[buffType].Duration);
                                     partyState.ResetBuffTimer(targetName, buffType, buff_definitions);
-                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
+                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer to expire at {expiration:HH:mm:ss}.";
                                     debug_MSG_show.AppendLine(logMessage);
                                     UpdateDebugForm(logMessage);
                                 }
