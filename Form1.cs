@@ -3284,8 +3284,6 @@ private void setinstance_Click(object sender, EventArgs e)
                         }
                         var buffsToCheck = new[]
                         {
-                            new { Name = "Haste", Enabled = oopBuffPreferences[playerName].ContainsKey("Haste") && oopBuffPreferences[playerName]["Haste"] },
-                            new { Name = "Haste II", Enabled = oopBuffPreferences[playerName].ContainsKey("Haste II") && oopBuffPreferences[playerName]["Haste II"] },
                             new { Name = "Refresh", Enabled = oopBuffPreferences[playerName].ContainsKey("Refresh") && oopBuffPreferences[playerName]["Refresh"] },
                             new { Name = "Protect", Enabled = oopBuffPreferences[playerName].ContainsKey("Protect") && oopBuffPreferences[playerName]["Protect"] },
                             new { Name = "Shell", Enabled = oopBuffPreferences[playerName].ContainsKey("Shell") && oopBuffPreferences[playerName]["Shell"] },
@@ -3330,7 +3328,6 @@ private void setinstance_Click(object sender, EventArgs e)
             }
         }
     }
-}
 
 private string GetBestSpellTier(string buffType, string targetName)
 {
@@ -5696,11 +5693,11 @@ private string GetBestSpellTier(string buffType, string targetName)
                     }
 
                     // Out-of-Party Curing
-                    for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+                    for (int j = 0; j < oopPlayerComboBoxes.Length; j++)
                     {
-                        if (oopPlayerComboBoxes[i].SelectedItem != null && oopPlayerEnables[i].Checked)
+                        if (oopPlayerComboBoxes[j].SelectedItem != null && oopPlayerEnables[j].Checked)
                         {
-                            string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
+                            string playerName = oopPlayerComboBoxes[j].SelectedItem.ToString();
                             if (oopPlayerStates.ContainsKey(playerName) && oopPlayerStates[playerName].CurrentHpPercent <= Form2.config.curePercentage)
                             {
                                 CureCalculator_OOP(playerName);
@@ -10037,9 +10034,9 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                     break;
-
                 case "BUFF_FADE":
-                    if (parts.Length > 1) {
+                    if (parts.Length > 1)
+                    {
                         var fadeParts = parts[1].Split(':');
                         if (fadeParts.Length == 2)
                         {
@@ -10237,17 +10234,17 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private void JobAbility_Delay_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             Invoke((MethodInvoker)(() =>
-      {
-          JobAbilityLock_Check = true;
-          castingLockLabel.Text = "Casting is LOCKED for a JA.";
-          currentAction.Text = "Using a Job Ability: " + JobAbilityCMD;
-          Thread.Sleep(TimeSpan.FromSeconds(2));
-          castingLockLabel.Text = "Casting is UNLOCKED";
-          currentAction.Text = string.Empty;
-          castingSpell = string.Empty;
-          // JobAbilityLock_Check = false;
-          JobAbilityCMD = String.Empty;
-      }));
+            {
+                JobAbilityLock_Check = true;
+                castingLockLabel.Text = "Casting is LOCKED for a JA.";
+                currentAction.Text = "Using a Job Ability: " + JobAbilityCMD;
+                Thread.Sleep(TimeSpan.FromSeconds(2));
+                castingLockLabel.Text = "Casting is UNLOCKED";
+                currentAction.Text = string.Empty;
+                castingSpell = string.Empty;
+                // JobAbilityLock_Check = false;
+                JobAbilityCMD = String.Empty;
+            }));
         }
 
 
@@ -10313,20 +10310,20 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             debug_MSG_show.Clear();
         }
-    }
-    public class OopPlayerState
-    {
-        public string Name { get; set; }
-        public int EstimatedMaxHp { get; set; }
-        public int CurrentHpPercent { get; set; }
 
-        public OopPlayerState(string name)
+        public class OopPlayerState
         {
-            Name = name;
-            EstimatedMaxHp = 2000; // Default starting value
-            CurrentHpPercent = 100;
+            public string Name { get; set; }
+            public int EstimatedMaxHp { get; set; }
+            public int CurrentHpPercent { get; set; }
+
+            public OopPlayerState(string name)
+            {
+                Name = name;
+                EstimatedMaxHp = 2000; // Default starting value
+                CurrentHpPercent = 100;
+            }
         }
-    }
 
         private void CureCalculator_OOP(string playerName)
         {

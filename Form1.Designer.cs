@@ -809,14 +809,10 @@ namespace CurePlease
             //
             this.oopPlayerOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autoHasteToolStripMenuItem,
-            this.autoHasteIIToolStripMenuItem,
             this.autoShellToolStripMenuItem,
             this.autoProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";
             this.oopPlayerOptions.Size = new System.Drawing.Size(227, 158);
-            this.autoHasteToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
-            this.autoHasteIIToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
             this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
             this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
             //
