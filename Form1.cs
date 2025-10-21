@@ -5450,8 +5450,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Regen
                 string regenCooldownKey = $"{memberState.Name}:Regen";
                 var regenBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Regen"].Ids.Contains(b.Id));
-                if (autoRegen_Enabled[memberIndex] && (regenBuff == null || regenBuff.Expiration <= DateTime.Now.AddSeconds(10)) && (!buffCooldowns.ContainsKey(regenCooldownKey) || DateTime.Now >= buffCooldowns[regenCooldownKey]))
+                bool needsRegen = autoRegen_Enabled[memberIndex] && (regenBuff == null || regenBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool regenOnCooldown = buffCooldowns.ContainsKey(regenCooldownKey) && DateTime.Now < buffCooldowns[regenCooldownKey];
+
+                if (needsRegen && !regenOnCooldown)
                 {
+                    string reason = regenBuff == null ? "buff not found" : $"buff expiring at {regenBuff.Expiration:HH:mm:ss}";
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Regen ({reason}). Attempting recast.");
                     string spellToCast = GetBestSpellTier("Regen", memberState.Name);
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
@@ -5464,8 +5469,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Haste
                 string hasteCooldownKey = $"{memberState.Name}:Haste";
                 var hasteBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Haste"].Ids.Contains(b.Id));
-                if ((autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) && (hasteBuff == null || hasteBuff.Expiration <= DateTime.Now.AddSeconds(10)) && (!buffCooldowns.ContainsKey(hasteCooldownKey) || DateTime.Now >= buffCooldowns[hasteCooldownKey]))
+                bool needsHaste = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) && (hasteBuff == null || hasteBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool hasteOnCooldown = buffCooldowns.ContainsKey(hasteCooldownKey) && DateTime.Now < buffCooldowns[hasteCooldownKey];
+
+                if (needsHaste && !hasteOnCooldown)
                 {
+                    string reason = hasteBuff == null ? "buff not found" : $"buff expiring at {hasteBuff.Expiration:HH:mm:ss}";
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Haste ({reason}). Attempting recast.");
                     string spellToCast = GetBestSpellTier("Haste", memberState.Name);
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
@@ -5478,8 +5488,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Refresh
                 string refreshCooldownKey = $"{memberState.Name}:Refresh";
                 var refreshBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Refresh"].Ids.Contains(b.Id));
-                if (autoRefreshEnabled[memberIndex] && (refreshBuff == null || refreshBuff.Expiration <= DateTime.Now.AddSeconds(10)) && (!buffCooldowns.ContainsKey(refreshCooldownKey) || DateTime.Now >= buffCooldowns[refreshCooldownKey]))
+                bool needsRefresh = autoRefreshEnabled[memberIndex] && (refreshBuff == null || refreshBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool refreshOnCooldown = buffCooldowns.ContainsKey(refreshCooldownKey) && DateTime.Now < buffCooldowns[refreshCooldownKey];
+
+                if (needsRefresh && !refreshOnCooldown)
                 {
+                    string reason = refreshBuff == null ? "buff not found" : $"buff expiring at {refreshBuff.Expiration:HH:mm:ss}";
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Refresh ({reason}). Attempting recast.");
                     string spellToCast = GetBestSpellTier("Refresh", memberState.Name);
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
@@ -5492,8 +5507,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Phalanx
                 string phalanxCooldownKey = $"{memberState.Name}:Phalanx";
                 var phalanxBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Phalanx"].Ids.Contains(b.Id));
-                if (autoPhalanx_IIEnabled[memberIndex] && (phalanxBuff == null || phalanxBuff.Expiration <= DateTime.Now.AddSeconds(10)) && (!buffCooldowns.ContainsKey(phalanxCooldownKey) || DateTime.Now >= buffCooldowns[phalanxCooldownKey]))
+                bool needsPhalanx = autoPhalanx_IIEnabled[memberIndex] && (phalanxBuff == null || phalanxBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool phalanxOnCooldown = buffCooldowns.ContainsKey(phalanxCooldownKey) && DateTime.Now < buffCooldowns[phalanxCooldownKey];
+
+                if (needsPhalanx && !phalanxOnCooldown)
                 {
+                    string reason = phalanxBuff == null ? "buff not found" : $"buff expiring at {phalanxBuff.Expiration:HH:mm:ss}";
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Phalanx ({reason}). Attempting recast.");
                     string spellToCast = GetBestSpellTier("Phalanx", memberState.Name);
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
@@ -5506,8 +5526,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Protect
                 string protectCooldownKey = $"{memberState.Name}:Protect";
                 var protectBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Protect"].Ids.Contains(b.Id));
-                if (autoProtect_Enabled[memberIndex] && (protectBuff == null || protectBuff.Expiration <= DateTime.Now.AddSeconds(10)) && (!buffCooldowns.ContainsKey(protectCooldownKey) || DateTime.Now >= buffCooldowns[protectCooldownKey]))
+                bool needsProtect = autoProtect_Enabled[memberIndex] && (protectBuff == null || protectBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool protectOnCooldown = buffCooldowns.ContainsKey(protectCooldownKey) && DateTime.Now < buffCooldowns[protectCooldownKey];
+
+                if (needsProtect && !protectOnCooldown)
                 {
+                    string reason = protectBuff == null ? "buff not found" : $"buff expiring at {protectBuff.Expiration:HH:mm:ss}";
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Protect ({reason}). Attempting recast.");
                     string spellToCast = GetBestSpellTier("Protect", memberState.Name);
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
@@ -5520,8 +5545,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                 // Shell
                 string shellCooldownKey = $"{memberState.Name}:Shell";
                 var shellBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Shell"].Ids.Contains(b.Id));
-                if (autoShell_Enabled[memberIndex] && (shellBuff == null || shellBuff.Expiration <= DateTime.Now.AddSeconds(10)) && (!buffCooldowns.ContainsKey(shellCooldownKey) || DateTime.Now >= buffCooldowns[shellCooldownKey]))
+                bool needsShell = autoShell_Enabled[memberIndex] && (shellBuff == null || shellBuff.Expiration <= DateTime.Now.AddSeconds(10));
+                bool shellOnCooldown = buffCooldowns.ContainsKey(shellCooldownKey) && DateTime.Now < buffCooldowns[shellCooldownKey];
+
+                if (needsShell && !shellOnCooldown)
                 {
+                    string reason = shellBuff == null ? "buff not found" : $"buff expiring at {shellBuff.Expiration:HH:mm:ss}";
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] {memberState.Name} needs Shell ({reason}). Attempting recast.");
                     string spellToCast = GetBestSpellTier("Shell", memberState.Name);
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
@@ -9492,29 +9522,33 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 {
                     try
                     {
-                        var currentBuffIds = new HashSet<int>(api.Player.GetPlayerInfo().Buffs.Select(b => (int)b));
+                        var polledBuffIds = new HashSet<int>(api.Player.GetPlayerInfo().Buffs.Select(b => (int)b));
                         PartyMemberState memberState = partyState.GetPartyMember(characterName);
 
                         if (memberState == null) continue;
 
-                        var existingBuffs = memberState.Buffs.ToDictionary(b => b.Id);
-                        var updatedBuffs = new List<ActiveBuff>();
+                        var trackedBuffs = memberState.Buffs.ToList(); // Work with a copy
 
-                        foreach (var buffId in currentBuffIds)
+                        // 1. Remove buffs that are gone from the API AND have expired in our state.
+                        // This prevents removing a buff that was just cast but hasn't appeared in the API yet.
+                        trackedBuffs.RemoveAll(buff =>
+                            !polledBuffIds.Contains(buff.Id) && buff.Expiration <= DateTime.Now);
+
+                        // 2. Add new buffs that appeared in the API but we weren't tracking.
+                        // (e.g., buffs cast by other players)
+                        var trackedBuffIds = new HashSet<int>(trackedBuffs.Select(b => b.Id));
+                        foreach (var polledId in polledBuffIds)
                         {
-                            if (existingBuffs.ContainsKey(buffId))
+                            if (!trackedBuffIds.Contains(polledId))
                             {
-                                updatedBuffs.Add(existingBuffs[buffId]);
-                            }
-                            else
-                            {
+                                // This is a new buff, add it with a default duration.
                                 foreach (var def in buff_definitions)
                                 {
-                                    if (def.Value.Ids.Contains(buffId))
+                                    if (def.Value.Ids.Contains(polledId))
                                     {
-                                        updatedBuffs.Add(new ActiveBuff
+                                        trackedBuffs.Add(new ActiveBuff
                                         {
-                                            Id = buffId,
+                                            Id = polledId,
                                             Expiration = DateTime.Now.AddSeconds(def.Value.Duration)
                                         });
                                         break;
@@ -9522,7 +9556,15 @@ private void updateInstances_Tick(object sender, EventArgs e)
                                 }
                             }
                         }
-                        partyState.UpdateMemberBuffs(characterName, updatedBuffs);
+
+                        var oldBuffs = new HashSet<int>(memberState.Buffs.Select(b => b.Id));
+                        partyState.UpdateMemberBuffs(characterName, trackedBuffs);
+                        var newBuffs = new HashSet<int>(trackedBuffs.Select(b => b.Id));
+
+                        if (!oldBuffs.SetEquals(newBuffs))
+                        {
+                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Buff state for {characterName} changed. Before: [{string.Join(", ", oldBuffs)}], After: [{string.Join(", ", newBuffs)}]");
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -9664,7 +9706,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                                 if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
                                 {
                                     partyState.ResetBuffTimer(targetName, buffType, buff_definitions);
-                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PARSED LOG] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
+                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
                                     debug_MSG_show.AppendLine(logMessage);
                                     UpdateDebugForm(logMessage);
                                 }
