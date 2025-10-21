@@ -1837,9 +1837,11 @@ namespace CurePlease
         public static MySettings config = new MySettings();
         public List<JobTitles> JobNames = new List<JobTitles>();
         public int runOnce = 0;
+        private Form1 mainForm;
 
-        public Form2 ( )
+        public Form2 (Form1 mainForm)
         {
+            this.mainForm = mainForm;
             StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent ( );
 
@@ -2880,6 +2882,11 @@ namespace CurePlease
             config.HasteDuration = hasteDuration.Value;
             config.RefreshDuration = refreshDuration.Value;
             config.PhalanxDuration = phalanxDuration.Value;
+
+            if (mainForm != null)
+            {
+                mainForm.ReloadSettings();
+            }
 
             // OTHERS
 

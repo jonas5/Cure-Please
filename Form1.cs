@@ -20,7 +20,7 @@
     public partial class Form1 : Form
     {
 
-        private Form2 Form2 = new CurePlease.Form2();
+        private Form2 Form2;
 
         public class BuffStorage : List<BuffStorage>
         {
@@ -1560,7 +1560,8 @@
             StartPosition = FormStartPosition.CenterScreen;
 
             InitializeComponent();
-            InitializeBuffDefinitions();
+            Form2 = new Form2(this);
+            ReloadSettings();
 
             _pipeClient = new NamedPipeClient("CurePleasePipe");
             _pipeClient.Connected += PipeClient_Connected;
@@ -3149,7 +3150,7 @@ private void setinstance_Click(object sender, EventArgs e)
                             Form2.updateForm(config);
                             Form2.button4_Click(sender, e);
                         }
-                        InitializeBuffDefinitions();
+                        ReloadSettings();
                     }
                     catch (Exception ex)
                     {
@@ -5418,7 +5419,7 @@ private string GetBestSpellTier(string buffType, string targetName)
         }
 
         public Dictionary<string, BuffInfo> buff_definitions;
-        private void InitializeBuffDefinitions()
+        public void ReloadSettings()
         {
             if (Form2.config == null) Form2.config = new Form2.MySettings();
 
@@ -5455,7 +5456,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[regenCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Regen"].Duration - 5));
+                        buffCooldowns[regenCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
@@ -5469,7 +5470,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[hasteCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Haste"].Duration - 5));
+                        buffCooldowns[hasteCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
@@ -5483,7 +5484,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[refreshCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Refresh"].Duration - 5));
+                        buffCooldowns[refreshCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
@@ -5497,7 +5498,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[phalanxCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Phalanx"].Duration - 5));
+                        buffCooldowns[phalanxCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
@@ -5511,7 +5512,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[protectCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Protect"].Duration - 5));
+                        buffCooldowns[protectCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
@@ -5525,7 +5526,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (!string.IsNullOrEmpty(spellToCast))
                     {
                         CastSpell(memberState.Name, spellToCast);
-                        buffCooldowns[shellCooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions["Shell"].Duration - 5));
+                        buffCooldowns[shellCooldownKey] = DateTime.Now.AddSeconds(10);
                         return;
                     }
                 }
@@ -5580,17 +5581,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (partyMember != null && castingPossible(partyMember.MemberNumber))
                     {
                         CastSpell(request.PlayerName, spellToCast);
-
-                        // Use the same duration-based cooldown logic here
-                        string buffType = GetBuffNameForSpellId((ushort)_ELITEAPIPL.Resources.GetSpell(spellToCast, 0).Index);
-                        if (buffType != null && buff_definitions.ContainsKey(buffType))
-                        {
-                            buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(Math.Max(0, buff_definitions[buffType].Duration - 5));
-                        }
-                        else
-                        {
-                            buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(5); // Fallback for buffs not in our definition list
-                        }
+                        buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
                     }
                 }
                 else
