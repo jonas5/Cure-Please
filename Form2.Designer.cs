@@ -5039,6 +5039,7 @@
             //
             // cureBeforeRegen
             //
+            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
             this.cureBeforeRegen.AutoSize = true;
             this.cureBeforeRegen.Location = new System.Drawing.Point(300, 140);
             this.cureBeforeRegen.Name = "cureBeforeRegen";
@@ -5049,6 +5050,7 @@
             //
             // regen1enabled
             //
+            this.regen1enabled = new System.Windows.Forms.CheckBox();
             this.regen1enabled.AutoSize = true;
             this.regen1enabled.Location = new System.Drawing.Point(300, 160);
             this.regen1enabled.Name = "regen1enabled";
@@ -5059,6 +5061,7 @@
             //
             // regen2enabled
             //
+            this.regen2enabled = new System.Windows.Forms.CheckBox();
             this.regen2enabled.AutoSize = true;
             this.regen2enabled.Location = new System.Drawing.Point(300, 180);
             this.regen2enabled.Name = "regen2enabled";
@@ -5069,6 +5072,7 @@
             //
             // regen3enabled
             //
+            this.regen3enabled = new System.Windows.Forms.CheckBox();
             this.regen3enabled.AutoSize = true;
             this.regen3enabled.Location = new System.Drawing.Point(300, 200);
             this.regen3enabled.Name = "regen3enabled";
