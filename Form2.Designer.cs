@@ -1333,6 +1333,7 @@
             this.groupBox16.Controls.Add(this.Hate_SpellType);
             this.groupBox16.Controls.Add(this.autoTarget);
             this.groupBox16.Controls.Add(this.autoTargetSpell);
+            this.groupBox16.Controls.Add(this.autoTargetOnLock);
             this.groupBox16.Location = new System.Drawing.Point(368, 351);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(431, 124);
@@ -1431,6 +1432,17 @@
         "defined spell.\r\n \r\nPARTY BASED:\r\nWill wait until the Monitored player engages th" +
         "en will cast the defined spell on them.");
             // 
+            // autoTargetOnLock
+            //
+            this.autoTargetOnLock.AutoSize = true;
+            this.autoTargetOnLock.Location = new System.Drawing.Point(230, 101);
+            this.autoTargetOnLock.Name = "autoTargetOnLock";
+            this.autoTargetOnLock.Size = new System.Drawing.Size(130, 19);
+            this.autoTargetOnLock.TabIndex = 18;
+            this.autoTargetOnLock.Text = "Auto-target on lock";
+            this.toolTip1.SetToolTip(this.autoTargetOnLock, "Automatically sets your in-game target to the one selected by the hate control logic.");
+            this.autoTargetOnLock.UseVisualStyleBackColor = true;
+            //
             // DevotionTargetName
             // 
             this.DevotionTargetName.Location = new System.Drawing.Point(263, 45);
@@ -8817,5 +8829,6 @@
         private System.Windows.Forms.CheckBox regen1enabled;
         private System.Windows.Forms.CheckBox regen2enabled;
         private System.Windows.Forms.CheckBox regen3enabled;
+        private System.Windows.Forms.CheckBox autoTargetOnLock;
     }
 }
