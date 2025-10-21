@@ -9662,7 +9662,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                                 if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
                                 {
-                                    partyState.ResetBuffTimer(targetName, buffType);
+                                    partyState.ResetBuffTimer(targetName, buffType, buff_definitions);
                                     string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PARSED LOG] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
                                     debug_MSG_show.AppendLine(logMessage);
                                     UpdateDebugForm(logMessage);
@@ -9703,7 +9703,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
                                 if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
                                 {
-                                    partyState.ResetBuffTimer(targetName, buffType);
+                                    partyState.ResetBuffTimer(targetName, buffType, buff_definitions);
                                     string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [ACTION] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
                                     debug_MSG_show.AppendLine(logMessage);
                                     UpdateDebugForm(logMessage);

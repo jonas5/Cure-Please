@@ -70,12 +70,12 @@ namespace CurePlease
             }
             return null;
         }
-        public void ResetBuffTimer(string memberName, string buffType)
+        public void ResetBuffTimer(string memberName, string buffType, Dictionary<string, BuffInfo> buffDefinitions)
         {
             if (Members.TryGetValue(memberName, out PartyMemberState member))
             {
                 // Find the buff definition to get the duration and all associated IDs
-                if (Form1.buff_definitions.TryGetValue(buffType, out BuffInfo buffInfo))
+                if (buffDefinitions.TryGetValue(buffType, out BuffInfo buffInfo))
                 {
                     // Remove all existing instances of this buff type
                     member.Buffs.RemoveAll(b => buffInfo.Ids.Contains(b.Id));
