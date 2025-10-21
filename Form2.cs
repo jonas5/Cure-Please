@@ -2890,8 +2890,8 @@ namespace CurePlease
 
             try
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
-                Directory.CreateDirectory(path);
+                string settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
+                Directory.CreateDirectory(settingsPath);
 
                 if (mainForm != null && Form1._ELITEAPIPL != null && Form1._ELITEAPIPL.Player.MainJob != 0 && Form1._ELITEAPIPL.Player.SubJob != 0)
                 {
@@ -2900,8 +2900,8 @@ namespace CurePlease
 
                     if (mainJob != null && subJob != null)
                     {
-                        string charFilename = Path.Combine(path, Form1._ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml");
-                        string jobFilename = Path.Combine(path, mainJob.job_name + "_" + subJob.job_name + ".xml");
+                        string charFilename = Path.Combine(settingsPath, Form1._ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml");
+                        string jobFilename = Path.Combine(settingsPath, mainJob.job_name + "_" + subJob.job_name + ".xml");
 
                         string fileToSave = charFilename;
                         if (!File.Exists(charFilename) && File.Exists(jobFilename))
