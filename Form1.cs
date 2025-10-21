@@ -3175,11 +3175,31 @@ private string GetBestSpellTier(string buffType, string targetName)
     switch (buffType.ToLower())
     {
         case "protect":
-            spellTiers.AddRange(new[] { "Protect V", "Protect IV", "Protect III", "Protect II", "Protect" });
-            break;
+            {
+                var tiers = new[] { "Protect V", "Protect IV", "Protect III", "Protect II", "Protect" };
+                foreach (var spell in tiers)
+                {
+                    if (HasSpell(spell))
+                    {
+                        // This is the best spell the player knows. Check only this one.
+                        return (CheckSpellRecast(spell) == 0) ? spell : null;
+                    }
+                }
+                return null; // Player knows no version of Protect.
+            }
         case "shell":
-            spellTiers.AddRange(new[] { "Shell V", "Shell IV", "Shell III", "Shell II", "Shell" });
-            break;
+            {
+                var tiers = new[] { "Shell V", "Shell IV", "Shell III", "Shell II", "Shell" };
+                foreach (var spell in tiers)
+                {
+                    if (HasSpell(spell))
+                    {
+                        // This is the best spell the player knows. Check only this one.
+                        return (CheckSpellRecast(spell) == 0) ? spell : null;
+                    }
+                }
+                return null; // Player knows no version of Shell.
+            }
         case "haste":
              var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
              if (partyMember != null)
