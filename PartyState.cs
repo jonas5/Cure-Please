@@ -70,5 +70,25 @@ namespace CurePlease
             }
             return null;
         }
+        public void ResetBuffTimer(string memberName, string buffType)
+        {
+            if (Members.TryGetValue(memberName, out PartyMemberState member))
+            {
+                // Find the buff definition to get the duration and all associated IDs
+                if (Form1.buff_definitions.TryGetValue(buffType, out BuffInfo buffInfo))
+                {
+                    // Remove all existing instances of this buff type
+                    member.Buffs.RemoveAll(b => buffInfo.Ids.Contains(b.Id));
+
+                    // Add a new instance with a reset timer.
+                    // We just use the first ID from the definition as a representative ID for the group.
+                    member.Buffs.Add(new ActiveBuff
+                    {
+                        Id = buffInfo.Ids.First(),
+                        Expiration = DateTime.Now.AddSeconds(buffInfo.Duration)
+                    });
+                }
+            }
+        }
     }
 }

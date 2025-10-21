@@ -5421,14 +5421,14 @@ private string GetBestSpellTier(string buffType, string targetName)
             public int Duration { get; set; } // Base duration in seconds
         }
 
-        private static readonly Dictionary<string, BuffInfo> buff_definitions = new Dictionary<string, BuffInfo>
+        public static readonly Dictionary<string, BuffInfo> buff_definitions = new Dictionary<string, BuffInfo>
         {
             { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = 60 } },
             { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = 180 } },
             { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = 150 } },
             { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = 120 } },
-            { "Protect", new BuffInfo { Ids = new List<int> { 40 }, Duration = 1800 } },
-            { "Shell", new BuffInfo { Ids = new List<int> { 41 }, Duration = 1800 } }
+            { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = 1800 } },
+            { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = 1800 } }
         };
 
         private void CheckAndApplyBuffs()
@@ -9528,6 +9528,56 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 }
             }
         }
+        private string GetSpellNameById(ushort id)
+        {
+            if (_ELITEAPIPL == null) return "Unknown Spell";
+            var spell = _ELITEAPIPL.Resources.GetSpell(id);
+            return spell != null ? spell.Name[0] : $"Unknown Spell ({id})";
+        }
+        private string GetEntityNameById(uint id)
+        {
+            if (_ELITEAPIPL == null || id == 0) return "None";
+
+            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+            if (plInfo != null && id == plInfo.ID)
+            {
+                return _ELITEAPIPL.Player.Name;
+            }
+
+            var partyMember = _ELITEAPIMonitored?.Party.GetPartyMembers().FirstOrDefault(p => p.ID == id);
+            if (partyMember != null && !string.IsNullOrEmpty(partyMember.Name))
+            {
+                return partyMember.Name;
+            }
+
+            for (int i = 0; i < 2048; i++)
+            {
+                var entity = _ELITEAPIPL.Entity.GetEntity(i);
+                if (entity != null && entity.ID == id && !string.IsNullOrEmpty(entity.Name))
+                {
+                    return entity.Name;
+                }
+            }
+
+            return $"Unknown Entity ({id})";
+        }
+
+        private string GetBuffNameForSpellId(ushort spellId)
+        {
+            string spellName = GetSpellNameById(spellId);
+            if (string.IsNullOrEmpty(spellName)) return null;
+            string lowerSpellName = spellName.ToLower();
+
+            foreach (var buffDef in buff_definitions)
+            {
+                if (lowerSpellName.Contains(buffDef.Key.ToLower()))
+                {
+                    return buffDef.Key;
+                }
+            }
+            return null;
+        }
+
         private void PipeClient_MessageReceived(string message)
         {
             if (InvokeRequired)
@@ -9537,10 +9587,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
             }
 
             var parts = message.Split('|');
-            if (parts.Length < 2) return;
-
             string command = parts[0];
-            string data = parts[1];
 
             switch (command)
             {
@@ -9589,17 +9636,46 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     break;
 
                 case "LOG":
-                    debug_MSG_show.AppendLine(data);
-                    UpdateDebugForm(data);
+                     if (parts.Length > 1) {
+                        string logData = parts[1];
+                        debug_MSG_show.AppendLine(logData);
+                        UpdateDebugForm(logData);
+                     }
                     break;
 
                 case "BUFF_FADE":
-                    var fadeParts = data.Split(':');
-                    if (fadeParts.Length == 2)
+                    if (parts.Length > 1) {
+                        var fadeParts = parts[1].Split(':');
+                        if (fadeParts.Length == 2)
+                        {
+                            string playerName = fadeParts[0];
+                            string buffName = fadeParts[1];
+                            recastQueue.Enqueue(new RecastRequest { PlayerName = playerName, BuffName = buffName });
+                        }
+                    }
+                    break;
+                case "ACTION":
+                    if (parts.Length == 4)
                     {
-                        string playerName = fadeParts[0];
-                        string buffName = fadeParts[1];
-                        recastQueue.Enqueue(new RecastRequest { PlayerName = playerName, BuffName = buffName });
+                        if (uint.TryParse(parts[1], out uint actorId) &&
+                            uint.TryParse(parts[2], out uint targetId) &&
+                            ushort.TryParse(parts[3], out ushort spellId))
+                        {
+                            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                            if (plInfo != null && actorId == plInfo.ID)
+                            {
+                                string targetName = GetEntityNameById(targetId);
+                                string buffType = GetBuffNameForSpellId(spellId);
+
+                                if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
+                                {
+                                    partyState.ResetBuffTimer(targetName, buffType);
+                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [ACTION] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
+                                    debug_MSG_show.AppendLine(logMessage);
+                                    UpdateDebugForm(logMessage);
+                                }
+                            }
+                        }
                     }
                     break;
             }
