@@ -95,6 +95,7 @@ namespace CurePlease
             }
         }
     }
+}
 
 
     public class NewTabControl : TabControl

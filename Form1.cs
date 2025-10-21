@@ -3156,56 +3156,54 @@ private void setinstance_Click(object sender, EventArgs e)
                 }
             }
         }
+    }
+}
 
-        private string GetBestSpellTier(string buffType, string targetName)
-        {
-            List<string> spellTiers = new List<string>();
+private string GetBestSpellTier(string buffType, string targetName)
+{
+    List<string> spellTiers = new List<string>();
 
-            switch (buffType.ToLower())
-            {
-                case "protect":
-                    spellTiers.AddRange(new[] { "Protect V", "Protect IV", "Protect III", "Protect II", "Protect" });
-                    break;
-                case "shell":
-                    spellTiers.AddRange(new[] { "Shell V", "Shell IV", "Shell III", "Shell II", "Shell" });
-                    break;
-                case "haste":
-                     var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
-                     if (partyMember != null)
-                     {
-                         byte memberIndex = partyMember.MemberNumber;
-                         if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
-                         if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
-                     }
-                     // Fallback if not found or settings not specific
-                     if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
-                    break;
-                case "regen":
-                    spellTiers.AddRange(new[] { "Regen V", "Regen IV", "Regen III", "Regen II", "Regen" });
-                    break;
-                case "refresh":
-                    spellTiers.AddRange(new[] { "Refresh III", "Refresh II", "Refresh" });
-                    break;
-                 case "phalanx":
-                    spellTiers.AddRange(new[] { "Phalanx II", "Phalanx" });
-                    break;
-                default:
-                    return null;
-            }
-
-            foreach (var spell in spellTiers)
-            {
-                if (HasSpell(spell) && CheckSpellRecast(spell) == 0)
-                {
-                    return spell;
-                }
-            }
-
+    switch (buffType.ToLower())
+    {
+        case "protect":
+            spellTiers.AddRange(new[] { "Protect V", "Protect IV", "Protect III", "Protect II", "Protect" });
+            break;
+        case "shell":
+            spellTiers.AddRange(new[] { "Shell V", "Shell IV", "Shell III", "Shell II", "Shell" });
+            break;
+        case "haste":
+             var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
+             if (partyMember != null)
+             {
+                 byte memberIndex = partyMember.MemberNumber;
+                 if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
+                 if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
+             }
+             // Fallback if not found or settings not specific
+             if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
+            break;
+        case "regen":
+            spellTiers.AddRange(new[] { "Regen V", "Regen IV", "Regen III", "Regen II", "Regen" });
+            break;
+        case "refresh":
+            spellTiers.AddRange(new[] { "Refresh III", "Refresh II", "Refresh" });
+            break;
+         case "phalanx":
+            spellTiers.AddRange(new[] { "Phalanx II", "Phalanx" });
+            break;
+        default:
             return null;
+    }
+
+    foreach (var spell in spellTiers)
+    {
+        if (HasSpell(spell) && CheckSpellRecast(spell) == 0)
+        {
+            return spell;
         }
     }
 
-    // LUA Plugin loading code removed. The new C# plugin is loaded automatically by Ashita.
+    return null;
 }
 
 
