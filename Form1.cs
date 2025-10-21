@@ -8710,6 +8710,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                             {
                                 debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Locking and returning index: {i}");
                                 lockedTargetId = i;
+                                _ELITEAPIPL.Target.SetTarget(i);
                                     battleTargetLabel.Text = $"{entity.Name} ({i})";
                                 return i;
                             }
@@ -8722,6 +8723,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         {
                             debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Locking and returning index: {i}");
                             lockedTargetId = i;
+                            _ELITEAPIPL.Target.SetTarget(i);
                                 battleTargetLabel.Text = $"{entity.Name} ({i})";
                             return i;
                         }
