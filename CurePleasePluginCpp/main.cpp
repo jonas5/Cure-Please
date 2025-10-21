@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <atomic>
+#include <vector>
 #include "spells.h"
 #include "BitReader.hpp"
 
@@ -34,6 +35,7 @@ private:
     IAshitaCore* m_AshitaCore = nullptr;
     HANDLE m_hPipe = INVALID_HANDLE_VALUE;
     std::thread m_PipeThread;
+    std::thread m_PlayerScanThread;
     std::mutex m_PipeMutex;
     std::atomic<bool> m_Shutdown = false;
     bool m_PipeConnected = false;
@@ -64,6 +66,57 @@ private:
         if (!m_PipeConnected || m_hPipe == INVALID_HANDLE_VALUE) return;
         DWORD bytesWritten = 0;
         WriteFile(m_hPipe, message.c_str(), message.length(), &bytesWritten, NULL);
+    }
+
+    void PlayerScanThread()
+    {
+        while (!m_Shutdown)
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(5)); // Scan every 5 seconds
+
+            if (!m_PipeConnected || m_AshitaCore == nullptr)
+                continue;
+
+            auto entMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+            auto partyMgr = m_AshitaCore->GetMemoryManager()->GetParty();
+            if (!entMgr || !partyMgr)
+                continue;
+
+            std::string nearbyPlayers = "NEARBY_PLAYERS|";
+            int playerCount = 0;
+
+            for (int i = 0; i < 2048; ++i)
+            {
+                if (entMgr->GetIsEntityValid(i) && (entMgr->GetRenderFlags(i) & 0x4000) != 0) // Check if it's a PC
+                {
+                    bool inParty = false;
+                    for (int j = 0; j < 18; ++j)
+                    {
+                        if (partyMgr->GetMemberName(j) && strcmp(partyMgr->GetMemberName(j), entMgr->GetName(i)) == 0)
+                        {
+                            inParty = true;
+                            break;
+                        }
+                    }
+
+                    if (!inParty)
+                    {
+                        if (playerCount > 0)
+                        {
+                            nearbyPlayers += ",";
+                        }
+                        nearbyPlayers += entMgr->GetName(i);
+                        playerCount++;
+                    }
+                }
+            }
+
+            if (playerCount > 0)
+            {
+                nearbyPlayers += "\n";
+                WriteToPipe(nearbyPlayers);
+            }
+        }
     }
 
     void PipeThread()
@@ -123,6 +176,7 @@ public:
     bool Initialize(IAshitaCore* core, ILogManager* logger, uint32_t id) override {
         m_AshitaCore = core;
         m_PipeThread = std::thread(&CurePleasePlugin::PipeThread, this);
+        m_PlayerScanThread = std::thread(&CurePleasePlugin::PlayerScanThread, this);
         return true;
     }
 
@@ -131,9 +185,23 @@ public:
         HANDLE hDummyPipe = CreateFileW(PipeName.c_str(), GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
         if (hDummyPipe != INVALID_HANDLE_VALUE) CloseHandle(hDummyPipe);
         if (m_PipeThread.joinable()) m_PipeThread.join();
+        if (m_PlayerScanThread.joinable()) m_PlayerScanThread.join();
     }
 
     bool HandleCommand(int32_t mode, const char* command, bool injected) override {
+        std::vector<std::string> args;
+        std::string arg;
+        std::istringstream iss(command);
+        while (iss >> arg) {
+            args.push_back(arg);
+        }
+
+        if (!args.empty() && (args[0] == "cpaddon" || args[0] == "/cpaddon")) {
+            if (args.size() > 1 && args[1] == "verify") {
+                WriteToPipe("LOG|" + GetTimestamp() + " Player scanning is active.\n");
+                return true;
+            }
+        }
         return false;
     }
 

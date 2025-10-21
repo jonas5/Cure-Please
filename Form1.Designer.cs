@@ -805,6 +805,21 @@ namespace CurePlease
             this.playerOptions.Name = "player0rightclick";
             this.playerOptions.Size = new System.Drawing.Size(227, 342);
             // 
+            // oopPlayerOptions
+            //
+            this.oopPlayerOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoHasteToolStripMenuItem,
+            this.autoHasteIIToolStripMenuItem,
+            this.autoShellToolStripMenuItem,
+            this.autoProtectToolStripMenuItem});
+            this.oopPlayerOptions.Name = "oopPlayerOptions";
+            this.oopPlayerOptions.Size = new System.Drawing.Size(227, 158);
+            this.autoHasteToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
+            this.autoHasteIIToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
+            this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
+            this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
+            //
             // followToolStripMenuItem
             // 
             this.followToolStripMenuItem.Name = "followToolStripMenuItem";
@@ -2415,7 +2430,7 @@ namespace CurePlease
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(664, 382);
+            this.ClientSize = new System.Drawing.Size(664, 460);
             this.Controls.Add(this.AddOnStatus);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.PartyBuffsButton);
@@ -2684,5 +2699,6 @@ namespace CurePlease
         private GroupBox groupBox4;
         private Label battleTargetLabel;
         private Timer buffUpdateTimer;
+        private ContextMenuStrip oopPlayerOptions;
     }
 }

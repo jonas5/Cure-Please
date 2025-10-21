@@ -95,6 +95,14 @@
         }
 
         private System.Collections.Concurrent.ConcurrentQueue<RecastRequest> recastQueue = new System.Collections.Concurrent.ConcurrentQueue<RecastRequest>();
+        private List<string> nearbyPlayers = new List<string>();
+        private ComboBox[] oopPlayerComboBoxes = new ComboBox[6];
+        private NewProgressBar[] oopPlayerHPs = new NewProgressBar[6];
+        private CheckBox[] oopPlayerEnables = new CheckBox[6];
+        private CheckBox[] oopPlayerPriorities = new CheckBox[6];
+        private Button[] oopPlayerOptionsButtons = new Button[6];
+        private Dictionary<string, OopPlayerState> oopPlayerStates = new Dictionary<string, OopPlayerState>();
+        private Dictionary<string, Dictionary<string, bool>> oopBuffPreferences = new Dictionary<string, Dictionary<string, bool>>();
 
         private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
         // BARD SONG VARIABLES
@@ -3059,9 +3067,100 @@
 
    // MessageBox.Show("✅ FFXI process scan complete.");
 
-
+            InitializeOopControls();
         }
 
+        private void InitializeOopControls()
+        {
+            GroupBox oopGroupBox = new GroupBox
+            {
+                Text = " Outside Party ",
+                Location = new System.Drawing.Point(19, 375),
+                Size = new System.Drawing.Size(630, 80),
+                ForeColor = System.Drawing.SystemColors.GrayText
+            };
+            oopGroupBox.Paint += PaintBorderlessGroupBox;
+            this.Controls.Add(oopGroupBox);
+
+            for (int i = 0; i < 6; i++)
+            {
+                oopPlayerEnables[i] = new CheckBox { Location = new System.Drawing.Point(7 + i * 105, 14), Size = new System.Drawing.Size(15, 14), Checked = true };
+                oopPlayerPriorities[i] = new CheckBox { Location = new System.Drawing.Point(29 + i * 105, 14), Size = new System.Drawing.Size(15, 14) };
+                oopPlayerComboBoxes[i] = new ComboBox { Location = new System.Drawing.Point(46 + i * 105, 11), Size = new System.Drawing.Size(55, 21) };
+                oopPlayerComboBoxes[i].DropDown += OopPlayerComboBox_DropDown;
+                oopPlayerComboBoxes[i].SelectedIndexChanged += OopPlayerComboBox_SelectedIndexChanged;
+                oopPlayerOptionsButtons[i] = new Button { Text = "MENU", Location = new System.Drawing.Point(46 + i * 105, 35), Size = new System.Drawing.Size(55, 19), FlatStyle = FlatStyle.Popup };
+                oopPlayerOptionsButtons[i].Click += OopPlayerOptionsButton_Click;
+                oopPlayerHPs[i] = new NewProgressBar { Location = new System.Drawing.Point(7 + i * 105, 58), Size = new System.Drawing.Size(94, 12) };
+
+                oopGroupBox.Controls.Add(oopPlayerEnables[i]);
+                oopGroupBox.Controls.Add(oopPlayerPriorities[i]);
+                oopGroupBox.Controls.Add(oopPlayerComboBoxes[i]);
+                oopGroupBox.Controls.Add(oopPlayerOptionsButtons[i]);
+                oopGroupBox.Controls.Add(oopPlayerHPs[i]);
+            }
+        }
+
+        private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            if (button != null)
+            {
+                int index = Array.IndexOf(oopPlayerOptionsButtons, button);
+                if (index != -1)
+                {
+                    playerOptionsSelected = (byte)(18 + index); // Use a different range for OOP players
+                    oopPlayerOptions.Show(button, new Point(0, button.Height));
+                }
+            }
+        }
+
+        private void OopPlayerComboBox_DropDown(object sender, EventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            if (comboBox != null)
+            {
+                comboBox.Items.Clear();
+                foreach (string player in nearbyPlayers)
+                {
+                    comboBox.Items.Add(player);
+                }
+            }
+        }
+private void oopBuffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null)
+            {
+                int oopIndex = playerOptionsSelected - 18;
+                if (oopIndex >= 0 && oopIndex < oopPlayerComboBoxes.Length)
+                {
+                    string playerName = oopPlayerComboBoxes[oopIndex].SelectedItem?.ToString();
+                    if (!string.IsNullOrEmpty(playerName))
+                    {
+                        if (!oopBuffPreferences.ContainsKey(playerName))
+                        {
+                            oopBuffPreferences[playerName] = new Dictionary<string, bool>();
+                        }
+                        string buffName = menuItem.Text.Replace("Auto ", "");
+                        oopBuffPreferences[playerName][buffName] = menuItem.Checked;
+                    }
+                }
+            }
+        }
+
+        private void OopPlayerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            if (comboBox != null && comboBox.SelectedItem != null)
+            {
+                string playerName = comboBox.SelectedItem.ToString();
+                if (!oopPlayerStates.ContainsKey(playerName))
+                {
+                    oopPlayerStates[playerName] = new OopPlayerState(playerName);
+                }
+            }
+        }
 private void setinstance_Click(object sender, EventArgs e)
 {
     if (!CheckForDLLFiles())
@@ -3161,6 +3260,71 @@ private void setinstance_Click(object sender, EventArgs e)
                     catch (Exception ex)
                     {
                         MessageBox.Show("Failed to load settings from " + configFile + ":\n" + ex.Message, "Settings Load Error");
+                    }
+                }
+            }
+
+            // Handle Out-of-Party Players
+            for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+            {
+                if (oopPlayerComboBoxes[i].SelectedItem != null && oopPlayerEnables[i].Checked)
+                {
+                    string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
+                    if (!partyState.Members.ContainsKey(playerName))
+                    {
+                        partyState.AddOrUpdateMember(playerName, 0); // ServerId is not available, so we use 0
+                    }
+
+                    if (partyState.Members.ContainsKey(playerName))
+                    {
+                        var memberState = partyState.Members[playerName];
+                        if (!oopBuffPreferences.ContainsKey(playerName))
+                        {
+                            oopBuffPreferences[playerName] = new Dictionary<string, bool>();
+                        }
+                        var buffsToCheck = new[]
+                        {
+                            new { Name = "Haste", Enabled = oopBuffPreferences[playerName].ContainsKey("Haste") && oopBuffPreferences[playerName]["Haste"] },
+                            new { Name = "Haste II", Enabled = oopBuffPreferences[playerName].ContainsKey("Haste II") && oopBuffPreferences[playerName]["Haste II"] },
+                            new { Name = "Refresh", Enabled = oopBuffPreferences[playerName].ContainsKey("Refresh") && oopBuffPreferences[playerName]["Refresh"] },
+                            new { Name = "Protect", Enabled = oopBuffPreferences[playerName].ContainsKey("Protect") && oopBuffPreferences[playerName]["Protect"] },
+                            new { Name = "Shell", Enabled = oopBuffPreferences[playerName].ContainsKey("Shell") && oopBuffPreferences[playerName]["Shell"] },
+                            new { Name = "Regen", Enabled = oopBuffPreferences[playerName].ContainsKey("Regen") && oopBuffPreferences[playerName]["Regen"] }
+                        };
+
+                        foreach (var buffInfo in buffsToCheck)
+                        {
+                            if (!buffInfo.Enabled) continue;
+
+                            if (buffInfo.Name == "Regen")
+                            {
+                                if (oopPlayerStates.ContainsKey(playerName))
+                                {
+                                    var oopPlayer = oopPlayerStates[playerName];
+                                    bool needsCure = oopPlayer.CurrentHpPercent <= Form2.config.curePercentage;
+                                    if (oopPlayer.CurrentHpPercent >= 95 || needsCure)
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
+                            bool onCooldown = buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey];
+                            if (onCooldown) continue;
+
+                            var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
+                            if (buff == null || buff.Expiration <= DateTime.Now)
+                            {
+                                string spellToCast = GetBestSpellTier(buffInfo.Name, memberState.Name);
+                                if (!string.IsNullOrEmpty(spellToCast))
+                                {
+                                    CastSpell(memberState.Name, spellToCast);
+                                    buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10); // Static 10s cooldown
+                                    return; // Cast one spell per tick
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -3510,6 +3674,32 @@ private string GetBestSpellTier(string buffType, string targetName)
             if (_ELITEAPIPL == null || _ELITEAPIMonitored == null)
             {
                 return;
+            }
+
+            // Handle Out-of-Party Players
+            for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+            {
+                if (oopPlayerComboBoxes[i].SelectedItem != null)
+                {
+                    string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
+                    if (!string.IsNullOrEmpty(playerName))
+                    {
+                        for (int j = 0; j < 2048; j++)
+                        {
+                            EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(j);
+                            if (entity != null && entity.Name == playerName)
+                            {
+                                if (!oopPlayerStates.ContainsKey(playerName))
+                                {
+                                    oopPlayerStates[playerName] = new OopPlayerState(playerName);
+                                }
+                                oopPlayerStates[playerName].CurrentHpPercent = entity.HealthPercent;
+                                UpdateHPProgressBar(oopPlayerHPs[i], entity.HealthPercent);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             // Update PartyState with current party members
@@ -5502,6 +5692,19 @@ private string GetBestSpellTier(string buffType, string targetName)
                         if (partyMemberForHPCheck.CurrentHPP >= 95 || needsCure)
                         {
                             continue;
+                        }
+                    }
+
+                    // Out-of-Party Curing
+                    for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+                    {
+                        if (oopPlayerComboBoxes[i].SelectedItem != null && oopPlayerEnables[i].Checked)
+                        {
+                            string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
+                            if (oopPlayerStates.ContainsKey(playerName) && oopPlayerStates[playerName].CurrentHpPercent <= Form2.config.curePercentage)
+                            {
+                                CureCalculator_OOP(playerName);
+                            }
                         }
                     }
 
@@ -9675,6 +9878,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
             switch (command)
             {
+                case "NEARBY_PLAYERS":
+                    if (parts.Length > 1)
+                    {
+                        nearbyPlayers = parts[1].Split(',').ToList();
+                    }
+                    break;
                 case "CAST_START":
                     CastingBackground_Check = true;
                     castingLockLabel.Text = "PACKET: Casting is LOCKED";
@@ -9706,7 +9915,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                     break;
-
                 case "CAST_FINISH":
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
@@ -9755,6 +9963,76 @@ private void updateInstances_Tick(object sender, EventArgs e)
                             {
                                 // Log parsing errors without crashing
                                 debug_MSG_show.AppendLine($"Error parsing LOG message: {ex.Message}");
+                            }
+                        }
+                        else if (logData.Contains("takes") && logData.Contains("damage"))
+                        {
+                            try
+                            {
+                                // Parse: Player takes 100 damage.
+                                var parts_damage = logData.Split(new[] { " takes ", " damage." }, StringSplitOptions.RemoveEmptyEntries);
+                                string playerName = parts_damage[0];
+                                int damage = int.Parse(parts_damage[1]);
+
+                                if (oopPlayerStates.ContainsKey(playerName))
+                                {
+                                    var oopPlayer = oopPlayerStates[playerName];
+                                    int oldHpPercent = oopPlayer.CurrentHpPercent;
+                                    // Find the entity to get the new HP percent
+                                    for (int j = 0; j < 2048; j++)
+                                    {
+                                        EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(j);
+                                        if (entity != null && entity.Name == playerName)
+                                        {
+                                            int newHpPercent = entity.HealthPercent;
+                                            if (oldHpPercent > newHpPercent)
+                                            {
+                                                int percentLoss = oldHpPercent - newHpPercent;
+                                                oopPlayer.EstimatedMaxHp = (int)((double)damage / ((double)percentLoss / 100.0));
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                debug_MSG_show.AppendLine($"Error parsing damage LOG message: {ex.Message}");
+                            }
+                        }
+                        else if (logData.Contains("recovers") && logData.Contains("HP"))
+                        {
+                            try
+                            {
+                                // Parse: Player recovers 100 HP.
+                                var parts_heal = logData.Split(new[] { " recovers ", " HP." }, StringSplitOptions.RemoveEmptyEntries);
+                                string playerName = parts_heal[0];
+                                int heal = int.Parse(parts_heal[1]);
+
+                                if (oopPlayerStates.ContainsKey(playerName))
+                                {
+                                    var oopPlayer = oopPlayerStates[playerName];
+                                    int oldHpPercent = oopPlayer.CurrentHpPercent;
+                                    // Find the entity to get the new HP percent
+                                    for (int j = 0; j < 2048; j++)
+                                    {
+                                        EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(j);
+                                        if (entity != null && entity.Name == playerName)
+                                        {
+                                            int newHpPercent = entity.HealthPercent;
+                                            if (newHpPercent > oldHpPercent)
+                                            {
+                                                int percentGain = newHpPercent - oldHpPercent;
+                                                oopPlayer.EstimatedMaxHp = (int)((double)heal / ((double)percentGain / 100.0));
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                debug_MSG_show.AppendLine($"Error parsing heal LOG message: {ex.Message}");
                             }
                         }
                     }
@@ -10034,6 +10312,81 @@ private void updateInstances_Tick(object sender, EventArgs e)
         public void ClearDebugMessages()
         {
             debug_MSG_show.Clear();
+        }
+    }
+    public class OopPlayerState
+    {
+        public string Name { get; set; }
+        public int EstimatedMaxHp { get; set; }
+        public int CurrentHpPercent { get; set; }
+
+        public OopPlayerState(string name)
+        {
+            Name = name;
+            EstimatedMaxHp = 2000; // Default starting value
+            CurrentHpPercent = 100;
+        }
+    }
+
+        private void CureCalculator_OOP(string playerName)
+        {
+            if (oopPlayerStates.ContainsKey(playerName))
+            {
+                OopPlayerState playerState = oopPlayerStates[playerName];
+                uint HP_Loss = (uint)(playerState.EstimatedMaxHp * (100 - playerState.CurrentHpPercent) / 100);
+
+                if (Form2.config.cure6enabled && HP_Loss >= Form2.config.cure6amount && _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobChecker("Cure VI") == true)
+                {
+                    string cureSpell = CureTiers("Cure VI", false);
+                    if (cureSpell != "false")
+                    {
+                        CastSpell(playerName, cureSpell);
+                    }
+                }
+                else if (Form2.config.cure5enabled && HP_Loss >= Form2.config.cure5amount && _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobChecker("Cure V") == true)
+                {
+                    string cureSpell = CureTiers("Cure V", false);
+                    if (cureSpell != "false")
+                    {
+                        CastSpell(playerName, cureSpell);
+                    }
+                }
+                else if (Form2.config.cure4enabled && HP_Loss >= Form2.config.cure4amount && _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobChecker("Cure IV") == true)
+                {
+                    string cureSpell = CureTiers("Cure IV", false);
+                    if (cureSpell != "false")
+                    {
+                        CastSpell(playerName, cureSpell);
+                    }
+                }
+                else if (Form2.config.cure3enabled && HP_Loss >= Form2.config.cure3amount && _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobChecker("Cure III") == true)
+                {
+                    if (Form2.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
+                    string cureSpell = CureTiers("Cure III", false);
+                    if (cureSpell != "false")
+                    {
+                        CastSpell(playerName, cureSpell);
+                    }
+                }
+                else if (Form2.config.cure2enabled && HP_Loss >= Form2.config.cure2amount && _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobChecker("Cure II") == true)
+                {
+                    if (Form2.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
+                    string cureSpell = CureTiers("Cure II", false);
+                    if (cureSpell != "false")
+                    {
+                        CastSpell(playerName, cureSpell);
+                    }
+                }
+                else if (Form2.config.cure1enabled && HP_Loss >= Form2.config.cure1amount && _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobChecker("Cure") == true)
+                {
+                    if (Form2.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
+                    string cureSpell = CureTiers("Cure", false);
+                    if (cureSpell != "false")
+                    {
+                        CastSpell(playerName, cureSpell);
+                    }
+                }
+            }
         }
     }
 
