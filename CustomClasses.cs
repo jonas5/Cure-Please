@@ -95,6 +95,11 @@ namespace CurePlease
             }
         }
     }
+    public class BuffInfo
+    {
+        public System.Collections.Generic.List<int> Ids { get; set; }
+        public int Duration { get; set; } // Base duration in seconds
+    }
 }
 
 
