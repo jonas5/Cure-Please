@@ -5464,7 +5464,6 @@ private string GetBestSpellTier(string buffType, string targetName)
 
                 var buffsToCheck = new[]
                 {
-            new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] },
             new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) },
             new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] },
             new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] },
@@ -5483,12 +5482,6 @@ private string GetBestSpellTier(string buffType, string targetName)
                     var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
                     if (buff == null || buff.Expiration <= DateTime.Now)
                     {
-                        // HP check for Regen: only apply if HP is below 95% and above the cure threshold.
-                        if (buffInfo.Name == "Regen" && (partyMember.CurrentHPP >= 95 || partyMember.CurrentHPP <= Form2.config.curePercentage))
-                        {
-                            continue;
-                        }
-
                         string reason = buff == null ? "buff not found" : $"buff expiring at {buff.Expiration:HH:mm:ss}";
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] Rotating to {memberState.Name} who needs {buffInfo.Name} ({reason}).");
 
@@ -5993,16 +5986,70 @@ private string GetBestSpellTier(string buffType, string targetName)
                             }
                         }
 
-                        // Now run everyone else
+                        // New Healing Logic
                         foreach (byte id in playerHpOrder)
                         {
-                            // Cures First, is casting possible, and enabled?
-                            if (castingPossible(id) && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].Active >= 1) && (enabledBoxes[id].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0))
+                            if (!castingPossible(id) || !enabledBoxes[id].Checked || _ELITEAPIMonitored.Party.GetPartyMember(id).Active < 1 || _ELITEAPIMonitored.Party.GetPartyMember(id).CurrentHP == 0)
+                                continue;
+
+                            var partyMember = _ELITEAPIMonitored.Party.GetPartyMember(id);
+                            bool needsCure = partyMember.CurrentHPP <= Form2.config.curePercentage;
+                            bool needsRegen = autoRegen_Enabled[id] && partyMember.CurrentHPP < 95;
+                            bool isPlayerLowMP = _ELITEAPIPL.Player.MPP < 50;
+
+                            if (!needsCure && !needsRegen)
+                                continue;
+
+                            var memberState = partyState.Members.ContainsKey(partyMember.Name) ? partyState.Members[partyMember.Name] : null;
+                            if (memberState == null) continue;
+
+                            var regenBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Regen"].Ids.Contains(b.Id));
+                            bool hasActiveRegen = regenBuff != null && regenBuff.Expiration > DateTime.Now;
+
+                            if (isPlayerLowMP)
                             {
-                                if ((_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <= Form2.config.curePercentage) && (castingPossible(id)))
+                                // Low MP Priority: Regen > Cure, overrides setting
+                                if (needsRegen && !hasActiveRegen)
+                                {
+                                    Regen_Player(id);
+                                    break;
+                                }
+                                if (needsCure)
                                 {
                                     CureCalculator(id, false);
                                     break;
+                                }
+                            }
+                            else
+                            {
+                                // Normal MP, use the setting
+                                if (Form2.config.cureBeforeRegen)
+                                {
+                                    // Setting Priority: Cure > Regen
+                                    if (needsCure)
+                                    {
+                                        CureCalculator(id, false);
+                                        break;
+                                    }
+                                    if (needsRegen && !hasActiveRegen)
+                                    {
+                                        Regen_Player(id);
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    // Setting Priority: Regen > Cure
+                                    if (needsRegen && !hasActiveRegen)
+                                    {
+                                        Regen_Player(id);
+                                        break;
+                                    }
+                                    if (needsCure)
+                                    {
+                                        CureCalculator(id, false);
+                                        break;
+                                    }
                                 }
                             }
                         }

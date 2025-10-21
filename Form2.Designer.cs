@@ -1434,6 +1434,7 @@
             // 
             // autoTargetOnLock
             //
+            this.autoTargetOnLock = new System.Windows.Forms.CheckBox();
             this.autoTargetOnLock.AutoSize = true;
             this.autoTargetOnLock.Location = new System.Drawing.Point(230, 101);
             this.autoTargetOnLock.Name = "autoTargetOnLock";
