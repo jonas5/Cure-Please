@@ -7160,7 +7160,7 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form2 settings = new Form2();
+            Form2 settings = new Form2(this);
             settings.Show();
         }
 
@@ -9420,7 +9420,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             if ((settings == null) || (settings.IsDisposed))
             {
-                settings = new Form2();
+                settings = new Form2(this);
             }
             settings.Show();
 
