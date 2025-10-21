@@ -261,6 +261,14 @@ namespace CurePlease
             {
                 get; set;
             }
+
+            public decimal RegenDuration { get; set; }
+            public decimal ProtectDuration { get; set; }
+            public decimal ShellDuration { get; set; }
+            public decimal HasteDuration { get; set; }
+            public decimal RefreshDuration { get; set; }
+            public decimal PhalanxDuration { get; set; }
+
             public int autoStorm_Spell
             {
                 get; set;
@@ -2345,6 +2353,13 @@ namespace CurePlease
                 config.enableFastCast_Mode = false;
                 config.trackCastingPackets = false;
 
+            config.RegenDuration = 120;
+            config.ProtectDuration = 1800;
+            config.ShellDuration = 1800;
+            config.HasteDuration = 180;
+            config.RefreshDuration = 150;
+            config.PhalanxDuration = 120;
+
                 // OTHERS
 
                 config.settingsSet = true;
@@ -2858,6 +2873,13 @@ namespace CurePlease
 
             config.enableFastCast_Mode = enableFastCast_Mode.Checked;
             config.trackCastingPackets = trackCastingPackets.Checked;
+
+            config.RegenDuration = regenDuration.Value;
+            config.ProtectDuration = protectDuration.Value;
+            config.ShellDuration = shellDuration.Value;
+            config.HasteDuration = hasteDuration.Value;
+            config.RefreshDuration = refreshDuration.Value;
+            config.PhalanxDuration = phalanxDuration.Value;
 
             // OTHERS
 
@@ -3943,6 +3965,13 @@ namespace CurePlease
 
             enableFastCast_Mode.Checked = config.enableFastCast_Mode;
             trackCastingPackets.Checked = config.trackCastingPackets;
+
+            regenDuration.Value = config.RegenDuration;
+            protectDuration.Value = config.ProtectDuration;
+            shellDuration.Value = config.ShellDuration;
+            hasteDuration.Value = config.HasteDuration;
+            refreshDuration.Value = config.RefreshDuration;
+            phalanxDuration.Value = config.PhalanxDuration;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )

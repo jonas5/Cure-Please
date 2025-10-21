@@ -1560,6 +1560,7 @@
             StartPosition = FormStartPosition.CenterScreen;
 
             InitializeComponent();
+            InitializeBuffDefinitions();
 
             _pipeClient = new NamedPipeClient("CurePleasePipe");
             _pipeClient.Connected += PipeClient_Connected;
@@ -3148,6 +3149,7 @@ private void setinstance_Click(object sender, EventArgs e)
                             Form2.updateForm(config);
                             Form2.button4_Click(sender, e);
                         }
+                        InitializeBuffDefinitions();
                     }
                     catch (Exception ex)
                     {
@@ -5415,15 +5417,21 @@ private string GetBestSpellTier(string buffType, string targetName)
             }
         }
 
-        public static readonly Dictionary<string, BuffInfo> buff_definitions = new Dictionary<string, BuffInfo>
+        public Dictionary<string, BuffInfo> buff_definitions;
+        private void InitializeBuffDefinitions()
         {
-            { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = 60 } },
-            { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = 180 } },
-            { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = 150 } },
-            { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = 120 } },
-            { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = 1800 } },
-            { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = 1800 } }
-        };
+            if (Form2.config == null) Form2.config = new Form2.MySettings();
+
+            buff_definitions = new Dictionary<string, BuffInfo>
+            {
+                { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = (int)Form2.config.RegenDuration } },
+                { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = (int)Form2.config.HasteDuration } },
+                { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)Form2.config.RefreshDuration } },
+                { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)Form2.config.PhalanxDuration } },
+                { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)Form2.config.ProtectDuration } },
+                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)Form2.config.ShellDuration } }
+            };
+        }
 
         private void CheckAndApplyBuffs()
         {
