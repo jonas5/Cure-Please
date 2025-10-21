@@ -5483,8 +5483,8 @@ private string GetBestSpellTier(string buffType, string targetName)
                     var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
                     if (buff == null || buff.Expiration <= DateTime.Now)
                     {
-                        // HP check for Regen
-                        if (buffInfo.Name == "Regen" && partyMember.CurrentHPP >= 95)
+                        // HP check for Regen: only apply if HP is below 95% and above the cure threshold.
+                        if (buffInfo.Name == "Regen" && (partyMember.CurrentHPP >= 95 || partyMember.CurrentHPP <= Form2.config.curePercentage))
                         {
                             continue;
                         }
