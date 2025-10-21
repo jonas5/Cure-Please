@@ -9535,7 +9535,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         if (memberState == null) continue;
 
                         var oldBuffs = memberState.Buffs.ToDictionary(b => b.Id);
-                        var newBuffs = oldBuffs.ToDictionary(entry => entry.Key, entry => entry.Value);
+                        var newBuffs = oldBuffs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
                         // Log initial state for comparison
                         string oldBuffsLog = string.Join(", ", oldBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
