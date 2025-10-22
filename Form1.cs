@@ -4365,12 +4365,13 @@ private string GetBestSpellTier(string buffType, string targetName)
 
                             if (spellInfo != null)
                             {
-                                if (entity.Buffs.Contains((short)spellInfo.Debuff))
+                                var playerInfo = _ELITEAPIPL.Entity.GetPlayer(entity.TargetingIndex);
+                                if (playerInfo != null && playerInfo.Buffs.Contains((ushort)spellInfo.Debuff))
                                 {
                                     if (CheckSpellRecast(spellInfo.Name) == 0 && HasSpell(spellInfo.Name))
                                     {
                                         CastSpell(playerName, spellInfo.Name);
-                                        return;
+                                        return; // Cast one spell per tick
                                     }
                                 }
                             }
