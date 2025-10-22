@@ -87,12 +87,15 @@ private:
 
             for (int i = 0; i < 2048; ++i)
             {
-                if (entMgr->GetIsEntityValid(i) && (entMgr->GetRenderFlags(i) & 0x4000) != 0) // Check if it's a PC
+                // Filter for entities that are players and within 20 distance.
+                // The Player flag is 0x001. We explicitly check for this.
+                if (entMgr->GetIsEntityValid(i) && (entMgr->GetType(i) & 1) != 0 && entMgr->GetDistance(i) <= 20.0f)
                 {
                     bool inParty = false;
                     for (int j = 0; j < 18; ++j)
                     {
-                        if (partyMgr->GetMemberName(j) && strcmp(partyMgr->GetMemberName(j), entMgr->GetName(i)) == 0)
+                        // Ensure both names are valid before comparing
+                        if (partyMgr->GetMemberName(j) && entMgr->GetName(i) && strcmp(partyMgr->GetMemberName(j), entMgr->GetName(i)) == 0)
                         {
                             inParty = true;
                             break;
@@ -101,12 +104,16 @@ private:
 
                     if (!inParty)
                     {
-                        if (playerCount > 0)
+                        const char* name = entMgr->GetName(i);
+                        if (name)
                         {
-                            nearbyPlayers += ",";
+                            if (playerCount > 0)
+                            {
+                                nearbyPlayers += ",";
+                            }
+                            nearbyPlayers += name;
+                            playerCount++;
                         }
-                        nearbyPlayers += entMgr->GetName(i);
-                        playerCount++;
                     }
                 }
             }
