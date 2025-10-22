@@ -105,6 +105,19 @@
         private Dictionary<string, Dictionary<string, bool>> oopBuffPreferences = new Dictionary<string, Dictionary<string, bool>>();
 
         private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
+        private Dictionary<string, Dictionary<string, bool>> oopDebuffState = new Dictionary<string, Dictionary<string, bool>>();
+        public class DebuffSpell
+        {
+            public string Name { get; set; }
+            public StatusEffect Debuff { get; set; }
+        }
+        private static readonly List<DebuffSpell> DebuffSpells = new List<DebuffSpell>
+        {
+            new DebuffSpell { Name = "Silena", Debuff = StatusEffect.Silence },
+            new DebuffSpell { Name = "Poisona", Debuff = StatusEffect.Poison },
+            new DebuffSpell { Name = "Paralyna", Debuff = StatusEffect.Paralysis },
+            new DebuffSpell { Name = "Blindna", Debuff = StatusEffect.Blindness }
+        };
         // BARD SONG VARIABLES
         private int song_casting = 0;
 
@@ -354,6 +367,28 @@
             else
             {
                 return 1;
+            }
+        }
+
+        private void debuffMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null)
+            {
+                int oopIndex = playerOptionsSelected - 18;
+                if (oopIndex >= 0 && oopIndex < oopPlayerComboBoxes.Length)
+                {
+                    string playerName = oopPlayerComboBoxes[oopIndex].SelectedItem?.ToString();
+                    if (!string.IsNullOrEmpty(playerName))
+                    {
+                        if (!oopDebuffState.ContainsKey(playerName))
+                        {
+                            oopDebuffState[playerName] = new Dictionary<string, bool>();
+                        }
+                        string spellName = menuItem.Text;
+                        oopDebuffState[playerName][spellName] = menuItem.Checked;
+                    }
+                }
             }
         }
 
@@ -3115,6 +3150,28 @@
                         menuItem.Click += oopBuffToolStripMenuItem_Click;
                         oopPlayerOptions.Items.Add(menuItem);
                     }
+                    // Add a separator
+                    oopPlayerOptions.Items.Add(new ToolStripSeparator());
+
+                    // Create Debuffs sub-menu
+                    var debuffsMenuItem = new ToolStripMenuItem("Debuffs");
+
+                    if (!oopDebuffState.ContainsKey(playerName))
+                    {
+                        oopDebuffState[playerName] = new Dictionary<string, bool>();
+                    }
+                    var debuffPreferences = oopDebuffState[playerName];
+
+                    foreach (var spell in DebuffSpells)
+                    {
+                        var subMenuItem = new ToolStripMenuItem(spell.Name);
+                        subMenuItem.CheckOnClick = true;
+                        subMenuItem.Checked = debuffPreferences.ContainsKey(spell.Name) && debuffPreferences[spell.Name];
+                        subMenuItem.Click += debuffMenuItem_Click;
+                        debuffsMenuItem.DropDownItems.Add(subMenuItem);
+                    }
+
+                    oopPlayerOptions.Items.Add(debuffsMenuItem);
                     oopPlayerOptions.Show(button, new Point(0, button.Height));
                 }
             }
@@ -4278,6 +4335,49 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void RunDebuffChecker()
         {
+            for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+            {
+                if (oopPlayerEnables[i].Checked && oopPlayerComboBoxes[i].SelectedItem != null)
+                {
+                    string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
+                    if (string.IsNullOrEmpty(playerName) || !oopDebuffState.ContainsKey(playerName) || !IsOopPlayerInRange(playerName))
+                        continue;
+
+                    var preferences = oopDebuffState[playerName];
+                    EliteAPI.XiEntity entity = null;
+                    for (int j = 0; j < 2048; j++)
+                    {
+                        var currentEntity = _ELITEAPIPL.Entity.GetEntity(j);
+                        if (currentEntity != null && currentEntity.Name == playerName)
+                        {
+                            entity = currentEntity;
+                            break;
+                        }
+                    }
+
+                    if (entity == null) continue;
+
+                    foreach (var preference in preferences)
+                    {
+                        if (preference.Value) // If user wants to cleanse this debuff
+                        {
+                            DebuffSpell spellInfo = DebuffSpells.FirstOrDefault(ds => ds.Name == preference.Key);
+
+                            if (spellInfo != null)
+                            {
+                                if (entity.Buffs.Contains((short)spellInfo.Debuff))
+                                {
+                                    if (CheckSpellRecast(spellInfo.Name) == 0 && HasSpell(spellInfo.Name))
+                                    {
+                                        CastSpell(playerName, spellInfo.Name);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             // PL and Monitored Player Debuff Removal Starting with PL
             if (_ELITEAPIPL.Player.Status != 33)
             {
