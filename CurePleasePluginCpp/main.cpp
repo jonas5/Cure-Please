@@ -88,8 +88,8 @@ private:
             for (int i = 0; i < 2048; ++i)
             {
                 // Filter for entities that are players and within 20 distance.
-                // The Player flag is 0x001. We explicitly check for this.
-                if (entMgr->GetIsEntityValid(i) && (entMgr->GetType(i) & 1) != 0 && entMgr->GetDistance(i) <= 20.0f)
+                // We consider Type 0 as a potential player, as seen in logs.
+                if (entMgr->GetIsEntityValid(i) && (entMgr->GetType(i) == 0) && entMgr->GetDistance(i) <= 20.0f && entMgr->GetHPPercent(i) > 0)
                 {
                     bool inParty = false;
                     for (int j = 0; j < 18; ++j)
@@ -117,12 +117,8 @@ private:
                     }
                 }
             }
-
-            if (playerCount > 0)
-            {
-                nearbyPlayers += "\n";
-                WriteToPipe(nearbyPlayers);
-            }
+            nearbyPlayers += "\n";
+            WriteToPipe(nearbyPlayers);
         }
     }
 
