@@ -9775,6 +9775,13 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     try
                     {
                         var polledBuffIds = new HashSet<int>(api.Player.GetPlayerInfo().Buffs.Select(b => (int)b));
+
+                        if (polledBuffIds.Count == 0 || (polledBuffIds.Count == 1 && polledBuffIds.Contains(-1)))
+                        {
+                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Received invalid buff data for {characterName}. Skipping update to preserve timers.");
+                            continue;
+                        }
+
                         PartyMemberState memberState = partyState.GetPartyMember(characterName);
 
                         if (memberState == null) continue;

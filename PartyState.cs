@@ -85,14 +85,13 @@ namespace CurePlease
                 if (this.buff_definitions.TryGetValue(buffType, out BuffInfo buffInfo))
                 {
                     // Remove all existing instances of this buff type
-                    member.Buffs.RemoveAll(b => buffInfo.Ids.Contains(b.Id));
+                    int removedCount = member.Buffs.RemoveAll(b => buffInfo.Ids.Contains(b.Id));
 
-                    // Add a new instance with a reset timer.
-                    // We just use the first ID from the definition as a representative ID for the group.
+                    var newExpiration = DateTime.Now.AddSeconds(buffInfo.Duration);
                     member.Buffs.Add(new ActiveBuff
                     {
                         Id = buffInfo.Ids.First(),
-                        Expiration = DateTime.Now.AddSeconds(buffInfo.Duration)
+                        Expiration = newExpiration
                     });
                 }
             }
