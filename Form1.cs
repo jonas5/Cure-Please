@@ -3143,10 +3143,15 @@
             ComboBox comboBox = sender as ComboBox;
             if (comboBox != null)
             {
+                string selectedPlayer = comboBox.SelectedItem as string;
                 comboBox.Items.Clear();
-                foreach (string player in nearbyPlayers)
+                if (nearbyPlayers.Count > 0)
                 {
-                    comboBox.Items.Add(player);
+                    comboBox.Items.AddRange(nearbyPlayers.ToArray());
+                }
+                if (selectedPlayer != null && nearbyPlayers.Contains(selectedPlayer))
+                {
+                    comboBox.SelectedItem = selectedPlayer;
                 }
             }
         }
@@ -9895,9 +9900,13 @@ private void updateInstances_Tick(object sender, EventArgs e)
             switch (command)
             {
                 case "NEARBY_PLAYERS":
-                    if (parts.Length > 1)
+                    if (parts.Length > 1 && !string.IsNullOrWhiteSpace(parts[1]))
                     {
-                        nearbyPlayers = parts[1].Split(',').ToList();
+                        nearbyPlayers = parts[1].Split(',').Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
+                    }
+                    else
+                    {
+                        nearbyPlayers.Clear();
                     }
                     break;
                 case "CAST_START":
