@@ -87,9 +87,11 @@ private:
 
             for (int i = 0; i < 2048; ++i)
             {
-                // Filter for entities that are players and within 20 distance.
-                // We consider Type 0 as a potential player, as seen in logs.
-                if (entMgr->GetIsEntityValid(i) && (entMgr->GetType(i) == 0) && entMgr->GetDistance(i) <= 20.0f && entMgr->GetHPPercent(i) > 0)
+                // Filter for entities that are players (Type 0 or Player flag) and within 20 distance.
+                if (entMgr->GetIsEntityValid(i) &&
+                    ((entMgr->GetType(i) & 1) != 0 || entMgr->GetType(i) == 0) &&
+                    entMgr->GetDistance(i) <= 20.0f &&
+                    entMgr->GetHPPercent(i) > 0)
                 {
                     bool inParty = false;
                     for (int j = 0; j < 18; ++j)
