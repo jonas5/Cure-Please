@@ -9960,8 +9960,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     if (parts.Length > 1)
                     {
                         string logData = parts[1];
-                        debug_MSG_show.AppendLine(logData);
-                        UpdateDebugForm(logData);
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Raw LOG: {logData}");
+                        UpdateDebugForm($"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Raw LOG: {logData}");
 
                         // Check if this is a player magic cast log
                         var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
@@ -9969,23 +9969,28 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         {
                             try
                             {
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Detected own magic cast.");
                                 // Parse: [MAGIC] Regen (108) - Actor: Thareria, Target[0]: Thareria
                                 int spellIdStart = logData.IndexOf('(') + 1;
                                 int spellIdEnd = logData.IndexOf(')');
                                 ushort spellId = ushort.Parse(logData.Substring(spellIdStart, spellIdEnd - spellIdStart));
+                                debug_MSG_show.AppendLine($"    -> Parsed Spell ID: {spellId}");
 
                                 int targetNameStart = logData.IndexOf("Target[0]: ") + "Target[0]: ".Length;
                                 string targetName = logData.Substring(targetNameStart).Trim();
+                                debug_MSG_show.AppendLine($"    -> Parsed Target Name: {targetName}");
 
                                 string buffType = GetBuffNameForSpellId(spellId);
+                                debug_MSG_show.AppendLine($"    -> Resolved Buff Type: {buffType ?? "null"}");
 
                                 if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
                                 {
-                                    DateTime expiration = DateTime.Now.AddSeconds(buff_definitions[buffType].Duration);
+                                    debug_MSG_show.AppendLine($"    -> Conditions met. Calling ResetBuffTimer for {targetName} with buff {buffType}.");
                                     partyState.ResetBuffTimer(targetName, buffType);
-                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer to expire at {expiration:HH:mm:ss}.";
-                                    debug_MSG_show.AppendLine(logMessage);
-                                    UpdateDebugForm(logMessage);
+                                }
+                                else
+                                {
+                                    debug_MSG_show.AppendLine($"    -> Conditions NOT met. targetName is not null: {targetName != null}, buffType is not null: {buffType != null}, partyState contains target: {partyState.Members.ContainsKey(targetName ?? "")}");
                                 }
                             }
                             catch (Exception ex)
