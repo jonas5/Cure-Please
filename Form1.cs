@@ -84,6 +84,7 @@
 
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
+        private int debuffTargetId = 0;
         private int _lastBuffedMemberIndex = -1;
         private PartyState partyState = new PartyState();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
@@ -5902,6 +5903,7 @@ private string GetBestSpellTier(string buffType, string targetName)
             ProcessRecastQueue();
             CheckAndApplyBuffs();
             CheckEngagedStatus_Hate();
+            RunDebuffLogic();
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -10584,6 +10586,85 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+        private string GetBestDebuffSpellTier(string debuffType)
+        {
+            List<string> spellTiers = new List<string>();
+
+            switch (debuffType.ToLower())
+            {
+                case "diabio":
+                    spellTiers.AddRange(new[] { "Dia III", "Bio III", "Dia II", "Bio II", "Dia", "Bio" });
+                    break;
+                case "paralyze":
+                    spellTiers.AddRange(new[] { "Paralyze II", "Paralyze" });
+                    break;
+                case "blind":
+                    spellTiers.AddRange(new[] { "Blind II", "Blind" });
+                    break;
+                case "slow":
+                    spellTiers.AddRange(new[] { "Slow II", "Slow" });
+                    break;
+                case "gravity":
+                    spellTiers.AddRange(new[] { "Gravity II", "Gravity" });
+                    break;
+                case "burnfrostchoke":
+                    spellTiers.AddRange(new[] { "Burn", "Frost", "Choke" });
+                    break;
+                case "raspshockdrown":
+                    spellTiers.AddRange(new[] { "Rasp", "Shock", "Drown" });
+                    break;
+                default:
+                    return null;
+            }
+
+            foreach (var spell in spellTiers)
+            {
+                if (HasSpell(spell) && CheckSpellRecast(spell) == 0)
+                {
+                    return spell;
+                }
+            }
+
+            return null;
+        }
+        private async void RunDebuffLogic()
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.enableDebuffs) return;
+
+            debuffTargetId = lockedTargetId;
+            if (debuffTargetId == 0) return;
+
+            EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
+            if (targetEntity == null || targetEntity.HealthPercent == 0) return;
+
+            List<ushort> targetBuffs = new List<ushort>(targetEntity.Buffs);
+
+            var debuffChecks = new Dictionary<string, Func<bool>>
+            {
+                { "diabio", () => Form2.config.debuffDiaBio && !targetBuffs.Contains(134) && !targetBuffs.Contains(135) },
+                { "paralyze", () => Form2.config.debuffParalyze && !targetBuffs.Contains(4) },
+                { "blind", () => Form2.config.debuffBlind && !targetBuffs.Contains(5) },
+                { "slow", () => Form2.config.debuffSlow && !targetBuffs.Contains(13) },
+                { "gravity", () => Form2.config.debuffGravity && !targetBuffs.Contains(12) },
+                { "burnfrostchoke", () => Form2.config.debuffBurnFrostChoke && !targetBuffs.Contains(128) && !targetBuffs.Contains(129) && !targetBuffs.Contains(130) },
+                { "raspshockdrown", () => Form2.config.debuffRaspShockDrown && !targetBuffs.Contains(131) && !targetBuffs.Contains(132) && !targetBuffs.Contains(133) }
+            };
+
+            foreach (var check in debuffChecks)
+            {
+                if (check.Value())
+                {
+                    string spellToCast = GetBestDebuffSpellTier(check.Key);
+                    if (spellToCast != null)
+                    {
+                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                        await Task.Delay(500);
+                        CastSpell("<t>", spellToCast);
+                        return;
+                    }
+                }
+            }
         }
 
         private void oopGroupBox_Enter(object sender, EventArgs e)

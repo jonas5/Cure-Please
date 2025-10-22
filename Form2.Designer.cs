@@ -7991,6 +7991,128 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Healing Options";
             //
+            // tabPageDebuffs
+            //
+            this.tabPageDebuffs.Controls.Add(this.rdmDebuffsGroupBox);
+            this.tabPageDebuffs.Location = new System.Drawing.Point(4, 26);
+            this.tabPageDebuffs.Name = "tabPageDebuffs";
+            this.tabPageDebuffs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDebuffs.Size = new System.Drawing.Size(806, 557);
+            this.tabPageDebuffs.TabIndex = 8;
+            this.tabPageDebuffs.Text = "Debuffs";
+            this.tabPageDebuffs.UseVisualStyleBackColor = true;
+            //
+            // rdmDebuffsGroupBox
+            //
+            this.rdmDebuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
+            this.rdmDebuffsGroupBox.Controls.Add(this.enableDebuffs);
+            this.rdmDebuffsGroupBox.Controls.Add(this.debuffDiaBio);
+            this.rdmDebuffsGroupBox.Controls.Add(this.debuffParalyze);
+            this.rdmDebuffsGroupBox.Controls.Add(this.debuffBlind);
+            this.rdmDebuffsGroupBox.Controls.Add(this.debuffSlow);
+            this.rdmDebuffsGroupBox.Controls.Add(this.debuffGravity);
+            this.rdmDebuffsGroupBox.Controls.Add(this.rdmDebuffsElementalGroupBox);
+            this.rdmDebuffsGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdmDebuffsGroupBox.Location = new System.Drawing.Point(6, 6);
+            this.rdmDebuffsGroupBox.Name = "rdmDebuffsGroupBox";
+            this.rdmDebuffsGroupBox.Size = new System.Drawing.Size(354, 273);
+            this.rdmDebuffsGroupBox.TabIndex = 2;
+            this.rdmDebuffsGroupBox.TabStop = false;
+            this.rdmDebuffsGroupBox.Text = "Red Mage Debuffs";
+            //
+            // enableDebuffs
+            //
+            this.enableDebuffs.AutoSize = true;
+            this.enableDebuffs.Location = new System.Drawing.Point(6, 19);
+            this.enableDebuffs.Name = "enableDebuffs";
+            this.enableDebuffs.Size = new System.Drawing.Size(110, 19);
+            this.enableDebuffs.TabIndex = 0;
+            this.enableDebuffs.Text = "Enable Debuffs";
+            this.enableDebuffs.UseVisualStyleBackColor = true;
+            //
+            // debuffDiaBio
+            //
+            this.debuffDiaBio.AutoSize = true;
+            this.debuffDiaBio.Location = new System.Drawing.Point(25, 44);
+            this.debuffDiaBio.Name = "debuffDiaBio";
+            this.debuffDiaBio.Size = new System.Drawing.Size(68, 19);
+            this.debuffDiaBio.TabIndex = 1;
+            this.debuffDiaBio.Text = "Dia/Bio";
+            this.debuffDiaBio.UseVisualStyleBackColor = true;
+            //
+            // debuffParalyze
+            //
+            this.debuffParalyze.AutoSize = true;
+            this.debuffParalyze.Location = new System.Drawing.Point(25, 69);
+            this.debuffParalyze.Name = "debuffParalyze";
+            this.debuffParalyze.Size = new System.Drawing.Size(75, 19);
+            this.debuffParalyze.TabIndex = 2;
+            this.debuffParalyze.Text = "Paralyze";
+            this.debuffParalyze.UseVisualStyleBackColor = true;
+            //
+            // debuffBlind
+            //
+            this.debuffBlind.AutoSize = true;
+            this.debuffBlind.Location = new System.Drawing.Point(25, 94);
+            this.debuffBlind.Name = "debuffBlind";
+            this.debuffBlind.Size = new System.Drawing.Size(55, 19);
+            this.debuffBlind.TabIndex = 3;
+            this.debuffBlind.Text = "Blind";
+            this.debuffBlind.UseVisualStyleBackColor = true;
+            //
+            // debuffSlow
+            //
+            this.debuffSlow.AutoSize = true;
+            this.debuffSlow.Location = new System.Drawing.Point(25, 119);
+            this.debuffSlow.Name = "debuffSlow";
+            this.debuffSlow.Size = new System.Drawing.Size(53, 19);
+            this.debuffSlow.TabIndex = 4;
+            this.debuffSlow.Text = "Slow";
+            this.debuffSlow.UseVisualStyleBackColor = true;
+            //
+            // debuffGravity
+            //
+            this.debuffGravity.AutoSize = true;
+            this.debuffGravity.Location = new System.Drawing.Point(25, 144);
+            this.debuffGravity.Name = "debuffGravity";
+            this.debuffGravity.Size = new System.Drawing.Size(64, 19);
+            this.debuffGravity.TabIndex = 5;
+            this.debuffGravity.Text = "Gravity";
+            this.debuffGravity.UseVisualStyleBackColor = true;
+            //
+            // rdmDebuffsElementalGroupBox
+            //
+            this.rdmDebuffsElementalGroupBox.BorderColor = System.Drawing.Color.SlateGray;
+            this.rdmDebuffsElementalGroupBox.Controls.Add(this.debuffBurnFrostChoke);
+            this.rdmDebuffsElementalGroupBox.Controls.Add(this.debuffRaspShockDrown);
+            this.rdmDebuffsElementalGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdmDebuffsElementalGroupBox.Location = new System.Drawing.Point(6, 170);
+            this.rdmDebuffsElementalGroupBox.Name = "rdmDebuffsElementalGroupBox";
+            this.rdmDebuffsElementalGroupBox.Size = new System.Drawing.Size(342, 97);
+            this.rdmDebuffsElementalGroupBox.TabIndex = 6;
+            this.rdmDebuffsElementalGroupBox.TabStop = false;
+            this.rdmDebuffsElementalGroupBox.Text = "Elemental Debuffs (Requires BLM Sub)";
+            //
+            // debuffBurnFrostChoke
+            //
+            this.debuffBurnFrostChoke.AutoSize = true;
+            this.debuffBurnFrostChoke.Location = new System.Drawing.Point(19, 20);
+            this.debuffBurnFrostChoke.Name = "debuffBurnFrostChoke";
+            this.debuffBurnFrostChoke.Size = new System.Drawing.Size(126, 19);
+            this.debuffBurnFrostChoke.TabIndex = 0;
+            this.debuffBurnFrostChoke.Text = "Burn, Frost, Choke";
+            this.debuffBurnFrostChoke.UseVisualStyleBackColor = true;
+            //
+            // debuffRaspShockDrown
+            //
+            this.debuffRaspShockDrown.AutoSize = true;
+            this.debuffRaspShockDrown.Location = new System.Drawing.Point(19, 45);
+            this.debuffRaspShockDrown.Name = "debuffRaspShockDrown";
+            this.debuffRaspShockDrown.Size = new System.Drawing.Size(140, 19);
+            this.debuffRaspShockDrown.TabIndex = 1;
+            this.debuffRaspShockDrown.Text = "Rasp, Shock, Drown";
+            this.debuffRaspShockDrown.UseVisualStyleBackColor = true;
+            //
             // groupBox35
             // 
             this.groupBox35.BorderColor = System.Drawing.Color.SlateGray;
@@ -8110,6 +8232,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabPageDebuffs);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
@@ -8209,6 +8332,11 @@
             this.schJAgroup.PerformLayout();
             this.whmJAgroup.ResumeLayout(false);
             this.whmJAgroup.PerformLayout();
+            this.tabPageDebuffs.ResumeLayout(false);
+            this.rdmDebuffsGroupBox.ResumeLayout(false);
+            this.rdmDebuffsGroupBox.PerformLayout();
+            this.rdmDebuffsElementalGroupBox.ResumeLayout(false);
+            this.rdmDebuffsElementalGroupBox.PerformLayout();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.recastSong)).EndInit();
@@ -8831,5 +8959,16 @@
         private System.Windows.Forms.CheckBox regen2enabled;
         private System.Windows.Forms.CheckBox regen3enabled;
         private System.Windows.Forms.CheckBox autoTargetOnLock;
+        private System.Windows.Forms.TabPage tabPageDebuffs;
+        private GroupBoxEx rdmDebuffsGroupBox;
+        private System.Windows.Forms.CheckBox enableDebuffs;
+        private System.Windows.Forms.CheckBox debuffDiaBio;
+        private System.Windows.Forms.CheckBox debuffParalyze;
+        private System.Windows.Forms.CheckBox debuffBlind;
+        private System.Windows.Forms.CheckBox debuffSlow;
+        private System.Windows.Forms.CheckBox debuffGravity;
+        private GroupBoxEx rdmDebuffsElementalGroupBox;
+        private System.Windows.Forms.CheckBox debuffBurnFrostChoke;
+        private System.Windows.Forms.CheckBox debuffRaspShockDrown;
     }
 }
