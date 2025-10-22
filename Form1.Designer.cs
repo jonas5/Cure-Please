@@ -2794,7 +2794,7 @@ namespace CurePlease
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(858, 374);
+            this.ClientSize = new System.Drawing.Size(858, 373);
             this.Controls.Add(this.oopGroupBox);
             this.Controls.Add(this.AddOnStatus);
             this.Controls.Add(this.AboutButton);
@@ -2821,7 +2821,7 @@ namespace CurePlease
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Cure Please v. 2.0.0.5";
+            this.Text = "Cure Please v. 2.1.0.0";
             this.TransparencyKey = System.Drawing.Color.Silver;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);

@@ -3081,7 +3081,7 @@
     notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
 
    // MessageBox.Show("✅ FFXI process scan complete.");
-            this.ClientSize = new System.Drawing.Size(664, 460);
+            this.ClientSize = new System.Drawing.Size(874, 380);
         }
 
         private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
