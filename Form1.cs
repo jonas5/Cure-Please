@@ -3120,19 +3120,13 @@
             ComboBox comboBox = sender as ComboBox;
             if (comboBox != null)
             {
-                string debugMessage = $"OopPlayerComboBox_DropDown opened. nearbyPlayers count: {nearbyPlayers.Count}";
-                if (nearbyPlayers.Count > 0)
-                {
-                    debugMessage += "\nPlayers: " + string.Join(", ", nearbyPlayers);
-                }
-                MessageBox.Show(debugMessage);
-
-                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] {debugMessage}");
+                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] OopPlayerComboBox_DropDown opened. nearbyPlayers count: {nearbyPlayers.Count}");
                 string selectedPlayer = comboBox.SelectedItem as string;
                 comboBox.Items.Clear();
                 if (nearbyPlayers.Count > 0)
                 {
                     comboBox.Items.AddRange(nearbyPlayers.ToArray());
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Populated ComboBox with: {string.Join(", ", nearbyPlayers)}");
                 }
                 if (selectedPlayer != null && nearbyPlayers.Contains(selectedPlayer))
                 {

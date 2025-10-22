@@ -87,37 +87,62 @@ private:
 
             for (int i = 0; i < 2048; ++i)
             {
-                // Filter for entities that are players (Type 0 or Player flag) and within 20 distance.
-                if (entMgr->GetIsEntityValid(i) &&
-                    ((entMgr->GetType(i) & 1) != 0 || entMgr->GetType(i) == 0) &&
-                    entMgr->GetDistance(i) <= 20.0f &&
-                    entMgr->GetHPPercent(i) > 0)
-                {
-                    bool inParty = false;
-                    for (int j = 0; j < 18; ++j)
-                    {
-                        // Ensure both names are valid before comparing
-                        if (partyMgr->GetMemberName(j) && entMgr->GetName(i) && strcmp(partyMgr->GetMemberName(j), entMgr->GetName(i)) == 0)
-                        {
-                            inParty = true;
-                            break;
-                        }
-                    }
+                if (!entMgr->GetIsEntityValid(i)) continue;
 
-                    if (!inParty)
+                const char* name = entMgr->GetName(i);
+                if (!name) continue;
+
+                uint16_t type = entMgr->GetType(i);
+                float distance = entMgr->GetDistance(i);
+                uint8_t hpPercent = entMgr->GetHPPercent(i);
+
+                std::stringstream log;
+                log << "LOG|" << GetTimestamp() << " [Scan] Checking '" << name << "' (Type: " << type << ", Dist: " << std::fixed << std::setprecision(1) << distance << ", HP: " << (int)hpPercent << "%).";
+
+                bool isPlayerType = ((type & 1) != 0 || type == 0);
+                if (!isPlayerType) {
+                    log << " -> Reject: Not player type.\n";
+                    WriteToPipe(log.str());
+                    continue;
+                }
+
+                if (distance > 20.0f) {
+                    log << " -> Reject: Too far.\n";
+                    WriteToPipe(log.str());
+                    continue;
+                }
+
+                if (hpPercent == 0) {
+                    log << " -> Reject: HP is 0.\n";
+                    WriteToPipe(log.str());
+                    continue;
+                }
+
+                bool inParty = false;
+                for (int j = 0; j < 18; ++j)
+                {
+                    if (partyMgr->GetMemberName(j) && strcmp(partyMgr->GetMemberName(j), name) == 0)
                     {
-                        const char* name = entMgr->GetName(i);
-                        if (name)
-                        {
-                            if (playerCount > 0)
-                            {
-                                nearbyPlayers += ",";
-                            }
-                            nearbyPlayers += name;
-                            playerCount++;
-                        }
+                        inParty = true;
+                        break;
                     }
                 }
+
+                if (inParty) {
+                    log << " -> Reject: In party.\n";
+                    WriteToPipe(log.str());
+                    continue;
+                }
+
+                log << " -> Accept.\n";
+                WriteToPipe(log.str());
+
+                if (playerCount > 0)
+                {
+                    nearbyPlayers += ",";
+                }
+                nearbyPlayers += name;
+                playerCount++;
             }
             nearbyPlayers += "\n";
             WriteToPipe(nearbyPlayers);
