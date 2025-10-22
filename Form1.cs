@@ -5675,11 +5675,20 @@ private string GetBestSpellTier(string buffType, string targetName)
 
             for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
             {
+                string oopPlayerName = oopPlayerComboBoxes[i].SelectedItem?.ToString();
+                debug_MSG_show.AppendLine($"--- OOP Slot {i} ---");
+                debug_MSG_show.AppendLine($"  Enabled: {oopPlayerEnables[i].Checked}");
+                debug_MSG_show.AppendLine($"  Player: '{oopPlayerName ?? "null"}'");
                 if (oopPlayerEnables[i].Checked && oopPlayerComboBoxes[i].SelectedItem != null)
                 {
                     string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
+                    debug_MSG_show.AppendLine($"  Is in range: {IsOopPlayerInRange(playerName)}");
+                    debug_MSG_show.AppendLine($"  Has buff preferences: {oopBuffPreferences.ContainsKey(playerName)}");
+                    debug_MSG_show.AppendLine($"  Is in partyState: {partyState.Members.ContainsKey(playerName)}");
+
                     if (string.IsNullOrEmpty(playerName) || !oopBuffPreferences.ContainsKey(playerName) || !partyState.Members.ContainsKey(playerName) || !IsOopPlayerInRange(playerName))
                     {
+                        debug_MSG_show.AppendLine("  -> PRE-CONDITION FAILED. Skipping this slot.");
                         continue;
                     }
 
