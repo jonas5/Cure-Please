@@ -97,6 +97,7 @@
         private System.Collections.Concurrent.ConcurrentQueue<RecastRequest> recastQueue = new System.Collections.Concurrent.ConcurrentQueue<RecastRequest>();
         private List<string> nearbyPlayers = new List<string>();
         private Dictionary<string, OopPlayerState> oopPlayerStates = new Dictionary<string, OopPlayerState>();
+        private DateTime _lastPipeMessageTime;
         private ComboBox[] oopPlayerComboBoxes;
         private ProgressBar[] oopPlayerHPs;
         private CheckBox[] oopPlayerEnables;
@@ -1586,6 +1587,10 @@
             buffUpdateTimer.Interval = 2000; // Update every 2 seconds
             buffUpdateTimer.Tick += BuffUpdateTimer_Tick;
             buffUpdateTimer.Start();
+
+            pipeStatusTimer.Interval = 5000; // 5 seconds
+            pipeStatusTimer.Tick += new System.EventHandler(this.pipeStatusTimer_Tick);
+            pipeStatusTimer.Start();
 
             for (int i = 0; i < 6; i++)
             {
@@ -9866,12 +9871,25 @@ private void updateInstances_Tick(object sender, EventArgs e)
             return null;
         }
 
+        private void pipeStatusTimer_Tick(object sender, EventArgs e)
+        {
+            if (DateTime.Now - _lastPipeMessageTime > TimeSpan.FromSeconds(15))
+            {
+                PipeClient_Disconnected();
+            }
+        }
         private void PipeClient_MessageReceived(string message)
         {
             if (InvokeRequired)
             {
                 Invoke(new Action<string>(PipeClient_MessageReceived), message);
                 return;
+            }
+            _lastPipeMessageTime = DateTime.Now;
+
+            if (AddOnStatus.BackColor != Color.ForestGreen)
+            {
+                PipeClient_Connected();
             }
 
             var parts = message.Split('|');

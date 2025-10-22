@@ -33,6 +33,7 @@ namespace CurePlease
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.buffUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.pipeStatusTimer = new System.Windows.Forms.Timer(this.components);
             this.player0optionsButton = new System.Windows.Forms.Button();
             this.party0 = new System.Windows.Forms.GroupBox();
             this.player5HP = new CurePlease.NewProgressBar();
