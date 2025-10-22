@@ -3099,7 +3099,7 @@
                     // Clear and rebuild menu
                     oopPlayerOptions.Items.Clear();
 
-                    var buffs = new[] { "Protect", "Shell", "Haste", "Refresh", "Regen", "Phalanx" };
+                    var buffs = new[] { "Protect", "Shell", "Haste" };
 
                     if (!oopBuffPreferences.ContainsKey(playerName))
                     {
@@ -5689,32 +5689,32 @@ private string GetBestSpellTier(string buffType, string targetName)
                     foreach (var preference in preferences.Where(p => p.Value))
                     {
                         string buffName = preference.Key;
-                        if (buffName == "Regen")
+
+                        // Skip Regen if HP is too high or low
+                        if (buffName == "Regen" && oopPlayerStates.ContainsKey(playerName))
                         {
-                            if (oopPlayerStates.ContainsKey(playerName))
+                            var oopPlayer = oopPlayerStates[playerName];
+                            if (oopPlayer.CurrentHpPercent >= 95 || oopPlayer.CurrentHpPercent <= Form2.config.curePercentage)
                             {
-                                var oopPlayer = oopPlayerStates[playerName];
-                                if (oopPlayer.CurrentHpPercent >= 95 || oopPlayer.CurrentHpPercent <= Form2.config.curePercentage)
-                                {
-                                    continue;
-                                }
+                                continue;
                             }
                         }
-                        string cooldownKey = $"{playerName}:{buffName}";
-                        if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey]) continue;
 
+                        // Check if the buff is active and has not expired.
                         var buffDef = buff_definitions[buffName];
                         var buff = memberState.Buffs.FirstOrDefault(b => buffDef.Ids.Contains(b.Id));
-
-                        if (buff == null || buff.Expiration <= DateTime.Now)
+                        if (buff != null && buff.Expiration > DateTime.Now)
                         {
-                            string spellToCast = GetBestSpellTier(buffName, playerName);
-                            if (!string.IsNullOrEmpty(spellToCast))
-                            {
-                                CastSpell(playerName, spellToCast);
-                                buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
-                                return;
-                            }
+                            continue; // Buff is active, skip.
+                        }
+
+                        // If we are here, the buff is either missing or expired.
+                        string spellToCast = GetBestSpellTier(buffName, playerName);
+                        if (!string.IsNullOrEmpty(spellToCast))
+                        {
+                            CastSpell(playerName, spellToCast);
+                            // The timer will be reset by the LOG message handler, so we don't need a cooldown here.
+                            return;
                         }
                     }
                 }
