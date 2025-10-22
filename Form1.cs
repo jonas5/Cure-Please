@@ -85,6 +85,7 @@
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
         private PartyState partyState = new PartyState();
+        private Dictionary<string, List<StatusEffect>> oopDebuffState = new Dictionary<string, List<StatusEffect>>();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
 
         public class RecastRequest
@@ -4105,6 +4106,42 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void RunDebuffChecker()
         {
+            // START OF OOP DEBUFF CHECKER
+            foreach (var oopPlayerEntry in oopDebuffState)
+            {
+                string oopPlayerName = oopPlayerEntry.Key;
+                var oopPlayerEntity = _ELITEAPIPL.Entity.GetEntity()
+                    .FirstOrDefault(e => e.Name == oopPlayerName);
+
+                if (oopPlayerEntity != null && oopPlayerEntity.Distance < 21)
+                {
+                    foreach (StatusEffect debuff in oopPlayerEntry.Value)
+                    {
+                        if (debuff == StatusEffect.Silence && HasSpell("Silena") && CheckSpellRecast("Silena") == 0)
+                        {
+                            CastSpell(oopPlayerName, "Silena");
+                            return;
+                        }
+                        if (debuff == StatusEffect.Poison && HasSpell("Poisona") && CheckSpellRecast("Poisona") == 0)
+                        {
+                            CastSpell(oopPlayerName, "Poisona");
+                            return;
+                        }
+                        if (debuff == StatusEffect.Paralysis && HasSpell("Paralyna") && CheckSpellRecast("Paralyna") == 0)
+                        {
+                            CastSpell(oopPlayerName, "Paralyna");
+                            return;
+                        }
+                        if (debuff == StatusEffect.Blindness && HasSpell("Blindna") && CheckSpellRecast("Blindna") == 0)
+                        {
+                            CastSpell(oopPlayerName, "Blindna");
+                            return;
+                        }
+                    }
+                }
+            }
+            // END OF OOP DEBUFF CHECKER
+
             // PL and Monitored Player Debuff Removal Starting with PL
             if (_ELITEAPIPL.Player.Status != 33)
             {
@@ -7835,6 +7872,54 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void virunaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Viruna");
+        }
+
+        private void debuffMenuItem_Click(object sender, EventArgs e)
+        {
+            var menuItem = sender as ToolStripMenuItem;
+            if (menuItem == null) return;
+
+            var member = _ELITEAPIMonitored.Party.GetPartyMember(playerOptionsSelected);
+            if (member == null || string.IsNullOrEmpty(member.Name)) return;
+            string playerName = member.Name;
+
+            StatusEffect debuff;
+            switch (menuItem.Text)
+            {
+                case "Silena":
+                    debuff = StatusEffect.Silence;
+                    break;
+                case "Poisona":
+                    debuff = StatusEffect.Poison;
+                    break;
+                case "Paralyna":
+                    debuff = StatusEffect.Paralysis;
+                    break;
+                case "Blindna":
+                    debuff = StatusEffect.Blindness;
+                    break;
+                default:
+                    return;
+            }
+
+            menuItem.Checked = !menuItem.Checked;
+
+            if (!oopDebuffState.ContainsKey(playerName))
+            {
+                oopDebuffState[playerName] = new List<StatusEffect>();
+            }
+
+            if (menuItem.Checked)
+            {
+                if (!oopDebuffState[playerName].Contains(debuff))
+                {
+                    oopDebuffState[playerName].Add(debuff);
+                }
+            }
+            else
+            {
+                oopDebuffState[playerName].Remove(debuff);
+            }
         }
 
         private void setAllStormsFalse(byte autoOptionsSelected)

@@ -783,6 +783,7 @@ namespace CurePlease
             // playerOptions
             // 
             this.playerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.debuffsToolStripMenuItem,
             this.followToolStripMenuItem,
             this.stopfollowToolStripMenuItem,
             this.toolStripSeparator2,
@@ -805,6 +806,17 @@ namespace CurePlease
             this.playerOptions.Name = "player0rightclick";
             this.playerOptions.Size = new System.Drawing.Size(227, 342);
             // 
+            // debuffsToolStripMenuItem
+            //
+            this.debuffsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.silenaToolStripMenuItem,
+            this.poisonaToolStripMenuItem,
+            this.paralynaToolStripMenuItem,
+            this.blindnaToolStripMenuItem});
+            this.debuffsToolStripMenuItem.Name = "debuffsToolStripMenuItem";
+            this.debuffsToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.debuffsToolStripMenuItem.Text = "Debuffs";
+            //
             // followToolStripMenuItem
             // 
             this.followToolStripMenuItem.Name = "followToolStripMenuItem";
@@ -1017,7 +1029,9 @@ namespace CurePlease
             // blindnaToolStripMenuItem
             // 
             this.blindnaToolStripMenuItem.Name = "blindnaToolStripMenuItem";
-            this.blindnaToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            this.blindnaToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.blindnaToolStripMenuItem.Text = "Blindna";
+            this.blindnaToolStripMenuItem.Click += new System.EventHandler(this.debuffMenuItem_Click);
             // 
             // cursnaToolStripMenuItem
             // 
@@ -1027,12 +1041,16 @@ namespace CurePlease
             // paralynaToolStripMenuItem
             // 
             this.paralynaToolStripMenuItem.Name = "paralynaToolStripMenuItem";
-            this.paralynaToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            this.paralynaToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.paralynaToolStripMenuItem.Text = "Paralyna";
+            this.paralynaToolStripMenuItem.Click += new System.EventHandler(this.debuffMenuItem_Click);
             // 
             // poisonaToolStripMenuItem
             // 
             this.poisonaToolStripMenuItem.Name = "poisonaToolStripMenuItem";
-            this.poisonaToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            this.poisonaToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.poisonaToolStripMenuItem.Text = "Poisona";
+            this.poisonaToolStripMenuItem.Click += new System.EventHandler(this.debuffMenuItem_Click);
             // 
             // stonaToolStripMenuItem
             // 
@@ -1042,7 +1060,9 @@ namespace CurePlease
             // silenaToolStripMenuItem
             // 
             this.silenaToolStripMenuItem.Name = "silenaToolStripMenuItem";
-            this.silenaToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            this.silenaToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.silenaToolStripMenuItem.Text = "Silena";
+            this.silenaToolStripMenuItem.Click += new System.EventHandler(this.debuffMenuItem_Click);
             // 
             // virunaToolStripMenuItem
             // 
@@ -2593,6 +2613,7 @@ namespace CurePlease
         private System.Windows.Forms.ToolStripMenuItem regenIIToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem stormspellToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem debuffsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem protectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem protectIVToolStripMenuItem;
