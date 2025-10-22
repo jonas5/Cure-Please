@@ -178,6 +178,49 @@ public:
                 WriteToPipe("DEBUG|Missing actor resolution - actorId: " + std::to_string(actorId) + "\n");
             }
         }
+        // Handle incoming chat log messages (Packet ID: 0x00E)
+        else if (id == 0x00E && size > 4) {
+            // The chat message starts at offset 4. We can cast the data to a C-style string.
+            // Note: This string may contain non-printable control codes for color, etc.
+            // We rely on the fact that the player/debuff names and key phrases are standard ASCII.
+            std::string message(reinterpret_cast<const char*>(data) + 4);
+
+            // Define the phrases we are looking for.
+            std::string afflict_str = " is afflicted by ";
+            std::string wears_off_str1 = "'s ";
+            std::string wears_off_str2 = " effect wears off.";
+
+            // Check for the "afflicted" message pattern
+            size_t pos_afflict = message.find(afflict_str);
+            if (pos_afflict != std::string::npos) {
+                std::string player_name = message.substr(0, pos_afflict);
+                std::string debuff_name = message.substr(pos_afflict + afflict_str.length());
+
+                // Remove the trailing period if it exists.
+                if (!debuff_name.empty() && debuff_name.back() == '.') {
+                    debuff_name.pop_back();
+                }
+
+                // We only care about specific debuffs for this feature.
+                if (debuff_name == "Paralysis" || debuff_name == "Poison" || debuff_name == "Silence" || debuff_name == "Blindness") {
+                    WriteToPipe("DEBUFF_APPLIED|" + player_name + "|" + debuff_name + "\n");
+                }
+                return false; // Packet handled
+            }
+
+            // Check for the "wears off" message pattern
+            size_t pos_wears_off1 = message.find(wears_off_str1);
+            size_t pos_wears_off2 = message.find(wears_off_str2);
+            if (pos_wears_off1 != std::string::npos && pos_wears_off2 != std::string::npos && pos_wears_off1 < pos_wears_off2) {
+                std::string player_name = message.substr(0, pos_wears_off1);
+                std::string debuff_name = message.substr(pos_wears_off1 + wears_off_str1.length(), pos_wears_off2 - (pos_wears_off1 + wears_off_str1.length()));
+
+                if (debuff_name == "Paralysis" || debuff_name == "Poison" || debuff_name == "Silence" || debuff_name == "Blindness") {
+                     WriteToPipe("DEBUFF_FADED|" + player_name + "|" + debuff_name + "\n");
+                }
+                return false; // Packet handled
+            }
+        }
 
         return false;
     }

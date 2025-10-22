@@ -106,6 +106,7 @@
 
         private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
         private Dictionary<string, Dictionary<string, bool>> oopDebuffState = new Dictionary<string, Dictionary<string, bool>>();
+        private Dictionary<string, HashSet<string>> activePlayerDebuffs = new Dictionary<string, HashSet<string>>();
         public class DebuffSpell
         {
             public string Name { get; set; }
@@ -4343,36 +4344,35 @@ private string GetBestSpellTier(string buffType, string targetName)
                     if (string.IsNullOrEmpty(playerName) || !oopDebuffState.ContainsKey(playerName) || !IsOopPlayerInRange(playerName))
                         continue;
 
+                    // Check if we are tracking any debuffs for this player from the C++ plugin
+                    if (!activePlayerDebuffs.ContainsKey(playerName) || activePlayerDebuffs[playerName].Count == 0)
+                        continue;
+
                     var preferences = oopDebuffState[playerName];
-                    EliteAPI.XiEntity entity = null;
-                    for (int j = 0; j < 2048; j++)
-                    {
-                        var currentEntity = _ELITEAPIPL.Entity.GetEntity(j);
-                        if (currentEntity != null && currentEntity.Name == playerName)
-                        {
-                            entity = currentEntity;
-                            break;
-                        }
-                    }
+                    var activeDebuffs = activePlayerDebuffs[playerName];
 
-                    if (entity == null) continue;
-
+                    // Iterate through the user's cleansing preferences for this player
                     foreach (var preference in preferences)
                     {
                         if (preference.Value) // If user wants to cleanse this debuff
                         {
+                            // Find the spell and the debuff name it cures
                             DebuffSpell spellInfo = DebuffSpells.FirstOrDefault(ds => ds.Name == preference.Key);
+                            if (spellInfo == null) continue;
 
-                            if (spellInfo != null)
+                            // The debuff name is the enum name (e.g., "Paralysis")
+                            string debuffNameToCheck = spellInfo.Debuff.ToString();
+
+                            // Check if the player is afflicted with this debuff
+                            if (activeDebuffs.Contains(debuffNameToCheck))
                             {
-                                var playerInfo = _ELITEAPIPL.Entity.GetPlayer(entity.TargetingIndex);
-                                if (playerInfo != null && playerInfo.Buffs.Contains((ushort)spellInfo.Debuff))
+                                if (CheckSpellRecast(spellInfo.Name) == 0 && HasSpell(spellInfo.Name))
                                 {
-                                    if (CheckSpellRecast(spellInfo.Name) == 0 && HasSpell(spellInfo.Name))
-                                    {
-                                        CastSpell(playerName, spellInfo.Name);
-                                        return; // Cast one spell per tick
-                                    }
+                                    CastSpell(playerName, spellInfo.Name);
+                                    // After casting, we can assume the debuff will be removed.
+                                    // The C++ plugin will send a confirmation, but we can remove it early to prevent re-casting.
+                                    activeDebuffs.Remove(debuffNameToCheck);
+                                    return; // Cast one spell per tick
                                 }
                             }
                         }
@@ -10169,6 +10169,30 @@ private void updateInstances_Tick(object sender, EventArgs e)
                             {
                                 debug_MSG_show.AppendLine($"Error parsing heal LOG message: {ex.Message}");
                             }
+                        }
+                    }
+                    break;
+                case "DEBUFF_APPLIED":
+                    if (parts.Length == 3)
+                    {
+                        string playerName = parts[1];
+                        string debuffName = parts[2];
+                        if (!activePlayerDebuffs.ContainsKey(playerName))
+                        {
+                            activePlayerDebuffs[playerName] = new HashSet<string>();
+                        }
+                        activePlayerDebuffs[playerName].Add(debuffName);
+                    }
+                    break;
+
+                case "DEBUFF_FADED":
+                    if (parts.Length == 3)
+                    {
+                        string playerName = parts[1];
+                        string debuffName = parts[2];
+                        if (activePlayerDebuffs.ContainsKey(playerName))
+                        {
+                            activePlayerDebuffs[playerName].Remove(debuffName);
                         }
                     }
                     break;
