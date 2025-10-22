@@ -2888,6 +2888,7 @@ namespace CurePlease
         private System.Windows.Forms.Label player9;
         private System.Windows.Forms.Label player10;
         private System.Windows.Forms.Label player11;
+        private System.Windows.Forms.Timer pipeStatusTimer;
         private System.Windows.Forms.CheckBox player6enabled;
         private System.Windows.Forms.CheckBox player7enabled;
         private System.Windows.Forms.CheckBox player8enabled;
