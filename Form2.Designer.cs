@@ -8337,6 +8337,11 @@
             this.rdmDebuffsGroupBox.PerformLayout();
             this.rdmDebuffsElementalGroupBox.ResumeLayout(false);
             this.rdmDebuffsElementalGroupBox.PerformLayout();
+            this.tabPageDebuffs.ResumeLayout(false);
+            this.rdmDebuffsGroupBox.ResumeLayout(false);
+            this.rdmDebuffsGroupBox.PerformLayout();
+            this.rdmDebuffsElementalGroupBox.ResumeLayout(false);
+            this.rdmDebuffsElementalGroupBox.PerformLayout();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.recastSong)).EndInit();

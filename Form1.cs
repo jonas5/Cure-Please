@@ -85,6 +85,8 @@
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
         private int debuffTargetId = 0;
+        private Dictionary<string, DateTime> targetDebuffTimers = new Dictionary<string, DateTime>();
+        private int debuffTimersTargetId = 0;
         private int _lastBuffedMemberIndex = -1;
         private PartyState partyState = new PartyState();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
@@ -10095,6 +10097,17 @@ private void updateInstances_Tick(object sender, EventArgs e)
                                 {
                                     debug_MSG_show.AppendLine($"    -> Conditions NOT met. targetName is not null: {targetName != null}, buffType is not null: {buffType != null}, partyState contains target: {partyState.Members.ContainsKey(targetName ?? "")}");
                                 }
+
+                                EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                                if (currentTarget != null && currentTarget.Name == targetName)
+                                {
+                                    string debuffType = GetDebuffTypeForSpell(spellId);
+                                    if (debuffType != null)
+                                    {
+                                        int duration = GetDebuffDuration(debuffType);
+                                        targetDebuffTimers[debuffType] = DateTime.Now.AddSeconds(duration);
+                                    }
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -10635,25 +10648,30 @@ private void updateInstances_Tick(object sender, EventArgs e)
             debuffTargetId = lockedTargetId;
             if (debuffTargetId == 0) return;
 
+            // Clear timers if the target has changed
+            if (debuffTimersTargetId != debuffTargetId)
+            {
+                targetDebuffTimers.Clear();
+                debuffTimersTargetId = debuffTargetId;
+            }
+
             EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
             if (targetEntity == null || targetEntity.HealthPercent == 0) return;
 
-            List<ushort> targetBuffs = new List<ushort>(targetEntity.Buffs);
-
             var debuffChecks = new Dictionary<string, Func<bool>>
             {
-                { "diabio", () => Form2.config.debuffDiaBio && !targetBuffs.Contains(134) && !targetBuffs.Contains(135) },
-                { "paralyze", () => Form2.config.debuffParalyze && !targetBuffs.Contains(4) },
-                { "blind", () => Form2.config.debuffBlind && !targetBuffs.Contains(5) },
-                { "slow", () => Form2.config.debuffSlow && !targetBuffs.Contains(13) },
-                { "gravity", () => Form2.config.debuffGravity && !targetBuffs.Contains(12) },
-                { "burnfrostchoke", () => Form2.config.debuffBurnFrostChoke && !targetBuffs.Contains(128) && !targetBuffs.Contains(129) && !targetBuffs.Contains(130) },
-                { "raspshockdrown", () => Form2.config.debuffRaspShockDrown && !targetBuffs.Contains(131) && !targetBuffs.Contains(132) && !targetBuffs.Contains(133) }
+                { "diabio", () => Form2.config.debuffDiaBio },
+                { "paralyze", () => Form2.config.debuffParalyze },
+                { "blind", () => Form2.config.debuffBlind },
+                { "slow", () => Form2.config.debuffSlow },
+                { "gravity", () => Form2.config.debuffGravity },
+                { "burnfrostchoke", () => Form2.config.debuffBurnFrostChoke },
+                { "raspshockdrown", () => Form2.config.debuffRaspShockDrown }
             };
 
             foreach (var check in debuffChecks)
             {
-                if (check.Value())
+                if (check.Value() && (!targetDebuffTimers.ContainsKey(check.Key) || DateTime.Now >= targetDebuffTimers[check.Key]))
                 {
                     string spellToCast = GetBestDebuffSpellTier(check.Key);
                     if (spellToCast != null)
@@ -10661,12 +10679,44 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         _ELITEAPIPL.Target.SetTarget(debuffTargetId);
                         await Task.Delay(500);
                         CastSpell("<t>", spellToCast);
+                        // Set a temporary cooldown to prevent immediate recast before the log message is processed
+                        targetDebuffTimers[check.Key] = DateTime.Now.AddSeconds(5);
                         return;
                     }
                 }
             }
         }
+        private string GetDebuffTypeForSpell(ushort spellId)
+        {
+            string spellName = GetSpellNameById(spellId);
+            if (string.IsNullOrEmpty(spellName)) return null;
+            string lowerSpellName = spellName.ToLower();
 
+            if (lowerSpellName.Contains("dia") || lowerSpellName.Contains("bio")) return "diabio";
+            if (lowerSpellName.Contains("paralyze")) return "paralyze";
+            if (lowerSpellName.Contains("blind")) return "blind";
+            if (lowerSpellName.Contains("slow")) return "slow";
+            if (lowerSpellName.Contains("gravity")) return "gravity";
+            if (lowerSpellName.Contains("burn") || lowerSpellName.Contains("frost") || lowerSpellName.Contains("choke")) return "burnfrostchoke";
+            if (lowerSpellName.Contains("rasp") || lowerSpellName.Contains("shock") || lowerSpellName.Contains("drown")) return "raspshockdrown";
+
+            return null;
+        }
+
+        private int GetDebuffDuration(string debuffType)
+        {
+            switch (debuffType)
+            {
+                case "diabio": return 60;
+                case "paralyze": return 90;
+                case "blind": return 90;
+                case "slow": return 90;
+                case "gravity": return 30;
+                case "burnfrostchoke": return 30;
+                case "raspshockdrown": return 30;
+                default: return 30; // Default duration
+            }
+        }
         private void oopGroupBox_Enter(object sender, EventArgs e)
         {
 
