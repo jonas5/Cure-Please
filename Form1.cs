@@ -3110,6 +3110,28 @@
                 if (index != -1)
                 {
                     playerOptionsSelected = (byte)(18 + index); // Use a different range for OOP players
+                    string playerName = oopPlayerComboBoxes[index].SelectedItem?.ToString();
+                    if (string.IsNullOrEmpty(playerName)) return;
+
+                    // Clear and rebuild menu
+                    oopPlayerOptions.Items.Clear();
+
+                    var buffs = new[] { "Protect", "Shell", "Haste", "Refresh", "Regen", "Phalanx" };
+
+                    if (!oopBuffPreferences.ContainsKey(playerName))
+                    {
+                        oopBuffPreferences[playerName] = new Dictionary<string, bool>();
+                    }
+                    var preferences = oopBuffPreferences[playerName];
+
+                    foreach (var buffName in buffs)
+                    {
+                        var menuItem = new ToolStripMenuItem($"Auto {buffName}");
+                        menuItem.CheckOnClick = true;
+                        menuItem.Checked = preferences.ContainsKey(buffName) && preferences[buffName];
+                        menuItem.Click += oopBuffToolStripMenuItem_Click;
+                        oopPlayerOptions.Items.Add(menuItem);
+                    }
                     oopPlayerOptions.Show(button, new Point(0, button.Height));
                 }
             }
@@ -3263,71 +3285,10 @@ private void setinstance_Click(object sender, EventArgs e)
                     }
                 }
             }
-
-            // Handle Out-of-Party Players
-            for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
-            {
-                if (oopPlayerComboBoxes[i].SelectedItem != null && oopPlayerEnables[i].Checked)
-                {
-                    string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
-                    if (!partyState.Members.ContainsKey(playerName))
-                    {
-                        partyState.AddOrUpdateMember(playerName, 0); // ServerId is not available, so we use 0
-                    }
-
-                    if (partyState.Members.ContainsKey(playerName))
-                    {
-                        var memberState = partyState.Members[playerName];
-                        if (!oopBuffPreferences.ContainsKey(playerName))
-                        {
-                            oopBuffPreferences[playerName] = new Dictionary<string, bool>();
-                        }
-                        var buffsToCheck = new[]
-                        {
-                            new { Name = "Refresh", Enabled = oopBuffPreferences[playerName].ContainsKey("Refresh") && oopBuffPreferences[playerName]["Refresh"] },
-                            new { Name = "Protect", Enabled = oopBuffPreferences[playerName].ContainsKey("Protect") && oopBuffPreferences[playerName]["Protect"] },
-                            new { Name = "Shell", Enabled = oopBuffPreferences[playerName].ContainsKey("Shell") && oopBuffPreferences[playerName]["Shell"] },
-                            new { Name = "Regen", Enabled = oopBuffPreferences[playerName].ContainsKey("Regen") && oopBuffPreferences[playerName]["Regen"] }
-                        };
-
-                        foreach (var buffInfo in buffsToCheck)
-                        {
-                            if (!buffInfo.Enabled) continue;
-
-                            if (buffInfo.Name == "Regen")
-                            {
-                                if (oopPlayerStates.ContainsKey(playerName))
-                                {
-                                    var oopPlayer = oopPlayerStates[playerName];
-                                    bool needsCure = oopPlayer.CurrentHpPercent <= Form2.config.curePercentage;
-                                    if (oopPlayer.CurrentHpPercent >= 95 || needsCure)
-                                    {
-                                        continue;
-                                    }
-                                }
-                            }
-
-                            string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
-                            bool onCooldown = buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey];
-                            if (onCooldown) continue;
-
-                            var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
-                            if (buff == null || buff.Expiration <= DateTime.Now)
-                            {
-                                string spellToCast = GetBestSpellTier(buffInfo.Name, memberState.Name);
-                                if (!string.IsNullOrEmpty(spellToCast))
-                                {
-                                    CastSpell(memberState.Name, spellToCast);
-                                    buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10); // Static 10s cooldown
-                                    return; // Cast one spell per tick
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
+}
+
 
 private string GetBestSpellTier(string buffType, string targetName)
 {
@@ -5644,6 +5605,19 @@ private string GetBestSpellTier(string buffType, string targetName)
             partyState.UpdateBuffDefinitions(buff_definitions);
         }
 
+        private bool IsOopPlayerInRange(string playerName)
+        {
+            if (string.IsNullOrEmpty(playerName)) return false;
+            for (int i = 0; i < 2048; i++)
+            {
+                var entity = _ELITEAPIPL.Entity.GetEntity(i);
+                if (entity != null && entity.Name == playerName)
+                {
+                    return entity.Distance < 21 && entity.Distance > 0;
+                }
+            }
+            return false;
+        }
         private void CheckAndApplyBuffs()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
@@ -5654,74 +5628,99 @@ private string GetBestSpellTier(string buffType, string targetName)
                                         .OrderBy(p => p.MemberNumber)
                                         .ToList();
 
-            if (activePartyMembers.Count == 0) return;
-
-            // Start search from the member after the last one buffed
-            int startIndex = (_lastBuffedMemberIndex + 1) % activePartyMembers.Count;
-
-            for (int i = 0; i < activePartyMembers.Count; i++)
+            if (activePartyMembers.Count > 0)
             {
-                int memberIndexInPartyList = (startIndex + i) % activePartyMembers.Count;
-                var partyMember = activePartyMembers[memberIndexInPartyList];
-                var memberState = partyState.Members[partyMember.Name];
-                byte memberIndex = partyMember.MemberNumber; // This is the 0-17 index
-
-                if (!castingPossible(memberIndex)) continue;
-
-                var buffsToCheck = new[]
+                int startIndex = (_lastBuffedMemberIndex + 1) % activePartyMembers.Count;
+                for (int i = 0; i < activePartyMembers.Count; i++)
                 {
-                    new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) },
-                    new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] },
-                    new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] },
-                    new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] },
-                    new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] },
-                    new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] }
-                };
+                    int memberIndexInPartyList = (startIndex + i) % activePartyMembers.Count;
+                    var partyMember = activePartyMembers[memberIndexInPartyList];
+                    var memberState = partyState.Members[partyMember.Name];
+                    byte memberIndex = partyMember.MemberNumber;
 
-                foreach (var buffInfo in buffsToCheck)
-                {
-                    if (!buffInfo.Enabled) continue;
-
-                    if (buffInfo.Name == "Regen")
+                    if (!castingPossible(memberIndex)) continue;
+                    var buffsToCheck = new[]
                     {
-                        var partyMemberForHPCheck = _ELITEAPIMonitored.Party.GetPartyMember(memberIndex);
-                        bool needsCure = partyMemberForHPCheck.CurrentHPP <= Form2.config.curePercentage;
-                        if (partyMemberForHPCheck.CurrentHPP >= 95 || needsCure)
-                        {
-                            continue;
-                        }
-                    }
-
-                    // Out-of-Party Curing
-                    for (int j = 0; j < oopPlayerComboBoxes.Length; j++)
+                        new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) },
+                        new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] },
+                        new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] },
+                        new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] },
+                        new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] },
+                        new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] }
+                    };
+                    foreach (var buffInfo in buffsToCheck)
                     {
-                        if (oopPlayerComboBoxes[j].SelectedItem != null && oopPlayerEnables[j].Checked)
+                        if (!buffInfo.Enabled) continue;
+                        if (buffInfo.Name == "Regen")
                         {
-                            string playerName = oopPlayerComboBoxes[j].SelectedItem.ToString();
-                            if (oopPlayerStates.ContainsKey(playerName) && oopPlayerStates[playerName].CurrentHpPercent <= Form2.config.curePercentage)
+                            var partyMemberForHPCheck = _ELITEAPIMonitored.Party.GetPartyMember(memberIndex);
+                            bool needsCure = partyMemberForHPCheck.CurrentHPP <= Form2.config.curePercentage;
+                            if (partyMemberForHPCheck.CurrentHPP >= 95 || needsCure)
                             {
-                                CureCalculator_OOP(playerName);
+                                continue;
+                            }
+                        }
+                        string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
+                        if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey]) continue;
+
+                        var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
+                        if (buff == null || buff.Expiration <= DateTime.Now)
+                        {
+                            string spellToCast = GetBestSpellTier(buffInfo.Name, memberState.Name);
+                            if (!string.IsNullOrEmpty(spellToCast))
+                            {
+                                CastSpell(memberState.Name, spellToCast);
+                                buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
+                                _lastBuffedMemberIndex = memberIndexInPartyList;
+                                return;
                             }
                         }
                     }
+                }
+            }
 
-                    string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
-                    bool onCooldown = buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey];
-                    if (onCooldown) continue;
-
-                    var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
-                    if (buff == null || buff.Expiration <= DateTime.Now)
+            for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+            {
+                if (oopPlayerEnables[i].Checked && oopPlayerComboBoxes[i].SelectedItem != null)
+                {
+                    string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
+                    if (string.IsNullOrEmpty(playerName) || !oopBuffPreferences.ContainsKey(playerName) || !partyState.Members.ContainsKey(playerName) || !IsOopPlayerInRange(playerName))
                     {
-                        string reason = buff == null ? "buff not found" : $"buff expiring at {buff.Expiration:HH:mm:ss}";
-                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [CheckAndApplyBuffs] Rotating to {memberState.Name} who needs {buffInfo.Name} ({reason}).");
+                        continue;
+                    }
 
-                        string spellToCast = GetBestSpellTier(buffInfo.Name, memberState.Name);
-                        if (!string.IsNullOrEmpty(spellToCast))
+                    var memberState = partyState.Members[playerName];
+                    var preferences = oopBuffPreferences[playerName];
+
+                    foreach (var preference in preferences.Where(p => p.Value))
+                    {
+                        string buffName = preference.Key;
+                        if (buffName == "Regen")
                         {
-                            CastSpell(memberState.Name, spellToCast);
-                            buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10); // Static 10s cooldown
-                            _lastBuffedMemberIndex = memberIndexInPartyList; // Update the index to the position in our active members list
-                            return; // Cast one spell per tick
+                            if (oopPlayerStates.ContainsKey(playerName))
+                            {
+                                var oopPlayer = oopPlayerStates[playerName];
+                                if (oopPlayer.CurrentHpPercent >= 95 || oopPlayer.CurrentHpPercent <= Form2.config.curePercentage)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                        string cooldownKey = $"{playerName}:{buffName}";
+                        if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey]) continue;
+
+                        var buffDef = buff_definitions[buffName];
+                        var buff = memberState.Buffs.FirstOrDefault(b => buffDef.Ids.Contains(b.Id));
+
+                        if (buff == null || buff.Expiration <= DateTime.Now)
+                        {
+                            string spellToCast = GetBestSpellTier(buffName, playerName);
+                            if (!string.IsNullOrEmpty(spellToCast))
+                            {
+                                CastSpell(playerName, spellToCast);
+                                buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
+                                return;
+                            }
                         }
                     }
                 }
@@ -6284,6 +6283,21 @@ private string GetBestSpellTier(string buffType, string targetName)
                             }
                         }
                     }
+                    for (int j = 0; j < oopPlayerComboBoxes.Length; j++)
+                    {
+                        if (oopPlayerComboBoxes[j].SelectedItem != null && oopPlayerEnables[j].Checked)
+                        {
+                            string playerName = oopPlayerComboBoxes[j].SelectedItem.ToString();
+                            if (oopPlayerStates.ContainsKey(playerName) && oopPlayerStates[playerName].CurrentHpPercent <= Form2.config.curePercentage)
+                            {
+                                if (IsOopPlayerInRange(playerName))
+                                {
+                                    CureCalculator_OOP(playerName);
+                                }
+                            }
+                        }
+                    }
+
 
                     // RUN DEBUFF REMOVAL - CONVERTED TO FUNCTION SO CAN BE RUN IN MULTIPLE AREAS
                     RunDebuffChecker();
