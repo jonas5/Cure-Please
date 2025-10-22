@@ -97,6 +97,10 @@
         private System.Collections.Concurrent.ConcurrentQueue<RecastRequest> recastQueue = new System.Collections.Concurrent.ConcurrentQueue<RecastRequest>();
         private List<string> nearbyPlayers = new List<string>();
         private Dictionary<string, OopPlayerState> oopPlayerStates = new Dictionary<string, OopPlayerState>();
+        private ComboBox[] oopPlayerComboBoxes;
+        private ProgressBar[] oopPlayerHPs;
+        private CheckBox[] oopPlayerEnables;
+        private Button[] oopPlayerOptionsButtons;
         private Dictionary<string, Dictionary<string, bool>> oopBuffPreferences = new Dictionary<string, Dictionary<string, bool>>();
 
         private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
@@ -1564,6 +1568,12 @@
             StartPosition = FormStartPosition.CenterScreen;
 
             InitializeComponent();
+
+            oopPlayerComboBoxes = new ComboBox[] { oopPlayerComboBoxes0, oopPlayerComboBoxes1, oopPlayerComboBoxes2, oopPlayerComboBoxes3, oopPlayerComboBoxes4, oopPlayerComboBoxes5 };
+            oopPlayerHPs = new ProgressBar[] { oopPlayerHPs0, oopPlayerHPs1, oopPlayerHPs2, oopPlayerHPs3, oopPlayerHPs4, oopPlayerHPs5 };
+            oopPlayerEnables = new CheckBox[] { oopPlayerEnables0, oopPlayerEnables1, oopPlayerEnables2, oopPlayerEnables3, oopPlayerEnables4, oopPlayerEnables5 };
+            oopPlayerOptionsButtons = new Button[] { oopPlayerOptionsButtons0, oopPlayerOptionsButtons1, oopPlayerOptionsButtons2, oopPlayerOptionsButtons3, oopPlayerOptionsButtons4, oopPlayerOptionsButtons5 };
+
             Form2 = new Form2(this);
             ReloadSettings();
 
@@ -1577,7 +1587,12 @@
             buffUpdateTimer.Tick += BuffUpdateTimer_Tick;
             buffUpdateTimer.Start();
 
-
+            for (int i = 0; i < 6; i++)
+            {
+                oopPlayerComboBoxes[i].DropDown += OopPlayerComboBox_DropDown;
+                oopPlayerComboBoxes[i].SelectedIndexChanged += OopPlayerComboBox_SelectedIndexChanged;
+                oopPlayerOptionsButtons[i].Click += OopPlayerOptionsButton_Click;
+            }
 
 
             currentAction.Text = string.Empty;

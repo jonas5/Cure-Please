@@ -2432,71 +2432,360 @@ namespace CurePlease
             this.oopGroupBox.Text = " Outside Party ";
             this.oopGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
             this.Controls.Add(this.oopGroupBox);
-
-            for (int i = 0; i < 6; i++)
-            {
-                this.oopPlayerEnables[i] = new System.Windows.Forms.CheckBox();
-                this.oopPlayerPriorities[i] = new System.Windows.Forms.CheckBox();
-                this.oopPlayerComboBoxes[i] = new System.Windows.Forms.ComboBox();
-                this.oopPlayerOptionsButtons[i] = new System.Windows.Forms.Button();
-                this.oopPlayerHPs[i] = new CurePlease.NewProgressBar();
-
-                //
-                // oopPlayerEnables
-                //
-                this.oopPlayerEnables[i].AutoSize = true;
-                this.oopPlayerEnables[i].Checked = true;
-                this.oopPlayerEnables[i].CheckState = System.Windows.Forms.CheckState.Checked;
-                this.oopPlayerEnables[i].Location = new System.Drawing.Point(7 + i * 105, 14);
-                this.oopPlayerEnables[i].Name = "oopPlayerEnables" + i;
-                this.oopPlayerEnables[i].Size = new System.Drawing.Size(15, 14);
-                this.oopPlayerEnables[i].TabIndex = 0;
-                this.oopPlayerEnables[i].UseVisualStyleBackColor = true;
-                //
-                // oopPlayerPriorities
-                //
-                this.oopPlayerPriorities[i].AutoSize = true;
-                this.oopPlayerPriorities[i].Location = new System.Drawing.Point(29 + i * 105, 14);
-                this.oopPlayerPriorities[i].Name = "oopPlayerPriorities" + i;
-                this.oopPlayerPriorities[i].Size = new System.Drawing.Size(15, 14);
-                this.oopPlayerPriorities[i].TabIndex = 1;
-                this.oopPlayerPriorities[i].UseVisualStyleBackColor = true;
-                //
-                // oopPlayerComboBoxes
-                //
-                this.oopPlayerComboBoxes[i].FormattingEnabled = true;
-                this.oopPlayerComboBoxes[i].Location = new System.Drawing.Point(46 + i * 105, 11);
-                this.oopPlayerComboBoxes[i].Name = "oopPlayerComboBoxes" + i;
-                this.oopPlayerComboBoxes[i].Size = new System.Drawing.Size(55, 21);
-                this.oopPlayerComboBoxes[i].TabIndex = 2;
-                this.oopPlayerComboBoxes[i].DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
-                this.oopPlayerComboBoxes[i].SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
-                //
-                // oopPlayerOptionsButtons
-                //
-                this.oopPlayerOptionsButtons[i].FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-                this.oopPlayerOptionsButtons[i].Location = new System.Drawing.Point(46 + i * 105, 35);
-                this.oopPlayerOptionsButtons[i].Name = "oopPlayerOptionsButtons" + i;
-                this.oopPlayerOptionsButtons[i].Size = new System.Drawing.Size(55, 19);
-                this.oopPlayerOptionsButtons[i].TabIndex = 3;
-                this.oopPlayerOptionsButtons[i].Text = "MENU";
-                this.oopPlayerOptionsButtons[i].UseVisualStyleBackColor = true;
-                this.oopPlayerOptionsButtons[i].Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
-                this.oopPlayerOptionsButtons[i].ContextMenuStrip = this.oopPlayerOptions;
-                //
-                // oopPlayerHPs
-                //
-                this.oopPlayerHPs[i].Location = new System.Drawing.Point(7 + i * 105, 58);
-                this.oopPlayerHPs[i].Name = "oopPlayerHPs" + i;
-                this.oopPlayerHPs[i].Size = new System.Drawing.Size(94, 12);
-                this.oopPlayerHPs[i].TabIndex = 4;
-
-                this.oopGroupBox.Controls.Add(this.oopPlayerEnables[i]);
-                this.oopGroupBox.Controls.Add(this.oopPlayerPriorities[i]);
-                this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes[i]);
-                this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons[i]);
-                this.oopGroupBox.Controls.Add(this.oopPlayerHPs[i]);
-            }
+            this.oopPlayerEnables0 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities0 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes0 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons0 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs0 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables1 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities1 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes1 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons1 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs1 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables2 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities2 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes2 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons2 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs2 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables3 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities3 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes3 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons3 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs3 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables4 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities4 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes4 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons4 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs4 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables5 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities5 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes5 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons5 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs5 = new CurePlease.NewProgressBar();
+            this.oopGroupBox.Controls.Add(this.oopPlayerEnables0);
+            this.oopGroupBox.Controls.Add(this.oopPlayerPriorities0);
+            this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes0);
+            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons0);
+            this.oopGroupBox.Controls.Add(this.oopPlayerHPs0);
+            this.oopGroupBox.Controls.Add(this.oopPlayerEnables1);
+            this.oopGroupBox.Controls.Add(this.oopPlayerPriorities1);
+            this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes1);
+            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons1);
+            this.oopGroupBox.Controls.Add(this.oopPlayerHPs1);
+            this.oopGroupBox.Controls.Add(this.oopPlayerEnables2);
+            this.oopGroupBox.Controls.Add(this.oopPlayerPriorities2);
+            this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes2);
+            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons2);
+            this.oopGroupBox.Controls.Add(this.oopPlayerHPs2);
+            this.oopGroupBox.Controls.Add(this.oopPlayerEnables3);
+            this.oopGroupBox.Controls.Add(this.oopPlayerPriorities3);
+            this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes3);
+            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons3);
+            this.oopGroupBox.Controls.Add(this.oopPlayerHPs3);
+            this.oopGroupBox.Controls.Add(this.oopPlayerEnables4);
+            this.oopGroupBox.Controls.Add(this.oopPlayerPriorities4);
+            this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes4);
+            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons4);
+            this.oopGroupBox.Controls.Add(this.oopPlayerHPs4);
+            this.oopGroupBox.Controls.Add(this.oopPlayerEnables5);
+            this.oopGroupBox.Controls.Add(this.oopPlayerPriorities5);
+            this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes5);
+            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons5);
+            this.oopGroupBox.Controls.Add(this.oopPlayerHPs5);
+            //
+            // oopPlayerEnables0
+            //
+            this.oopPlayerEnables0.AutoSize = true;
+            this.oopPlayerEnables0.Checked = true;
+            this.oopPlayerEnables0.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.oopPlayerEnables0.Location = new System.Drawing.Point(7, 14);
+            this.oopPlayerEnables0.Name = "oopPlayerEnables0";
+            this.oopPlayerEnables0.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerEnables0.TabIndex = 0;
+            this.oopPlayerEnables0.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerPriorities0
+            //
+            this.oopPlayerPriorities0.AutoSize = true;
+            this.oopPlayerPriorities0.Location = new System.Drawing.Point(29, 14);
+            this.oopPlayerPriorities0.Name = "oopPlayerPriorities0";
+            this.oopPlayerPriorities0.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerPriorities0.TabIndex = 1;
+            this.oopPlayerPriorities0.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerComboBoxes0
+            //
+            this.oopPlayerComboBoxes0.FormattingEnabled = true;
+            this.oopPlayerComboBoxes0.Location = new System.Drawing.Point(46, 11);
+            this.oopPlayerComboBoxes0.Name = "oopPlayerComboBoxes0";
+            this.oopPlayerComboBoxes0.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes0.TabIndex = 2;
+            this.oopPlayerComboBoxes0.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
+            this.oopPlayerComboBoxes0.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
+            //
+            // oopPlayerOptionsButtons0
+            //
+            this.oopPlayerOptionsButtons0.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerOptionsButtons0.Location = new System.Drawing.Point(46, 35);
+            this.oopPlayerOptionsButtons0.Name = "oopPlayerOptionsButtons0";
+            this.oopPlayerOptionsButtons0.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons0.TabIndex = 3;
+            this.oopPlayerOptionsButtons0.Text = "MENU";
+            this.oopPlayerOptionsButtons0.UseVisualStyleBackColor = true;
+            this.oopPlayerOptionsButtons0.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerOptionsButtons0.ContextMenuStrip = this.oopPlayerOptions;
+            //
+            // oopPlayerHPs0
+            //
+            this.oopPlayerHPs0.Location = new System.Drawing.Point(7, 58);
+            this.oopPlayerHPs0.Name = "oopPlayerHPs0";
+            this.oopPlayerHPs0.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs0.TabIndex = 4;
+            //
+            // oopPlayerEnables1
+            //
+            this.oopPlayerEnables1.AutoSize = true;
+            this.oopPlayerEnables1.Checked = true;
+            this.oopPlayerEnables1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.oopPlayerEnables1.Location = new System.Drawing.Point(112, 14);
+            this.oopPlayerEnables1.Name = "oopPlayerEnables1";
+            this.oopPlayerEnables1.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerEnables1.TabIndex = 0;
+            this.oopPlayerEnables1.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerPriorities1
+            //
+            this.oopPlayerPriorities1.AutoSize = true;
+            this.oopPlayerPriorities1.Location = new System.Drawing.Point(134, 14);
+            this.oopPlayerPriorities1.Name = "oopPlayerPriorities1";
+            this.oopPlayerPriorities1.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerPriorities1.TabIndex = 1;
+            this.oopPlayerPriorities1.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerComboBoxes1
+            //
+            this.oopPlayerComboBoxes1.FormattingEnabled = true;
+            this.oopPlayerComboBoxes1.Location = new System.Drawing.Point(151, 11);
+            this.oopPlayerComboBoxes1.Name = "oopPlayerComboBoxes1";
+            this.oopPlayerComboBoxes1.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes1.TabIndex = 2;
+            this.oopPlayerComboBoxes1.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
+            this.oopPlayerComboBoxes1.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
+            //
+            // oopPlayerOptionsButtons1
+            //
+            this.oopPlayerOptionsButtons1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerOptionsButtons1.Location = new System.Drawing.Point(151, 35);
+            this.oopPlayerOptionsButtons1.Name = "oopPlayerOptionsButtons1";
+            this.oopPlayerOptionsButtons1.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons1.TabIndex = 3;
+            this.oopPlayerOptionsButtons1.Text = "MENU";
+            this.oopPlayerOptionsButtons1.UseVisualStyleBackColor = true;
+            this.oopPlayerOptionsButtons1.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerOptionsButtons1.ContextMenuStrip = this.oopPlayerOptions;
+            //
+            // oopPlayerHPs1
+            //
+            this.oopPlayerHPs1.Location = new System.Drawing.Point(112, 58);
+            this.oopPlayerHPs1.Name = "oopPlayerHPs1";
+            this.oopPlayerHPs1.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs1.TabIndex = 4;
+            //
+            // oopPlayerEnables2
+            //
+            this.oopPlayerEnables2.AutoSize = true;
+            this.oopPlayerEnables2.Checked = true;
+            this.oopPlayerEnables2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.oopPlayerEnables2.Location = new System.Drawing.Point(217, 14);
+            this.oopPlayerEnables2.Name = "oopPlayerEnables2";
+            this.oopPlayerEnables2.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerEnables2.TabIndex = 0;
+            this.oopPlayerEnables2.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerPriorities2
+            //
+            this.oopPlayerPriorities2.AutoSize = true;
+            this.oopPlayerPriorities2.Location = new System.Drawing.Point(239, 14);
+            this.oopPlayerPriorities2.Name = "oopPlayerPriorities2";
+            this.oopPlayerPriorities2.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerPriorities2.TabIndex = 1;
+            this.oopPlayerPriorities2.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerComboBoxes2
+            //
+            this.oopPlayerComboBoxes2.FormattingEnabled = true;
+            this.oopPlayerComboBoxes2.Location = new System.Drawing.Point(256, 11);
+            this.oopPlayerComboBoxes2.Name = "oopPlayerComboBoxes2";
+            this.oopPlayerComboBoxes2.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes2.TabIndex = 2;
+            this.oopPlayerComboBoxes2.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
+            this.oopPlayerComboBoxes2.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
+            //
+            // oopPlayerOptionsButtons2
+            //
+            this.oopPlayerOptionsButtons2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerOptionsButtons2.Location = new System.Drawing.Point(256, 35);
+            this.oopPlayerOptionsButtons2.Name = "oopPlayerOptionsButtons2";
+            this.oopPlayerOptionsButtons2.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons2.TabIndex = 3;
+            this.oopPlayerOptionsButtons2.Text = "MENU";
+            this.oopPlayerOptionsButtons2.UseVisualStyleBackColor = true;
+            this.oopPlayerOptionsButtons2.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerOptionsButtons2.ContextMenuStrip = this.oopPlayerOptions;
+            //
+            // oopPlayerHPs2
+            //
+            this.oopPlayerHPs2.Location = new System.Drawing.Point(217, 58);
+            this.oopPlayerHPs2.Name = "oopPlayerHPs2";
+            this.oopPlayerHPs2.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs2.TabIndex = 4;
+            //
+            // oopPlayerEnables3
+            //
+            this.oopPlayerEnables3.AutoSize = true;
+            this.oopPlayerEnables3.Checked = true;
+            this.oopPlayerEnables3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.oopPlayerEnables3.Location = new System.Drawing.Point(322, 14);
+            this.oopPlayerEnables3.Name = "oopPlayerEnables3";
+            this.oopPlayerEnables3.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerEnables3.TabIndex = 0;
+            this.oopPlayerEnables3.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerPriorities3
+            //
+            this.oopPlayerPriorities3.AutoSize = true;
+            this.oopPlayerPriorities3.Location = new System.Drawing.Point(344, 14);
+            this.oopPlayerPriorities3.Name = "oopPlayerPriorities3";
+            this.oopPlayerPriorities3.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerPriorities3.TabIndex = 1;
+            this.oopPlayerPriorities3.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerComboBoxes3
+            //
+            this.oopPlayerComboBoxes3.FormattingEnabled = true;
+            this.oopPlayerComboBoxes3.Location = new System.Drawing.Point(361, 11);
+            this.oopPlayerComboBoxes3.Name = "oopPlayerComboBoxes3";
+            this.oopPlayerComboBoxes3.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes3.TabIndex = 2;
+            this.oopPlayerComboBoxes3.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
+            this.oopPlayerComboBoxes3.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
+            //
+            // oopPlayerOptionsButtons3
+            //
+            this.oopPlayerOptionsButtons3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerOptionsButtons3.Location = new System.Drawing.Point(361, 35);
+            this.oopPlayerOptionsButtons3.Name = "oopPlayerOptionsButtons3";
+            this.oopPlayerOptionsButtons3.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons3.TabIndex = 3;
+            this.oopPlayerOptionsButtons3.Text = "MENU";
+            this.oopPlayerOptionsButtons3.UseVisualStyleBackColor = true;
+            this.oopPlayerOptionsButtons3.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerOptionsButtons3.ContextMenuStrip = this.oopPlayerOptions;
+            //
+            // oopPlayerHPs3
+            //
+            this.oopPlayerHPs3.Location = new System.Drawing.Point(322, 58);
+            this.oopPlayerHPs3.Name = "oopPlayerHPs3";
+            this.oopPlayerHPs3.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs3.TabIndex = 4;
+            //
+            // oopPlayerEnables4
+            //
+            this.oopPlayerEnables4.AutoSize = true;
+            this.oopPlayerEnables4.Checked = true;
+            this.oopPlayerEnables4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.oopPlayerEnables4.Location = new System.Drawing.Point(427, 14);
+            this.oopPlayerEnables4.Name = "oopPlayerEnables4";
+            this.oopPlayerEnables4.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerEnables4.TabIndex = 0;
+            this.oopPlayerEnables4.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerPriorities4
+            //
+            this.oopPlayerPriorities4.AutoSize = true;
+            this.oopPlayerPriorities4.Location = new System.Drawing.Point(449, 14);
+            this.oopPlayerPriorities4.Name = "oopPlayerPriorities4";
+            this.oopPlayerPriorities4.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerPriorities4.TabIndex = 1;
+            this.oopPlayerPriorities4.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerComboBoxes4
+            //
+            this.oopPlayerComboBoxes4.FormattingEnabled = true;
+            this.oopPlayerComboBoxes4.Location = new System.Drawing.Point(466, 11);
+            this.oopPlayerComboBoxes4.Name = "oopPlayerComboBoxes4";
+            this.oopPlayerComboBoxes4.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes4.TabIndex = 2;
+            this.oopPlayerComboBoxes4.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
+            this.oopPlayerComboBoxes4.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
+            //
+            // oopPlayerOptionsButtons4
+            //
+            this.oopPlayerOptionsButtons4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerOptionsButtons4.Location = new System.Drawing.Point(466, 35);
+            this.oopPlayerOptionsButtons4.Name = "oopPlayerOptionsButtons4";
+            this.oopPlayerOptionsButtons4.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons4.TabIndex = 3;
+            this.oopPlayerOptionsButtons4.Text = "MENU";
+            this.oopPlayerOptionsButtons4.UseVisualStyleBackColor = true;
+            this.oopPlayerOptionsButtons4.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerOptionsButtons4.ContextMenuStrip = this.oopPlayerOptions;
+            //
+            // oopPlayerHPs4
+            //
+            this.oopPlayerHPs4.Location = new System.Drawing.Point(427, 58);
+            this.oopPlayerHPs4.Name = "oopPlayerHPs4";
+            this.oopPlayerHPs4.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs4.TabIndex = 4;
+            //
+            // oopPlayerEnables5
+            //
+            this.oopPlayerEnables5.AutoSize = true;
+            this.oopPlayerEnables5.Checked = true;
+            this.oopPlayerEnables5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.oopPlayerEnables5.Location = new System.Drawing.Point(532, 14);
+            this.oopPlayerEnables5.Name = "oopPlayerEnables5";
+            this.oopPlayerEnables5.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerEnables5.TabIndex = 0;
+            this.oopPlayerEnables5.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerPriorities5
+            //
+            this.oopPlayerPriorities5.AutoSize = true;
+            this.oopPlayerPriorities5.Location = new System.Drawing.Point(554, 14);
+            this.oopPlayerPriorities5.Name = "oopPlayerPriorities5";
+            this.oopPlayerPriorities5.Size = new System.Drawing.Size(15, 14);
+            this.oopPlayerPriorities5.TabIndex = 1;
+            this.oopPlayerPriorities5.UseVisualStyleBackColor = true;
+            //
+            // oopPlayerComboBoxes5
+            //
+            this.oopPlayerComboBoxes5.FormattingEnabled = true;
+            this.oopPlayerComboBoxes5.Location = new System.Drawing.Point(571, 11);
+            this.oopPlayerComboBoxes5.Name = "oopPlayerComboBoxes5";
+            this.oopPlayerComboBoxes5.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes5.TabIndex = 2;
+            this.oopPlayerComboBoxes5.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
+            this.oopPlayerComboBoxes5.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
+            //
+            // oopPlayerOptionsButtons5
+            //
+            this.oopPlayerOptionsButtons5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerOptionsButtons5.Location = new System.Drawing.Point(571, 35);
+            this.oopPlayerOptionsButtons5.Name = "oopPlayerOptionsButtons5";
+            this.oopPlayerOptionsButtons5.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons5.TabIndex = 3;
+            this.oopPlayerOptionsButtons5.Text = "MENU";
+            this.oopPlayerOptionsButtons5.UseVisualStyleBackColor = true;
+            this.oopPlayerOptionsButtons5.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerOptionsButtons5.ContextMenuStrip = this.oopPlayerOptions;
+            //
+            // oopPlayerHPs5
+            //
+            this.oopPlayerHPs5.Location = new System.Drawing.Point(532, 58);
+            this.oopPlayerHPs5.Name = "oopPlayerHPs5";
+            this.oopPlayerHPs5.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs5.TabIndex = 4;
             // 
             // Form1
             // 
@@ -2775,10 +3064,35 @@ namespace CurePlease
         private Timer buffUpdateTimer;
         private ContextMenuStrip oopPlayerOptions;
         private GroupBox oopGroupBox;
-        private CheckBox[] oopPlayerEnables = new CheckBox[6];
-        private CheckBox[] oopPlayerPriorities = new CheckBox[6];
-        private ComboBox[] oopPlayerComboBoxes = new ComboBox[6];
-        private Button[] oopPlayerOptionsButtons = new Button[6];
-        private NewProgressBar[] oopPlayerHPs = new NewProgressBar[6];
+        private CheckBox oopPlayerEnables0;
+        private CheckBox oopPlayerPriorities0;
+        private ComboBox oopPlayerComboBoxes0;
+        private Button oopPlayerOptionsButtons0;
+        private NewProgressBar oopPlayerHPs0;
+        private CheckBox oopPlayerEnables1;
+        private CheckBox oopPlayerPriorities1;
+        private ComboBox oopPlayerComboBoxes1;
+        private Button oopPlayerOptionsButtons1;
+        private NewProgressBar oopPlayerHPs1;
+        private CheckBox oopPlayerEnables2;
+        private CheckBox oopPlayerPriorities2;
+        private ComboBox oopPlayerComboBoxes2;
+        private Button oopPlayerOptionsButtons2;
+        private NewProgressBar oopPlayerHPs2;
+        private CheckBox oopPlayerEnables3;
+        private CheckBox oopPlayerPriorities3;
+        private ComboBox oopPlayerComboBoxes3;
+        private Button oopPlayerOptionsButtons3;
+        private NewProgressBar oopPlayerHPs3;
+        private CheckBox oopPlayerEnables4;
+        private CheckBox oopPlayerPriorities4;
+        private ComboBox oopPlayerComboBoxes4;
+        private Button oopPlayerOptionsButtons4;
+        private NewProgressBar oopPlayerHPs4;
+        private CheckBox oopPlayerEnables5;
+        private CheckBox oopPlayerPriorities5;
+        private ComboBox oopPlayerComboBoxes5;
+        private Button oopPlayerOptionsButtons5;
+        private NewProgressBar oopPlayerHPs5;
     }
 }
