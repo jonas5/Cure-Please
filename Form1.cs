@@ -10434,6 +10434,31 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 }
             }
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void oopGroupBox_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void oopPlayerHPs2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void oopPlayerHPs1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void party1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 
     // END OF THE FORM SCRIPT

@@ -85,12 +85,12 @@ namespace CurePlease
             this.autoAdloquiumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoFlurryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoFlurryIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.enableDebuffRemovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeperator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.autoShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stormspellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sneakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -244,6 +244,38 @@ namespace CurePlease
             this.CustomCommand_Tracker = new System.ComponentModel.BackgroundWorker();
             this.battleTargetLabel = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.oopPlayerOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.oopGroupBox = new System.Windows.Forms.GroupBox();
+            this.oopPlayerEnables0 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities0 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes0 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons0 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs0 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables1 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities1 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes1 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons1 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs1 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables2 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities2 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes2 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons2 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs2 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables3 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities3 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes3 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons3 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs3 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables4 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities4 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes4 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons4 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs4 = new CurePlease.NewProgressBar();
+            this.oopPlayerEnables5 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerPriorities5 = new System.Windows.Forms.CheckBox();
+            this.oopPlayerComboBoxes5 = new System.Windows.Forms.ComboBox();
+            this.oopPlayerOptionsButtons5 = new System.Windows.Forms.Button();
+            this.oopPlayerHPs5 = new CurePlease.NewProgressBar();
             this.party0.SuspendLayout();
             this.playerOptions.SuspendLayout();
             this.party2.SuspendLayout();
@@ -255,6 +287,8 @@ namespace CurePlease
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.oopPlayerOptions.SuspendLayout();
+            this.oopGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // player0optionsButton
@@ -797,26 +831,13 @@ namespace CurePlease
             this.autoAdloquiumToolStripMenuItem,
             this.autoFlurryToolStripMenuItem,
             this.autoFlurryIIToolStripMenuItem,
-            this.autoShellToolStripMenuItem,
-            this.autoProtectToolStripMenuItem,
             this.toolStripSeparator3,
             this.toolStripMenuItem1,
             this.enableDebuffRemovalToolStripMenuItem,
             this.toolStripSeperator13});
             this.playerOptions.Name = "player0rightclick";
-            this.playerOptions.Size = new System.Drawing.Size(227, 342);
+            this.playerOptions.Size = new System.Drawing.Size(227, 298);
             // 
-            // oopPlayerOptions
-            //
-            this.oopPlayerOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autoShellToolStripMenuItem,
-            this.autoProtectToolStripMenuItem});
-            this.oopPlayerOptions.Name = "oopPlayerOptions";
-            this.oopPlayerOptions.Size = new System.Drawing.Size(227, 158);
-            this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
-            this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.oopBuffToolStripMenuItem_Click);
-            //
             // followToolStripMenuItem
             // 
             this.followToolStripMenuItem.Name = "followToolStripMenuItem";
@@ -909,20 +930,6 @@ namespace CurePlease
             this.autoFlurryIIToolStripMenuItem.ToolTipText = "Auto Flurry II (Default 3 minutes)";
             this.autoFlurryIIToolStripMenuItem.Click += new System.EventHandler(this.autoFlurryIIToolStripMenuItem_Click);
             // 
-            // autoShellToolStripMenuItem
-            // 
-            this.autoShellToolStripMenuItem.Name = "autoShellToolStripMenuItem";
-            this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.autoShellToolStripMenuItem.Text = "Auto Shell";
-            this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
-            // 
-            // autoProtectToolStripMenuItem
-            // 
-            this.autoProtectToolStripMenuItem.Name = "autoProtectToolStripMenuItem";
-            this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.autoProtectToolStripMenuItem.Text = "Auto Protect";
-            this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -944,6 +951,20 @@ namespace CurePlease
             // 
             this.toolStripSeperator13.Name = "toolStripSeperator13";
             this.toolStripSeperator13.Size = new System.Drawing.Size(223, 6);
+            // 
+            // autoShellToolStripMenuItem
+            // 
+            this.autoShellToolStripMenuItem.Name = "autoShellToolStripMenuItem";
+            this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.autoShellToolStripMenuItem.Text = "Auto Shell";
+            this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
+            // 
+            // autoProtectToolStripMenuItem
+            // 
+            this.autoProtectToolStripMenuItem.Name = "autoProtectToolStripMenuItem";
+            this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.autoProtectToolStripMenuItem.Text = "Auto Protect";
+            this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
             // 
             // stormspellToolStripMenuItem
             // 
@@ -1121,7 +1142,7 @@ namespace CurePlease
             this.setinstance.BackColor = System.Drawing.SystemColors.Menu;
             this.setinstance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.setinstance.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.setinstance.Location = new System.Drawing.Point(299, 10);
+            this.setinstance.Location = new System.Drawing.Point(503, 9);
             this.setinstance.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.setinstance.Name = "setinstance";
             this.setinstance.Size = new System.Drawing.Size(74, 22);
@@ -1136,10 +1157,10 @@ namespace CurePlease
             // 
             this.POLID.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.POLID.FormattingEnabled = true;
-            this.POLID.Location = new System.Drawing.Point(178, 11);
+            this.POLID.Location = new System.Drawing.Point(371, 10);
             this.POLID.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.POLID.Name = "POLID";
-            this.POLID.Size = new System.Drawing.Size(117, 21);
+            this.POLID.Size = new System.Drawing.Size(128, 21);
             this.POLID.TabIndex = 3;
             // 
             // plLabel
@@ -1744,6 +1765,7 @@ namespace CurePlease
             this.party1.TabStop = false;
             this.party1.Text = " Party 2 ";
             this.party1.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
+            this.party1.Enter += new System.EventHandler(this.party1_Enter);
             // 
             // player11HP
             // 
@@ -1965,10 +1987,10 @@ namespace CurePlease
             // 
             this.POLID2.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.POLID2.FormattingEnabled = true;
-            this.POLID2.Location = new System.Drawing.Point(178, 36);
+            this.POLID2.Location = new System.Drawing.Point(371, 35);
             this.POLID2.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.POLID2.Name = "POLID2";
-            this.POLID2.Size = new System.Drawing.Size(117, 21);
+            this.POLID2.Size = new System.Drawing.Size(128, 21);
             this.POLID2.TabIndex = 3;
             // 
             // setinstance2
@@ -1977,7 +1999,7 @@ namespace CurePlease
             this.setinstance2.Enabled = false;
             this.setinstance2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.setinstance2.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.setinstance2.Location = new System.Drawing.Point(299, 35);
+            this.setinstance2.Location = new System.Drawing.Point(503, 34);
             this.setinstance2.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.setinstance2.Name = "setinstance2";
             this.setinstance2.Size = new System.Drawing.Size(74, 22);
@@ -2017,7 +2039,7 @@ namespace CurePlease
             this.pauseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pauseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F, System.Drawing.FontStyle.Bold);
             this.pauseButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.pauseButton.Location = new System.Drawing.Point(404, 43);
+            this.pauseButton.Location = new System.Drawing.Point(606, 42);
             this.pauseButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.pauseButton.Name = "pauseButton";
             this.pauseButton.Size = new System.Drawing.Size(245, 54);
@@ -2170,9 +2192,9 @@ namespace CurePlease
             this.charselect.Controls.Add(this.setinstance);
             this.charselect.Controls.Add(this.setinstance2);
             this.charselect.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.charselect.Location = new System.Drawing.Point(19, 37);
+            this.charselect.Location = new System.Drawing.Point(19, 36);
             this.charselect.Name = "charselect";
-            this.charselect.Size = new System.Drawing.Size(377, 60);
+            this.charselect.Size = new System.Drawing.Size(582, 60);
             this.charselect.TabIndex = 16;
             this.charselect.TabStop = false;
             this.charselect.Text = " Character Selection ";
@@ -2238,7 +2260,7 @@ namespace CurePlease
             this.groupBox2.ForeColor = System.Drawing.SystemColors.GrayText;
             this.groupBox2.Location = new System.Drawing.Point(255, 334);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(194, 31);
+            this.groupBox2.Size = new System.Drawing.Size(394, 31);
             this.groupBox2.TabIndex = 23;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " current action ";
@@ -2262,7 +2284,7 @@ namespace CurePlease
             this.debug.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.debug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.debug.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.debug.Location = new System.Drawing.Point(240, 8);
+            this.debug.Location = new System.Drawing.Point(442, 5);
             this.debug.Name = "debug";
             this.debug.Size = new System.Drawing.Size(56, 27);
             this.debug.TabIndex = 34;
@@ -2303,7 +2325,7 @@ namespace CurePlease
             this.OptionsButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.OptionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OptionsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OptionsButton.Location = new System.Drawing.Point(376, 8);
+            this.OptionsButton.Location = new System.Drawing.Point(578, 5);
             this.OptionsButton.Name = "OptionsButton";
             this.OptionsButton.Size = new System.Drawing.Size(61, 27);
             this.OptionsButton.TabIndex = 29;
@@ -2319,7 +2341,7 @@ namespace CurePlease
             this.ChatLogButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.ChatLogButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChatLogButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChatLogButton.Location = new System.Drawing.Point(443, 8);
+            this.ChatLogButton.Location = new System.Drawing.Point(645, 5);
             this.ChatLogButton.Name = "ChatLogButton";
             this.ChatLogButton.Size = new System.Drawing.Size(68, 27);
             this.ChatLogButton.TabIndex = 30;
@@ -2335,7 +2357,7 @@ namespace CurePlease
             this.PartyBuffsButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.PartyBuffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PartyBuffsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PartyBuffsButton.Location = new System.Drawing.Point(517, 8);
+            this.PartyBuffsButton.Location = new System.Drawing.Point(719, 5);
             this.PartyBuffsButton.Name = "PartyBuffsButton";
             this.PartyBuffsButton.Size = new System.Drawing.Size(76, 27);
             this.PartyBuffsButton.TabIndex = 31;
@@ -2351,7 +2373,7 @@ namespace CurePlease
             this.AboutButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.AboutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AboutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AboutButton.Location = new System.Drawing.Point(599, 8);
+            this.AboutButton.Location = new System.Drawing.Point(801, 5);
             this.AboutButton.Name = "AboutButton";
             this.AboutButton.Size = new System.Drawing.Size(50, 27);
             this.AboutButton.TabIndex = 32;
@@ -2371,7 +2393,7 @@ namespace CurePlease
             this.AddOnStatus.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.AddOnStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddOnStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddOnStatus.Location = new System.Drawing.Point(302, 8);
+            this.AddOnStatus.Location = new System.Drawing.Point(504, 5);
             this.AddOnStatus.Name = "AddOnStatus";
             this.AddOnStatus.Size = new System.Drawing.Size(68, 27);
             this.AddOnStatus.TabIndex = 33;
@@ -2413,56 +2435,24 @@ namespace CurePlease
             this.groupBox4.BackColor = System.Drawing.Color.Transparent;
             this.groupBox4.Controls.Add(this.battleTargetLabel);
             this.groupBox4.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.groupBox4.Location = new System.Drawing.Point(455, 334);
+            this.groupBox4.Location = new System.Drawing.Point(655, 334);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(194, 31);
+            this.groupBox4.Size = new System.Drawing.Size(196, 31);
             this.groupBox4.TabIndex = 24;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Battle Target";
             this.groupBox4.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
-            //
+            // 
+            // oopPlayerOptions
+            // 
+            this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoShellToolStripMenuItem,
+            this.autoProtectToolStripMenuItem});
+            this.oopPlayerOptions.Name = "oopPlayerOptions";
+            this.oopPlayerOptions.Size = new System.Drawing.Size(142, 48);
+            // 
             // oopGroupBox
-            //
-            this.oopGroupBox = new System.Windows.Forms.GroupBox();
-            this.oopGroupBox.SuspendLayout();
-            this.oopGroupBox.Location = new System.Drawing.Point(19, 375);
-            this.oopGroupBox.Name = "oopGroupBox";
-            this.oopGroupBox.Size = new System.Drawing.Size(630, 80);
-            this.oopGroupBox.TabIndex = 35;
-            this.oopGroupBox.TabStop = false;
-            this.oopGroupBox.Text = " Outside Party ";
-            this.oopGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
-            this.Controls.Add(this.oopGroupBox);
-            this.oopPlayerEnables0 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerPriorities0 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerComboBoxes0 = new System.Windows.Forms.ComboBox();
-            this.oopPlayerOptionsButtons0 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs0 = new CurePlease.NewProgressBar();
-            this.oopPlayerEnables1 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerPriorities1 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerComboBoxes1 = new System.Windows.Forms.ComboBox();
-            this.oopPlayerOptionsButtons1 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs1 = new CurePlease.NewProgressBar();
-            this.oopPlayerEnables2 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerPriorities2 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerComboBoxes2 = new System.Windows.Forms.ComboBox();
-            this.oopPlayerOptionsButtons2 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs2 = new CurePlease.NewProgressBar();
-            this.oopPlayerEnables3 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerPriorities3 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerComboBoxes3 = new System.Windows.Forms.ComboBox();
-            this.oopPlayerOptionsButtons3 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs3 = new CurePlease.NewProgressBar();
-            this.oopPlayerEnables4 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerPriorities4 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerComboBoxes4 = new System.Windows.Forms.ComboBox();
-            this.oopPlayerOptionsButtons4 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs4 = new CurePlease.NewProgressBar();
-            this.oopPlayerEnables5 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerPriorities5 = new System.Windows.Forms.CheckBox();
-            this.oopPlayerComboBoxes5 = new System.Windows.Forms.ComboBox();
-            this.oopPlayerOptionsButtons5 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs5 = new CurePlease.NewProgressBar();
+            // 
             this.oopGroupBox.Controls.Add(this.oopPlayerEnables0);
             this.oopGroupBox.Controls.Add(this.oopPlayerPriorities0);
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes0);
@@ -2493,299 +2483,309 @@ namespace CurePlease
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes5);
             this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons5);
             this.oopGroupBox.Controls.Add(this.oopPlayerHPs5);
-            //
+            this.oopGroupBox.Location = new System.Drawing.Point(655, 104);
+            this.oopGroupBox.Name = "oopGroupBox";
+            this.oopGroupBox.Size = new System.Drawing.Size(196, 226);
+            this.oopGroupBox.TabIndex = 35;
+            this.oopGroupBox.TabStop = false;
+            this.oopGroupBox.Text = " Outside Party ";
+            this.oopGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintBorderlessGroupBox);
+            this.oopGroupBox.Enter += new System.EventHandler(this.oopGroupBox_Enter);
+            // 
             // oopPlayerEnables0
-            //
+            // 
             this.oopPlayerEnables0.AutoSize = true;
             this.oopPlayerEnables0.Checked = true;
             this.oopPlayerEnables0.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.oopPlayerEnables0.Location = new System.Drawing.Point(7, 14);
+            this.oopPlayerEnables0.Location = new System.Drawing.Point(12, 16);
             this.oopPlayerEnables0.Name = "oopPlayerEnables0";
             this.oopPlayerEnables0.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerEnables0.TabIndex = 0;
             this.oopPlayerEnables0.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerPriorities0
-            //
+            // 
             this.oopPlayerPriorities0.AutoSize = true;
-            this.oopPlayerPriorities0.Location = new System.Drawing.Point(29, 14);
+            this.oopPlayerPriorities0.Location = new System.Drawing.Point(34, 16);
             this.oopPlayerPriorities0.Name = "oopPlayerPriorities0";
             this.oopPlayerPriorities0.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerPriorities0.TabIndex = 1;
             this.oopPlayerPriorities0.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerComboBoxes0
-            //
+            // 
             this.oopPlayerComboBoxes0.FormattingEnabled = true;
-            this.oopPlayerComboBoxes0.Location = new System.Drawing.Point(46, 11);
+            this.oopPlayerComboBoxes0.Location = new System.Drawing.Point(51, 11);
             this.oopPlayerComboBoxes0.Name = "oopPlayerComboBoxes0";
-            this.oopPlayerComboBoxes0.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes0.Size = new System.Drawing.Size(80, 21);
             this.oopPlayerComboBoxes0.TabIndex = 2;
             this.oopPlayerComboBoxes0.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes0.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
-            //
+            // 
             // oopPlayerOptionsButtons0
-            //
+            // 
+            this.oopPlayerOptionsButtons0.ContextMenuStrip = this.oopPlayerOptions;
             this.oopPlayerOptionsButtons0.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons0.Location = new System.Drawing.Point(46, 35);
+            this.oopPlayerOptionsButtons0.Location = new System.Drawing.Point(137, 10);
             this.oopPlayerOptionsButtons0.Name = "oopPlayerOptionsButtons0";
-            this.oopPlayerOptionsButtons0.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons0.Size = new System.Drawing.Size(55, 21);
             this.oopPlayerOptionsButtons0.TabIndex = 3;
             this.oopPlayerOptionsButtons0.Text = "MENU";
             this.oopPlayerOptionsButtons0.UseVisualStyleBackColor = true;
             this.oopPlayerOptionsButtons0.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
-            this.oopPlayerOptionsButtons0.ContextMenuStrip = this.oopPlayerOptions;
-            //
+            // 
             // oopPlayerHPs0
-            //
-            this.oopPlayerHPs0.Location = new System.Drawing.Point(7, 58);
+            // 
+            this.oopPlayerHPs0.Location = new System.Drawing.Point(10, 31);
             this.oopPlayerHPs0.Name = "oopPlayerHPs0";
-            this.oopPlayerHPs0.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs0.Size = new System.Drawing.Size(182, 11);
             this.oopPlayerHPs0.TabIndex = 4;
-            //
+            // 
             // oopPlayerEnables1
-            //
+            // 
             this.oopPlayerEnables1.AutoSize = true;
             this.oopPlayerEnables1.Checked = true;
             this.oopPlayerEnables1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.oopPlayerEnables1.Location = new System.Drawing.Point(112, 14);
+            this.oopPlayerEnables1.Location = new System.Drawing.Point(12, 48);
             this.oopPlayerEnables1.Name = "oopPlayerEnables1";
             this.oopPlayerEnables1.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerEnables1.TabIndex = 0;
             this.oopPlayerEnables1.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerPriorities1
-            //
+            // 
             this.oopPlayerPriorities1.AutoSize = true;
-            this.oopPlayerPriorities1.Location = new System.Drawing.Point(134, 14);
+            this.oopPlayerPriorities1.Location = new System.Drawing.Point(34, 48);
             this.oopPlayerPriorities1.Name = "oopPlayerPriorities1";
             this.oopPlayerPriorities1.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerPriorities1.TabIndex = 1;
             this.oopPlayerPriorities1.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerComboBoxes1
-            //
+            // 
             this.oopPlayerComboBoxes1.FormattingEnabled = true;
-            this.oopPlayerComboBoxes1.Location = new System.Drawing.Point(151, 11);
+            this.oopPlayerComboBoxes1.Location = new System.Drawing.Point(51, 43);
             this.oopPlayerComboBoxes1.Name = "oopPlayerComboBoxes1";
-            this.oopPlayerComboBoxes1.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes1.Size = new System.Drawing.Size(80, 21);
             this.oopPlayerComboBoxes1.TabIndex = 2;
             this.oopPlayerComboBoxes1.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes1.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
-            //
+            // 
             // oopPlayerOptionsButtons1
-            //
+            // 
+            this.oopPlayerOptionsButtons1.ContextMenuStrip = this.oopPlayerOptions;
             this.oopPlayerOptionsButtons1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons1.Location = new System.Drawing.Point(151, 35);
+            this.oopPlayerOptionsButtons1.Location = new System.Drawing.Point(137, 43);
             this.oopPlayerOptionsButtons1.Name = "oopPlayerOptionsButtons1";
-            this.oopPlayerOptionsButtons1.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons1.Size = new System.Drawing.Size(55, 21);
             this.oopPlayerOptionsButtons1.TabIndex = 3;
             this.oopPlayerOptionsButtons1.Text = "MENU";
             this.oopPlayerOptionsButtons1.UseVisualStyleBackColor = true;
             this.oopPlayerOptionsButtons1.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
-            this.oopPlayerOptionsButtons1.ContextMenuStrip = this.oopPlayerOptions;
-            //
+            // 
             // oopPlayerHPs1
-            //
-            this.oopPlayerHPs1.Location = new System.Drawing.Point(112, 58);
+            // 
+            this.oopPlayerHPs1.Location = new System.Drawing.Point(10, 65);
             this.oopPlayerHPs1.Name = "oopPlayerHPs1";
-            this.oopPlayerHPs1.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs1.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs1.TabIndex = 4;
-            //
+            this.oopPlayerHPs1.Click += new System.EventHandler(this.oopPlayerHPs1_Click);
+            // 
             // oopPlayerEnables2
-            //
+            // 
             this.oopPlayerEnables2.AutoSize = true;
             this.oopPlayerEnables2.Checked = true;
             this.oopPlayerEnables2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.oopPlayerEnables2.Location = new System.Drawing.Point(217, 14);
+            this.oopPlayerEnables2.Location = new System.Drawing.Point(12, 81);
             this.oopPlayerEnables2.Name = "oopPlayerEnables2";
             this.oopPlayerEnables2.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerEnables2.TabIndex = 0;
             this.oopPlayerEnables2.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerPriorities2
-            //
+            // 
             this.oopPlayerPriorities2.AutoSize = true;
-            this.oopPlayerPriorities2.Location = new System.Drawing.Point(239, 14);
+            this.oopPlayerPriorities2.Location = new System.Drawing.Point(34, 81);
             this.oopPlayerPriorities2.Name = "oopPlayerPriorities2";
             this.oopPlayerPriorities2.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerPriorities2.TabIndex = 1;
             this.oopPlayerPriorities2.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerComboBoxes2
-            //
+            // 
             this.oopPlayerComboBoxes2.FormattingEnabled = true;
-            this.oopPlayerComboBoxes2.Location = new System.Drawing.Point(256, 11);
+            this.oopPlayerComboBoxes2.Location = new System.Drawing.Point(51, 78);
             this.oopPlayerComboBoxes2.Name = "oopPlayerComboBoxes2";
-            this.oopPlayerComboBoxes2.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes2.Size = new System.Drawing.Size(80, 21);
             this.oopPlayerComboBoxes2.TabIndex = 2;
             this.oopPlayerComboBoxes2.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes2.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
-            //
+            // 
             // oopPlayerOptionsButtons2
-            //
+            // 
+            this.oopPlayerOptionsButtons2.ContextMenuStrip = this.oopPlayerOptions;
             this.oopPlayerOptionsButtons2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons2.Location = new System.Drawing.Point(256, 35);
+            this.oopPlayerOptionsButtons2.Location = new System.Drawing.Point(137, 78);
             this.oopPlayerOptionsButtons2.Name = "oopPlayerOptionsButtons2";
-            this.oopPlayerOptionsButtons2.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons2.Size = new System.Drawing.Size(55, 21);
             this.oopPlayerOptionsButtons2.TabIndex = 3;
             this.oopPlayerOptionsButtons2.Text = "MENU";
             this.oopPlayerOptionsButtons2.UseVisualStyleBackColor = true;
             this.oopPlayerOptionsButtons2.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
-            this.oopPlayerOptionsButtons2.ContextMenuStrip = this.oopPlayerOptions;
-            //
+            // 
             // oopPlayerHPs2
-            //
-            this.oopPlayerHPs2.Location = new System.Drawing.Point(217, 58);
+            // 
+            this.oopPlayerHPs2.Location = new System.Drawing.Point(10, 101);
             this.oopPlayerHPs2.Name = "oopPlayerHPs2";
-            this.oopPlayerHPs2.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs2.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs2.TabIndex = 4;
-            //
+            this.oopPlayerHPs2.Click += new System.EventHandler(this.oopPlayerHPs2_Click);
+            // 
             // oopPlayerEnables3
-            //
+            // 
             this.oopPlayerEnables3.AutoSize = true;
             this.oopPlayerEnables3.Checked = true;
             this.oopPlayerEnables3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.oopPlayerEnables3.Location = new System.Drawing.Point(322, 14);
+            this.oopPlayerEnables3.Location = new System.Drawing.Point(10, 120);
             this.oopPlayerEnables3.Name = "oopPlayerEnables3";
             this.oopPlayerEnables3.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerEnables3.TabIndex = 0;
             this.oopPlayerEnables3.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerPriorities3
-            //
+            // 
             this.oopPlayerPriorities3.AutoSize = true;
-            this.oopPlayerPriorities3.Location = new System.Drawing.Point(344, 14);
+            this.oopPlayerPriorities3.Location = new System.Drawing.Point(32, 120);
             this.oopPlayerPriorities3.Name = "oopPlayerPriorities3";
             this.oopPlayerPriorities3.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerPriorities3.TabIndex = 1;
             this.oopPlayerPriorities3.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerComboBoxes3
-            //
+            // 
             this.oopPlayerComboBoxes3.FormattingEnabled = true;
-            this.oopPlayerComboBoxes3.Location = new System.Drawing.Point(361, 11);
+            this.oopPlayerComboBoxes3.Location = new System.Drawing.Point(51, 115);
             this.oopPlayerComboBoxes3.Name = "oopPlayerComboBoxes3";
-            this.oopPlayerComboBoxes3.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes3.Size = new System.Drawing.Size(80, 21);
             this.oopPlayerComboBoxes3.TabIndex = 2;
             this.oopPlayerComboBoxes3.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes3.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
-            //
+            // 
             // oopPlayerOptionsButtons3
-            //
+            // 
+            this.oopPlayerOptionsButtons3.ContextMenuStrip = this.oopPlayerOptions;
             this.oopPlayerOptionsButtons3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons3.Location = new System.Drawing.Point(361, 35);
+            this.oopPlayerOptionsButtons3.Location = new System.Drawing.Point(137, 114);
             this.oopPlayerOptionsButtons3.Name = "oopPlayerOptionsButtons3";
-            this.oopPlayerOptionsButtons3.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerOptionsButtons3.Size = new System.Drawing.Size(55, 21);
             this.oopPlayerOptionsButtons3.TabIndex = 3;
             this.oopPlayerOptionsButtons3.Text = "MENU";
             this.oopPlayerOptionsButtons3.UseVisualStyleBackColor = true;
             this.oopPlayerOptionsButtons3.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
-            this.oopPlayerOptionsButtons3.ContextMenuStrip = this.oopPlayerOptions;
-            //
+            // 
             // oopPlayerHPs3
-            //
-            this.oopPlayerHPs3.Location = new System.Drawing.Point(322, 58);
+            // 
+            this.oopPlayerHPs3.Location = new System.Drawing.Point(10, 136);
             this.oopPlayerHPs3.Name = "oopPlayerHPs3";
-            this.oopPlayerHPs3.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs3.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs3.TabIndex = 4;
-            //
+            // 
             // oopPlayerEnables4
-            //
+            // 
             this.oopPlayerEnables4.AutoSize = true;
             this.oopPlayerEnables4.Checked = true;
             this.oopPlayerEnables4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.oopPlayerEnables4.Location = new System.Drawing.Point(427, 14);
+            this.oopPlayerEnables4.Location = new System.Drawing.Point(12, 154);
             this.oopPlayerEnables4.Name = "oopPlayerEnables4";
             this.oopPlayerEnables4.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerEnables4.TabIndex = 0;
             this.oopPlayerEnables4.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerPriorities4
-            //
+            // 
             this.oopPlayerPriorities4.AutoSize = true;
-            this.oopPlayerPriorities4.Location = new System.Drawing.Point(449, 14);
+            this.oopPlayerPriorities4.Location = new System.Drawing.Point(34, 154);
             this.oopPlayerPriorities4.Name = "oopPlayerPriorities4";
             this.oopPlayerPriorities4.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerPriorities4.TabIndex = 1;
             this.oopPlayerPriorities4.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerComboBoxes4
-            //
+            // 
             this.oopPlayerComboBoxes4.FormattingEnabled = true;
-            this.oopPlayerComboBoxes4.Location = new System.Drawing.Point(466, 11);
+            this.oopPlayerComboBoxes4.Location = new System.Drawing.Point(51, 149);
             this.oopPlayerComboBoxes4.Name = "oopPlayerComboBoxes4";
-            this.oopPlayerComboBoxes4.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes4.Size = new System.Drawing.Size(80, 21);
             this.oopPlayerComboBoxes4.TabIndex = 2;
             this.oopPlayerComboBoxes4.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes4.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
-            //
+            // 
             // oopPlayerOptionsButtons4
-            //
+            // 
+            this.oopPlayerOptionsButtons4.ContextMenuStrip = this.oopPlayerOptions;
             this.oopPlayerOptionsButtons4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons4.Location = new System.Drawing.Point(466, 35);
+            this.oopPlayerOptionsButtons4.Location = new System.Drawing.Point(137, 151);
             this.oopPlayerOptionsButtons4.Name = "oopPlayerOptionsButtons4";
             this.oopPlayerOptionsButtons4.Size = new System.Drawing.Size(55, 19);
             this.oopPlayerOptionsButtons4.TabIndex = 3;
             this.oopPlayerOptionsButtons4.Text = "MENU";
             this.oopPlayerOptionsButtons4.UseVisualStyleBackColor = true;
             this.oopPlayerOptionsButtons4.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
-            this.oopPlayerOptionsButtons4.ContextMenuStrip = this.oopPlayerOptions;
-            //
+            // 
             // oopPlayerHPs4
-            //
-            this.oopPlayerHPs4.Location = new System.Drawing.Point(427, 58);
+            // 
+            this.oopPlayerHPs4.Location = new System.Drawing.Point(10, 173);
             this.oopPlayerHPs4.Name = "oopPlayerHPs4";
-            this.oopPlayerHPs4.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs4.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs4.TabIndex = 4;
-            //
+            // 
             // oopPlayerEnables5
-            //
+            // 
             this.oopPlayerEnables5.AutoSize = true;
             this.oopPlayerEnables5.Checked = true;
             this.oopPlayerEnables5.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.oopPlayerEnables5.Location = new System.Drawing.Point(532, 14);
+            this.oopPlayerEnables5.Location = new System.Drawing.Point(12, 192);
             this.oopPlayerEnables5.Name = "oopPlayerEnables5";
             this.oopPlayerEnables5.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerEnables5.TabIndex = 0;
             this.oopPlayerEnables5.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerPriorities5
-            //
+            // 
             this.oopPlayerPriorities5.AutoSize = true;
-            this.oopPlayerPriorities5.Location = new System.Drawing.Point(554, 14);
+            this.oopPlayerPriorities5.Location = new System.Drawing.Point(34, 192);
             this.oopPlayerPriorities5.Name = "oopPlayerPriorities5";
             this.oopPlayerPriorities5.Size = new System.Drawing.Size(15, 14);
             this.oopPlayerPriorities5.TabIndex = 1;
             this.oopPlayerPriorities5.UseVisualStyleBackColor = true;
-            //
+            // 
             // oopPlayerComboBoxes5
-            //
+            // 
             this.oopPlayerComboBoxes5.FormattingEnabled = true;
-            this.oopPlayerComboBoxes5.Location = new System.Drawing.Point(571, 11);
+            this.oopPlayerComboBoxes5.Location = new System.Drawing.Point(51, 187);
             this.oopPlayerComboBoxes5.Name = "oopPlayerComboBoxes5";
-            this.oopPlayerComboBoxes5.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerComboBoxes5.Size = new System.Drawing.Size(80, 21);
             this.oopPlayerComboBoxes5.TabIndex = 2;
             this.oopPlayerComboBoxes5.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes5.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
-            //
+            // 
             // oopPlayerOptionsButtons5
-            //
+            // 
+            this.oopPlayerOptionsButtons5.ContextMenuStrip = this.oopPlayerOptions;
             this.oopPlayerOptionsButtons5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons5.Location = new System.Drawing.Point(571, 35);
+            this.oopPlayerOptionsButtons5.Location = new System.Drawing.Point(137, 187);
             this.oopPlayerOptionsButtons5.Name = "oopPlayerOptionsButtons5";
             this.oopPlayerOptionsButtons5.Size = new System.Drawing.Size(55, 19);
             this.oopPlayerOptionsButtons5.TabIndex = 3;
             this.oopPlayerOptionsButtons5.Text = "MENU";
             this.oopPlayerOptionsButtons5.UseVisualStyleBackColor = true;
             this.oopPlayerOptionsButtons5.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
-            this.oopPlayerOptionsButtons5.ContextMenuStrip = this.oopPlayerOptions;
-            //
+            // 
             // oopPlayerHPs5
-            //
-            this.oopPlayerHPs5.Location = new System.Drawing.Point(532, 58);
+            // 
+            this.oopPlayerHPs5.Location = new System.Drawing.Point(10, 208);
             this.oopPlayerHPs5.Name = "oopPlayerHPs5";
-            this.oopPlayerHPs5.Size = new System.Drawing.Size(94, 12);
+            this.oopPlayerHPs5.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs5.TabIndex = 4;
             // 
             // Form1
@@ -2794,7 +2794,8 @@ namespace CurePlease
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(664, 460);
+            this.ClientSize = new System.Drawing.Size(858, 374);
+            this.Controls.Add(this.oopGroupBox);
             this.Controls.Add(this.AddOnStatus);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.PartyBuffsButton);
@@ -2823,6 +2824,7 @@ namespace CurePlease
             this.Text = "Cure Please v. 2.0.0.5";
             this.TransparencyKey = System.Drawing.Color.Silver;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.party0.ResumeLayout(false);
             this.party0.PerformLayout();
@@ -2842,6 +2844,9 @@ namespace CurePlease
             this.groupBox2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.oopPlayerOptions.ResumeLayout(false);
+            this.oopGroupBox.ResumeLayout(false);
+            this.oopGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
