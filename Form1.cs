@@ -3091,6 +3091,7 @@
                 oopPlayerComboBoxes[i].SelectedIndexChanged += OopPlayerComboBox_SelectedIndexChanged;
                 oopPlayerOptionsButtons[i] = new Button { Text = "MENU", Location = new System.Drawing.Point(46 + i * 105, 35), Size = new System.Drawing.Size(55, 19), FlatStyle = FlatStyle.Popup };
                 oopPlayerOptionsButtons[i].Click += OopPlayerOptionsButton_Click;
+                oopPlayerOptionsButtons[i].ContextMenuStrip = oopPlayerOptions;
                 oopPlayerHPs[i] = new NewProgressBar { Location = new System.Drawing.Point(7 + i * 105, 58), Size = new System.Drawing.Size(94, 12) };
 
                 oopGroupBox.Controls.Add(oopPlayerEnables[i]);
@@ -3180,6 +3181,10 @@ private void oopBuffToolStripMenuItem_Click(object sender, EventArgs e)
                 if (!oopPlayerStates.ContainsKey(playerName))
                 {
                     oopPlayerStates[playerName] = new OopPlayerState(playerName);
+                }
+                if (!partyState.Members.ContainsKey(playerName))
+                {
+                    partyState.AddOrUpdateMember(playerName, 0); // ServerId is not available, so we use 0
                 }
             }
         }
