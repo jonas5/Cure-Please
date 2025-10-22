@@ -96,11 +96,6 @@
 
         private System.Collections.Concurrent.ConcurrentQueue<RecastRequest> recastQueue = new System.Collections.Concurrent.ConcurrentQueue<RecastRequest>();
         private List<string> nearbyPlayers = new List<string>();
-        private ComboBox[] oopPlayerComboBoxes = new ComboBox[6];
-        private NewProgressBar[] oopPlayerHPs = new NewProgressBar[6];
-        private CheckBox[] oopPlayerEnables = new CheckBox[6];
-        private CheckBox[] oopPlayerPriorities = new CheckBox[6];
-        private Button[] oopPlayerOptionsButtons = new Button[6];
         private Dictionary<string, OopPlayerState> oopPlayerStates = new Dictionary<string, OopPlayerState>();
         private Dictionary<string, Dictionary<string, bool>> oopBuffPreferences = new Dictionary<string, Dictionary<string, bool>>();
 
@@ -3066,40 +3061,7 @@
     notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
 
    // MessageBox.Show("✅ FFXI process scan complete.");
-
-            InitializeOopControls();
-        }
-
-        private void InitializeOopControls()
-        {
-            GroupBox oopGroupBox = new GroupBox
-            {
-                Text = " Outside Party ",
-                Location = new System.Drawing.Point(19, 375),
-                Size = new System.Drawing.Size(630, 80),
-                ForeColor = System.Drawing.SystemColors.GrayText
-            };
-            oopGroupBox.Paint += PaintBorderlessGroupBox;
-            this.Controls.Add(oopGroupBox);
-
-            for (int i = 0; i < 6; i++)
-            {
-                oopPlayerEnables[i] = new CheckBox { Location = new System.Drawing.Point(7 + i * 105, 14), Size = new System.Drawing.Size(15, 14), Checked = true };
-                oopPlayerPriorities[i] = new CheckBox { Location = new System.Drawing.Point(29 + i * 105, 14), Size = new System.Drawing.Size(15, 14) };
-                oopPlayerComboBoxes[i] = new ComboBox { Location = new System.Drawing.Point(46 + i * 105, 11), Size = new System.Drawing.Size(55, 21) };
-                oopPlayerComboBoxes[i].DropDown += OopPlayerComboBox_DropDown;
-                oopPlayerComboBoxes[i].SelectedIndexChanged += OopPlayerComboBox_SelectedIndexChanged;
-                oopPlayerOptionsButtons[i] = new Button { Text = "MENU", Location = new System.Drawing.Point(46 + i * 105, 35), Size = new System.Drawing.Size(55, 19), FlatStyle = FlatStyle.Popup };
-                oopPlayerOptionsButtons[i].Click += OopPlayerOptionsButton_Click;
-                oopPlayerOptionsButtons[i].ContextMenuStrip = oopPlayerOptions;
-                oopPlayerHPs[i] = new NewProgressBar { Location = new System.Drawing.Point(7 + i * 105, 58), Size = new System.Drawing.Size(94, 12) };
-
-                oopGroupBox.Controls.Add(oopPlayerEnables[i]);
-                oopGroupBox.Controls.Add(oopPlayerPriorities[i]);
-                oopGroupBox.Controls.Add(oopPlayerComboBoxes[i]);
-                oopGroupBox.Controls.Add(oopPlayerOptionsButtons[i]);
-                oopGroupBox.Controls.Add(oopPlayerHPs[i]);
-            }
+            this.ClientSize = new System.Drawing.Size(664, 460);
         }
 
         private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
@@ -3143,11 +3105,13 @@
             ComboBox comboBox = sender as ComboBox;
             if (comboBox != null)
             {
+                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] OopPlayerComboBox_DropDown opened. nearbyPlayers count: {nearbyPlayers.Count}");
                 string selectedPlayer = comboBox.SelectedItem as string;
                 comboBox.Items.Clear();
                 if (nearbyPlayers.Count > 0)
                 {
                     comboBox.Items.AddRange(nearbyPlayers.ToArray());
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Populated ComboBox with: {string.Join(", ", nearbyPlayers)}");
                 }
                 if (selectedPlayer != null && nearbyPlayers.Contains(selectedPlayer))
                 {
@@ -9903,10 +9867,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     if (parts.Length > 1 && !string.IsNullOrWhiteSpace(parts[1]))
                     {
                         nearbyPlayers = parts[1].Split(',').Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Received NEARBY_PLAYERS: {string.Join(", ", nearbyPlayers)}");
                     }
                     else
                     {
                         nearbyPlayers.Clear();
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Received empty NEARBY_PLAYERS list.");
                     }
                     break;
                 case "CAST_START":
