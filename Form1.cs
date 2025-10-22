@@ -5776,6 +5776,7 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            UpdateNearbyPlayers();
             debug_MSG_show.AppendLine($"---\n[{DateTime.Now:HH:mm:ss.fff}] [actionTimer_TickAsync] Start of tick.");
             foreach (var memberState in partyState.Members.Values)
             {
@@ -9878,18 +9879,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
             switch (command)
             {
-                case "NEARBY_PLAYERS":
-                    if (parts.Length > 1 && !string.IsNullOrWhiteSpace(parts[1]))
-                    {
-                        nearbyPlayers = parts[1].Split(',').Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
-                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Received NEARBY_PLAYERS: {string.Join(", ", nearbyPlayers)}");
-                    }
-                    else
-                    {
-                        nearbyPlayers.Clear();
-                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Received empty NEARBY_PLAYERS list.");
-                    }
-                    break;
                 case "CAST_START":
                     CastingBackground_Check = true;
                     castingLockLabel.Text = "PACKET: Casting is LOCKED";
@@ -10318,6 +10307,39 @@ private void updateInstances_Tick(object sender, EventArgs e)
         public void ClearDebugMessages()
         {
             debug_MSG_show.Clear();
+        }
+
+        private void UpdateNearbyPlayers()
+        {
+            if (_ELITEAPIPL == null) return;
+
+            var partyMemberNames = new HashSet<string>();
+            for (int i = 0; i < 18; i++)
+            {
+                var member = _ELITEAPIMonitored?.Party.GetPartyMember((byte)i);
+                if (member != null && member.Active >= 1 && !string.IsNullOrEmpty(member.Name))
+                {
+                    partyMemberNames.Add(member.Name);
+                }
+            }
+
+            var newNearbyPlayers = new List<string>();
+            for (int i = 0; i < 2048; i++)
+            {
+                var entity = _ELITEAPIPL.Entity.GetEntity(i);
+                if (entity != null && !string.IsNullOrEmpty(entity.Name) && entity.Distance <= 20.0f && entity.HealthPercent > 0)
+                {
+                    var entityType = (TargetType)entity.Type;
+                    if (entityType.HasFlag(TargetType.Player) || entityType == 0)
+                    {
+                        if (!partyMemberNames.Contains(entity.Name) && entity.Name != _ELITEAPIPL.Player.Name)
+                        {
+                            newNearbyPlayers.Add(entity.Name);
+                        }
+                    }
+                }
+            }
+            nearbyPlayers = newNearbyPlayers;
         }
 
         public class OopPlayerState
