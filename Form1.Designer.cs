@@ -71,6 +71,7 @@ namespace CurePlease
             this.player1 = new System.Windows.Forms.Label();
             this.player0 = new System.Windows.Forms.Label();
             this.playerOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.debuffsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.followToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopfollowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();

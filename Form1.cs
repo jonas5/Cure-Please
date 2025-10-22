@@ -4110,8 +4110,16 @@ private string GetBestSpellTier(string buffType, string targetName)
             foreach (var oopPlayerEntry in oopDebuffState)
             {
                 string oopPlayerName = oopPlayerEntry.Key;
-                var oopPlayerEntity = _ELITEAPIPL.Entity.GetEntity()
-                    .FirstOrDefault(e => e.Name == oopPlayerName);
+                EliteAPI.XiEntity oopPlayerEntity = null;
+                for (int i = 0; i < 2048; i++)
+                {
+                    var entity = _ELITEAPIPL.Entity.GetEntity(i);
+                    if (entity != null && !string.IsNullOrEmpty(entity.Name) && entity.Name == oopPlayerName)
+                    {
+                        oopPlayerEntity = entity;
+                        break;
+                    }
+                }
 
                 if (oopPlayerEntity != null && oopPlayerEntity.Distance < 21)
                 {
