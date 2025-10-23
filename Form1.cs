@@ -87,6 +87,7 @@
         private int debuffTargetId = 0;
         private Dictionary<string, DateTime> targetDebuffTimers = new Dictionary<string, DateTime>();
         private int debuffTimersTargetId = 0;
+        private int _lastElementalDebuffIndex = -1;
         private int _lastBuffedMemberIndex = -1;
         private PartyState partyState = new PartyState();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
@@ -10098,21 +10099,53 @@ private void updateInstances_Tick(object sender, EventArgs e)
                                     debug_MSG_show.AppendLine($"    -> Conditions NOT met. targetName is not null: {targetName != null}, buffType is not null: {buffType != null}, partyState contains target: {partyState.Members.ContainsKey(targetName ?? "")}");
                                 }
 
-                                EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                                if (currentTarget != null && currentTarget.Name == targetName)
-                                {
-                                    string debuffType = GetDebuffTypeForSpell(spellId);
-                                    if (debuffType != null)
-                                    {
-                                        int duration = GetDebuffDuration(debuffType);
-                                        targetDebuffTimers[debuffType] = DateTime.Now.AddSeconds(duration);
-                                    }
-                                }
                             }
                             catch (Exception ex)
                             {
                                 // Log parsing errors without crashing
                                 debug_MSG_show.AppendLine($"Error parsing LOG message: {ex.Message}");
+                            }
+                        }
+                        else if (logData.Contains(" is afflicted with the effect of "))
+                        {
+                            try
+                            {
+                                // Parse: Target is afflicted with the effect of Dia.
+                                var parts_afflicted = logData.Split(new[] { " is afflicted with the effect of " }, StringSplitOptions.None);
+                                if (parts_afflicted.Length == 2)
+                                {
+                                    string targetName = parts_afflicted[0].Trim();
+                                    string spellName = parts_afflicted[1].Trim().TrimEnd('.');
+
+                                    // Is this a target we are tracking for debuffs?
+                                    EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                                    if (currentTarget != null && currentTarget.Name == targetName)
+                                    {
+                                        string debuffType = GetDebuffTypeForSpellName(spellName);
+                                        if (debuffType != null)
+                                        {
+                                            int duration = GetDebuffDuration(debuffType);
+                                            targetDebuffTimers[debuffType] = DateTime.Now.AddSeconds(duration);
+                                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF LANDED] Set timer for '{debuffType}' on '{targetName}' for {duration}s.");
+
+                                            // Handle mutual exclusivity for Dia/Bio
+                                            if (debuffType == "Dia")
+                                            {
+                                                targetDebuffTimers.Remove("Bio");
+                                                debug_MSG_show.AppendLine($"    -> Dia landed, removing Bio timer.");
+                                            }
+                                            else if (debuffType == "Bio")
+                                            {
+                                                targetDebuffTimers.Remove("Dia");
+                                                debug_MSG_show.AppendLine($"    -> Bio landed, removing Dia timer.");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                debug_MSG_show.AppendLine($"Error parsing debuff affliction LOG message: {ex.Message}");
                             }
                         }
                         else if (logData.Contains("takes") && logData.Contains("damage"))
@@ -10600,47 +10633,65 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
 
         }
-        private string GetBestDebuffSpellTier(string debuffType)
+
+        private string GetDebuffTypeForSpell(ushort spellId)
         {
-            List<string> spellTiers = new List<string>();
+            string spellName = GetSpellNameById(spellId);
+            if (string.IsNullOrEmpty(spellName)) return null;
+            string lowerSpellName = spellName.ToLower();
 
-            switch (debuffType.ToLower())
-            {
-                case "diabio":
-                    spellTiers.AddRange(new[] { "Dia III", "Bio III", "Dia II", "Bio II", "Dia", "Bio" });
-                    break;
-                case "paralyze":
-                    spellTiers.AddRange(new[] { "Paralyze II", "Paralyze" });
-                    break;
-                case "blind":
-                    spellTiers.AddRange(new[] { "Blind II", "Blind" });
-                    break;
-                case "slow":
-                    spellTiers.AddRange(new[] { "Slow II", "Slow" });
-                    break;
-                case "gravity":
-                    spellTiers.AddRange(new[] { "Gravity II", "Gravity" });
-                    break;
-                case "burnfrostchoke":
-                    spellTiers.AddRange(new[] { "Burn", "Frost", "Choke" });
-                    break;
-                case "raspshockdrown":
-                    spellTiers.AddRange(new[] { "Rasp", "Shock", "Drown" });
-                    break;
-                default:
-                    return null;
-            }
+            if (lowerSpellName.Contains("dia")) return "Dia";
+            if (lowerSpellName.Contains("bio")) return "Bio";
+            if (lowerSpellName.Contains("paralyze")) return "Paralyze";
+            if (lowerSpellName.Contains("blind")) return "Blind";
+            if (lowerSpellName.Contains("slow")) return "Slow";
+            if (lowerSpellName.Contains("gravity")) return "Gravity";
 
-            foreach (var spell in spellTiers)
+            if (lowerSpellName.Contains("burn") || lowerSpellName.Contains("frost") || lowerSpellName.Contains("choke") ||
+                lowerSpellName.Contains("rasp") || lowerSpellName.Contains("shock") || lowerSpellName.Contains("drown"))
             {
-                if (HasSpell(spell) && CheckSpellRecast(spell) == 0)
-                {
-                    return spell;
-                }
+                return "Elemental";
             }
 
             return null;
         }
+
+        private int GetDebuffDuration(string debuffType)
+        {
+            switch (debuffType)
+            {
+                case "Dia": return 60;
+                case "Bio": return 60;
+                case "Paralyze": return 90;
+                case "Blind": return 90;
+                case "Slow": return 90;
+                case "Gravity": return 30;
+                case "Elemental": return 30;
+                default: return 30; // Default duration
+            }
+        }
+
+        private string GetDebuffTypeForSpellName(string spellName)
+        {
+            if (string.IsNullOrEmpty(spellName)) return null;
+            string lowerSpellName = spellName.ToLower();
+
+            if (lowerSpellName.Contains("dia")) return "Dia";
+            if (lowerSpellName.Contains("bio")) return "Bio";
+            if (lowerSpellName.Contains("paralyze")) return "Paralyze";
+            if (lowerSpellName.Contains("blind")) return "Blind";
+            if (lowerSpellName.Contains("slow")) return "Slow";
+            if (lowerSpellName.Contains("gravity")) return "Gravity";
+
+            if (lowerSpellName.Contains("burn") || lowerSpellName.Contains("frost") || lowerSpellName.Contains("choke") ||
+                lowerSpellName.Contains("rasp") || lowerSpellName.Contains("shock") || lowerSpellName.Contains("drown"))
+            {
+                return "Elemental";
+            }
+
+            return null;
+        }
+
         private async void RunDebuffLogic()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.enableDebuffs) return;
@@ -10656,65 +10707,98 @@ private void updateInstances_Tick(object sender, EventArgs e)
             }
 
             EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
-            if (targetEntity == null || targetEntity.HealthPercent == 0) return;
+            if (targetEntity == null || targetEntity.HealthPercent == 0 || targetEntity.Distance > 20) return;
 
-            var debuffChecks = new Dictionary<string, Func<bool>>
-            {
-                { "diabio", () => Form2.config.debuffDiaBio },
-                { "paralyze", () => Form2.config.debuffParalyze },
-                { "blind", () => Form2.config.debuffBlind },
-                { "slow", () => Form2.config.debuffSlow },
-                { "gravity", () => Form2.config.debuffGravity },
-                { "burnfrostchoke", () => Form2.config.debuffBurnFrostChoke },
-                { "raspshockdrown", () => Form2.config.debuffRaspShockDrown }
-            };
+            // Handle Dia/Bio exclusivity
+            bool shouldCastDia = Form2.config.debuffDia && (!targetDebuffTimers.ContainsKey("Dia") || DateTime.Now >= targetDebuffTimers["Dia"]) && (!targetDebuffTimers.ContainsKey("Bio") || DateTime.Now >= targetDebuffTimers["Bio"]);
+            bool shouldCastBio = Form2.config.debuffBio && (!targetDebuffTimers.ContainsKey("Bio") || DateTime.Now >= targetDebuffTimers["Bio"]) && (!targetDebuffTimers.ContainsKey("Dia") || DateTime.Now >= targetDebuffTimers["Dia"]);
 
-            foreach (var check in debuffChecks)
+            if (shouldCastDia)
             {
-                if (check.Value() && (!targetDebuffTimers.ContainsKey(check.Key) || DateTime.Now >= targetDebuffTimers[check.Key]))
+                var tiers = new[] { "Dia III", "Dia II", "Dia" };
+                foreach (var tier in tiers)
                 {
-                    string spellToCast = GetBestDebuffSpellTier(check.Key);
-                    if (spellToCast != null)
+                    if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
                     {
                         _ELITEAPIPL.Target.SetTarget(debuffTargetId);
                         await Task.Delay(500);
-                        CastSpell("<t>", spellToCast);
-                        // Set a temporary cooldown to prevent immediate recast before the log message is processed
-                        targetDebuffTimers[check.Key] = DateTime.Now.AddSeconds(5);
-                        return;
+                        CastSpell("<t>", tier);
+                        return; // Cast one spell per tick
                     }
                 }
             }
-        }
-        private string GetDebuffTypeForSpell(ushort spellId)
-        {
-            string spellName = GetSpellNameById(spellId);
-            if (string.IsNullOrEmpty(spellName)) return null;
-            string lowerSpellName = spellName.ToLower();
-
-            if (lowerSpellName.Contains("dia") || lowerSpellName.Contains("bio")) return "diabio";
-            if (lowerSpellName.Contains("paralyze")) return "paralyze";
-            if (lowerSpellName.Contains("blind")) return "blind";
-            if (lowerSpellName.Contains("slow")) return "slow";
-            if (lowerSpellName.Contains("gravity")) return "gravity";
-            if (lowerSpellName.Contains("burn") || lowerSpellName.Contains("frost") || lowerSpellName.Contains("choke")) return "burnfrostchoke";
-            if (lowerSpellName.Contains("rasp") || lowerSpellName.Contains("shock") || lowerSpellName.Contains("drown")) return "raspshockdrown";
-
-            return null;
-        }
-
-        private int GetDebuffDuration(string debuffType)
-        {
-            switch (debuffType)
+            else if (shouldCastBio)
             {
-                case "diabio": return 60;
-                case "paralyze": return 90;
-                case "blind": return 90;
-                case "slow": return 90;
-                case "gravity": return 30;
-                case "burnfrostchoke": return 30;
-                case "raspshockdrown": return 30;
-                default: return 30; // Default duration
+                var tiers = new[] { "Bio III", "Bio II", "Bio" };
+                foreach (var tier in tiers)
+                {
+                    if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
+                    {
+                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                        await Task.Delay(500);
+                        CastSpell("<t>", tier);
+                        return; // Cast one spell per tick
+                    }
+                }
+            }
+
+
+            // Handle other single-cast debuffs
+            var otherDebuffs = new[]
+            {
+                new { Name = "Paralyze", Enabled = Form2.config.debuffParalyze, Tiers = new[] { "Paralyze II", "Paralyze" } },
+                new { Name = "Slow", Enabled = Form2.config.debuffSlow, Tiers = new[] { "Slow II", "Slow" } },
+                new { Name = "Blind", Enabled = Form2.config.debuffBlind, Tiers = new[] { "Blind II", "Blind" } },
+                new { Name = "Gravity", Enabled = Form2.config.debuffGravity, Tiers = new[] { "Gravity II", "Gravity" } }
+            };
+
+            foreach (var debuff in otherDebuffs)
+            {
+                if (debuff.Enabled && (!targetDebuffTimers.ContainsKey(debuff.Name) || DateTime.Now >= targetDebuffTimers[debuff.Name]))
+                {
+                    foreach (var tier in debuff.Tiers)
+                    {
+                        if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
+                        {
+                            _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                            await Task.Delay(500);
+                            CastSpell("<t>", tier);
+                            return; // Cast one spell per tick
+                        }
+                    }
+                }
+            }
+
+            // Handle rotational elemental DoTs
+            if (!targetDebuffTimers.ContainsKey("Elemental") || DateTime.Now >= targetDebuffTimers["Elemental"])
+            {
+                var elementalSpells = new[]
+                {
+            new { Name = "Burn", Enabled = Form2.config.debuffBurn },
+            new { Name = "Frost", Enabled = Form2.config.debuffFrost },
+            new { Name = "Choke", Enabled = Form2.config.debuffChoke },
+            new { Name = "Rasp", Enabled = Form2.config.debuffRasp },
+            new { Name = "Shock", Enabled = Form2.config.debuffShock },
+            new { Name = "Drown", Enabled = Form2.config.debuffDrown }
+        };
+
+                var enabledElementalSpells = elementalSpells.Where(s => s.Enabled).ToList();
+                if (enabledElementalSpells.Any())
+                {
+                    for (int i = 0; i < enabledElementalSpells.Count; i++)
+                    {
+                        _lastElementalDebuffIndex = (_lastElementalDebuffIndex + 1) % enabledElementalSpells.Count;
+                        var spellToTry = enabledElementalSpells[_lastElementalDebuffIndex];
+
+                        if (HasSpell(spellToTry.Name) && CheckSpellRecast(spellToTry.Name) == 0)
+                        {
+                            _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                            await Task.Delay(500);
+                            CastSpell("<t>", spellToTry.Name);
+                            return;
+                        }
+                    }
+                }
             }
         }
         private void oopGroupBox_Enter(object sender, EventArgs e)

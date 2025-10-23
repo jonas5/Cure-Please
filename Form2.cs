@@ -1815,38 +1815,18 @@ namespace CurePlease
             }
 
             // DEBUFFS
-            public bool enableDebuffs
-            {
-                get; set;
-            }
-            public bool debuffDiaBio
-            {
-                get; set;
-            }
-            public bool debuffParalyze
-            {
-                get; set;
-            }
-            public bool debuffBlind
-            {
-                get; set;
-            }
-            public bool debuffSlow
-            {
-                get; set;
-            }
-            public bool debuffGravity
-            {
-                get; set;
-            }
-            public bool debuffBurnFrostChoke
-            {
-                get; set;
-            }
-            public bool debuffRaspShockDrown
-            {
-                get; set;
-            }
+            public bool debuffDia { get; set; }
+            public bool debuffBio { get; set; }
+            public bool debuffParalyze { get; set; }
+            public bool debuffBlind { get; set; }
+            public bool debuffSlow { get; set; }
+            public bool debuffGravity { get; set; }
+            public bool debuffBurn { get; set; }
+            public bool debuffFrost { get; set; }
+            public bool debuffChoke { get; set; }
+            public bool debuffRasp { get; set; }
+            public bool debuffShock { get; set; }
+            public bool debuffDrown { get; set; }
 
             // ADD ON OPTIONS
             public string ipAddress
@@ -2389,14 +2369,18 @@ namespace CurePlease
                 config.trackCastingPackets = false;
 
                 // DEBUFFS
-                config.enableDebuffs = false;
-                config.debuffDiaBio = false;
+                config.debuffDia = false;
+                config.debuffBio = false;
                 config.debuffParalyze = false;
                 config.debuffBlind = false;
                 config.debuffSlow = false;
                 config.debuffGravity = false;
-                config.debuffBurnFrostChoke = false;
-                config.debuffRaspShockDrown = false;
+                config.debuffBurn = false;
+                config.debuffFrost = false;
+                config.debuffChoke = false;
+                config.debuffRasp = false;
+                config.debuffShock = false;
+                config.debuffDrown = false;
 
                 // OTHERS
 
@@ -2914,14 +2898,18 @@ namespace CurePlease
             config.trackCastingPackets = trackCastingPackets.Checked;
 
             // Debuffs
-            config.enableDebuffs = enableDebuffs.Checked;
-            config.debuffDiaBio = debuffDiaBio.Checked;
+            config.debuffDia = debuffDia.Checked;
+            config.debuffBio = debuffBio.Checked;
             config.debuffParalyze = debuffParalyze.Checked;
             config.debuffBlind = debuffBlind.Checked;
             config.debuffSlow = debuffSlow.Checked;
             config.debuffGravity = debuffGravity.Checked;
-            config.debuffBurnFrostChoke = debuffBurnFrostChoke.Checked;
-            config.debuffRaspShockDrown = debuffRaspShockDrown.Checked;
+            config.debuffBurn = debuffBurn.Checked;
+            config.debuffFrost = debuffFrost.Checked;
+            config.debuffChoke = debuffChoke.Checked;
+            config.debuffRasp = debuffRasp.Checked;
+            config.debuffShock = debuffShock.Checked;
+            config.debuffDrown = debuffDrown.Checked;
         }
 
         public void button4_Click(object sender, EventArgs e)
@@ -4048,14 +4036,18 @@ namespace CurePlease
             trackCastingPackets.Checked = config.trackCastingPackets;
 
             // Debuffs
-            enableDebuffs.Checked = config.enableDebuffs;
-            debuffDiaBio.Checked = config.debuffDiaBio;
+            debuffDia.Checked = config.debuffDia;
+            debuffBio.Checked = config.debuffBio;
             debuffParalyze.Checked = config.debuffParalyze;
             debuffBlind.Checked = config.debuffBlind;
             debuffSlow.Checked = config.debuffSlow;
             debuffGravity.Checked = config.debuffGravity;
-            debuffBurnFrostChoke.Checked = config.debuffBurnFrostChoke;
-            debuffRaspShockDrown.Checked = config.debuffRaspShockDrown;
+            debuffBurn.Checked = config.debuffBurn;
+            debuffFrost.Checked = config.debuffFrost;
+            debuffChoke.Checked = config.debuffChoke;
+            debuffRasp.Checked = config.debuffRasp;
+            debuffShock.Checked = config.debuffShock;
+            debuffDrown.Checked = config.debuffDrown;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )
