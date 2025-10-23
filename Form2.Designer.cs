@@ -9078,14 +9078,6 @@
         private System.Windows.Forms.TabPage debuffsPage;
         private GroupBoxEx debuffsGroupBox;
         private System.Windows.Forms.CheckBox enableDebuffs;
-        private System.Windows.Forms.CheckBox debuffDia;
-        private System.Windows.Forms.CheckBox debuffBio;
-        private System.Windows.Forms.CheckBox debuffBurn;
-        private System.Windows.Forms.CheckBox debuffFrost;
-        private System.Windows.Forms.CheckBox debuffChoke;
-        private System.Windows.Forms.CheckBox debuffRasp;
-        private System.Windows.Forms.CheckBox debuffShock;
-        private System.Windows.Forms.CheckBox debuffDrown;
         private System.Windows.Forms.CheckBox debuffParalyze;
         private System.Windows.Forms.CheckBox debuffBlind;
         private System.Windows.Forms.CheckBox debuffSlow;

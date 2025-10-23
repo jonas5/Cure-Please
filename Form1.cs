@@ -87,7 +87,6 @@
         private int debuffTargetId = 0;
         private Dictionary<string, DateTime> targetDebuffTimers = new Dictionary<string, DateTime>();
         private int debuffTimersTargetId = 0;
-        private int _lastElementalDebuffIndex = -1;
         private int _lastBuffedMemberIndex = -1;
         private PartyState partyState = new PartyState();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
