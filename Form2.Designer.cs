@@ -8136,6 +8136,7 @@
             // debuffsPage
             //
             this.debuffsPage.Controls.Add(this.debuffsGroupBox);
+            this.debuffsPage.Controls.Add(this.debuffsGroupBox);
             this.debuffsPage.Location = new System.Drawing.Point(4, 26);
             this.debuffsPage.Name = "debuffsPage";
             this.debuffsPage.Padding = new System.Windows.Forms.Padding(3);
