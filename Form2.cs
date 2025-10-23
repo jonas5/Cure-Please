@@ -1816,14 +1816,8 @@ namespace CurePlease
 
             // DEBUFFS
             public bool enableDebuffs { get; set; }
-            public bool debuffDia { get; set; }
-            public bool debuffBio { get; set; }
-            public bool debuffChoke { get; set; }
-            public bool debuffBurn { get; set; }
-            public bool debuffShock { get; set; }
-            public bool debuffRasp { get; set; }
-            public bool debuffFrost { get; set; }
-            public bool debuffDrown { get; set; }
+            public string DiaBioSelection { get; set; }
+            public string ElementalGroupSelection { get; set; }
             public bool debuffParalyze { get; set; }
             public bool debuffBlind { get; set; }
             public bool debuffSlow { get; set; }
@@ -1848,18 +1842,11 @@ namespace CurePlease
         public int runOnce = 0;
         private Form1 mainForm;
 
-        private List<CheckBox> elementalDotCheckBoxes;
         public Form2 (Form1 mainForm)
         {
             this.mainForm = mainForm;
             StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent ( );
-
-            elementalDotCheckBoxes = new List<CheckBox>
-            {
-                debuffChoke, debuffBurn, debuffShock,
-                debuffRasp, debuffFrost, debuffDrown
-            };
 
             JobNames.Add ( new JobTitles
             {
@@ -2377,16 +2364,10 @@ namespace CurePlease
                 config.trackCastingPackets = false;
 
                 // DEBUFFS
-            config.enableDebuffs = false;
-            config.debuffDia = false;
-            config.debuffBio = false;
-            config.debuffChoke = false;
-            config.debuffBurn = false;
-            config.debuffShock = false;
-            config.debuffRasp = false;
-            config.debuffFrost = false;
-            config.debuffDrown = false;
-            config.debuffParalyze = false;
+                config.enableDebuffs = false;
+                config.DiaBioSelection = "Dia";
+                config.ElementalGroupSelection = "Group1";
+                config.debuffParalyze = false;
                 config.debuffBlind = false;
                 config.debuffSlow = false;
                 config.debuffGravity = false;
@@ -2908,14 +2889,10 @@ namespace CurePlease
 
             // Debuffs
             config.enableDebuffs = enableDebuffs.Checked;
-            config.debuffDia = debuffDia.Checked;
-            config.debuffBio = debuffBio.Checked;
-            config.debuffChoke = debuffChoke.Checked;
-            config.debuffBurn = debuffBurn.Checked;
-            config.debuffShock = debuffShock.Checked;
-            config.debuffRasp = debuffRasp.Checked;
-            config.debuffFrost = debuffFrost.Checked;
-            config.debuffDrown = debuffDrown.Checked;
+            if (debuffDiaRadio.Checked) config.DiaBioSelection = "Dia";
+            if (debuffBioRadio.Checked) config.DiaBioSelection = "Bio";
+            if (elementalGroup1Radio.Checked) config.ElementalGroupSelection = "Group1";
+            if (elementalGroup2Radio.Checked) config.ElementalGroupSelection = "Group2";
             config.debuffParalyze = debuffParalyze.Checked;
             config.debuffBlind = debuffBlind.Checked;
             config.debuffSlow = debuffSlow.Checked;
@@ -4047,14 +4024,10 @@ namespace CurePlease
 
             // Debuffs
             enableDebuffs.Checked = config.enableDebuffs;
-            debuffDia.Checked = config.debuffDia;
-            debuffBio.Checked = config.debuffBio;
-            debuffChoke.Checked = config.debuffChoke;
-            debuffBurn.Checked = config.debuffBurn;
-            debuffShock.Checked = config.debuffShock;
-            debuffRasp.Checked = config.debuffRasp;
-            debuffFrost.Checked = config.debuffFrost;
-            debuffDrown.Checked = config.debuffDrown;
+            if (config.DiaBioSelection == "Dia") debuffDiaRadio.Checked = true;
+            if (config.DiaBioSelection == "Bio") debuffBioRadio.Checked = true;
+            if (config.ElementalGroupSelection == "Group1") elementalGroup1Radio.Checked = true;
+            if (config.ElementalGroupSelection == "Group2") elementalGroup2Radio.Checked = true;
             debuffParalyze.Checked = config.debuffParalyze;
             debuffBlind.Checked = config.debuffBlind;
             debuffSlow.Checked = config.debuffSlow;
@@ -4514,47 +4487,5 @@ namespace CurePlease
             }
         }
 
-        private void debuffDia_CheckedChanged(object sender, EventArgs e)
-        {
-            if (debuffDia.Checked)
-            {
-                debuffBio.Checked = false;
-            }
-        }
-
-        private void debuffBio_CheckedChanged(object sender, EventArgs e)
-        {
-            if (debuffBio.Checked)
-            {
-                debuffDia.Checked = false;
-            }
-        }
-
-        private void elementalGroup1_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox changedCheckBox = sender as CheckBox;
-            if (changedCheckBox == null || !changedCheckBox.Checked) return;
-
-            // Uncheck other boxes in Group 1
-            if (changedCheckBox != debuffChoke) debuffChoke.Checked = false;
-            if (changedCheckBox != debuffBurn) debuffBurn.Checked = false;
-            if (changedCheckBox != debuffShock) debuffShock.Checked = false;
-
-            // Uncheck all boxes in Group 2
-            debuffRasp.Checked = false;
-            debuffFrost.Checked = false;
-            debuffDrown.Checked = false;
-        }
-
-        private void elementalGroup2_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox changedCheckBox = sender as CheckBox;
-            if (changedCheckBox == null || !changedCheckBox.Checked) return;
-
-            // Uncheck all boxes in Group 1
-            debuffChoke.Checked = false;
-            debuffBurn.Checked = false;
-            debuffShock.Checked = false;
-        }
     }
 }

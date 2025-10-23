@@ -8147,14 +8147,11 @@
             // debuffsGroupBox
             //
             this.debuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
-            this.debuffsGroupBox.Controls.Add(this.debuffGravity);
-            this.debuffsGroupBox.Controls.Add(this.debuffSlow);
-            this.debuffsGroupBox.Controls.Add(this.debuffBlind);
-            this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
-            this.debuffsGroupBox.Controls.Add(this.elementalGroup2);
-            this.debuffsGroupBox.Controls.Add(this.elementalGroup1);
-            this.debuffsGroupBox.Controls.Add(this.debuffBio);
-            this.debuffsGroupBox.Controls.Add(this.debuffDia);
+            this.debuffsGroupBox.Controls.Add(this.elementalLegendLabel);
+            this.debuffsGroupBox.Controls.Add(this.elementalGroup2Radio);
+            this.debuffsGroupBox.Controls.Add(this.elementalGroup1Radio);
+            this.debuffsGroupBox.Controls.Add(this.debuffBioRadio);
+            this.debuffsGroupBox.Controls.Add(this.debuffDiaRadio);
             this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
@@ -8173,168 +8170,64 @@
             this.enableDebuffs.Text = "Enable Debuffs";
             this.enableDebuffs.UseVisualStyleBackColor = true;
             //
-            // debuffDia
+            // debuffDiaRadio
             //
-            this.debuffDia = new System.Windows.Forms.CheckBox();
-            this.debuffDia.AutoSize = true;
-            this.debuffDia.Location = new System.Drawing.Point(40, 50);
-            this.debuffDia.Name = "debuffDia";
-            this.debuffDia.Size = new System.Drawing.Size(45, 19);
-            this.debuffDia.TabIndex = 13;
-            this.debuffDia.Text = "Dia";
-            this.debuffDia.UseVisualStyleBackColor = true;
-            this.debuffDia.CheckedChanged += new System.EventHandler(this.debuffDia_CheckedChanged);
+            this.debuffDiaRadio = new System.Windows.Forms.RadioButton();
+            this.debuffDiaRadio.AutoSize = true;
+            this.debuffDiaRadio.Location = new System.Drawing.Point(40, 50);
+            this.debuffDiaRadio.Name = "debuffDiaRadio";
+            this.debuffDiaRadio.Size = new System.Drawing.Size(44, 19);
+            this.debuffDiaRadio.TabIndex = 1;
+            this.debuffDiaRadio.TabStop = true;
+            this.debuffDiaRadio.Text = "Dia";
+            this.debuffDiaRadio.UseVisualStyleBackColor = true;
             //
-            // debuffBio
+            // debuffBioRadio
             //
-            this.debuffBio = new System.Windows.Forms.CheckBox();
-            this.debuffBio.AutoSize = true;
-            this.debuffBio.Location = new System.Drawing.Point(120, 50);
-            this.debuffBio.Name = "debuffBio";
-            this.debuffBio.Size = new System.Drawing.Size(44, 19);
-            this.debuffBio.TabIndex = 14;
-            this.debuffBio.Text = "Bio";
-            this.debuffBio.UseVisualStyleBackColor = true;
-            this.debuffBio.CheckedChanged += new System.EventHandler(this.debuffBio_CheckedChanged);
+            this.debuffBioRadio = new System.Windows.Forms.RadioButton();
+            this.debuffBioRadio.AutoSize = true;
+            this.debuffBioRadio.Location = new System.Drawing.Point(120, 50);
+            this.debuffBioRadio.Name = "debuffBioRadio";
+            this.debuffBioRadio.Size = new System.Drawing.Size(43, 19);
+            this.debuffBioRadio.TabIndex = 2;
+            this.debuffBioRadio.TabStop = true;
+            this.debuffBioRadio.Text = "Bio";
+            this.debuffBioRadio.UseVisualStyleBackColor = true;
             //
-            // elementalGroup1
+            // elementalGroup1Radio
             //
-            this.elementalGroup1 = new System.Windows.Forms.GroupBox();
-            this.elementalGroup1.Controls.Add(this.debuffChoke);
-            this.elementalGroup1.Controls.Add(this.debuffBurn);
-            this.elementalGroup1.Controls.Add(this.debuffShock);
-            this.elementalGroup1.Location = new System.Drawing.Point(40, 80);
-            this.elementalGroup1.Name = "elementalGroup1";
-            this.elementalGroup1.Size = new System.Drawing.Size(200, 100);
-            this.elementalGroup1.TabIndex = 15;
-            this.elementalGroup1.TabStop = false;
-            this.elementalGroup1.Text = "Elemental DoTs (Group 1)";
+            this.elementalGroup1Radio = new System.Windows.Forms.RadioButton();
+            this.elementalGroup1Radio.AutoSize = true;
+            this.elementalGroup1Radio.Location = new System.Drawing.Point(40, 80);
+            this.elementalGroup1Radio.Name = "elementalGroup1Radio";
+            this.elementalGroup1Radio.Size = new System.Drawing.Size(153, 19);
+            this.elementalGroup1Radio.TabIndex = 3;
+            this.elementalGroup1Radio.TabStop = true;
+            this.elementalGroup1Radio.Text = "Elemental DoTs Group 1";
+            this.elementalGroup1Radio.UseVisualStyleBackColor = true;
             //
-            // debuffChoke
+            // elementalGroup2Radio
             //
-            this.debuffChoke = new System.Windows.Forms.CheckBox();
-            this.debuffChoke.AutoSize = true;
-            this.debuffChoke.Location = new System.Drawing.Point(6, 19);
-            this.debuffChoke.Name = "debuffChoke";
-            this.debuffChoke.Size = new System.Drawing.Size(61, 19);
-            this.debuffChoke.TabIndex = 4;
-            this.debuffChoke.Text = "Choke";
-            this.debuffChoke.UseVisualStyleBackColor = true;
-            this.debuffChoke.CheckedChanged += new System.EventHandler(this.elementalGroup1_CheckedChanged);
+            this.elementalGroup2Radio = new System.Windows.Forms.RadioButton();
+            this.elementalGroup2Radio.AutoSize = true;
+            this.elementalGroup2Radio.Location = new System.Drawing.Point(40, 105);
+            this.elementalGroup2Radio.Name = "elementalGroup2Radio";
+            this.elementalGroup2Radio.Size = new System.Drawing.Size(153, 19);
+            this.elementalGroup2Radio.TabIndex = 4;
+            this.elementalGroup2Radio.TabStop = true;
+            this.elementalGroup2Radio.Text = "Elemental DoTs Group 2";
+            this.elementalGroup2Radio.UseVisualStyleBackColor = true;
             //
-            // debuffBurn
+            // elementalLegendLabel
             //
-            this.debuffBurn = new System.Windows.Forms.CheckBox();
-            this.debuffBurn.AutoSize = true;
-            this.debuffBurn.Location = new System.Drawing.Point(6, 42);
-            this.debuffBurn.Name = "debuffBurn";
-            this.debuffBurn.Size = new System.Drawing.Size(52, 19);
-            this.debuffBurn.TabIndex = 5;
-            this.debuffBurn.Text = "Burn";
-            this.debuffBurn.UseVisualStyleBackColor = true;
-            this.debuffBurn.CheckedChanged += new System.EventHandler(this.elementalGroup1_CheckedChanged);
-            //
-            // debuffShock
-            //
-            this.debuffShock = new System.Windows.Forms.CheckBox();
-            this.debuffShock.AutoSize = true;
-            this.debuffShock.Location = new System.Drawing.Point(6, 65);
-            this.debuffShock.Name = "debuffShock";
-            this.debuffShock.Size = new System.Drawing.Size(60, 19);
-            this.debuffShock.TabIndex = 6;
-            this.debuffShock.Text = "Shock";
-            this.debuffShock.UseVisualStyleBackColor = true;
-            this.debuffShock.CheckedChanged += new System.EventHandler(this.elementalGroup1_CheckedChanged);
-            //
-            // elementalGroup2
-            //
-            this.elementalGroup2 = new System.Windows.Forms.GroupBox();
-            this.elementalGroup2.Controls.Add(this.debuffRasp);
-            this.elementalGroup2.Controls.Add(this.debuffFrost);
-            this.elementalGroup2.Controls.Add(this.debuffDrown);
-            this.elementalGroup2.Location = new System.Drawing.Point(250, 80);
-            this.elementalGroup2.Name = "elementalGroup2";
-            this.elementalGroup2.Size = new System.Drawing.Size(200, 100);
-            this.elementalGroup2.TabIndex = 16;
-            this.elementalGroup2.TabStop = false;
-            this.elementalGroup2.Text = "Elemental DoTs (Group 2)";
-            //
-            // debuffRasp
-            //
-            this.debuffRasp = new System.Windows.Forms.CheckBox();
-            this.debuffRasp.AutoSize = true;
-            this.debuffRasp.Location = new System.Drawing.Point(6, 19);
-            this.debuffRasp.Name = "debuffRasp";
-            this.debuffRasp.Size = new System.Drawing.Size(55, 19);
-            this.debuffRasp.TabIndex = 8;
-            this.debuffRasp.Text = "Rasp";
-            this.debuffRasp.UseVisualStyleBackColor = true;
-            this.debuffRasp.CheckedChanged += new System.EventHandler(this.elementalGroup2_CheckedChanged);
-            //
-            // debuffFrost
-            //
-            this.debuffFrost = new System.Windows.Forms.CheckBox();
-            this.debuffFrost.AutoSize = true;
-            this.debuffFrost.Location = new System.Drawing.Point(6, 42);
-            this.debuffFrost.Name = "debuffFrost";
-            this.debuffFrost.Size = new System.Drawing.Size(53, 19);
-            this.debuffFrost.TabIndex = 9;
-            this.debuffFrost.Text = "Frost";
-            this.debuffFrost.UseVisualStyleBackColor = true;
-            this.debuffFrost.CheckedChanged += new System.EventHandler(this.elementalGroup2_CheckedChanged);
-            //
-            // debuffDrown
-            //
-            this.debuffDrown = new System.Windows.Forms.CheckBox();
-            this.debuffDrown.AutoSize = true;
-            this.debuffDrown.Location = new System.Drawing.Point(6, 65);
-            this.debuffDrown.Name = "debuffDrown";
-            this.debuffDrown.Size = new System.Drawing.Size(62, 19);
-            this.debuffDrown.TabIndex = 10;
-            this.debuffDrown.Text = "Drown";
-            this.debuffDrown.UseVisualStyleBackColor = true;
-            this.debuffDrown.CheckedChanged += new System.EventHandler(this.elementalGroup2_CheckedChanged);
-            //
-            //
-            // debuffParalyze
-            //
-            this.debuffParalyze.AutoSize = true;
-            this.debuffParalyze.Location = new System.Drawing.Point(40, 250);
-            this.debuffParalyze.Name = "debuffParalyze";
-            this.debuffParalyze.Size = new System.Drawing.Size(75, 19);
-            this.debuffParalyze.TabIndex = 9;
-            this.debuffParalyze.Text = "Paralyze";
-            this.debuffParalyze.UseVisualStyleBackColor = true;
-            //
-            // debuffBlind
-            //
-            this.debuffBlind.AutoSize = true;
-            this.debuffBlind.Location = new System.Drawing.Point(40, 275);
-            this.debuffBlind.Name = "debuffBlind";
-            this.debuffBlind.Size = new System.Drawing.Size(55, 19);
-            this.debuffBlind.TabIndex = 10;
-            this.debuffBlind.Text = "Blind";
-            this.debuffBlind.UseVisualStyleBackColor = true;
-            //
-            // debuffSlow
-            //
-            this.debuffSlow.AutoSize = true;
-            this.debuffSlow.Location = new System.Drawing.Point(40, 300);
-            this.debuffSlow.Name = "debuffSlow";
-            this.debuffSlow.Size = new System.Drawing.Size(53, 19);
-            this.debuffSlow.TabIndex = 11;
-            this.debuffSlow.Text = "Slow";
-            this.debuffSlow.UseVisualStyleBackColor = true;
-            //
-            // debuffGravity
-            //
-            this.debuffGravity.AutoSize = true;
-            this.debuffGravity.Location = new System.Drawing.Point(40, 325);
-            this.debuffGravity.Name = "debuffGravity";
-            this.debuffGravity.Size = new System.Drawing.Size(65, 19);
-            this.debuffGravity.TabIndex = 12;
-            this.debuffGravity.Text = "Gravity";
-            this.debuffGravity.UseVisualStyleBackColor = true;
+            this.elementalLegendLabel = new System.Windows.Forms.Label();
+            this.elementalLegendLabel.AutoSize = true;
+            this.elementalLegendLabel.Location = new System.Drawing.Point(40, 135);
+            this.elementalLegendLabel.Name = "elementalLegendLabel";
+            this.elementalLegendLabel.Size = new System.Drawing.Size(400, 45);
+            this.elementalLegendLabel.TabIndex = 5;
+            this.elementalLegendLabel.Text = "Group 1 (mutually exclusive): Choke, Burn, Shock\r\nGroup 2 (stackable): Rasp, Fro" +
+    "st, Drown";
             //
             // Form2
             // 
@@ -9057,15 +8950,10 @@
         private System.Windows.Forms.CheckBox debuffBlind;
         private System.Windows.Forms.CheckBox debuffSlow;
         private System.Windows.Forms.CheckBox debuffGravity;
-        private System.Windows.Forms.CheckBox debuffDia;
-        private System.Windows.Forms.CheckBox debuffBio;
-        private System.Windows.Forms.GroupBox elementalGroup1;
-        private System.Windows.Forms.CheckBox debuffChoke;
-        private System.Windows.Forms.CheckBox debuffBurn;
-        private System.Windows.Forms.CheckBox debuffShock;
-        private System.Windows.Forms.GroupBox elementalGroup2;
-        private System.Windows.Forms.CheckBox debuffRasp;
-        private System.Windows.Forms.CheckBox debuffFrost;
-        private System.Windows.Forms.CheckBox debuffDrown;
+        private System.Windows.Forms.RadioButton debuffDiaRadio;
+        private System.Windows.Forms.RadioButton debuffBioRadio;
+        private System.Windows.Forms.RadioButton elementalGroup1Radio;
+        private System.Windows.Forms.RadioButton elementalGroup2Radio;
+        private System.Windows.Forms.Label elementalLegendLabel;
     }
 }
