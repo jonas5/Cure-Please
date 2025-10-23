@@ -665,14 +665,6 @@
             this.tabControl1.SuspendLayout();
             this.debuffsGroupBox = new GroupBoxEx();
             this.enableDebuffs = new System.Windows.Forms.CheckBox();
-            this.debuffDia = new System.Windows.Forms.CheckBox();
-            this.debuffBio = new System.Windows.Forms.CheckBox();
-            this.debuffBurn = new System.Windows.Forms.CheckBox();
-            this.debuffFrost = new System.Windows.Forms.CheckBox();
-            this.debuffChoke = new System.Windows.Forms.CheckBox();
-            this.debuffRasp = new System.Windows.Forms.CheckBox();
-            this.debuffShock = new System.Windows.Forms.CheckBox();
-            this.debuffDrown = new System.Windows.Forms.CheckBox();
             this.debuffParalyze = new System.Windows.Forms.CheckBox();
             this.debuffBlind = new System.Windows.Forms.CheckBox();
             this.debuffSlow = new System.Windows.Forms.CheckBox();
@@ -8155,18 +8147,10 @@
             // debuffsGroupBox
             //
             this.debuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
-            this.debuffsGroupBox.Controls.Add(this.debuffDrown);
-            this.debuffsGroupBox.Controls.Add(this.debuffShock);
-            this.debuffsGroupBox.Controls.Add(this.debuffRasp);
-            this.debuffsGroupBox.Controls.Add(this.debuffChoke);
-            this.debuffsGroupBox.Controls.Add(this.debuffFrost);
-            this.debuffsGroupBox.Controls.Add(this.debuffBurn);
-            this.debuffsGroupBox.Controls.Add(this.debuffBio);
-            this.debuffsGroupBox.Controls.Add(this.debuffDia);
-            this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
-            this.debuffsGroupBox.Controls.Add(this.debuffBlind);
-            this.debuffsGroupBox.Controls.Add(this.debuffSlow);
             this.debuffsGroupBox.Controls.Add(this.debuffGravity);
+            this.debuffsGroupBox.Controls.Add(this.debuffSlow);
+            this.debuffsGroupBox.Controls.Add(this.debuffBlind);
+            this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
             this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
@@ -8185,85 +8169,157 @@
             this.enableDebuffs.Text = "Enable Debuffs";
             this.enableDebuffs.UseVisualStyleBackColor = true;
             //
-            // debuffDia
+            // diaBioGroupBox
             //
-            this.debuffDia.AutoSize = true;
-            this.debuffDia.Location = new System.Drawing.Point(40, 50);
-            this.debuffDia.Name = "debuffDia";
-            this.debuffDia.Size = new System.Drawing.Size(45, 19);
-            this.debuffDia.TabIndex = 1;
-            this.debuffDia.Text = "Dia";
-            this.debuffDia.UseVisualStyleBackColor = true;
+            this.diaBioGroupBox = new System.Windows.Forms.GroupBox();
+            this.diaBioGroupBox.Controls.Add(this.diaRadio);
+            this.diaBioGroupBox.Controls.Add(this.bioRadio);
+            this.diaBioGroupBox.Controls.Add(this.diaBioNoneRadio);
+            this.diaBioGroupBox.Location = new System.Drawing.Point(40, 50);
+            this.diaBioGroupBox.Name = "diaBioGroupBox";
+            this.diaBioGroupBox.Size = new System.Drawing.Size(200, 100);
+            this.diaBioGroupBox.TabIndex = 13;
+            this.diaBioGroupBox.TabStop = false;
+            this.diaBioGroupBox.Text = "Dia/Bio";
+            this.debuffsGroupBox.Controls.Add(this.diaBioGroupBox);
             //
-            // debuffBio
+            // diaRadio
             //
-            this.debuffBio.AutoSize = true;
-            this.debuffBio.Location = new System.Drawing.Point(40, 75);
-            this.debuffBio.Name = "debuffBio";
-            this.debuffBio.Size = new System.Drawing.Size(44, 19);
-            this.debuffBio.TabIndex = 2;
-            this.debuffBio.Text = "Bio";
-            this.debuffBio.UseVisualStyleBackColor = true;
+            this.diaRadio = new System.Windows.Forms.RadioButton();
+            this.diaRadio.AutoSize = true;
+            this.diaRadio.Location = new System.Drawing.Point(10, 20);
+            this.diaRadio.Name = "diaRadio";
+            this.diaRadio.Size = new System.Drawing.Size(44, 19);
+            this.diaRadio.TabIndex = 0;
+            this.diaRadio.TabStop = true;
+            this.diaRadio.Text = "Dia";
+            this.diaRadio.UseVisualStyleBackColor = true;
             //
-            // debuffBurn
+            // bioRadio
             //
-            this.debuffBurn.AutoSize = true;
-            this.debuffBurn.Location = new System.Drawing.Point(40, 100);
-            this.debuffBurn.Name = "debuffBurn";
-            this.debuffBurn.Size = new System.Drawing.Size(52, 19);
-            this.debuffBurn.TabIndex = 3;
-            this.debuffBurn.Text = "Burn";
-            this.debuffBurn.UseVisualStyleBackColor = true;
+            this.bioRadio = new System.Windows.Forms.RadioButton();
+            this.bioRadio.AutoSize = true;
+            this.bioRadio.Location = new System.Drawing.Point(10, 45);
+            this.bioRadio.Name = "bioRadio";
+            this.bioRadio.Size = new System.Drawing.Size(43, 19);
+            this.bioRadio.TabIndex = 1;
+            this.bioRadio.TabStop = true;
+            this.bioRadio.Text = "Bio";
+            this.bioRadio.UseVisualStyleBackColor = true;
             //
-            // debuffFrost
+            // diaBioNoneRadio
             //
-            this.debuffFrost.AutoSize = true;
-            this.debuffFrost.Location = new System.Drawing.Point(40, 125);
-            this.debuffFrost.Name = "debuffFrost";
-            this.debuffFrost.Size = new System.Drawing.Size(53, 19);
-            this.debuffFrost.TabIndex = 4;
-            this.debuffFrost.Text = "Frost";
-            this.debuffFrost.UseVisualStyleBackColor = true;
+            this.diaBioNoneRadio = new System.Windows.Forms.RadioButton();
+            this.diaBioNoneRadio.AutoSize = true;
+            this.diaBioNoneRadio.Location = new System.Drawing.Point(10, 70);
+            this.diaBioNoneRadio.Name = "diaBioNoneRadio";
+            this.diaBioNoneRadio.Size = new System.Drawing.Size(54, 19);
+            this.diaBioNoneRadio.TabIndex = 2;
+            this.diaBioNoneRadio.TabStop = true;
+            this.diaBioNoneRadio.Text = "None";
+            this.diaBioNoneRadio.UseVisualStyleBackColor = true;
             //
-            // debuffChoke
+            // elementalDotsGroupBox
             //
-            this.debuffChoke.AutoSize = true;
-            this.debuffChoke.Location = new System.Drawing.Point(40, 150);
-            this.debuffChoke.Name = "debuffChoke";
-            this.debuffChoke.Size = new System.Drawing.Size(61, 19);
-            this.debuffChoke.TabIndex = 5;
-            this.debuffChoke.Text = "Choke";
-            this.debuffChoke.UseVisualStyleBackColor = true;
+            this.elementalDotsGroupBox = new System.Windows.Forms.GroupBox();
+            this.elementalDotsGroupBox.Controls.Add(this.burnRadio);
+            this.elementalDotsGroupBox.Controls.Add(this.frostRadio);
+            this.elementalDotsGroupBox.Controls.Add(this.chokeRadio);
+            this.elementalDotsGroupBox.Controls.Add(this.raspRadio);
+            this.elementalDotsGroupBox.Controls.Add(this.shockRadio);
+            this.elementalDotsGroupBox.Controls.Add(this.drownRadio);
+            this.elementalDotsGroupBox.Controls.Add(this.elementalNoneRadio);
+            this.elementalDotsGroupBox.Location = new System.Drawing.Point(250, 50);
+            this.elementalDotsGroupBox.Name = "elementalDotsGroupBox";
+            this.elementalDotsGroupBox.Size = new System.Drawing.Size(200, 200);
+            this.elementalDotsGroupBox.TabIndex = 14;
+            this.elementalDotsGroupBox.TabStop = false;
+            this.elementalDotsGroupBox.Text = "Elemental DoTs";
+            this.debuffsGroupBox.Controls.Add(this.elementalDotsGroupBox);
             //
-            // debuffRasp
+            // burnRadio
             //
-            this.debuffRasp.AutoSize = true;
-            this.debuffRasp.Location = new System.Drawing.Point(40, 175);
-            this.debuffRasp.Name = "debuffRasp";
-            this.debuffRasp.Size = new System.Drawing.Size(55, 19);
-            this.debuffRasp.TabIndex = 6;
-            this.debuffRasp.Text = "Rasp";
-            this.debuffRasp.UseVisualStyleBackColor = true;
+            this.burnRadio = new System.Windows.Forms.RadioButton();
+            this.burnRadio.AutoSize = true;
+            this.burnRadio.Location = new System.Drawing.Point(10, 20);
+            this.burnRadio.Name = "burnRadio";
+            this.burnRadio.Size = new System.Drawing.Size(51, 19);
+            this.burnRadio.TabIndex = 0;
+            this.burnRadio.TabStop = true;
+            this.burnRadio.Text = "Burn";
+            this.burnRadio.UseVisualStyleBackColor = true;
             //
-            // debuffShock
+            // frostRadio
             //
-            this.debuffShock.AutoSize = true;
-            this.debuffShock.Location = new System.Drawing.Point(40, 200);
-            this.debuffShock.Name = "debuffShock";
-            this.debuffShock.Size = new System.Drawing.Size(60, 19);
-            this.debuffShock.TabIndex = 7;
-            this.debuffShock.Text = "Shock";
-            this.debuffShock.UseVisualStyleBackColor = true;
+            this.frostRadio = new System.Windows.Forms.RadioButton();
+            this.frostRadio.AutoSize = true;
+            this.frostRadio.Location = new System.Drawing.Point(10, 45);
+            this.frostRadio.Name = "frostRadio";
+            this.frostRadio.Size = new System.Drawing.Size(52, 19);
+            this.frostRadio.TabIndex = 1;
+            this.frostRadio.TabStop = true;
+            this.frostRadio.Text = "Frost";
+            this.frostRadio.UseVisualStyleBackColor = true;
             //
-            // debuffDrown
+            // chokeRadio
             //
-            this.debuffDrown.AutoSize = true;
-            this.debuffDrown.Location = new System.Drawing.Point(40, 225);
-            this.debuffDrown.Name = "debuffDrown";
-            this.debuffDrown.Size = new System.Drawing.Size(62, 19);
-            this.debuffDrown.TabIndex = 8;
-            this.debuffDrown.Text = "Drown";
-            this.debuffDrown.UseVisualStyleBackColor = true;
+            this.chokeRadio = new System.Windows.Forms.RadioButton();
+            this.chokeRadio.AutoSize = true;
+            this.chokeRadio.Location = new System.Drawing.Point(10, 70);
+            this.chokeRadio.Name = "chokeRadio";
+            this.chokeRadio.Size = new System.Drawing.Size(60, 19);
+            this.chokeRadio.TabIndex = 2;
+            this.chokeRadio.TabStop = true;
+            this.chokeRadio.Text = "Choke";
+            this.chokeRadio.UseVisualStyleBackColor = true;
+            //
+            // raspRadio
+            //
+            this.raspRadio = new System.Windows.Forms.RadioButton();
+            this.raspRadio.AutoSize = true;
+            this.raspRadio.Location = new System.Drawing.Point(10, 95);
+            this.raspRadio.Name = "raspRadio";
+            this.raspRadio.Size = new System.Drawing.Size(54, 19);
+            this.raspRadio.TabIndex = 3;
+            this.raspRadio.TabStop = true;
+            this.raspRadio.Text = "Rasp";
+            this.raspRadio.UseVisualStyleBackColor = true;
+            //
+            // shockRadio
+            //
+            this.shockRadio = new System.Windows.Forms.RadioButton();
+            this.shockRadio.AutoSize = true;
+            this.shockRadio.Location = new System.Drawing.Point(10, 120);
+            this.shockRadio.Name = "shockRadio";
+            this.shockRadio.Size = new System.Drawing.Size(59, 19);
+            this.shockRadio.TabIndex = 4;
+            this.shockRadio.TabStop = true;
+            this.shockRadio.Text = "Shock";
+            this.shockRadio.UseVisualStyleBackColor = true;
+            //
+            // drownRadio
+            //
+            this.drownRadio = new System.Windows.Forms.RadioButton();
+            this.drownRadio.AutoSize = true;
+            this.drownRadio.Location = new System.Drawing.Point(10, 145);
+            this.drownRadio.Name = "drownRadio";
+            this.drownRadio.Size = new System.Drawing.Size(61, 19);
+            this.drownRadio.TabIndex = 5;
+            this.drownRadio.TabStop = true;
+            this.drownRadio.Text = "Drown";
+            this.drownRadio.UseVisualStyleBackColor = true;
+            //
+            // elementalNoneRadio
+            //
+            this.elementalNoneRadio = new System.Windows.Forms.RadioButton();
+            this.elementalNoneRadio.AutoSize = true;
+            this.elementalNoneRadio.Location = new System.Drawing.Point(10, 170);
+            this.elementalNoneRadio.Name = "elementalNoneRadio";
+            this.elementalNoneRadio.Size = new System.Drawing.Size(54, 19);
+            this.elementalNoneRadio.TabIndex = 6;
+            this.elementalNoneRadio.TabStop = true;
+            this.elementalNoneRadio.Text = "None";
+            this.elementalNoneRadio.UseVisualStyleBackColor = true;
             //
             // debuffParalyze
             //
@@ -9034,5 +9090,17 @@
         private System.Windows.Forms.CheckBox debuffBlind;
         private System.Windows.Forms.CheckBox debuffSlow;
         private System.Windows.Forms.CheckBox debuffGravity;
+        private System.Windows.Forms.GroupBox diaBioGroupBox;
+        private System.Windows.Forms.RadioButton diaRadio;
+        private System.Windows.Forms.RadioButton bioRadio;
+        private System.Windows.Forms.RadioButton diaBioNoneRadio;
+        private System.Windows.Forms.GroupBox elementalDotsGroupBox;
+        private System.Windows.Forms.RadioButton burnRadio;
+        private System.Windows.Forms.RadioButton frostRadio;
+        private System.Windows.Forms.RadioButton chokeRadio;
+        private System.Windows.Forms.RadioButton raspRadio;
+        private System.Windows.Forms.RadioButton shockRadio;
+        private System.Windows.Forms.RadioButton drownRadio;
+        private System.Windows.Forms.RadioButton elementalNoneRadio;
     }
 }

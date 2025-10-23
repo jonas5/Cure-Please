@@ -10709,41 +10709,44 @@ private void updateInstances_Tick(object sender, EventArgs e)
             EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
             if (targetEntity == null || targetEntity.HealthPercent == 0 || targetEntity.Distance > 20) return;
 
-            // Handle Dia/Bio exclusivity
-            bool shouldCastDia = Form2.config.debuffDia && (!targetDebuffTimers.ContainsKey("Dia") || DateTime.Now >= targetDebuffTimers["Dia"]) && (!targetDebuffTimers.ContainsKey("Bio") || DateTime.Now >= targetDebuffTimers["Bio"]);
-            bool shouldCastBio = Form2.config.debuffBio && (!targetDebuffTimers.ContainsKey("Bio") || DateTime.Now >= targetDebuffTimers["Bio"]) && (!targetDebuffTimers.ContainsKey("Dia") || DateTime.Now >= targetDebuffTimers["Dia"]);
-
-            if (shouldCastDia)
+            // Handle Dia/Bio group
+            if (Form2.config.diaBioSelection != "None")
             {
-                var tiers = new[] { "Dia III", "Dia II", "Dia" };
-                foreach (var tier in tiers)
+                string spellToCast = Form2.config.diaBioSelection; // This will be "Dia" or "Bio"
+                if (!targetDebuffTimers.ContainsKey(spellToCast) || DateTime.Now >= targetDebuffTimers[spellToCast])
                 {
-                    if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
+                    var tiers = spellToCast == "Dia" ? new[] { "Dia III", "Dia II", "Dia" } : new[] { "Bio III", "Bio II", "Bio" };
+                    foreach (var tier in tiers)
                     {
-                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                        await Task.Delay(500);
-                        CastSpell("<t>", tier);
-                        return; // Cast one spell per tick
-                    }
-                }
-            }
-            else if (shouldCastBio)
-            {
-                var tiers = new[] { "Bio III", "Bio II", "Bio" };
-                foreach (var tier in tiers)
-                {
-                    if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
-                    {
-                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                        await Task.Delay(500);
-                        CastSpell("<t>", tier);
-                        return; // Cast one spell per tick
+                        if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
+                        {
+                            _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                            await Task.Delay(500);
+                            CastSpell("<t>", tier);
+                            return; // Cast one spell per tick
+                        }
                     }
                 }
             }
 
+            // Handle Elemental DoT group
+            if (Form2.config.elementalDotSelection != "None")
+            {
+                string spellToCast = Form2.config.elementalDotSelection;
+                if ((!targetDebuffTimers.ContainsKey("Elemental") || DateTime.Now >= targetDebuffTimers["Elemental"]))
+                {
+                    if (HasSpell(spellToCast) && CheckSpellRecast(spellToCast) == 0)
+                    {
+                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                        await Task.Delay(500);
+                        CastSpell("<t>", spellToCast);
+                        return; // Cast one spell per tick
+                    }
+                }
+            }
 
-            // Handle other single-cast debuffs
+
+            // Handle other single-cast debuffs (unaffected by the change)
             var otherDebuffs = new[]
             {
                 new { Name = "Paralyze", Enabled = Form2.config.debuffParalyze, Tiers = new[] { "Paralyze II", "Paralyze" } },
@@ -10764,38 +10767,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
                             await Task.Delay(500);
                             CastSpell("<t>", tier);
                             return; // Cast one spell per tick
-                        }
-                    }
-                }
-            }
-
-            // Handle rotational elemental DoTs
-            if (!targetDebuffTimers.ContainsKey("Elemental") || DateTime.Now >= targetDebuffTimers["Elemental"])
-            {
-                var elementalSpells = new[]
-                {
-            new { Name = "Burn", Enabled = Form2.config.debuffBurn },
-            new { Name = "Frost", Enabled = Form2.config.debuffFrost },
-            new { Name = "Choke", Enabled = Form2.config.debuffChoke },
-            new { Name = "Rasp", Enabled = Form2.config.debuffRasp },
-            new { Name = "Shock", Enabled = Form2.config.debuffShock },
-            new { Name = "Drown", Enabled = Form2.config.debuffDrown }
-        };
-
-                var enabledElementalSpells = elementalSpells.Where(s => s.Enabled).ToList();
-                if (enabledElementalSpells.Any())
-                {
-                    for (int i = 0; i < enabledElementalSpells.Count; i++)
-                    {
-                        _lastElementalDebuffIndex = (_lastElementalDebuffIndex + 1) % enabledElementalSpells.Count;
-                        var spellToTry = enabledElementalSpells[_lastElementalDebuffIndex];
-
-                        if (HasSpell(spellToTry.Name) && CheckSpellRecast(spellToTry.Name) == 0)
-                        {
-                            _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                            await Task.Delay(500);
-                            CastSpell("<t>", spellToTry.Name);
-                            return;
                         }
                     }
                 }

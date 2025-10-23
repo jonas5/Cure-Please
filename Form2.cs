@@ -1816,18 +1816,12 @@ namespace CurePlease
 
             // DEBUFFS
             public bool enableDebuffs { get; set; }
-            public bool debuffDia { get; set; }
-            public bool debuffBio { get; set; }
+            public string diaBioSelection { get; set; }
+            public string elementalDotSelection { get; set; }
             public bool debuffParalyze { get; set; }
             public bool debuffBlind { get; set; }
             public bool debuffSlow { get; set; }
             public bool debuffGravity { get; set; }
-            public bool debuffBurn { get; set; }
-            public bool debuffFrost { get; set; }
-            public bool debuffChoke { get; set; }
-            public bool debuffRasp { get; set; }
-            public bool debuffShock { get; set; }
-            public bool debuffDrown { get; set; }
 
             // ADD ON OPTIONS
             public string ipAddress
@@ -2371,18 +2365,12 @@ namespace CurePlease
 
                 // DEBUFFS
             config.enableDebuffs = false;
-                config.debuffDia = false;
-                config.debuffBio = false;
+            config.diaBioSelection = "None";
+            config.elementalDotSelection = "None";
                 config.debuffParalyze = false;
                 config.debuffBlind = false;
                 config.debuffSlow = false;
                 config.debuffGravity = false;
-                config.debuffBurn = false;
-                config.debuffFrost = false;
-                config.debuffChoke = false;
-                config.debuffRasp = false;
-                config.debuffShock = false;
-                config.debuffDrown = false;
 
                 // OTHERS
 
@@ -2901,18 +2889,22 @@ namespace CurePlease
 
             // Debuffs
             config.enableDebuffs = enableDebuffs.Checked;
-            config.debuffDia = debuffDia.Checked;
-            config.debuffBio = debuffBio.Checked;
+            if (diaRadio.Checked) config.diaBioSelection = "Dia";
+            else if (bioRadio.Checked) config.diaBioSelection = "Bio";
+            else config.diaBioSelection = "None";
+
+            if (burnRadio.Checked) config.elementalDotSelection = "Burn";
+            else if (frostRadio.Checked) config.elementalDotSelection = "Frost";
+            else if (chokeRadio.Checked) config.elementalDotSelection = "Choke";
+            else if (raspRadio.Checked) config.elementalDotSelection = "Rasp";
+            else if (shockRadio.Checked) config.elementalDotSelection = "Shock";
+            else if (drownRadio.Checked) config.elementalDotSelection = "Drown";
+            else config.elementalDotSelection = "None";
+
             config.debuffParalyze = debuffParalyze.Checked;
             config.debuffBlind = debuffBlind.Checked;
             config.debuffSlow = debuffSlow.Checked;
             config.debuffGravity = debuffGravity.Checked;
-            config.debuffBurn = debuffBurn.Checked;
-            config.debuffFrost = debuffFrost.Checked;
-            config.debuffChoke = debuffChoke.Checked;
-            config.debuffRasp = debuffRasp.Checked;
-            config.debuffShock = debuffShock.Checked;
-            config.debuffDrown = debuffDrown.Checked;
         }
 
         public void button4_Click(object sender, EventArgs e)
@@ -4040,18 +4032,23 @@ namespace CurePlease
 
             // Debuffs
             enableDebuffs.Checked = config.enableDebuffs;
-            debuffDia.Checked = config.debuffDia;
-            debuffBio.Checked = config.debuffBio;
+
+            if (config.diaBioSelection == "Dia") diaRadio.Checked = true;
+            else if (config.diaBioSelection == "Bio") bioRadio.Checked = true;
+            else diaBioNoneRadio.Checked = true;
+
+            if (config.elementalDotSelection == "Burn") burnRadio.Checked = true;
+            else if (config.elementalDotSelection == "Frost") frostRadio.Checked = true;
+            else if (config.elementalDotSelection == "Choke") chokeRadio.Checked = true;
+            else if (config.elementalDotSelection == "Rasp") raspRadio.Checked = true;
+            else if (config.elementalDotSelection == "Shock") shockRadio.Checked = true;
+            else if (config.elementalDotSelection == "Drown") drownRadio.Checked = true;
+            else elementalNoneRadio.Checked = true;
+
             debuffParalyze.Checked = config.debuffParalyze;
             debuffBlind.Checked = config.debuffBlind;
             debuffSlow.Checked = config.debuffSlow;
             debuffGravity.Checked = config.debuffGravity;
-            debuffBurn.Checked = config.debuffBurn;
-            debuffFrost.Checked = config.debuffFrost;
-            debuffChoke.Checked = config.debuffChoke;
-            debuffRasp.Checked = config.debuffRasp;
-            debuffShock.Checked = config.debuffShock;
-            debuffDrown.Checked = config.debuffDrown;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )
