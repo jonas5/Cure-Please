@@ -8135,18 +8135,19 @@
             // debuffsGroupBox
             //
             this.debuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
-            this.debuffsGroupBox.Controls.Add(this.debuffBio);
-            this.debuffsGroupBox.Controls.Add(this.debuffBlind);
-            this.debuffsGroupBox.Controls.Add(this.debuffBurn);
-            this.debuffsGroupBox.Controls.Add(this.debuffChoke);
-            this.debuffsGroupBox.Controls.Add(this.debuffDia);
             this.debuffsGroupBox.Controls.Add(this.debuffDrown);
-            this.debuffsGroupBox.Controls.Add(this.debuffFrost);
-            this.debuffsGroupBox.Controls.Add(this.debuffGravity);
-            this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
-            this.debuffsGroupBox.Controls.Add(this.debuffRasp);
             this.debuffsGroupBox.Controls.Add(this.debuffShock);
+            this.debuffsGroupBox.Controls.Add(this.debuffRasp);
+            this.debuffsGroupBox.Controls.Add(this.debuffChoke);
+            this.debuffsGroupBox.Controls.Add(this.debuffFrost);
+            this.debuffsGroupBox.Controls.Add(this.debuffBurn);
+            this.debuffsGroupBox.Controls.Add(this.debuffBio);
+            this.debuffsGroupBox.Controls.Add(this.debuffDia);
+            this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
+            this.debuffsGroupBox.Controls.Add(this.debuffBlind);
             this.debuffsGroupBox.Controls.Add(this.debuffSlow);
+            this.debuffsGroupBox.Controls.Add(this.debuffGravity);
+            this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
             this.debuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -8154,125 +8155,135 @@
             this.debuffsGroupBox.TabStop = false;
             this.debuffsGroupBox.Text = "Auto-Debuff Settings";
             //
-            // debuffBio
+            // enableDebuffs
             //
-            this.debuffBio.AutoSize = true;
-            this.debuffBio.Location = new System.Drawing.Point(20, 50);
-            this.debuffBio.Name = "debuffBio";
-            this.debuffBio.Size = new System.Drawing.Size(44, 19);
-            this.debuffBio.TabIndex = 1;
-            this.debuffBio.Text = "Bio";
-            this.debuffBio.UseVisualStyleBackColor = true;
-            //
-            // debuffBlind
-            //
-            this.debuffBlind.AutoSize = true;
-            this.debuffBlind.Location = new System.Drawing.Point(20, 75);
-            this.debuffBlind.Name = "debuffBlind";
-            this.debuffBlind.Size = new System.Drawing.Size(55, 19);
-            this.debuffBlind.TabIndex = 2;
-            this.debuffBlind.Text = "Blind";
-            this.debuffBlind.UseVisualStyleBackColor = true;
-            //
-            // debuffBurn
-            //
-            this.debuffBurn.AutoSize = true;
-            this.debuffBurn.Location = new System.Drawing.Point(20, 150);
-            this.debuffBurn.Name = "debuffBurn";
-            this.debuffBurn.Size = new System.Drawing.Size(52, 19);
-            this.debuffBurn.TabIndex = 5;
-            this.debuffBurn.Text = "Burn";
-            this.debuffBurn.UseVisualStyleBackColor = true;
-            //
-            // debuffChoke
-            //
-            this.debuffChoke.AutoSize = true;
-            this.debuffChoke.Location = new System.Drawing.Point(20, 175);
-            this.debuffChoke.Name = "debuffChoke";
-            this.debuffChoke.Size = new System.Drawing.Size(61, 19);
-            this.debuffChoke.TabIndex = 6;
-            this.debuffChoke.Text = "Choke";
-            this.debuffChoke.UseVisualStyleBackColor = true;
+            this.enableDebuffs.AutoSize = true;
+            this.enableDebuffs.Location = new System.Drawing.Point(20, 25);
+            this.enableDebuffs.Name = "enableDebuffs";
+            this.enableDebuffs.Size = new System.Drawing.Size(111, 19);
+            this.enableDebuffs.TabIndex = 0;
+            this.enableDebuffs.Text = "Enable Debuffs";
+            this.enableDebuffs.UseVisualStyleBackColor = true;
             //
             // debuffDia
             //
             this.debuffDia.AutoSize = true;
-            this.debuffDia.Location = new System.Drawing.Point(20, 25);
+            this.debuffDia.Location = new System.Drawing.Point(40, 50);
             this.debuffDia.Name = "debuffDia";
             this.debuffDia.Size = new System.Drawing.Size(45, 19);
-            this.debuffDia.TabIndex = 0;
+            this.debuffDia.TabIndex = 1;
             this.debuffDia.Text = "Dia";
             this.debuffDia.UseVisualStyleBackColor = true;
             //
-            // debuffDrown
+            // debuffBio
             //
-            this.debuffDrown.AutoSize = true;
-            this.debuffDrown.Location = new System.Drawing.Point(20, 250);
-            this.debuffDrown.Name = "debuffDrown";
-            this.debuffDrown.Size = new System.Drawing.Size(62, 19);
-            this.debuffDrown.TabIndex = 9;
-            this.debuffDrown.Text = "Drown";
-            this.debuffDrown.UseVisualStyleBackColor = true;
+            this.debuffBio.AutoSize = true;
+            this.debuffBio.Location = new System.Drawing.Point(40, 75);
+            this.debuffBio.Name = "debuffBio";
+            this.debuffBio.Size = new System.Drawing.Size(44, 19);
+            this.debuffBio.TabIndex = 2;
+            this.debuffBio.Text = "Bio";
+            this.debuffBio.UseVisualStyleBackColor = true;
+            //
+            // debuffBurn
+            //
+            this.debuffBurn.AutoSize = true;
+            this.debuffBurn.Location = new System.Drawing.Point(40, 100);
+            this.debuffBurn.Name = "debuffBurn";
+            this.debuffBurn.Size = new System.Drawing.Size(52, 19);
+            this.debuffBurn.TabIndex = 3;
+            this.debuffBurn.Text = "Burn";
+            this.debuffBurn.UseVisualStyleBackColor = true;
             //
             // debuffFrost
             //
             this.debuffFrost.AutoSize = true;
-            this.debuffFrost.Location = new System.Drawing.Point(20, 200);
+            this.debuffFrost.Location = new System.Drawing.Point(40, 125);
             this.debuffFrost.Name = "debuffFrost";
             this.debuffFrost.Size = new System.Drawing.Size(53, 19);
-            this.debuffFrost.TabIndex = 7;
+            this.debuffFrost.TabIndex = 4;
             this.debuffFrost.Text = "Frost";
             this.debuffFrost.UseVisualStyleBackColor = true;
             //
-            // debuffGravity
+            // debuffChoke
             //
-            this.debuffGravity.AutoSize = true;
-            this.debuffGravity.Location = new System.Drawing.Point(20, 125);
-            this.debuffGravity.Name = "debuffGravity";
-            this.debuffGravity.Size = new System.Drawing.Size(65, 19);
-            this.debuffGravity.TabIndex = 4;
-            this.debuffGravity.Text = "Gravity";
-            this.debuffGravity.UseVisualStyleBackColor = true;
-            //
-            // debuffParalyze
-            //
-            this.debuffParalyze.AutoSize = true;
-            this.debuffParalyze.Location = new System.Drawing.Point(20, 100);
-            this.debuffParalyze.Name = "debuffParalyze";
-            this.debuffParalyze.Size = new System.Drawing.Size(75, 19);
-            this.debuffParalyze.TabIndex = 3;
-            this.debuffParalyze.Text = "Paralyze";
-            this.debuffParalyze.UseVisualStyleBackColor = true;
+            this.debuffChoke.AutoSize = true;
+            this.debuffChoke.Location = new System.Drawing.Point(40, 150);
+            this.debuffChoke.Name = "debuffChoke";
+            this.debuffChoke.Size = new System.Drawing.Size(61, 19);
+            this.debuffChoke.TabIndex = 5;
+            this.debuffChoke.Text = "Choke";
+            this.debuffChoke.UseVisualStyleBackColor = true;
             //
             // debuffRasp
             //
             this.debuffRasp.AutoSize = true;
-            this.debuffRasp.Location = new System.Drawing.Point(20, 225);
+            this.debuffRasp.Location = new System.Drawing.Point(40, 175);
             this.debuffRasp.Name = "debuffRasp";
             this.debuffRasp.Size = new System.Drawing.Size(55, 19);
-            this.debuffRasp.TabIndex = 8;
+            this.debuffRasp.TabIndex = 6;
             this.debuffRasp.Text = "Rasp";
             this.debuffRasp.UseVisualStyleBackColor = true;
             //
             // debuffShock
             //
             this.debuffShock.AutoSize = true;
-            this.debuffShock.Location = new System.Drawing.Point(20, 275);
+            this.debuffShock.Location = new System.Drawing.Point(40, 200);
             this.debuffShock.Name = "debuffShock";
             this.debuffShock.Size = new System.Drawing.Size(60, 19);
-            this.debuffShock.TabIndex = 10;
+            this.debuffShock.TabIndex = 7;
             this.debuffShock.Text = "Shock";
             this.debuffShock.UseVisualStyleBackColor = true;
+            //
+            // debuffDrown
+            //
+            this.debuffDrown.AutoSize = true;
+            this.debuffDrown.Location = new System.Drawing.Point(40, 225);
+            this.debuffDrown.Name = "debuffDrown";
+            this.debuffDrown.Size = new System.Drawing.Size(62, 19);
+            this.debuffDrown.TabIndex = 8;
+            this.debuffDrown.Text = "Drown";
+            this.debuffDrown.UseVisualStyleBackColor = true;
+            //
+            // debuffParalyze
+            //
+            this.debuffParalyze.AutoSize = true;
+            this.debuffParalyze.Location = new System.Drawing.Point(40, 250);
+            this.debuffParalyze.Name = "debuffParalyze";
+            this.debuffParalyze.Size = new System.Drawing.Size(75, 19);
+            this.debuffParalyze.TabIndex = 9;
+            this.debuffParalyze.Text = "Paralyze";
+            this.debuffParalyze.UseVisualStyleBackColor = true;
+            //
+            // debuffBlind
+            //
+            this.debuffBlind.AutoSize = true;
+            this.debuffBlind.Location = new System.Drawing.Point(40, 275);
+            this.debuffBlind.Name = "debuffBlind";
+            this.debuffBlind.Size = new System.Drawing.Size(55, 19);
+            this.debuffBlind.TabIndex = 10;
+            this.debuffBlind.Text = "Blind";
+            this.debuffBlind.UseVisualStyleBackColor = true;
             //
             // debuffSlow
             //
             this.debuffSlow.AutoSize = true;
-            this.debuffSlow.Location = new System.Drawing.Point(20, 300);
+            this.debuffSlow.Location = new System.Drawing.Point(40, 300);
             this.debuffSlow.Name = "debuffSlow";
             this.debuffSlow.Size = new System.Drawing.Size(53, 19);
             this.debuffSlow.TabIndex = 11;
             this.debuffSlow.Text = "Slow";
             this.debuffSlow.UseVisualStyleBackColor = true;
+            //
+            // debuffGravity
+            //
+            this.debuffGravity.AutoSize = true;
+            this.debuffGravity.Location = new System.Drawing.Point(40, 325);
+            this.debuffGravity.Name = "debuffGravity";
+            this.debuffGravity.Size = new System.Drawing.Size(65, 19);
+            this.debuffGravity.TabIndex = 12;
+            this.debuffGravity.Text = "Gravity";
+            this.debuffGravity.UseVisualStyleBackColor = true;
             //
             // Form2
             // 
@@ -8990,17 +9001,18 @@
         private System.Windows.Forms.CheckBox autoTargetOnLock;
         private System.Windows.Forms.TabPage debuffsPage;
         private GroupBoxEx debuffsGroupBox;
-        private System.Windows.Forms.CheckBox debuffBio;
-        private System.Windows.Forms.CheckBox debuffBlind;
-        private System.Windows.Forms.CheckBox debuffBurn;
-        private System.Windows.Forms.CheckBox debuffChoke;
+        private System.Windows.Forms.CheckBox enableDebuffs;
         private System.Windows.Forms.CheckBox debuffDia;
-        private System.Windows.Forms.CheckBox debuffDrown;
+        private System.Windows.Forms.CheckBox debuffBio;
+        private System.Windows.Forms.CheckBox debuffBurn;
         private System.Windows.Forms.CheckBox debuffFrost;
-        private System.Windows.Forms.CheckBox debuffGravity;
-        private System.Windows.Forms.CheckBox debuffParalyze;
+        private System.Windows.Forms.CheckBox debuffChoke;
         private System.Windows.Forms.CheckBox debuffRasp;
         private System.Windows.Forms.CheckBox debuffShock;
+        private System.Windows.Forms.CheckBox debuffDrown;
+        private System.Windows.Forms.CheckBox debuffParalyze;
+        private System.Windows.Forms.CheckBox debuffBlind;
         private System.Windows.Forms.CheckBox debuffSlow;
+        private System.Windows.Forms.CheckBox debuffGravity;
     }
 }

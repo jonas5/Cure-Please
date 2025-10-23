@@ -1815,6 +1815,7 @@ namespace CurePlease
             }
 
             // DEBUFFS
+            public bool enableDebuffs { get; set; }
             public bool debuffDia { get; set; }
             public bool debuffBio { get; set; }
             public bool debuffParalyze { get; set; }
@@ -2369,6 +2370,7 @@ namespace CurePlease
                 config.trackCastingPackets = false;
 
                 // DEBUFFS
+            config.enableDebuffs = false;
                 config.debuffDia = false;
                 config.debuffBio = false;
                 config.debuffParalyze = false;
@@ -2898,6 +2900,7 @@ namespace CurePlease
             config.trackCastingPackets = trackCastingPackets.Checked;
 
             // Debuffs
+            config.enableDebuffs = enableDebuffs.Checked;
             config.debuffDia = debuffDia.Checked;
             config.debuffBio = debuffBio.Checked;
             config.debuffParalyze = debuffParalyze.Checked;
@@ -4036,6 +4039,7 @@ namespace CurePlease
             trackCastingPackets.Checked = config.trackCastingPackets;
 
             // Debuffs
+            enableDebuffs.Checked = config.enableDebuffs;
             debuffDia.Checked = config.debuffDia;
             debuffBio.Checked = config.debuffBio;
             debuffParalyze.Checked = config.debuffParalyze;
