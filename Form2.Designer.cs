@@ -552,6 +552,8 @@
             this.cure2enabled = new System.Windows.Forms.CheckBox();
             this.cure1enabled = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.debuffsPage = new System.Windows.Forms.TabPage();
+
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).BeginInit();
@@ -661,6 +663,22 @@
             this.groupBox35.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.curePotency)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.debuffsGroupBox = new GroupBoxEx();
+            this.enableDebuffs = new System.Windows.Forms.CheckBox();
+            this.debuffDia = new System.Windows.Forms.CheckBox();
+            this.debuffBio = new System.Windows.Forms.CheckBox();
+            this.debuffBurn = new System.Windows.Forms.CheckBox();
+            this.debuffFrost = new System.Windows.Forms.CheckBox();
+            this.debuffChoke = new System.Windows.Forms.CheckBox();
+            this.debuffRasp = new System.Windows.Forms.CheckBox();
+            this.debuffShock = new System.Windows.Forms.CheckBox();
+            this.debuffDrown = new System.Windows.Forms.CheckBox();
+            this.debuffParalyze = new System.Windows.Forms.CheckBox();
+            this.debuffBlind = new System.Windows.Forms.CheckBox();
+            this.debuffSlow = new System.Windows.Forms.CheckBox();
+            this.debuffGravity = new System.Windows.Forms.CheckBox();
+
+
             this.SuspendLayout();
             // 
             // button4
@@ -8108,6 +8126,8 @@
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Controls.Add(this.tabPage3);
+
+
             this.tabControl1.Controls.Add(this.debuffsPage);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage7);
