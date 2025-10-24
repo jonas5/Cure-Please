@@ -4523,5 +4523,10 @@ namespace Miraculix
         {
 
         }
+
+        private void labelIdleHealTime_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

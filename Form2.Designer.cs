@@ -118,6 +118,7 @@ namespace Miraculix
             this.label5 = new System.Windows.Forms.Label();
             this.mpMintempitemusage = new System.Windows.Forms.NumericUpDown();
             this.FFXIDefaultAutoFollow = new System.Windows.Forms.CheckBox();
+            this.idleHealTime = new System.Windows.Forms.NumericUpDown();
             this.saveAsButton = new System.Windows.Forms.Button();
             this.loadButton = new System.Windows.Forms.Button();
             this.loadJobSettings = new System.Windows.Forms.CheckBox();
@@ -182,6 +183,7 @@ namespace Miraculix
             this.lowMPcheckBox = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.mpMinCastValue = new System.Windows.Forms.NumericUpDown();
+            this.labelIdleHealTime = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox24 = new Miraculix.GroupBoxEx();
             this.troubadour = new System.Windows.Forms.CheckBox();
@@ -592,6 +594,7 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.healWhenMPBelow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.standAtMP_Percentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpMintempitemusage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.idleHealTime)).BeginInit();
             this.tabPage7.SuspendLayout();
             this.groupBoxEx1.SuspendLayout();
             this.panel15.SuspendLayout();
@@ -686,6 +689,17 @@ namespace Miraculix
             this.elementalPanel.SuspendLayout();
             this.diaBioPanel.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // autoHealWhenIdle
+            // 
+            this.autoHealWhenIdle.AutoSize = true;
+            this.autoHealWhenIdle.Location = new System.Drawing.Point(9, 151);
+            this.autoHealWhenIdle.Name = "autoHealWhenIdle";
+            this.autoHealWhenIdle.Size = new System.Drawing.Size(163, 19);
+            this.autoHealWhenIdle.TabIndex = 44;
+            this.autoHealWhenIdle.Text = "Automatic heal when idle";
+            this.toolTip1.SetToolTip(this.autoHealWhenIdle, "Automatically starts resting when idle to recover MP.");
+            this.autoHealWhenIdle.UseVisualStyleBackColor = true;
             // 
             // elementalLegendLabel
             // 
@@ -1710,6 +1724,29 @@ namespace Miraculix
         " yalms and no action is being performed.");
             this.FFXIDefaultAutoFollow.UseVisualStyleBackColor = true;
             // 
+            // idleHealTime
+            // 
+            this.idleHealTime.Location = new System.Drawing.Point(181, 150);
+            this.idleHealTime.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.idleHealTime.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.idleHealTime.Name = "idleHealTime";
+            this.idleHealTime.Size = new System.Drawing.Size(55, 21);
+            this.idleHealTime.TabIndex = 45;
+            this.toolTip1.SetToolTip(this.idleHealTime, "The number of seconds to wait before automatically healing when idle.");
+            this.idleHealTime.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
             // saveAsButton
             // 
             this.saveAsButton.Location = new System.Drawing.Point(580, 597);
@@ -2319,9 +2356,9 @@ namespace Miraculix
             this.groupBox32.Controls.Add(this.enableMonitoredPriority);
             this.groupBox32.Controls.Add(this.Undercure);
             this.groupBox32.Controls.Add(this.Overcure);
-            this.groupBox32.Location = new System.Drawing.Point(6, 174);
+            this.groupBox32.Location = new System.Drawing.Point(6, 197);
             this.groupBox32.Name = "groupBox32";
-            this.groupBox32.Size = new System.Drawing.Size(351, 157);
+            this.groupBox32.Size = new System.Drawing.Size(351, 134);
             this.groupBox32.TabIndex = 41;
             this.groupBox32.TabStop = false;
             this.groupBox32.Text = "Cure Settings";
@@ -2435,7 +2472,7 @@ namespace Miraculix
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MP Settings";
-            //
+            // 
             // lowMPcheckBox
             // 
             this.lowMPcheckBox.AutoSize = true;
@@ -2467,51 +2504,16 @@ namespace Miraculix
             this.mpMinCastValue.Size = new System.Drawing.Size(61, 21);
             this.mpMinCastValue.TabIndex = 6;
             // 
-            // autoHealWhenIdle
-            //
-            // autoHealWhenIdle
-            //
-            this.autoHealWhenIdle.AutoSize = true;
-            this.autoHealWhenIdle.Location = new System.Drawing.Point(9, 151);
-            this.autoHealWhenIdle.Name = "autoHealWhenIdle";
-            this.autoHealWhenIdle.Size = new System.Drawing.Size(165, 19);
-            this.autoHealWhenIdle.TabIndex = 44;
-            this.autoHealWhenIdle.Text = "Automatic heal when idle";
-            this.toolTip1.SetToolTip(this.autoHealWhenIdle, "Automatically starts resting when idle to recover MP.");
-            this.autoHealWhenIdle.UseVisualStyleBackColor = true;
-            //
-            // idleHealTime
-            //
-            this.idleHealTime.Location = new System.Drawing.Point(181, 150);
-            this.idleHealTime.Maximum = new decimal(new int[] {
-            300,
-            0,
-            0,
-            0});
-            this.idleHealTime.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.idleHealTime.Name = "idleHealTime";
-            this.idleHealTime.Size = new System.Drawing.Size(55, 21);
-            this.idleHealTime.TabIndex = 45;
-            this.toolTip1.SetToolTip(this.idleHealTime, "The number of seconds to wait before automatically healing when idle.");
-            this.idleHealTime.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            //
             // labelIdleHealTime
-            //
+            // 
             this.labelIdleHealTime.AutoSize = true;
             this.labelIdleHealTime.Location = new System.Drawing.Point(242, 153);
             this.labelIdleHealTime.Name = "labelIdleHealTime";
-            this.labelIdleHealTime.Size = new System.Drawing.Size(126, 15);
+            this.labelIdleHealTime.Size = new System.Drawing.Size(131, 15);
             this.labelIdleHealTime.TabIndex = 46;
-            this.labelIdleHealTime.Text = "seconds before resting";
-            //
+            this.labelIdleHealTime.Text = "seconds/idle";
+            this.labelIdleHealTime.Click += new System.EventHandler(this.labelIdleHealTime_Click);
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.groupBox24);
@@ -8376,6 +8378,7 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.healWhenMPBelow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.standAtMP_Percentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpMintempitemusage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.idleHealTime)).EndInit();
             this.tabPage7.ResumeLayout(false);
             this.groupBoxEx1.ResumeLayout(false);
             this.groupBoxEx1.PerformLayout();
