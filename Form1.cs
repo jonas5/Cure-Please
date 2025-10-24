@@ -10645,6 +10645,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
             if (lowerSpellName.Contains("blind")) return "Blind";
             if (lowerSpellName.Contains("slow")) return "Slow";
             if (lowerSpellName.Contains("gravity")) return "Gravity";
+            if (lowerSpellName.Contains("silence")) return "Silence";
+            if (lowerSpellName.Contains("bind")) return "Bind";
             // Group 1
             if (lowerSpellName.Contains("choke") || lowerSpellName.Contains("burn") || lowerSpellName.Contains("shock")) return "Elemental1";
             // Group 2 (Stackable)
@@ -10665,6 +10667,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 case "Blind": return 90;
                 case "Slow": return 90;
                 case "Gravity": return 30;
+                case "Silence": return 30;
+                case "Bind": return 30;
                 case "Elemental1": return 30; // Group 1
                 case "Rasp": return 30;       // Group 2
                 case "Frost": return 30;      // Group 2
@@ -10684,6 +10688,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
             if (lowerSpellName.Contains("blind")) return "Blind";
             if (lowerSpellName.Contains("slow")) return "Slow";
             if (lowerSpellName.Contains("gravity")) return "Gravity";
+            if (lowerSpellName.Contains("silence")) return "Silence";
+            if (lowerSpellName.Contains("bind")) return "Bind";
 
             if (lowerSpellName.Contains("choke") || lowerSpellName.Contains("burn") || lowerSpellName.Contains("shock"))
             {
@@ -10812,7 +10818,9 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 new { Name = "Paralyze", Enabled = Form2.config.debuffParalyze, Tiers = new[] { "Paralyze II", "Paralyze" } },
                 new { Name = "Slow", Enabled = Form2.config.debuffSlow, Tiers = new[] { "Slow II", "Slow" } },
                 new { Name = "Blind", Enabled = Form2.config.debuffBlind, Tiers = new[] { "Blind II", "Blind" } },
-                new { Name = "Gravity", Enabled = Form2.config.debuffGravity, Tiers = new[] { "Gravity II", "Gravity" } }
+                new { Name = "Gravity", Enabled = Form2.config.debuffGravity, Tiers = new[] { "Gravity II", "Gravity" } },
+                new { Name = "Silence", Enabled = Form2.config.debuffSilence, Tiers = new[] { "Silence" } },
+                new { Name = "Bind", Enabled = Form2.config.debuffBind, Tiers = new[] { "Bind" } }
             };
 
             foreach (var debuff in otherDebuffs)

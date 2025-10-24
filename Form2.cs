@@ -1822,6 +1822,8 @@ namespace CurePlease
             public bool debuffBlind { get; set; }
             public bool debuffSlow { get; set; }
             public bool debuffGravity { get; set; }
+            public bool debuffBind { get; set; }
+            public bool debuffSilence { get; set; }
 
             // ADD ON OPTIONS
             public string ipAddress
@@ -2371,6 +2373,8 @@ namespace CurePlease
                 config.debuffBlind = false;
                 config.debuffSlow = false;
                 config.debuffGravity = false;
+                config.debuffBind = false;
+                config.debuffSilence = false;
 
                 // OTHERS
 
@@ -2897,6 +2901,8 @@ namespace CurePlease
             config.debuffBlind = debuffBlind.Checked;
             config.debuffSlow = debuffSlow.Checked;
             config.debuffGravity = debuffGravity.Checked;
+            config.debuffBind = debuffBind.Checked;
+            config.debuffSilence = debuffSilence.Checked;
         }
 
         public void button4_Click(object sender, EventArgs e)
@@ -4032,6 +4038,8 @@ namespace CurePlease
             debuffBlind.Checked = config.debuffBlind;
             debuffSlow.Checked = config.debuffSlow;
             debuffGravity.Checked = config.debuffGravity;
+            debuffBind.Checked = config.debuffBind;
+            debuffSilence.Checked = config.debuffSilence;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )

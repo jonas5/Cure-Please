@@ -8147,6 +8147,12 @@
             // debuffsGroupBox
             //
             this.debuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
+            this.debuffsGroupBox.Controls.Add(this.debuffBind);
+            this.debuffsGroupBox.Controls.Add(this.debuffSilence);
+            this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
+            this.debuffsGroupBox.Controls.Add(this.debuffBlind);
+            this.debuffsGroupBox.Controls.Add(this.debuffGravity);
+            this.debuffsGroupBox.Controls.Add(this.debuffSlow);
             this.debuffsGroupBox.Controls.Add(this.elementalLegendLabel);
             this.debuffsGroupBox.Controls.Add(this.elementalGroup2Radio);
             this.debuffsGroupBox.Controls.Add(this.elementalGroup1Radio);
@@ -8196,7 +8202,6 @@
             //
             // elementalGroup1Radio
             //
-            this.elementalGroup1Radio = new System.Windows.Forms.RadioButton();
             this.elementalGroup1Radio.AutoSize = true;
             this.elementalGroup1Radio.Location = new System.Drawing.Point(40, 80);
             this.elementalGroup1Radio.Name = "elementalGroup1Radio";
@@ -8208,7 +8213,6 @@
             //
             // elementalGroup2Radio
             //
-            this.elementalGroup2Radio = new System.Windows.Forms.RadioButton();
             this.elementalGroup2Radio.AutoSize = true;
             this.elementalGroup2Radio.Location = new System.Drawing.Point(40, 105);
             this.elementalGroup2Radio.Name = "elementalGroup2Radio";
@@ -8220,7 +8224,6 @@
             //
             // elementalLegendLabel
             //
-            this.elementalLegendLabel = new System.Windows.Forms.Label();
             this.elementalLegendLabel.AutoSize = true;
             this.elementalLegendLabel.Location = new System.Drawing.Point(40, 135);
             this.elementalLegendLabel.Name = "elementalLegendLabel";
@@ -8228,6 +8231,66 @@
             this.elementalLegendLabel.TabIndex = 5;
             this.elementalLegendLabel.Text = "Group 1 (mutually exclusive): Choke, Burn, Shock\r\nGroup 2 (stackable): Rasp, Fro" +
     "st, Drown";
+            //
+            // debuffParalyze
+            //
+            this.debuffParalyze.AutoSize = true;
+            this.debuffParalyze.Location = new System.Drawing.Point(220, 50);
+            this.debuffParalyze.Name = "debuffParalyze";
+            this.debuffParalyze.Size = new System.Drawing.Size(75, 19);
+            this.debuffParalyze.TabIndex = 6;
+            this.debuffParalyze.Text = "Paralyze";
+            this.debuffParalyze.UseVisualStyleBackColor = true;
+            //
+            // debuffBlind
+            //
+            this.debuffBlind.AutoSize = true;
+            this.debuffBlind.Location = new System.Drawing.Point(220, 75);
+            this.debuffBlind.Name = "debuffBlind";
+            this.debuffBlind.Size = new System.Drawing.Size(54, 19);
+            this.debuffBlind.TabIndex = 7;
+            this.debuffBlind.Text = "Blind";
+            this.debuffBlind.UseVisualStyleBackColor = true;
+            //
+            // debuffGravity
+            //
+            this.debuffGravity.AutoSize = true;
+            this.debuffGravity.Location = new System.Drawing.Point(220, 100);
+            this.debuffGravity.Name = "debuffGravity";
+            this.debuffGravity.Size = new System.Drawing.Size(64, 19);
+            this.debuffGravity.TabIndex = 8;
+            this.debuffGravity.Text = "Gravity";
+            this.debuffGravity.UseVisualStyleBackColor = true;
+            //
+            // debuffSlow
+            //
+            this.debuffSlow.AutoSize = true;
+            this.debuffSlow.Location = new System.Drawing.Point(220, 125);
+            this.debuffSlow.Name = "debuffSlow";
+            this.debuffSlow.Size = new System.Drawing.Size(53, 19);
+            this.debuffSlow.TabIndex = 9;
+            this.debuffSlow.Text = "Slow";
+            this.debuffSlow.UseVisualStyleBackColor = true;
+            //
+            // debuffSilence
+            //
+            this.debuffSilence.AutoSize = true;
+            this.debuffSilence.Location = new System.Drawing.Point(320, 50);
+            this.debuffSilence.Name = "debuffSilence";
+            this.debuffSilence.Size = new System.Drawing.Size(67, 19);
+            this.debuffSilence.TabIndex = 10;
+            this.debuffSilence.Text = "Silence";
+            this.debuffSilence.UseVisualStyleBackColor = true;
+            //
+            // debuffBind
+            //
+            this.debuffBind.AutoSize = true;
+            this.debuffBind.Location = new System.Drawing.Point(320, 75);
+            this.debuffBind.Name = "debuffBind";
+            this.debuffBind.Size = new System.Drawing.Size(51, 19);
+            this.debuffBind.TabIndex = 11;
+            this.debuffBind.Text = "Bind";
+            this.debuffBind.UseVisualStyleBackColor = true;
             //
             // Form2
             // 
@@ -8955,5 +9018,5 @@
         private System.Windows.Forms.RadioButton elementalGroup1Radio;
         private System.Windows.Forms.RadioButton elementalGroup2Radio;
         private System.Windows.Forms.Label elementalLegendLabel;
-    }
-}
+        private System.Windows.Forms.CheckBox debuffBind;
+        private System.Windows.Forms.CheckBox debuffSilence;
