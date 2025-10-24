@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.elementalLegendLabel = new System.Windows.Forms.Label();
             this.debuffBind = new System.Windows.Forms.CheckBox();
             this.elementalGroup2Radio = new System.Windows.Forms.RadioButton();
             this.elementalGroup1Radio = new System.Windows.Forms.RadioButton();
             this.debuffSilence = new System.Windows.Forms.CheckBox();
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.button4 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.recastSongs_monitored = new System.Windows.Forms.CheckBox();
@@ -101,6 +101,7 @@
             this.Hate_SpellType = new System.Windows.Forms.ComboBox();
             this.autoTarget = new System.Windows.Forms.CheckBox();
             this.autoTargetSpell = new System.Windows.Forms.TextBox();
+            this.autoTargetOnLock = new System.Windows.Forms.CheckBox();
             this.DevotionTargetName = new System.Windows.Forms.TextBox();
             this.DevotionTargetType = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
@@ -308,6 +309,10 @@
             this.autoHasteMinutes = new System.Windows.Forms.NumericUpDown();
             this.autoPhalanxIILabel = new System.Windows.Forms.Label();
             this.autoHasteLabel = new System.Windows.Forms.Label();
+            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
+            this.regen1enabled = new System.Windows.Forms.CheckBox();
+            this.regen2enabled = new System.Windows.Forms.CheckBox();
+            this.regen3enabled = new System.Windows.Forms.CheckBox();
             this.plBuffGroup = new CurePlease.GroupBoxEx();
             this.plSpikes_Spell = new System.Windows.Forms.ComboBox();
             this.plSpikes = new System.Windows.Forms.CheckBox();
@@ -558,7 +563,19 @@
             this.cure1enabled = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.debuffsPage = new System.Windows.Forms.TabPage();
-
+            this.debuffsGroupBox = new CurePlease.GroupBoxEx();
+            this.debuffsWarningLabel = new System.Windows.Forms.Label();
+            this.debuffParalyze = new System.Windows.Forms.CheckBox();
+            this.debuffBlind = new System.Windows.Forms.CheckBox();
+            this.debuffGravity = new System.Windows.Forms.CheckBox();
+            this.debuffSlow = new System.Windows.Forms.CheckBox();
+            this.elementalPanel = new System.Windows.Forms.Panel();
+            this.diaBioPanel = new System.Windows.Forms.Panel();
+            this.debuffDiaRadio = new System.Windows.Forms.RadioButton();
+            this.debuffBioRadio = new System.Windows.Forms.RadioButton();
+            this.enableDebuffs = new System.Windows.Forms.CheckBox();
+            this.label70 = new System.Windows.Forms.Label();
+            this.panel16 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).BeginInit();
@@ -668,15 +685,63 @@
             this.groupBox35.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.curePotency)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.debuffsGroupBox = new GroupBoxEx();
-            this.enableDebuffs = new System.Windows.Forms.CheckBox();
-            this.debuffParalyze = new System.Windows.Forms.CheckBox();
-            this.debuffBlind = new System.Windows.Forms.CheckBox();
-            this.debuffSlow = new System.Windows.Forms.CheckBox();
-            this.debuffGravity = new System.Windows.Forms.CheckBox();
-
-
+            this.debuffsPage.SuspendLayout();
+            this.debuffsGroupBox.SuspendLayout();
+            this.elementalPanel.SuspendLayout();
+            this.diaBioPanel.SuspendLayout();
+            this.panel16.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // elementalLegendLabel
+            // 
+            this.elementalLegendLabel.AutoSize = true;
+            this.elementalLegendLabel.Location = new System.Drawing.Point(24, 73);
+            this.elementalLegendLabel.Name = "elementalLegendLabel";
+            this.elementalLegendLabel.Size = new System.Drawing.Size(177, 15);
+            this.elementalLegendLabel.TabIndex = 5;
+            this.elementalLegendLabel.Text = "(stackable): Rasp, Frost, Drown";
+            // 
+            // debuffBind
+            // 
+            this.debuffBind.AutoSize = true;
+            this.debuffBind.Location = new System.Drawing.Point(140, 72);
+            this.debuffBind.Name = "debuffBind";
+            this.debuffBind.Size = new System.Drawing.Size(51, 19);
+            this.debuffBind.TabIndex = 11;
+            this.debuffBind.Text = "Bind";
+            this.debuffBind.UseVisualStyleBackColor = true;
+            // 
+            // elementalGroup2Radio
+            // 
+            this.elementalGroup2Radio.AutoSize = true;
+            this.elementalGroup2Radio.Location = new System.Drawing.Point(27, 51);
+            this.elementalGroup2Radio.Name = "elementalGroup2Radio";
+            this.elementalGroup2Radio.Size = new System.Drawing.Size(160, 19);
+            this.elementalGroup2Radio.TabIndex = 4;
+            this.elementalGroup2Radio.TabStop = true;
+            this.elementalGroup2Radio.Text = "Elemental DoTs Group 2";
+            this.elementalGroup2Radio.UseVisualStyleBackColor = true;
+            // 
+            // elementalGroup1Radio
+            // 
+            this.elementalGroup1Radio.AutoSize = true;
+            this.elementalGroup1Radio.Location = new System.Drawing.Point(27, 13);
+            this.elementalGroup1Radio.Name = "elementalGroup1Radio";
+            this.elementalGroup1Radio.Size = new System.Drawing.Size(160, 19);
+            this.elementalGroup1Radio.TabIndex = 3;
+            this.elementalGroup1Radio.TabStop = true;
+            this.elementalGroup1Radio.Text = "Elemental DoTs Group 1";
+            this.elementalGroup1Radio.UseVisualStyleBackColor = true;
+            // 
+            // debuffSilence
+            // 
+            this.debuffSilence.AutoSize = true;
+            this.debuffSilence.Location = new System.Drawing.Point(140, 47);
+            this.debuffSilence.Name = "debuffSilence";
+            this.debuffSilence.Size = new System.Drawing.Size(67, 19);
+            this.debuffSilence.TabIndex = 10;
+            this.debuffSilence.Text = "Silence";
+            this.debuffSilence.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
@@ -1085,7 +1150,7 @@
             0,
             0});
             this.cure2amount.Name = "cure2amount";
-            this.cure2amount.Size = new System.Drawing.Size(77, 21);
+            this.cure2amount.Size = new System.Drawing.Size(77, 20);
             this.cure2amount.TabIndex = 5;
             this.toolTip1.SetToolTip(this.cure2amount, "Cast \"Cure II\" with this amont of HP loss");
             // 
@@ -1098,7 +1163,7 @@
             0,
             0});
             this.cure1amount.Name = "cure1amount";
-            this.cure1amount.Size = new System.Drawing.Size(77, 21);
+            this.cure1amount.Size = new System.Drawing.Size(77, 20);
             this.cure1amount.TabIndex = 5;
             this.toolTip1.SetToolTip(this.cure1amount, "Cast \"Cure\" with this amont of HP loss");
             // 
@@ -1448,17 +1513,17 @@
         "en will cast the defined spell on them.");
             // 
             // autoTargetOnLock
-            //
-            this.autoTargetOnLock = new System.Windows.Forms.CheckBox();
+            // 
             this.autoTargetOnLock.AutoSize = true;
             this.autoTargetOnLock.Location = new System.Drawing.Point(230, 101);
             this.autoTargetOnLock.Name = "autoTargetOnLock";
-            this.autoTargetOnLock.Size = new System.Drawing.Size(130, 19);
+            this.autoTargetOnLock.Size = new System.Drawing.Size(127, 19);
             this.autoTargetOnLock.TabIndex = 18;
             this.autoTargetOnLock.Text = "Auto-target on lock";
-            this.toolTip1.SetToolTip(this.autoTargetOnLock, "Automatically sets your in-game target to the one selected by the hate control logic.");
+            this.toolTip1.SetToolTip(this.autoTargetOnLock, "Automatically sets your in-game target to the one selected by the hate control lo" +
+        "gic.");
             this.autoTargetOnLock.UseVisualStyleBackColor = true;
-            //
+            // 
             // DevotionTargetName
             // 
             this.DevotionTargetName.Location = new System.Drawing.Point(263, 45);
@@ -2424,7 +2489,7 @@
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MP Settings";
-            //
+            // 
             // lowMPcheckBox
             // 
             this.lowMPcheckBox.AutoSize = true;
@@ -4438,9 +4503,9 @@
             this.groupBox9.Controls.Add(this.plShellra);
             this.groupBox9.Controls.Add(this.plShellralevel);
             this.groupBox9.Controls.Add(this.plProtectra);
-            this.groupBox9.Location = new System.Drawing.Point(6, 262);
+            this.groupBox9.Location = new System.Drawing.Point(0, 346);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(459, 255);
+            this.groupBox9.Size = new System.Drawing.Size(466, 174);
             this.groupBox9.TabIndex = 16;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Group PL Buffs";
@@ -4650,7 +4715,7 @@
             this.groupBox1.Controls.Add(this.regen3enabled);
             this.groupBox1.Location = new System.Drawing.Point(5, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(460, 250);
+            this.groupBox1.Size = new System.Drawing.Size(460, 334);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Auto Casting Spells";
@@ -5004,52 +5069,47 @@
             this.autoHasteLabel.Size = new System.Drawing.Size(201, 15);
             this.autoHasteLabel.TabIndex = 1;
             this.autoHasteLabel.Text = "Recast Haste I/II and Flurry I/II every ";
-            //
-            //
+            // 
             // cureBeforeRegen
-            //
-            this.cureBeforeRegen = new System.Windows.Forms.CheckBox();
+            // 
             this.cureBeforeRegen.AutoSize = true;
-            this.cureBeforeRegen.Location = new System.Drawing.Point(300, 140);
+            this.cureBeforeRegen.Location = new System.Drawing.Point(227, 265);
             this.cureBeforeRegen.Name = "cureBeforeRegen";
-            this.cureBeforeRegen.Size = new System.Drawing.Size(150, 19);
+            this.cureBeforeRegen.Size = new System.Drawing.Size(131, 19);
             this.cureBeforeRegen.TabIndex = 58;
             this.cureBeforeRegen.Text = "Cure Before Regen";
             this.cureBeforeRegen.UseVisualStyleBackColor = true;
-            //
+            // 
             // regen1enabled
-            //
-            this.regen1enabled = new System.Windows.Forms.CheckBox();
+            // 
             this.regen1enabled.AutoSize = true;
-            this.regen1enabled.Location = new System.Drawing.Point(300, 160);
+            this.regen1enabled.Location = new System.Drawing.Point(30, 265);
             this.regen1enabled.Name = "regen1enabled";
-            this.regen1enabled.Size = new System.Drawing.Size(120, 19);
+            this.regen1enabled.Size = new System.Drawing.Size(111, 19);
             this.regen1enabled.TabIndex = 59;
             this.regen1enabled.Text = "Enable Regen I";
             this.regen1enabled.UseVisualStyleBackColor = true;
-            //
+            // 
             // regen2enabled
-            //
-            this.regen2enabled = new System.Windows.Forms.CheckBox();
+            // 
             this.regen2enabled.AutoSize = true;
-            this.regen2enabled.Location = new System.Drawing.Point(300, 180);
+            this.regen2enabled.Location = new System.Drawing.Point(30, 285);
             this.regen2enabled.Name = "regen2enabled";
-            this.regen2enabled.Size = new System.Drawing.Size(120, 19);
+            this.regen2enabled.Size = new System.Drawing.Size(114, 19);
             this.regen2enabled.TabIndex = 60;
             this.regen2enabled.Text = "Enable Regen II";
             this.regen2enabled.UseVisualStyleBackColor = true;
-            //
+            // 
             // regen3enabled
-            //
-            this.regen3enabled = new System.Windows.Forms.CheckBox();
+            // 
             this.regen3enabled.AutoSize = true;
-            this.regen3enabled.Location = new System.Drawing.Point(300, 200);
+            this.regen3enabled.Location = new System.Drawing.Point(30, 305);
             this.regen3enabled.Name = "regen3enabled";
-            this.regen3enabled.Size = new System.Drawing.Size(120, 19);
+            this.regen3enabled.Size = new System.Drawing.Size(117, 19);
             this.regen3enabled.TabIndex = 61;
             this.regen3enabled.Text = "Enable Regen III";
             this.regen3enabled.UseVisualStyleBackColor = true;
-            //
+            // 
             // plBuffGroup
             // 
             this.plBuffGroup.BorderColor = System.Drawing.Color.SlateGray;
@@ -8005,7 +8065,7 @@
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Healing Options";
-            //
+            // 
             // groupBox35
             // 
             this.groupBox35.BorderColor = System.Drawing.Color.SlateGray;
@@ -8123,8 +8183,6 @@
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Controls.Add(this.tabPage3);
-
-
             this.tabControl1.Controls.Add(this.debuffsPage);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage7);
@@ -8139,7 +8197,7 @@
             this.tabControl1.TabIndex = 0;
             // 
             // debuffsPage
-            //
+            // 
             this.debuffsPage.Controls.Add(this.debuffsGroupBox);
             this.debuffsPage.Location = new System.Drawing.Point(4, 26);
             this.debuffsPage.Name = "debuffsPage";
@@ -8148,18 +8206,12 @@
             this.debuffsPage.TabIndex = 8;
             this.debuffsPage.Text = "Debuffs";
             this.debuffsPage.UseVisualStyleBackColor = true;
-            //
+            // 
             // debuffsGroupBox
-            //
+            // 
             this.debuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
-            this.debuffsGroupBox.Controls.Add(this.debuffBind);
+            this.debuffsGroupBox.Controls.Add(this.panel16);
             this.debuffsGroupBox.Controls.Add(this.debuffsWarningLabel);
-            this.debuffsGroupBox.Controls.Add(this.debuffSilence);
-            this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
-            this.debuffsGroupBox.Controls.Add(this.debuffBlind);
-            this.debuffsGroupBox.Controls.Add(this.debuffGravity);
-            this.debuffsGroupBox.Controls.Add(this.debuffSlow);
-            this.debuffsGroupBox.Controls.Add(this.elementalLegendLabel);
             this.debuffsGroupBox.Controls.Add(this.elementalPanel);
             this.debuffsGroupBox.Controls.Add(this.diaBioPanel);
             this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
@@ -8169,170 +8221,133 @@
             this.debuffsGroupBox.TabIndex = 0;
             this.debuffsGroupBox.TabStop = false;
             this.debuffsGroupBox.Text = "Auto-Debuff Settings";
-            //
-            // enableDebuffs
-            //
-            this.enableDebuffs.AutoSize = true;
-            this.enableDebuffs.Location = new System.Drawing.Point(20, 25);
-            this.enableDebuffs.Name = "enableDebuffs";
-            this.enableDebuffs.Size = new System.Drawing.Size(111, 19);
-            this.enableDebuffs.TabIndex = 0;
-            this.enableDebuffs.Text = "Enable Debuffs";
-            this.enableDebuffs.UseVisualStyleBackColor = true;
-            //
+            this.debuffsGroupBox.Enter += new System.EventHandler(this.debuffsGroupBox_Enter);
+            // 
+            // debuffsWarningLabel
+            // 
+            this.debuffsWarningLabel.AutoSize = true;
+            this.debuffsWarningLabel.ForeColor = System.Drawing.Color.Red;
+            this.debuffsWarningLabel.Location = new System.Drawing.Point(337, 22);
+            this.debuffsWarningLabel.Name = "debuffsWarningLabel";
+            this.debuffsWarningLabel.Size = new System.Drawing.Size(237, 15);
+            this.debuffsWarningLabel.TabIndex = 12;
+            this.debuffsWarningLabel.Text = "All options disabled: Addon not connected.";
+            this.debuffsWarningLabel.Visible = false;
+            // 
+            // debuffParalyze
+            // 
+            this.debuffParalyze.AutoSize = true;
+            this.debuffParalyze.Location = new System.Drawing.Point(40, 47);
+            this.debuffParalyze.Name = "debuffParalyze";
+            this.debuffParalyze.Size = new System.Drawing.Size(73, 19);
+            this.debuffParalyze.TabIndex = 6;
+            this.debuffParalyze.Text = "Paralyze";
+            this.debuffParalyze.UseVisualStyleBackColor = true;
+            // 
+            // debuffBlind
+            // 
+            this.debuffBlind.AutoSize = true;
+            this.debuffBlind.Location = new System.Drawing.Point(40, 72);
+            this.debuffBlind.Name = "debuffBlind";
+            this.debuffBlind.Size = new System.Drawing.Size(54, 19);
+            this.debuffBlind.TabIndex = 7;
+            this.debuffBlind.Text = "Blind";
+            this.debuffBlind.UseVisualStyleBackColor = true;
+            // 
+            // debuffGravity
+            // 
+            this.debuffGravity.AutoSize = true;
+            this.debuffGravity.Location = new System.Drawing.Point(40, 97);
+            this.debuffGravity.Name = "debuffGravity";
+            this.debuffGravity.Size = new System.Drawing.Size(62, 19);
+            this.debuffGravity.TabIndex = 8;
+            this.debuffGravity.Text = "Gravity";
+            this.debuffGravity.UseVisualStyleBackColor = true;
+            // 
+            // debuffSlow
+            // 
+            this.debuffSlow.AutoSize = true;
+            this.debuffSlow.Location = new System.Drawing.Point(40, 122);
+            this.debuffSlow.Name = "debuffSlow";
+            this.debuffSlow.Size = new System.Drawing.Size(53, 19);
+            this.debuffSlow.TabIndex = 9;
+            this.debuffSlow.Text = "Slow";
+            this.debuffSlow.UseVisualStyleBackColor = true;
+            // 
+            // elementalPanel
+            // 
+            this.elementalPanel.Controls.Add(this.label70);
+            this.elementalPanel.Controls.Add(this.elementalGroup1Radio);
+            this.elementalPanel.Controls.Add(this.elementalGroup2Radio);
+            this.elementalPanel.Controls.Add(this.elementalLegendLabel);
+            this.elementalPanel.Location = new System.Drawing.Point(40, 144);
+            this.elementalPanel.Name = "elementalPanel";
+            this.elementalPanel.Size = new System.Drawing.Size(266, 100);
+            this.elementalPanel.TabIndex = 13;
+            // 
+            // diaBioPanel
+            // 
+            this.diaBioPanel.Controls.Add(this.debuffDiaRadio);
+            this.diaBioPanel.Controls.Add(this.debuffBioRadio);
+            this.diaBioPanel.Location = new System.Drawing.Point(40, 50);
+            this.diaBioPanel.Name = "diaBioPanel";
+            this.diaBioPanel.Size = new System.Drawing.Size(266, 70);
+            this.diaBioPanel.TabIndex = 14;
+            // 
             // debuffDiaRadio
-            //
-            this.debuffDiaRadio = new System.Windows.Forms.RadioButton();
+            // 
             this.debuffDiaRadio.AutoSize = true;
-            this.debuffDiaRadio.Location = new System.Drawing.Point(0, 0);
+            this.debuffDiaRadio.Location = new System.Drawing.Point(68, 25);
             this.debuffDiaRadio.Name = "debuffDiaRadio";
             this.debuffDiaRadio.Size = new System.Drawing.Size(44, 19);
             this.debuffDiaRadio.TabIndex = 1;
             this.debuffDiaRadio.TabStop = true;
             this.debuffDiaRadio.Text = "Dia";
             this.debuffDiaRadio.UseVisualStyleBackColor = true;
-            //
+            // 
             // debuffBioRadio
-            //
-            this.debuffBioRadio = new System.Windows.Forms.RadioButton();
+            // 
             this.debuffBioRadio.AutoSize = true;
-            this.debuffBioRadio.Location = new System.Drawing.Point(80, 0);
+            this.debuffBioRadio.Location = new System.Drawing.Point(148, 25);
             this.debuffBioRadio.Name = "debuffBioRadio";
             this.debuffBioRadio.Size = new System.Drawing.Size(43, 19);
             this.debuffBioRadio.TabIndex = 2;
             this.debuffBioRadio.TabStop = true;
             this.debuffBioRadio.Text = "Bio";
             this.debuffBioRadio.UseVisualStyleBackColor = true;
-            //
-            // elementalGroup1Radio
-            //
-            this.elementalGroup1Radio = new System.Windows.Forms.RadioButton();
-            this.elementalGroup1Radio.AutoSize = true;
-            this.elementalGroup1Radio.Location = new System.Drawing.Point(0, 0);
-            this.elementalGroup1Radio.Name = "elementalGroup1Radio";
-            this.elementalGroup1Radio.Size = new System.Drawing.Size(153, 19);
-            this.elementalGroup1Radio.TabIndex = 3;
-            this.elementalGroup1Radio.TabStop = true;
-            this.elementalGroup1Radio.Text = "Elemental DoTs Group 1";
-            this.elementalGroup1Radio.UseVisualStyleBackColor = true;
-            //
-            // elementalGroup2Radio
-            //
-            this.elementalGroup2Radio = new System.Windows.Forms.RadioButton();
-            this.elementalGroup2Radio.AutoSize = true;
-            this.elementalGroup2Radio.Location = new System.Drawing.Point(0, 25);
-            this.elementalGroup2Radio.Name = "elementalGroup2Radio";
-            this.elementalGroup2Radio.Size = new System.Drawing.Size(153, 19);
-            this.elementalGroup2Radio.TabIndex = 4;
-            this.elementalGroup2Radio.TabStop = true;
-            this.elementalGroup2Radio.Text = "Elemental DoTs Group 2";
-            this.elementalGroup2Radio.UseVisualStyleBackColor = true;
-            //
-            // elementalLegendLabel
-            //
-            this.elementalLegendLabel = new System.Windows.Forms.Label();
-            this.elementalLegendLabel.AutoSize = true;
-            this.elementalLegendLabel.Location = new System.Drawing.Point(40, 135);
-            this.elementalLegendLabel.Name = "elementalLegendLabel";
-            this.elementalLegendLabel.Size = new System.Drawing.Size(400, 45);
-            this.elementalLegendLabel.TabIndex = 5;
-            this.elementalLegendLabel.Text = "Group 1 (mutually exclusive): Choke, Burn, Shock\r\nGroup 2 (stackable): Rasp, Fro" +
-    "st, Drown";
-            //
-            // debuffSilence
-            //
-            this.debuffSilence = new System.Windows.Forms.CheckBox();
-            this.debuffSilence.AutoSize = true;
-            this.debuffSilence.Location = new System.Drawing.Point(320, 50);
-            this.debuffSilence.Name = "debuffSilence";
-            this.debuffSilence.Size = new System.Drawing.Size(67, 19);
-            this.debuffSilence.TabIndex = 10;
-            this.debuffSilence.Text = "Silence";
-            this.debuffSilence.UseVisualStyleBackColor = true;
-            //
-            // debuffBind
-            //
-            this.debuffBind = new System.Windows.Forms.CheckBox();
-            this.debuffBind.AutoSize = true;
-            this.debuffBind.Location = new System.Drawing.Point(320, 75);
-            this.debuffBind.Name = "debuffBind";
-            this.debuffBind.Size = new System.Drawing.Size(51, 19);
-            this.debuffBind.TabIndex = 11;
-            this.debuffBind.Text = "Bind";
-            this.debuffBind.UseVisualStyleBackColor = true;
-            //
-            // debuffParalyze
-            //
-            this.debuffParalyze.AutoSize = true;
-            this.debuffParalyze.Location = new System.Drawing.Point(220, 50);
-            this.debuffParalyze.Name = "debuffParalyze";
-            this.debuffParalyze.Size = new System.Drawing.Size(75, 19);
-            this.debuffParalyze.TabIndex = 6;
-            this.debuffParalyze.Text = "Paralyze";
-            this.debuffParalyze.UseVisualStyleBackColor = true;
-            //
-            // debuffBlind
-            //
-            this.debuffBlind.AutoSize = true;
-            this.debuffBlind.Location = new System.Drawing.Point(220, 75);
-            this.debuffBlind.Name = "debuffBlind";
-            this.debuffBlind.Size = new System.Drawing.Size(54, 19);
-            this.debuffBlind.TabIndex = 7;
-            this.debuffBlind.Text = "Blind";
-            this.debuffBlind.UseVisualStyleBackColor = true;
-            //
-            // debuffGravity
-            //
-            this.debuffGravity.AutoSize = true;
-            this.debuffGravity.Location = new System.Drawing.Point(220, 100);
-            this.debuffGravity.Name = "debuffGravity";
-            this.debuffGravity.Size = new System.Drawing.Size(64, 19);
-            this.debuffGravity.TabIndex = 8;
-            this.debuffGravity.Text = "Gravity";
-            this.debuffGravity.UseVisualStyleBackColor = true;
-            //
-            // debuffSlow
-            //
-            this.debuffSlow.AutoSize = true;
-            this.debuffSlow.Location = new System.Drawing.Point(220, 125);
-            this.debuffSlow.Name = "debuffSlow";
-            this.debuffSlow.Size = new System.Drawing.Size(53, 19);
-            this.debuffSlow.TabIndex = 9;
-            this.debuffSlow.Text = "Slow";
-            this.debuffSlow.UseVisualStyleBackColor = true;
-            //
-            // debuffsWarningLabel
-            //
-            this.debuffsWarningLabel = new System.Windows.Forms.Label();
-            this.debuffsWarningLabel.AutoSize = true;
-            this.debuffsWarningLabel.ForeColor = System.Drawing.Color.Red;
-            this.debuffsWarningLabel.Location = new System.Drawing.Point(250, 27);
-            this.debuffsWarningLabel.Name = "debuffsWarningLabel";
-            this.debuffsWarningLabel.Size = new System.Drawing.Size(244, 15);
-            this.debuffsWarningLabel.TabIndex = 12;
-            this.debuffsWarningLabel.Text = "All options disabled: Addon not connected.";
-            this.debuffsWarningLabel.Visible = false;
-            //
-            // diaBioPanel
-            //
-            this.diaBioPanel = new System.Windows.Forms.Panel();
-            this.diaBioPanel.SuspendLayout();
-            this.diaBioPanel.Controls.Add(this.debuffDiaRadio);
-            this.diaBioPanel.Controls.Add(this.debuffBioRadio);
-            this.diaBioPanel.Location = new System.Drawing.Point(40, 50);
-            this.diaBioPanel.Name = "diaBioPanel";
-            this.diaBioPanel.Size = new System.Drawing.Size(150, 30);
-            //
-            // elementalPanel
-            //
-            this.elementalPanel = new System.Windows.Forms.Panel();
-            this.elementalPanel.SuspendLayout();
-            this.elementalPanel.Controls.Add(this.elementalGroup1Radio);
-            this.elementalPanel.Controls.Add(this.elementalGroup2Radio);
-            this.elementalPanel.Location = new System.Drawing.Point(40, 80);
-            this.elementalPanel.Name = "elementalPanel";
-            this.elementalPanel.Size = new System.Drawing.Size(200, 55);
-            //
+            // 
+            // enableDebuffs
+            // 
+            this.enableDebuffs.AutoSize = true;
+            this.enableDebuffs.Location = new System.Drawing.Point(20, 25);
+            this.enableDebuffs.Name = "enableDebuffs";
+            this.enableDebuffs.Size = new System.Drawing.Size(110, 19);
+            this.enableDebuffs.TabIndex = 0;
+            this.enableDebuffs.Text = "Enable Debuffs";
+            this.enableDebuffs.UseVisualStyleBackColor = true;
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(24, 35);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(227, 15);
+            this.label70.TabIndex = 15;
+            this.label70.Text = "(mutually exclusive): Choke, Burn, Shock";
+            // 
+            // panel16
+            // 
+            this.panel16.Controls.Add(this.debuffParalyze);
+            this.panel16.Controls.Add(this.debuffBind);
+            this.panel16.Controls.Add(this.debuffSlow);
+            this.panel16.Controls.Add(this.debuffGravity);
+            this.panel16.Controls.Add(this.debuffSilence);
+            this.panel16.Controls.Add(this.debuffBlind);
+            this.panel16.Location = new System.Drawing.Point(335, 50);
+            this.panel16.Name = "panel16";
+            this.panel16.Size = new System.Drawing.Size(242, 194);
+            this.panel16.TabIndex = 15;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -8507,13 +8522,21 @@
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.requiredCuragaNumbers)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox35.ResumeLayout(false);
             this.groupBox35.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.curePotency)).EndInit();
+            this.tabControl1.ResumeLayout(false);
             this.debuffsPage.ResumeLayout(false);
             this.debuffsGroupBox.ResumeLayout(false);
             this.debuffsGroupBox.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.elementalPanel.ResumeLayout(false);
+            this.elementalPanel.PerformLayout();
+            this.diaBioPanel.ResumeLayout(false);
+            this.diaBioPanel.PerformLayout();
+            this.panel16.ResumeLayout(false);
+            this.panel16.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -9064,5 +9087,7 @@
         private System.Windows.Forms.Label debuffsWarningLabel;
         private System.Windows.Forms.Panel diaBioPanel;
         private System.Windows.Forms.Panel elementalPanel;
+        private System.Windows.Forms.Panel panel16;
+        private System.Windows.Forms.Label label70;
     }
 }

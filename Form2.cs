@@ -4526,5 +4526,10 @@ namespace CurePlease
             debuffSilence.Enabled = isEnabled;
             debuffBind.Enabled = isEnabled;
         }
+
+        private void debuffsGroupBox_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

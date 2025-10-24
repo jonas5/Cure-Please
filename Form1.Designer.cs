@@ -2821,7 +2821,7 @@ namespace CurePlease
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Cure Please v. 2.1.0.0";
+            this.Text = "Miraculix v. 1.0.0";
             this.TransparencyKey = System.Drawing.Color.Silver;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);

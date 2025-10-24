@@ -3071,7 +3071,7 @@
                 buffID = 595
             });
 
-    MessageBox.Show("🔍 Starting FFXI process scan...");
+    //MessageBox.Show("🔍 Starting FFXI process scan...");
 
     var pol = GetFFXIProcesses(requireVisibleWindow: true);
 
@@ -3112,12 +3112,12 @@
     activeprocessids.SelectedIndex = 0;
 
     // Update UI version info
-    var versionText = "Cure Please v" + Application.ProductVersion;
+    var versionText = "Miraculix v" + Application.ProductVersion;
     //MessageBox.Show($"🆕 Setting version text: {versionText}");
 
     Text = notifyIcon1.Text = versionText;
     notifyIcon1.BalloonTipTitle = versionText;
-    notifyIcon1.BalloonTipText = "CurePlease has been minimized.";
+    notifyIcon1.BalloonTipText = "Miraculix has been minimized.";
     notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
 
    // MessageBox.Show("✅ FFXI process scan complete.");
@@ -3254,7 +3254,7 @@ private void setinstance_Click(object sender, EventArgs e)
 
     _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
     plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
-    Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Cure Please v" + Application.ProductVersion;
+    Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
 
     plLabel.ForeColor = Color.Green;
     POLID.BackColor = Color.White;
@@ -9259,7 +9259,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             selectedPOLID = i;
             plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
-            Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Cure Please v" + Application.ProductVersion;
+            Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
         }
 
         if (_ELITEAPIMonitored?.Player?.Name != null &&
@@ -9280,8 +9280,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
             if (FormWindowState.Minimized == WindowState)
             {
                 notifyIcon1.Visible = true;
-                notifyIcon1.BalloonTipTitle = "Cure Please";
-                notifyIcon1.BalloonTipText = "CurePlease has been minimized.";
+                notifyIcon1.BalloonTipTitle = "Miraculix";
+                notifyIcon1.BalloonTipText = "Miraculix has been minimized.";
                 notifyIcon1.ShowBalloonTip(500);
                 Hide();
             }
