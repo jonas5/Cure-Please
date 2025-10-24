@@ -1825,17 +1825,7 @@ namespace Miraculix
             public bool debuffBind { get; set; }
             public bool debuffSilence { get; set; }
 
-            // ADD ON OPTIONS
-            public string ipAddress
-            {
-                get; set;
-            }
-
-            public string listeningPort
-            {
-                get; set;
-            }
-        }
+         }
 
         #endregion "== Settings Class"
 
@@ -2359,8 +2349,6 @@ namespace Miraculix
                 config.FFXIDefaultAutoFollow = false;
                 config.enableHotKeys = false;
 
-                config.ipAddress = "127.0.0.1";
-                config.listeningPort = "19769";
 
                 config.enableFastCast_Mode = false;
                 config.trackCastingPackets = false;
@@ -2885,8 +2873,6 @@ namespace Miraculix
             config.FFXIDefaultAutoFollow = FFXIDefaultAutoFollow.Checked;
             config.enableHotKeys = enableHotKeys.Checked;
 
-            config.ipAddress = ipAddress.Text;
-            config.listeningPort = listeningPort.Text;
 
             config.enableFastCast_Mode = enableFastCast_Mode.Checked;
             config.trackCastingPackets = trackCastingPackets.Checked;
@@ -4035,8 +4021,7 @@ namespace Miraculix
             FFXIDefaultAutoFollow.Checked = config.FFXIDefaultAutoFollow;
             enableHotKeys.Checked = config.enableHotKeys;
 
-            ipAddress.Text = config.ipAddress;
-            listeningPort.Text = config.listeningPort;
+
 
             enableFastCast_Mode.Checked = config.enableFastCast_Mode;
             trackCastingPackets.Checked = config.trackCastingPackets;

@@ -10,12 +10,12 @@
 #include "spells.h"
 #include "BitReader.hpp"
 
-const char* g_PluginName = "CurePleasePluginCpp";
+const char* g_PluginName = "Miraculix";
 const char* g_PluginAuthor = "Jules";
-const char* g_PluginDescription = "Packet listener for CurePlease.";
-const double g_PluginVersion = 2.3;
+const char* g_PluginDescription = "Packet listener for Miraculix.";
+const double g_PluginVersion = 1.0;
 
-std::wstring PipeName = L"\\\\.\\pipe\\CurePleasePipe";
+std::wstring PipeName = L"\\\\.\\pipe\\MiraculixPipe";
 
 std::string GetTimestamp()
 {

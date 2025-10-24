@@ -116,10 +116,6 @@ namespace Miraculix
             this.healLowMP = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.mpMintempitemusage = new System.Windows.Forms.NumericUpDown();
-            this.listeningPort = new System.Windows.Forms.TextBox();
-            this.label48 = new System.Windows.Forms.Label();
-            this.ipAddress = new System.Windows.Forms.TextBox();
-            this.label38 = new System.Windows.Forms.Label();
             this.FFXIDefaultAutoFollow = new System.Windows.Forms.CheckBox();
             this.saveAsButton = new System.Windows.Forms.Button();
             this.loadButton = new System.Windows.Forms.Button();
@@ -131,7 +127,6 @@ namespace Miraculix
             this.panel15 = new System.Windows.Forms.Panel();
             this.label67 = new System.Windows.Forms.Label();
             this.enableHotKeys = new System.Windows.Forms.CheckBox();
-            this.groupBox18 = new Miraculix.GroupBoxEx();
             this.groupBox17 = new Miraculix.GroupBoxEx();
             this.label61 = new System.Windows.Forms.Label();
             this.trackCastingPackets = new System.Windows.Forms.CheckBox();
@@ -564,18 +559,18 @@ namespace Miraculix
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.debuffsPage = new System.Windows.Forms.TabPage();
             this.debuffsGroupBox = new Miraculix.GroupBoxEx();
-            this.debuffsWarningLabel = new System.Windows.Forms.Label();
+            this.panel16 = new System.Windows.Forms.Panel();
             this.debuffParalyze = new System.Windows.Forms.CheckBox();
-            this.debuffBlind = new System.Windows.Forms.CheckBox();
-            this.debuffGravity = new System.Windows.Forms.CheckBox();
             this.debuffSlow = new System.Windows.Forms.CheckBox();
+            this.debuffGravity = new System.Windows.Forms.CheckBox();
+            this.debuffBlind = new System.Windows.Forms.CheckBox();
+            this.debuffsWarningLabel = new System.Windows.Forms.Label();
             this.elementalPanel = new System.Windows.Forms.Panel();
+            this.label70 = new System.Windows.Forms.Label();
             this.diaBioPanel = new System.Windows.Forms.Panel();
             this.debuffDiaRadio = new System.Windows.Forms.RadioButton();
             this.debuffBioRadio = new System.Windows.Forms.RadioButton();
             this.enableDebuffs = new System.Windows.Forms.CheckBox();
-            this.label70 = new System.Windows.Forms.Label();
-            this.panel16 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).BeginInit();
@@ -599,7 +594,6 @@ namespace Miraculix
             this.tabPage7.SuspendLayout();
             this.groupBoxEx1.SuspendLayout();
             this.panel15.SuspendLayout();
-            this.groupBox18.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.groupBox14.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -687,9 +681,9 @@ namespace Miraculix
             this.tabControl1.SuspendLayout();
             this.debuffsPage.SuspendLayout();
             this.debuffsGroupBox.SuspendLayout();
+            this.panel16.SuspendLayout();
             this.elementalPanel.SuspendLayout();
             this.diaBioPanel.SuspendLayout();
-            this.panel16.SuspendLayout();
             this.SuspendLayout();
             // 
             // elementalLegendLabel
@@ -1703,42 +1697,6 @@ namespace Miraculix
             this.mpMintempitemusage.TabIndex = 10;
             this.toolTip1.SetToolTip(this.mpMintempitemusage, "\"Not Implemented\"");
             // 
-            // listeningPort
-            // 
-            this.listeningPort.Location = new System.Drawing.Point(92, 45);
-            this.listeningPort.Name = "listeningPort";
-            this.listeningPort.Size = new System.Drawing.Size(180, 21);
-            this.listeningPort.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.listeningPort, "Defaults:\r\n\r\nIP Address: 127.0.0.1\r\nPort: 19769");
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(12, 47);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(32, 15);
-            this.label48.TabIndex = 2;
-            this.label48.Text = "Port:";
-            this.toolTip1.SetToolTip(this.label48, "Defaults:\r\n\r\nIP Address: 127.0.0.1\r\nPort: 19769");
-            // 
-            // ipAddress
-            // 
-            this.ipAddress.Location = new System.Drawing.Point(92, 20);
-            this.ipAddress.Name = "ipAddress";
-            this.ipAddress.Size = new System.Drawing.Size(180, 21);
-            this.ipAddress.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.ipAddress, "Defaults:\r\n\r\nIP Address: 127.0.0.1\r\nPort: 19769");
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(12, 22);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(68, 15);
-            this.label38.TabIndex = 0;
-            this.label38.Text = "IP Address:";
-            this.toolTip1.SetToolTip(this.label38, "Defaults:\r\n\r\nIP Address: 127.0.0.1\r\nPort: 19769");
-            // 
             // FFXIDefaultAutoFollow
             // 
             this.FFXIDefaultAutoFollow.AutoSize = true;
@@ -1788,7 +1746,6 @@ namespace Miraculix
             // tabPage7
             // 
             this.tabPage7.Controls.Add(this.groupBoxEx1);
-            this.tabPage7.Controls.Add(this.groupBox18);
             this.tabPage7.Controls.Add(this.groupBox17);
             this.tabPage7.Controls.Add(this.groupBox14);
             this.tabPage7.Controls.Add(this.groupBox13);
@@ -1825,7 +1782,7 @@ namespace Miraculix
             this.label67.AutoSize = true;
             this.label67.Location = new System.Drawing.Point(21, 12);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(237, 45);
+            this.label67.Size = new System.Drawing.Size(236, 45);
             this.label67.TabIndex = 7;
             this.label67.Text = "CTRL + ALT + F1           Toggle Pause/Start\r\nCTRL + ALT + F2            Start Mi" +
     "raculix \r\nCTRL + ALT + F3            Pause Miraculix";
@@ -1839,21 +1796,6 @@ namespace Miraculix
             this.enableHotKeys.TabIndex = 0;
             this.enableHotKeys.Text = "Enable Hot Keys";
             this.enableHotKeys.UseVisualStyleBackColor = true;
-            // 
-            // groupBox18
-            // 
-            this.groupBox18.BorderColor = System.Drawing.Color.SlateGray;
-            this.groupBox18.Controls.Add(this.listeningPort);
-            this.groupBox18.Controls.Add(this.label48);
-            this.groupBox18.Controls.Add(this.ipAddress);
-            this.groupBox18.Controls.Add(this.label38);
-            this.groupBox18.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox18.Location = new System.Drawing.Point(405, 6);
-            this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Size = new System.Drawing.Size(395, 80);
-            this.groupBox18.TabIndex = 18;
-            this.groupBox18.TabStop = false;
-            this.groupBox18.Text = "Miraculix Addon Data";
             // 
             // groupBox17
             // 
@@ -1924,9 +1866,9 @@ namespace Miraculix
             this.groupBox14.Controls.Add(this.label33);
             this.groupBox14.Controls.Add(this.label32);
             this.groupBox14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox14.Location = new System.Drawing.Point(405, 92);
+            this.groupBox14.Location = new System.Drawing.Point(405, 6);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(395, 291);
+            this.groupBox14.Size = new System.Drawing.Size(395, 377);
             this.groupBox14.TabIndex = 16;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "PL Follow Options";
@@ -2046,7 +1988,7 @@ namespace Miraculix
             this.MinimiseonStart.AutoSize = true;
             this.MinimiseonStart.Location = new System.Drawing.Point(6, 97);
             this.MinimiseonStart.Name = "MinimiseonStart";
-            this.MinimiseonStart.Size = new System.Drawing.Size(187, 19);
+            this.MinimiseonStart.Size = new System.Drawing.Size(173, 19);
             this.MinimiseonStart.TabIndex = 2;
             this.MinimiseonStart.Text = "Minimise Miraculix on start";
             this.MinimiseonStart.UseVisualStyleBackColor = true;
@@ -8223,16 +8165,18 @@ namespace Miraculix
             this.debuffsGroupBox.Text = "Auto-Debuff Settings";
             this.debuffsGroupBox.Enter += new System.EventHandler(this.debuffsGroupBox_Enter);
             // 
-            // debuffsWarningLabel
+            // panel16
             // 
-            this.debuffsWarningLabel.AutoSize = true;
-            this.debuffsWarningLabel.ForeColor = System.Drawing.Color.Red;
-            this.debuffsWarningLabel.Location = new System.Drawing.Point(337, 22);
-            this.debuffsWarningLabel.Name = "debuffsWarningLabel";
-            this.debuffsWarningLabel.Size = new System.Drawing.Size(237, 15);
-            this.debuffsWarningLabel.TabIndex = 12;
-            this.debuffsWarningLabel.Text = "All options disabled: Addon not connected.";
-            this.debuffsWarningLabel.Visible = false;
+            this.panel16.Controls.Add(this.debuffParalyze);
+            this.panel16.Controls.Add(this.debuffBind);
+            this.panel16.Controls.Add(this.debuffSlow);
+            this.panel16.Controls.Add(this.debuffGravity);
+            this.panel16.Controls.Add(this.debuffSilence);
+            this.panel16.Controls.Add(this.debuffBlind);
+            this.panel16.Location = new System.Drawing.Point(335, 50);
+            this.panel16.Name = "panel16";
+            this.panel16.Size = new System.Drawing.Size(242, 194);
+            this.panel16.TabIndex = 15;
             // 
             // debuffParalyze
             // 
@@ -8244,15 +8188,15 @@ namespace Miraculix
             this.debuffParalyze.Text = "Paralyze";
             this.debuffParalyze.UseVisualStyleBackColor = true;
             // 
-            // debuffBlind
+            // debuffSlow
             // 
-            this.debuffBlind.AutoSize = true;
-            this.debuffBlind.Location = new System.Drawing.Point(40, 72);
-            this.debuffBlind.Name = "debuffBlind";
-            this.debuffBlind.Size = new System.Drawing.Size(54, 19);
-            this.debuffBlind.TabIndex = 7;
-            this.debuffBlind.Text = "Blind";
-            this.debuffBlind.UseVisualStyleBackColor = true;
+            this.debuffSlow.AutoSize = true;
+            this.debuffSlow.Location = new System.Drawing.Point(40, 122);
+            this.debuffSlow.Name = "debuffSlow";
+            this.debuffSlow.Size = new System.Drawing.Size(53, 19);
+            this.debuffSlow.TabIndex = 9;
+            this.debuffSlow.Text = "Slow";
+            this.debuffSlow.UseVisualStyleBackColor = true;
             // 
             // debuffGravity
             // 
@@ -8264,15 +8208,26 @@ namespace Miraculix
             this.debuffGravity.Text = "Gravity";
             this.debuffGravity.UseVisualStyleBackColor = true;
             // 
-            // debuffSlow
+            // debuffBlind
             // 
-            this.debuffSlow.AutoSize = true;
-            this.debuffSlow.Location = new System.Drawing.Point(40, 122);
-            this.debuffSlow.Name = "debuffSlow";
-            this.debuffSlow.Size = new System.Drawing.Size(53, 19);
-            this.debuffSlow.TabIndex = 9;
-            this.debuffSlow.Text = "Slow";
-            this.debuffSlow.UseVisualStyleBackColor = true;
+            this.debuffBlind.AutoSize = true;
+            this.debuffBlind.Location = new System.Drawing.Point(40, 72);
+            this.debuffBlind.Name = "debuffBlind";
+            this.debuffBlind.Size = new System.Drawing.Size(54, 19);
+            this.debuffBlind.TabIndex = 7;
+            this.debuffBlind.Text = "Blind";
+            this.debuffBlind.UseVisualStyleBackColor = true;
+            // 
+            // debuffsWarningLabel
+            // 
+            this.debuffsWarningLabel.AutoSize = true;
+            this.debuffsWarningLabel.ForeColor = System.Drawing.Color.Red;
+            this.debuffsWarningLabel.Location = new System.Drawing.Point(337, 22);
+            this.debuffsWarningLabel.Name = "debuffsWarningLabel";
+            this.debuffsWarningLabel.Size = new System.Drawing.Size(237, 15);
+            this.debuffsWarningLabel.TabIndex = 12;
+            this.debuffsWarningLabel.Text = "All options disabled: Addon not connected.";
+            this.debuffsWarningLabel.Visible = false;
             // 
             // elementalPanel
             // 
@@ -8284,6 +8239,15 @@ namespace Miraculix
             this.elementalPanel.Name = "elementalPanel";
             this.elementalPanel.Size = new System.Drawing.Size(266, 100);
             this.elementalPanel.TabIndex = 13;
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(24, 35);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(227, 15);
+            this.label70.TabIndex = 15;
+            this.label70.Text = "(mutually exclusive): Choke, Burn, Shock";
             // 
             // diaBioPanel
             // 
@@ -8325,28 +8289,6 @@ namespace Miraculix
             this.enableDebuffs.TabIndex = 0;
             this.enableDebuffs.Text = "Enable Debuffs";
             this.enableDebuffs.UseVisualStyleBackColor = true;
-            // 
-            // label70
-            // 
-            this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(24, 35);
-            this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(227, 15);
-            this.label70.TabIndex = 15;
-            this.label70.Text = "(mutually exclusive): Choke, Burn, Shock";
-            // 
-            // panel16
-            // 
-            this.panel16.Controls.Add(this.debuffParalyze);
-            this.panel16.Controls.Add(this.debuffBind);
-            this.panel16.Controls.Add(this.debuffSlow);
-            this.panel16.Controls.Add(this.debuffGravity);
-            this.panel16.Controls.Add(this.debuffSilence);
-            this.panel16.Controls.Add(this.debuffBlind);
-            this.panel16.Location = new System.Drawing.Point(335, 50);
-            this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(242, 194);
-            this.panel16.TabIndex = 15;
             // 
             // Form2
             // 
@@ -8390,8 +8332,6 @@ namespace Miraculix
             this.groupBoxEx1.PerformLayout();
             this.panel15.ResumeLayout(false);
             this.panel15.PerformLayout();
-            this.groupBox18.ResumeLayout(false);
-            this.groupBox18.PerformLayout();
             this.groupBox17.ResumeLayout(false);
             this.groupBox17.PerformLayout();
             this.groupBox14.ResumeLayout(false);
@@ -8531,12 +8471,12 @@ namespace Miraculix
             this.debuffsPage.ResumeLayout(false);
             this.debuffsGroupBox.ResumeLayout(false);
             this.debuffsGroupBox.PerformLayout();
+            this.panel16.ResumeLayout(false);
+            this.panel16.PerformLayout();
             this.elementalPanel.ResumeLayout(false);
             this.elementalPanel.PerformLayout();
             this.diaBioPanel.ResumeLayout(false);
             this.diaBioPanel.PerformLayout();
-            this.panel16.ResumeLayout(false);
-            this.panel16.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -8551,10 +8491,6 @@ namespace Miraculix
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.TextBox listeningPort;
-        private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.TextBox ipAddress;
-        private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label61;
         private System.Windows.Forms.CheckBox trackCastingPackets;
         private System.Windows.Forms.Label label24;
@@ -9005,7 +8941,6 @@ namespace Miraculix
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.NumericUpDown TargetRemoval_Delay;
         private System.Windows.Forms.Label label58;
-        private GroupBoxEx groupBox18;
         private GroupBoxEx groupBox17;
         private GroupBoxEx groupBox14;
         private GroupBoxEx groupBox13;

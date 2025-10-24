@@ -1618,7 +1618,7 @@ namespace Miraculix
             Form2 = new Form2(this);
             ReloadSettings();
 
-            _pipeClient = new NamedPipeClient("CurePleasePipe");
+            _pipeClient = new NamedPipeClient("MiraculixPipe");
             _pipeClient.Connected += PipeClient_Connected;
             _pipeClient.Disconnected += PipeClient_Disconnected;
             _pipeClient.MessageReceived += PipeClient_MessageReceived;
