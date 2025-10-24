@@ -1601,6 +1601,7 @@
 
 
         private NamedPipeClient _pipeClient;
+        public bool IsPipeConnected { get; private set; }
         public Form1()
         {
 
@@ -9844,6 +9845,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 Invoke(new Action(PipeClient_Connected));
                 return;
             }
+            IsPipeConnected = true;
+            UpdateUiForPipeStatus();
             AddOnStatus.BackColor = Color.ForestGreen;
             AddOnStatus.Text = "Connected";
         }
@@ -9855,6 +9858,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
                 Invoke(new Action(PipeClient_Disconnected));
                 return;
             }
+            IsPipeConnected = false;
+            UpdateUiForPipeStatus();
             AddOnStatus.BackColor = Color.DarkRed;
             AddOnStatus.Text = "Addon";
         }
@@ -9996,8 +10001,33 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             if (DateTime.Now - _lastPipeMessageTime > TimeSpan.FromSeconds(15))
             {
-                PipeClient_Disconnected();
+                if (IsPipeConnected) // Only trigger if we thought we were connected
+                {
+                    PipeClient_Disconnected();
+                }
             }
+             UpdateUiForPipeStatus();
+        }
+
+        private void UpdateUiForPipeStatus()
+        {
+            bool connected = IsPipeConnected;
+
+            // OOP Player Options
+            foreach (var button in oopPlayerOptionsButtons)
+            {
+                button.Enabled = connected;
+            }
+
+            // Party Player Options
+            autoHasteToolStripMenuItem.Enabled = connected;
+            autoHasteIIToolStripMenuItem.Enabled = connected;
+            autoProtectToolStripMenuItem.Enabled = connected;
+            shellToolStripMenuItem.Enabled = connected;
+
+            // Auto Options
+            autoRegenVToolStripMenuItem.Enabled = connected;
+            autoRefreshIIToolStripMenuItem.Enabled = connected;
         }
         private void PipeClient_MessageReceived(string message)
         {
@@ -10630,7 +10660,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            UpdateUiForPipeStatus();
         }
 
         private string GetDebuffTypeForSpell(ushort spellId)
