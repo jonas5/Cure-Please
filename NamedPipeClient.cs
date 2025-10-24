@@ -15,6 +15,8 @@ public class NamedPipeClient
     public event Action Connected;
     public event Action Disconnected;
 
+    public bool IsConnected => _pipeClient?.IsConnected ?? false;
+
     public NamedPipeClient(string pipeName)
     {
         _pipeName = pipeName;

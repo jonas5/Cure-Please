@@ -9999,14 +9999,21 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
         private void pipeStatusTimer_Tick(object sender, EventArgs e)
         {
-            if (DateTime.Now - _lastPipeMessageTime > TimeSpan.FromSeconds(15))
+            if (_pipeClient == null) return;
+
+            // This timer's job is to synchronize the UI state with the actual pipe connection state.
+            // The NamedPipeClient's events are the primary mechanism, but this timer acts as a failsafe
+            // in case an event is missed or the state gets out of sync.
+            if (_pipeClient.IsConnected && !this.IsPipeConnected)
             {
-                if (IsPipeConnected) // Only trigger if we thought we were connected
-                {
-                    PipeClient_Disconnected();
-                }
+                // The pipe is connected, but the UI thinks it's disconnected. Correct it.
+                PipeClient_Connected();
             }
-             UpdateUiForPipeStatus();
+            else if (!_pipeClient.IsConnected && this.IsPipeConnected)
+            {
+                // The pipe is disconnected, but the UI thinks it's connected. Correct it.
+                PipeClient_Disconnected();
+            }
         }
 
         private void UpdateUiForPipeStatus()
