@@ -20,16 +20,6 @@ namespace Miraculix
                 get; set;
             }
 
-            public bool autoTargetOnLock_delay
-            {
-                get; set;
-            }
-
-            public decimal autoTargetOnLock_delay_seconds
-            {
-                get; set;
-            }
-
             public string job_name
             {
                 get; set;
@@ -1710,6 +1700,16 @@ namespace Miraculix
                 get; set;
             }
 
+            public bool autoTargetOnLock_delay
+            {
+                get; set;
+            }
+
+            public decimal autoTargetOnLock_delay_seconds
+            {
+                get; set;
+            }
+
             // DISABLE CANCEL TARGETTING
             public bool DisableTargettingCancel
             {
@@ -2923,7 +2923,7 @@ namespace Miraculix
             config.idleHealTime = idleHealTime.Value;
         }
 
-        public void button4_Click(object sender, EventArgs e)
+        public void SaveSettings()
         {
             ApplySettingsToConfig();
 
@@ -2984,7 +2984,11 @@ namespace Miraculix
             {
                 // Ignore errors related to the flag file, not critical for core functionality
             }
+        }
 
+        public void button4_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
             Close();
         }
 

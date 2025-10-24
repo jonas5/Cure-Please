@@ -3129,6 +3129,28 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
 
             _lastSpellCastTime = DateTime.Now;
             _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+
+            autoTargetOnLock_delay.CheckedChanged += autoTargetOnLock_delay_CheckedChanged;
+            autoTargetOnLock_delay_seconds.ValueChanged += autoTargetOnLock_delay_seconds_ValueChanged;
+        }
+
+        private void autoTargetOnLock_delay_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Form2 != null && Form2.config != null)
+            {
+                Form2.config.autoTargetOnLock_delay = autoTargetOnLock_delay.Checked;
+                autoTargetOnLock_delay_seconds.Enabled = autoTargetOnLock_delay.Checked;
+                Form2.SaveSettings();
+            }
+        }
+
+        private void autoTargetOnLock_delay_seconds_ValueChanged(object sender, EventArgs e)
+        {
+            if (Form2 != null && Form2.config != null)
+            {
+                Form2.config.autoTargetOnLock_delay_seconds = autoTargetOnLock_delay_seconds.Value;
+                Form2.SaveSettings();
+            }
         }
 
         private void OopPlayerOptionsButton_Click(object sender, EventArgs e)

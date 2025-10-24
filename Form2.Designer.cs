@@ -563,6 +563,8 @@ namespace Miraculix
             this.debuffsPage = new System.Windows.Forms.TabPage();
             this.debuffsGroupBox = new Miraculix.GroupBoxEx();
             this.panel16 = new System.Windows.Forms.Panel();
+            this.autoTargetOnLock_delay = new System.Windows.Forms.CheckBox();
+            this.autoTargetOnLock_delay_seconds = new System.Windows.Forms.NumericUpDown();
             this.debuffParalyze = new System.Windows.Forms.CheckBox();
             this.debuffSlow = new System.Windows.Forms.CheckBox();
             this.debuffGravity = new System.Windows.Forms.CheckBox();
@@ -8372,7 +8374,7 @@ namespace Miraculix
             this.enableDebuffs.TabIndex = 0;
             this.enableDebuffs.Text = "Enable Debuffs";
             this.enableDebuffs.UseVisualStyleBackColor = true;
-            // 
+            //
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

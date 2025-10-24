@@ -32,6 +32,8 @@ namespace Miraculix
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.autoTargetOnLock_delay = new System.Windows.Forms.CheckBox();
+            this.autoTargetOnLock_delay_seconds = new System.Windows.Forms.NumericUpDown();
             this.buffUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.pipeStatusTimer = new System.Windows.Forms.Timer(this.components);
             this.player0optionsButton = new System.Windows.Forms.Button();
