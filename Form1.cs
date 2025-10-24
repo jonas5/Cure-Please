@@ -10013,6 +10013,11 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             bool connected = IsPipeConnected;
 
+            if (Form2 != null)
+            {
+                Form2.UpdateDebuffControlsState(connected);
+            }
+
             // OOP Player Options
             foreach (var button in oopPlayerOptionsButtons)
             {

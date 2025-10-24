@@ -4495,5 +4495,23 @@ namespace CurePlease
             }
         }
 
+        public void UpdateDebuffControlsState(bool isEnabled)
+        {
+            // Toggle visibility of the warning label
+            debuffsWarningLabel.Visible = !isEnabled;
+
+            // Toggle the enabled state of all debuff controls
+            enableDebuffs.Enabled = isEnabled;
+            debuffDiaRadio.Enabled = isEnabled;
+            debuffBioRadio.Enabled = isEnabled;
+            elementalGroup1Radio.Enabled = isEnabled;
+            elementalGroup2Radio.Enabled = isEnabled;
+            debuffParalyze.Enabled = isEnabled;
+            debuffBlind.Enabled = isEnabled;
+            debuffGravity.Enabled = isEnabled;
+            debuffSlow.Enabled = isEnabled;
+            debuffSilence.Enabled = isEnabled;
+            debuffBind.Enabled = isEnabled;
+        }
     }
 }

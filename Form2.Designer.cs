@@ -8148,6 +8148,7 @@
             //
             this.debuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
             this.debuffsGroupBox.Controls.Add(this.debuffBind);
+            this.debuffsGroupBox.Controls.Add(this.debuffsWarningLabel);
             this.debuffsGroupBox.Controls.Add(this.debuffSilence);
             this.debuffsGroupBox.Controls.Add(this.debuffParalyze);
             this.debuffsGroupBox.Controls.Add(this.debuffBlind);
@@ -8291,6 +8292,18 @@
             this.debuffBind.TabIndex = 11;
             this.debuffBind.Text = "Bind";
             this.debuffBind.UseVisualStyleBackColor = true;
+            //
+            // debuffsWarningLabel
+            //
+            this.debuffsWarningLabel = new System.Windows.Forms.Label();
+            this.debuffsWarningLabel.AutoSize = true;
+            this.debuffsWarningLabel.ForeColor = System.Drawing.Color.Red;
+            this.debuffsWarningLabel.Location = new System.Drawing.Point(250, 27);
+            this.debuffsWarningLabel.Name = "debuffsWarningLabel";
+            this.debuffsWarningLabel.Size = new System.Drawing.Size(244, 15);
+            this.debuffsWarningLabel.TabIndex = 12;
+            this.debuffsWarningLabel.Text = "All options disabled: Addon not connected.";
+            this.debuffsWarningLabel.Visible = false;
             //
             // Form2
             // 
@@ -9020,3 +9033,4 @@
         private System.Windows.Forms.Label elementalLegendLabel;
         private System.Windows.Forms.CheckBox debuffBind;
         private System.Windows.Forms.CheckBox debuffSilence;
+        private System.Windows.Forms.Label debuffsWarningLabel;
