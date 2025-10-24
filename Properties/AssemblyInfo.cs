@@ -3,12 +3,12 @@ using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following set of attributes.
 // Change these attribute values to modify the information associated with an assembly.
-[assembly: AssemblyTitle("FFXI Curing Bot")]
+[assembly: AssemblyTitle("Miraculix")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Miraculix")]
-[assembly: AssemblyCopyright("Copyright © 2013 (Updates by the FFXI community. © 2013-2025)")]
+[assembly: AssemblyCopyright("Copyright © 2024 (Updates by the FFXI community. © 2013-2025)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

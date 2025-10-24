@@ -1,4 +1,4 @@
-﻿namespace CurePlease
+namespace Miraculix
 {
     using EliteMMO.API;
     using System;

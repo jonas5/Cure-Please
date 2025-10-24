@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace CurePlease
+namespace Miraculix
 {
     partial class Form1
     {
@@ -36,12 +36,12 @@ namespace CurePlease
             this.pipeStatusTimer = new System.Windows.Forms.Timer(this.components);
             this.player0optionsButton = new System.Windows.Forms.Button();
             this.party0 = new System.Windows.Forms.GroupBox();
-            this.player5HP = new CurePlease.NewProgressBar();
-            this.player4HP = new CurePlease.NewProgressBar();
-            this.player3HP = new CurePlease.NewProgressBar();
-            this.player1HP = new CurePlease.NewProgressBar();
-            this.player2HP = new CurePlease.NewProgressBar();
-            this.player0HP = new CurePlease.NewProgressBar();
+            this.player5HP = new Miraculix.NewProgressBar();
+            this.player4HP = new Miraculix.NewProgressBar();
+            this.player3HP = new Miraculix.NewProgressBar();
+            this.player1HP = new Miraculix.NewProgressBar();
+            this.player2HP = new Miraculix.NewProgressBar();
+            this.player0HP = new Miraculix.NewProgressBar();
             this.player5buffsButton = new System.Windows.Forms.Button();
             this.player4buffsButton = new System.Windows.Forms.Button();
             this.player3buffsButton = new System.Windows.Forms.Button();
@@ -129,17 +129,17 @@ namespace CurePlease
             this.POLID = new System.Windows.Forms.ComboBox();
             this.plLabel = new System.Windows.Forms.Label();
             this.party2 = new System.Windows.Forms.GroupBox();
-            this.player17HP = new CurePlease.NewProgressBar();
+            this.player17HP = new Miraculix.NewProgressBar();
             this.player17optionsButton = new System.Windows.Forms.Button();
-            this.player16HP = new CurePlease.NewProgressBar();
+            this.player16HP = new Miraculix.NewProgressBar();
             this.player17priority = new System.Windows.Forms.CheckBox();
-            this.player15HP = new CurePlease.NewProgressBar();
+            this.player15HP = new Miraculix.NewProgressBar();
             this.player17enabled = new System.Windows.Forms.CheckBox();
-            this.player13HP = new CurePlease.NewProgressBar();
+            this.player13HP = new Miraculix.NewProgressBar();
             this.player16optionsButton = new System.Windows.Forms.Button();
-            this.player14HP = new CurePlease.NewProgressBar();
+            this.player14HP = new Miraculix.NewProgressBar();
             this.player16priority = new System.Windows.Forms.CheckBox();
-            this.player12HP = new CurePlease.NewProgressBar();
+            this.player12HP = new Miraculix.NewProgressBar();
             this.player16enabled = new System.Windows.Forms.CheckBox();
             this.player15optionsButton = new System.Windows.Forms.Button();
             this.player15priority = new System.Windows.Forms.CheckBox();
@@ -174,16 +174,16 @@ namespace CurePlease
             this.player10enabled = new System.Windows.Forms.CheckBox();
             this.player11enabled = new System.Windows.Forms.CheckBox();
             this.party1 = new System.Windows.Forms.GroupBox();
-            this.player11HP = new CurePlease.NewProgressBar();
+            this.player11HP = new Miraculix.NewProgressBar();
             this.player11optionsButton = new System.Windows.Forms.Button();
-            this.player10HP = new CurePlease.NewProgressBar();
+            this.player10HP = new Miraculix.NewProgressBar();
             this.player11priority = new System.Windows.Forms.CheckBox();
-            this.player9HP = new CurePlease.NewProgressBar();
+            this.player9HP = new Miraculix.NewProgressBar();
             this.player10optionsButton = new System.Windows.Forms.Button();
-            this.player7HP = new CurePlease.NewProgressBar();
-            this.player8HP = new CurePlease.NewProgressBar();
+            this.player7HP = new Miraculix.NewProgressBar();
+            this.player8HP = new Miraculix.NewProgressBar();
             this.player9optionsButton = new System.Windows.Forms.Button();
-            this.player6HP = new CurePlease.NewProgressBar();
+            this.player6HP = new Miraculix.NewProgressBar();
             this.player10priority = new System.Windows.Forms.CheckBox();
             this.player8optionsButton = new System.Windows.Forms.Button();
             this.player7optionsButton = new System.Windows.Forms.Button();
@@ -250,32 +250,32 @@ namespace CurePlease
             this.oopPlayerPriorities0 = new System.Windows.Forms.CheckBox();
             this.oopPlayerComboBoxes0 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons0 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs0 = new CurePlease.NewProgressBar();
+            this.oopPlayerHPs0 = new Miraculix.NewProgressBar();
             this.oopPlayerEnables1 = new System.Windows.Forms.CheckBox();
             this.oopPlayerPriorities1 = new System.Windows.Forms.CheckBox();
             this.oopPlayerComboBoxes1 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons1 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs1 = new CurePlease.NewProgressBar();
+            this.oopPlayerHPs1 = new Miraculix.NewProgressBar();
             this.oopPlayerEnables2 = new System.Windows.Forms.CheckBox();
             this.oopPlayerPriorities2 = new System.Windows.Forms.CheckBox();
             this.oopPlayerComboBoxes2 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons2 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs2 = new CurePlease.NewProgressBar();
+            this.oopPlayerHPs2 = new Miraculix.NewProgressBar();
             this.oopPlayerEnables3 = new System.Windows.Forms.CheckBox();
             this.oopPlayerPriorities3 = new System.Windows.Forms.CheckBox();
             this.oopPlayerComboBoxes3 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons3 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs3 = new CurePlease.NewProgressBar();
+            this.oopPlayerHPs3 = new Miraculix.NewProgressBar();
             this.oopPlayerEnables4 = new System.Windows.Forms.CheckBox();
             this.oopPlayerPriorities4 = new System.Windows.Forms.CheckBox();
             this.oopPlayerComboBoxes4 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons4 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs4 = new CurePlease.NewProgressBar();
+            this.oopPlayerHPs4 = new Miraculix.NewProgressBar();
             this.oopPlayerEnables5 = new System.Windows.Forms.CheckBox();
             this.oopPlayerPriorities5 = new System.Windows.Forms.CheckBox();
             this.oopPlayerComboBoxes5 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons5 = new System.Windows.Forms.Button();
-            this.oopPlayerHPs5 = new CurePlease.NewProgressBar();
+            this.oopPlayerHPs5 = new Miraculix.NewProgressBar();
             this.party0.SuspendLayout();
             this.playerOptions.SuspendLayout();
             this.party2.SuspendLayout();
