@@ -30,6 +30,7 @@ namespace Miraculix
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            this.autoHealWhenIdle = new System.Windows.Forms.CheckBox();
             this.elementalLegendLabel = new System.Windows.Forms.Label();
             this.debuffBind = new System.Windows.Forms.CheckBox();
             this.elementalGroup2Radio = new System.Windows.Forms.RadioButton();
@@ -2432,17 +2433,6 @@ namespace Miraculix
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MP Settings";
-            // 
-            // autoHealWhenIdle
-            //
-            this.autoHealWhenIdle.AutoSize = true;
-            this.autoHealWhenIdle.Location = new System.Drawing.Point(9, 151);
-            this.autoHealWhenIdle.Name = "autoHealWhenIdle";
-            this.autoHealWhenIdle.Size = new System.Drawing.Size(165, 19);
-            this.autoHealWhenIdle.TabIndex = 44;
-            this.autoHealWhenIdle.Text = "Automatic heal when idle";
-            this.toolTip1.SetToolTip(this.autoHealWhenIdle, "Automatically starts resting when idle to recover MP.");
-            this.autoHealWhenIdle.UseVisualStyleBackColor = true;
             //
             // lowMPcheckBox
             // 
@@ -2475,6 +2465,17 @@ namespace Miraculix
             this.mpMinCastValue.Size = new System.Drawing.Size(61, 21);
             this.mpMinCastValue.TabIndex = 6;
             // 
+            // autoHealWhenIdle
+            //
+            this.autoHealWhenIdle.AutoSize = true;
+            this.autoHealWhenIdle.Location = new System.Drawing.Point(9, 151);
+            this.autoHealWhenIdle.Name = "autoHealWhenIdle";
+            this.autoHealWhenIdle.Size = new System.Drawing.Size(165, 19);
+            this.autoHealWhenIdle.TabIndex = 44;
+            this.autoHealWhenIdle.Text = "Automatic heal when idle";
+            this.toolTip1.SetToolTip(this.autoHealWhenIdle, "Automatically starts resting when idle to recover MP.");
+            this.autoHealWhenIdle.UseVisualStyleBackColor = true;
+            //
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.groupBox24);
