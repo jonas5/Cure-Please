@@ -2380,6 +2380,28 @@ namespace Miraculix
             this.AboutButton.Text = "About";
             this.AboutButton.UseVisualStyleBackColor = false;
             this.AboutButton.Click += new System.EventHandler(this.AboutButton_Click);
+            //
+            // autoTargetOnLock_delay
+            //
+            this.autoTargetOnLock_delay.AutoSize = true;
+            this.autoTargetOnLock_delay.Location = new System.Drawing.Point(10, 30);
+            this.autoTargetOnLock_delay.Name = "autoTargetOnLock_delay";
+            this.autoTargetOnLock_delay.Size = new System.Drawing.Size(89, 17);
+            this.autoTargetOnLock_delay.TabIndex = 1;
+            this.autoTargetOnLock_delay.Text = "Delay Target";
+            this.autoTargetOnLock_delay.UseVisualStyleBackColor = true;
+            //
+            // autoTargetOnLock_delay_seconds
+            //
+            this.autoTargetOnLock_delay_seconds.Location = new System.Drawing.Point(105, 29);
+            this.autoTargetOnLock_delay_seconds.Name = "autoTargetOnLock_delay_seconds";
+            this.autoTargetOnLock_delay_seconds.Size = new System.Drawing.Size(33, 20);
+            this.autoTargetOnLock_delay_seconds.TabIndex = 2;
+            this.autoTargetOnLock_delay_seconds.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
             // FullCircle_Timer
             // 
@@ -2433,11 +2455,13 @@ namespace Miraculix
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox4.Controls.Add(this.autoTargetOnLock_delay);
+            this.groupBox4.Controls.Add(this.autoTargetOnLock_delay_seconds);
             this.groupBox4.Controls.Add(this.battleTargetLabel);
             this.groupBox4.ForeColor = System.Drawing.SystemColors.GrayText;
             this.groupBox4.Location = new System.Drawing.Point(655, 334);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(196, 31);
+            this.groupBox4.Size = new System.Drawing.Size(196, 50);
             this.groupBox4.TabIndex = 24;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Battle Target";
@@ -2818,6 +2842,7 @@ namespace Miraculix
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            ((System.ComponentModel.ISupportInitialize)(this.autoTargetOnLock_delay_seconds)).BeginInit();
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
@@ -3101,5 +3126,7 @@ namespace Miraculix
         private ComboBox oopPlayerComboBoxes5;
         private Button oopPlayerOptionsButtons5;
         private NewProgressBar oopPlayerHPs5;
+        private CheckBox autoTargetOnLock_delay;
+        private NumericUpDown autoTargetOnLock_delay_seconds;
     }
 }

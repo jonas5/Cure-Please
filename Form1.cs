@@ -84,6 +84,7 @@ namespace Miraculix
 
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
+private DateTime _nextTargetSetTime = DateTime.MinValue;
         private int debuffTargetId = 0;
         private Dictionary<string, DateTime> targetDebuffTimers = new Dictionary<string, DateTime>();
         private int debuffTimersTargetId = 0;
@@ -5709,6 +5710,17 @@ private string GetBestSpellTier(string buffType, string targetName)
                 { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
             };
             partyState.UpdateBuffDefinitions(buff_definitions);
+
+            // Update the UI controls on the main form
+            if (autoTargetOnLock_delay != null)
+            {
+                autoTargetOnLock_delay.Checked = Form2.config.autoTargetOnLock_delay;
+            }
+            if (autoTargetOnLock_delay_seconds != null)
+            {
+                autoTargetOnLock_delay_seconds.Value = Form2.config.autoTargetOnLock_delay_seconds;
+                autoTargetOnLock_delay_seconds.Enabled = Form2.config.autoTargetOnLock_delay;
+            }
         }
 
         private bool IsOopPlayerInRange(string playerName)
@@ -5903,6 +5915,16 @@ private string GetBestSpellTier(string buffType, string targetName)
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
             UpdateNearbyPlayers();
+
+            if (Form2.config.autoTargetOnLock_delay && _nextTargetSetTime != DateTime.MinValue && DateTime.Now >= _nextTargetSetTime)
+            {
+                if (lockedTargetId != 0)
+                {
+                    _ELITEAPIPL.Target.SetTarget(lockedTargetId);
+                }
+                _nextTargetSetTime = DateTime.MinValue;
+            }
+
             debug_MSG_show.AppendLine($"---\n[{DateTime.Now:HH:mm:ss.fff}] [actionTimer_TickAsync] Start of tick.");
             foreach (var memberState in partyState.Members.Values)
             {
@@ -9132,7 +9154,11 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                             {
                                 debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Locking and returning index: {i}");
                                 lockedTargetId = i;
-                                if (Form2.config.autoTargetOnLock)
+                                if (Form2.config.autoTargetOnLock_delay)
+                                {
+                                    _nextTargetSetTime = DateTime.Now.AddSeconds((double)Form2.config.autoTargetOnLock_delay_seconds);
+                                }
+                                else if (Form2.config.autoTargetOnLock)
                                 {
                                     _ELITEAPIPL.Target.SetTarget(i);
                                 }
@@ -9148,7 +9174,11 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         {
                             debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Locking and returning index: {i}");
                             lockedTargetId = i;
-                            if (Form2.config.autoTargetOnLock)
+                            if (Form2.config.autoTargetOnLock_delay)
+                            {
+                                _nextTargetSetTime = DateTime.Now.AddSeconds((double)Form2.config.autoTargetOnLock_delay_seconds);
+                            }
+                            else if (Form2.config.autoTargetOnLock)
                             {
                                 _ELITEAPIPL.Target.SetTarget(i);
                             }

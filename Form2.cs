@@ -20,6 +20,16 @@ namespace Miraculix
                 get; set;
             }
 
+            public bool autoTargetOnLock_delay
+            {
+                get; set;
+            }
+
+            public decimal autoTargetOnLock_delay_seconds
+            {
+                get; set;
+            }
+
             public string job_name
             {
                 get; set;
@@ -2297,6 +2307,8 @@ namespace Miraculix
                 config.autoTargetSpell = "Dia";
                 config.AssistSpecifiedTarget = false;
                 config.autoTargetOnLock = false;
+                config.autoTargetOnLock_delay = false;
+                config.autoTargetOnLock_delay_seconds = 2;
 
                 config.DisableTargettingCancel = false;
                 config.TargetRemoval_Delay = 3;
@@ -2828,6 +2840,8 @@ namespace Miraculix
             config.autoTarget_Target = autoTarget_target.Text;
             config.AssistSpecifiedTarget = AssistSpecifiedTarget.Checked;
             config.autoTargetOnLock = autoTargetOnLock.Checked;
+            config.autoTargetOnLock_delay = this.autoTargetOnLock_delay.Checked;
+            config.autoTargetOnLock_delay_seconds = this.autoTargetOnLock_delay_seconds.Value;
 
             config.DisableTargettingCancel = DisableTargettingCancel.Checked;
             config.TargetRemoval_Delay = TargetRemoval_Delay.Value;
@@ -3973,6 +3987,8 @@ namespace Miraculix
 
             AssistSpecifiedTarget.Checked = config.AssistSpecifiedTarget;
             autoTargetOnLock.Checked = config.autoTargetOnLock;
+            this.autoTargetOnLock_delay.Checked = config.autoTargetOnLock_delay;
+            this.autoTargetOnLock_delay_seconds.Value = config.autoTargetOnLock_delay_seconds;
 
             DisableTargettingCancel.Checked = config.DisableTargettingCancel;
             TargetRemoval_Delay.Value = config.TargetRemoval_Delay;
