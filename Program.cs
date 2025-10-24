@@ -1,4 +1,4 @@
-﻿namespace CurePlease
+﻿namespace Miraculix
 {
     using System;
     using System.Windows.Forms;
