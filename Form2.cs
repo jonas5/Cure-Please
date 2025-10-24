@@ -1824,7 +1824,7 @@ namespace Miraculix
             public bool debuffGravity { get; set; }
             public bool debuffBind { get; set; }
             public bool debuffSilence { get; set; }
-
+            public bool autoHealWhenIdle { get; set; }
          }
 
         #endregion "== Settings Class"
@@ -2363,6 +2363,7 @@ namespace Miraculix
                 config.debuffGravity = false;
                 config.debuffBind = false;
                 config.debuffSilence = false;
+                config.autoHealWhenIdle = false;
 
                 // OTHERS
 
@@ -2902,6 +2903,7 @@ namespace Miraculix
             config.debuffGravity = debuffGravity.Checked;
             config.debuffBind = debuffBind.Checked;
             config.debuffSilence = debuffSilence.Checked;
+            config.autoHealWhenIdle = autoHealWhenIdle.Checked;
         }
 
         public void button4_Click(object sender, EventArgs e)
@@ -4038,6 +4040,7 @@ namespace Miraculix
             debuffGravity.Checked = config.debuffGravity;
             debuffBind.Checked = config.debuffBind;
             debuffSilence.Checked = config.debuffSilence;
+            autoHealWhenIdle.Checked = config.autoHealWhenIdle;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )

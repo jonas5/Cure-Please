@@ -2425,13 +2425,25 @@ namespace Miraculix
             this.groupBox4.Controls.Add(this.lowMPcheckBox);
             this.groupBox4.Controls.Add(this.label4);
             this.groupBox4.Controls.Add(this.mpMinCastValue);
+            this.groupBox4.Controls.Add(this.autoHealWhenIdle);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(351, 162);
+            this.groupBox4.Size = new System.Drawing.Size(351, 185);
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MP Settings";
             // 
+            // autoHealWhenIdle
+            //
+            this.autoHealWhenIdle.AutoSize = true;
+            this.autoHealWhenIdle.Location = new System.Drawing.Point(9, 151);
+            this.autoHealWhenIdle.Name = "autoHealWhenIdle";
+            this.autoHealWhenIdle.Size = new System.Drawing.Size(165, 19);
+            this.autoHealWhenIdle.TabIndex = 44;
+            this.autoHealWhenIdle.Text = "Automatic heal when idle";
+            this.toolTip1.SetToolTip(this.autoHealWhenIdle, "Automatically starts resting when idle to recover MP.");
+            this.autoHealWhenIdle.UseVisualStyleBackColor = true;
+            //
             // lowMPcheckBox
             // 
             this.lowMPcheckBox.AutoSize = true;
@@ -9024,5 +9036,6 @@ namespace Miraculix
         private System.Windows.Forms.Panel elementalPanel;
         private System.Windows.Forms.Panel panel16;
         private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.CheckBox autoHealWhenIdle;
     }
 }

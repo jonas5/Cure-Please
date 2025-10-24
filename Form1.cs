@@ -6205,7 +6205,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     _ELITEAPIPL.ThirdParty.SendString("/heal");
                 }
                 if (!pauseActions &&
-                    Form2.config.healLowMP &&
+                    Form2.config.autoHealWhenIdle &&
                     _ELITEAPIPL.Player.Status == 0 &&
                     _ELITEAPIPL.Player.MPP < Form2.config.standAtMP_Percentage &&
                     _ELITEAPIPL.Player.MPP < 100 &&
