@@ -101,6 +101,9 @@ namespace Miraculix
         private List<string> nearbyPlayers = new List<string>();
         private Dictionary<string, OopPlayerState> oopPlayerStates = new Dictionary<string, OopPlayerState>();
         private DateTime _lastPipeMessageTime;
+        private DateTime _lastSpellCastTime;
+        private TimeSpan _idleHealThreshold;
+        private Random _random = new Random();
         private ComboBox[] oopPlayerComboBoxes;
         private ProgressBar[] oopPlayerHPs;
         private CheckBox[] oopPlayerEnables;
@@ -3122,6 +3125,9 @@ namespace Miraculix
 
    // MessageBox.Show("✅ FFXI process scan complete.");
             this.ClientSize = new System.Drawing.Size(874, 380);
+
+            _lastSpellCastTime = DateTime.Now;
+            _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
         }
 
         private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
@@ -5511,7 +5517,8 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             if (CastingBackground_Check != true)
             {
-
+                _lastSpellCastTime = DateTime.Now;
+                _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
 
                 castingSpell = magic.Name[0];
@@ -6196,6 +6203,16 @@ private string GetBestSpellTier(string buffType, string targetName)
                         islowmp = false;
                     }
                     _ELITEAPIPL.ThirdParty.SendString("/heal");
+                }
+                if (!pauseActions &&
+                    Form2.config.healLowMP &&
+                    _ELITEAPIPL.Player.Status == 0 &&
+                    _ELITEAPIPL.Player.MPP < Form2.config.standAtMP_Percentage &&
+                    _ELITEAPIPL.Player.MPP < 100 &&
+                    (DateTime.Now - _lastSpellCastTime) > _idleHealThreshold)
+                {
+                    _ELITEAPIPL.ThirdParty.SendString("/heal");
+                    _lastSpellCastTime = DateTime.Now; // Reset timer to avoid spamming /heal
                 }
 
                 // Only perform actions if PL is stationary PAUSE GOES HERE
