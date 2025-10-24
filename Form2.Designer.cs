@@ -8159,18 +8159,34 @@
             this.debuffsGroupBox.Controls.Add(this.debuffBlind);
             this.debuffsGroupBox.Controls.Add(this.debuffGravity);
             this.debuffsGroupBox.Controls.Add(this.debuffSlow);
-            this.debuffsGroupBox.Controls.Add(this.elementalLegendLabel);
-            this.debuffsGroupBox.Controls.Add(this.elementalGroup2Radio);
-            this.debuffsGroupBox.Controls.Add(this.elementalGroup1Radio);
-            this.debuffsGroupBox.Controls.Add(this.debuffBioRadio);
-            this.debuffsGroupBox.Controls.Add(this.debuffDiaRadio);
             this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
+            this.debuffsGroupBox.Controls.Add(this.diaBioPanel);
+            this.debuffsGroupBox.Controls.Add(this.elementalPanel);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
             this.debuffsGroupBox.Size = new System.Drawing.Size(794, 545);
             this.debuffsGroupBox.TabIndex = 0;
             this.debuffsGroupBox.TabStop = false;
             this.debuffsGroupBox.Text = "Auto-Debuff Settings";
+            //
+            // diaBioPanel
+            //
+            this.diaBioPanel.Controls.Add(this.debuffDiaRadio);
+            this.diaBioPanel.Controls.Add(this.debuffBioRadio);
+            this.diaBioPanel.Location = new System.Drawing.Point(40, 47);
+            this.diaBioPanel.Name = "diaBioPanel";
+            this.diaBioPanel.Size = new System.Drawing.Size(150, 25);
+            this.diaBioPanel.TabIndex = 13;
+            //
+            // elementalPanel
+            //
+            this.elementalPanel.Controls.Add(this.elementalGroup1Radio);
+            this.elementalPanel.Controls.Add(this.elementalGroup2Radio);
+            this.elementalPanel.Controls.Add(this.elementalLegendLabel);
+            this.elementalPanel.Location = new System.Drawing.Point(40, 75);
+            this.elementalPanel.Name = "elementalPanel";
+            this.elementalPanel.Size = new System.Drawing.Size(450, 120);
+            this.elementalPanel.TabIndex = 14;
             //
             // enableDebuffs
             //
@@ -8184,9 +8200,8 @@
             //
             // debuffDiaRadio
             //
-            this.debuffDiaRadio = new System.Windows.Forms.RadioButton();
             this.debuffDiaRadio.AutoSize = true;
-            this.debuffDiaRadio.Location = new System.Drawing.Point(40, 50);
+            this.debuffDiaRadio.Location = new System.Drawing.Point(3, 3);
             this.debuffDiaRadio.Name = "debuffDiaRadio";
             this.debuffDiaRadio.Size = new System.Drawing.Size(44, 19);
             this.debuffDiaRadio.TabIndex = 1;
@@ -8196,9 +8211,8 @@
             //
             // debuffBioRadio
             //
-            this.debuffBioRadio = new System.Windows.Forms.RadioButton();
             this.debuffBioRadio.AutoSize = true;
-            this.debuffBioRadio.Location = new System.Drawing.Point(120, 50);
+            this.debuffBioRadio.Location = new System.Drawing.Point(83, 3);
             this.debuffBioRadio.Name = "debuffBioRadio";
             this.debuffBioRadio.Size = new System.Drawing.Size(43, 19);
             this.debuffBioRadio.TabIndex = 2;
@@ -8208,9 +8222,8 @@
             //
             // elementalGroup1Radio
             //
-            this.elementalGroup1Radio = new System.Windows.Forms.RadioButton();
             this.elementalGroup1Radio.AutoSize = true;
-            this.elementalGroup1Radio.Location = new System.Drawing.Point(40, 80);
+            this.elementalGroup1Radio.Location = new System.Drawing.Point(3, 3);
             this.elementalGroup1Radio.Name = "elementalGroup1Radio";
             this.elementalGroup1Radio.Size = new System.Drawing.Size(153, 19);
             this.elementalGroup1Radio.TabIndex = 3;
@@ -8220,9 +8233,8 @@
             //
             // elementalGroup2Radio
             //
-            this.elementalGroup2Radio = new System.Windows.Forms.RadioButton();
             this.elementalGroup2Radio.AutoSize = true;
-            this.elementalGroup2Radio.Location = new System.Drawing.Point(40, 105);
+            this.elementalGroup2Radio.Location = new System.Drawing.Point(3, 28);
             this.elementalGroup2Radio.Name = "elementalGroup2Radio";
             this.elementalGroup2Radio.Size = new System.Drawing.Size(153, 19);
             this.elementalGroup2Radio.TabIndex = 4;
@@ -8232,9 +8244,8 @@
             //
             // elementalLegendLabel
             //
-            this.elementalLegendLabel = new System.Windows.Forms.Label();
             this.elementalLegendLabel.AutoSize = true;
-            this.elementalLegendLabel.Location = new System.Drawing.Point(40, 135);
+            this.elementalLegendLabel.Location = new System.Drawing.Point(3, 58);
             this.elementalLegendLabel.Name = "elementalLegendLabel";
             this.elementalLegendLabel.Size = new System.Drawing.Size(400, 45);
             this.elementalLegendLabel.TabIndex = 5;
@@ -8495,6 +8506,10 @@
             this.debuffsPage.ResumeLayout(false);
             this.debuffsGroupBox.ResumeLayout(false);
             this.debuffsGroupBox.PerformLayout();
+            this.diaBioPanel.ResumeLayout(false);
+            this.diaBioPanel.PerformLayout();
+            this.elementalPanel.ResumeLayout(false);
+            this.elementalPanel.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -9044,5 +9059,7 @@
         private System.Windows.Forms.CheckBox debuffBind;
         private System.Windows.Forms.CheckBox debuffSilence;
         private System.Windows.Forms.Label debuffsWarningLabel;
+        private System.Windows.Forms.Panel diaBioPanel;
+        private System.Windows.Forms.Panel elementalPanel;
     }
 }
