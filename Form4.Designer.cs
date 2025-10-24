@@ -1,4 +1,4 @@
-﻿namespace CurePlease
+namespace Miraculix
 {
     partial class Form4
     {

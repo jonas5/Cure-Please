@@ -1,4 +1,4 @@
-﻿namespace CurePlease
+namespace Miraculix
 {
     partial class Form2
     {
@@ -92,7 +92,7 @@
             this.EntrustBox = new System.Windows.Forms.CheckBox();
             this.convert = new System.Windows.Forms.CheckBox();
             this.divineSealBox = new System.Windows.Forms.CheckBox();
-            this.groupBox16 = new CurePlease.GroupBoxEx();
+            this.groupBox16 = new Miraculix.GroupBoxEx();
             this.AssistSpecifiedTarget = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.autoTarget_target = new System.Windows.Forms.TextBox();
@@ -127,17 +127,17 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.groupBoxEx1 = new CurePlease.GroupBoxEx();
+            this.groupBoxEx1 = new Miraculix.GroupBoxEx();
             this.panel15 = new System.Windows.Forms.Panel();
             this.label67 = new System.Windows.Forms.Label();
             this.enableHotKeys = new System.Windows.Forms.CheckBox();
-            this.groupBox18 = new CurePlease.GroupBoxEx();
-            this.groupBox17 = new CurePlease.GroupBoxEx();
+            this.groupBox18 = new Miraculix.GroupBoxEx();
+            this.groupBox17 = new Miraculix.GroupBoxEx();
             this.label61 = new System.Windows.Forms.Label();
             this.trackCastingPackets = new System.Windows.Forms.CheckBox();
             this.label24 = new System.Windows.Forms.Label();
             this.enableFastCast_Mode = new System.Windows.Forms.CheckBox();
-            this.groupBox14 = new CurePlease.GroupBoxEx();
+            this.groupBox14 = new Miraculix.GroupBoxEx();
             this.panel9 = new System.Windows.Forms.Panel();
             this.label56 = new System.Windows.Forms.Label();
             this.autoFollow_Warning = new System.Windows.Forms.CheckBox();
@@ -146,59 +146,59 @@
             this.autoFollowDistance = new System.Windows.Forms.NumericUpDown();
             this.label33 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.groupBox13 = new CurePlease.GroupBoxEx();
+            this.groupBox13 = new Miraculix.GroupBoxEx();
             this.pauseOnKO = new System.Windows.Forms.CheckBox();
             this.MinimiseonStart = new System.Windows.Forms.CheckBox();
             this.pauseOnStartBox = new System.Windows.Forms.CheckBox();
             this.pauseOnZoneBox = new System.Windows.Forms.CheckBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.groupBox10 = new CurePlease.GroupBoxEx();
+            this.groupBox10 = new Miraculix.GroupBoxEx();
             this.label59 = new System.Windows.Forms.Label();
             this.TargetRemoval_Delay = new System.Windows.Forms.NumericUpDown();
             this.label58 = new System.Windows.Forms.Label();
             this.DisableTargettingCancel = new System.Windows.Forms.CheckBox();
-            this.groupBox36 = new CurePlease.GroupBoxEx();
+            this.groupBox36 = new Miraculix.GroupBoxEx();
             this.label27 = new System.Windows.Forms.Label();
             this.RadialArcanaSpell = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.RadialArcanaMP = new System.Windows.Forms.NumericUpDown();
             this.Fullcircle_GEOTarget = new System.Windows.Forms.CheckBox();
             this.Fullcircle_DisableEnemy = new System.Windows.Forms.CheckBox();
-            this.groupBox15 = new CurePlease.GroupBoxEx();
+            this.groupBox15 = new Miraculix.GroupBoxEx();
             this.DevotionWhenEngaged = new System.Windows.Forms.CheckBox();
             this.label35 = new System.Windows.Forms.Label();
             this.DevotionMP = new System.Windows.Forms.NumericUpDown();
-            this.Raise = new CurePlease.GroupBoxEx();
+            this.Raise = new Miraculix.GroupBoxEx();
             this.acceptRaiseOnlyWhenNotInCombat = new System.Windows.Forms.CheckBox();
             this.acceptRaise = new System.Windows.Forms.CheckBox();
-            this.groupBox33 = new CurePlease.GroupBoxEx();
+            this.groupBox33 = new Miraculix.GroupBoxEx();
             this.label25 = new System.Windows.Forms.Label();
             this.enableAddOn = new System.Windows.Forms.CheckBox();
-            this.groupBox32 = new CurePlease.GroupBoxEx();
+            this.groupBox32 = new Miraculix.GroupBoxEx();
             this.OvercureOnHighPriority = new System.Windows.Forms.CheckBox();
-            this.groupBox29 = new CurePlease.GroupBoxEx();
+            this.groupBox29 = new Miraculix.GroupBoxEx();
             this.label51 = new System.Windows.Forms.Label();
             this.sublimationMP = new System.Windows.Forms.NumericUpDown();
-            this.groupBox11 = new CurePlease.GroupBoxEx();
+            this.groupBox11 = new Miraculix.GroupBoxEx();
             this.label26 = new System.Windows.Forms.Label();
             this.ConvertMP = new System.Windows.Forms.NumericUpDown();
-            this.groupBox4 = new CurePlease.GroupBoxEx();
+            this.groupBox4 = new Miraculix.GroupBoxEx();
             this.lowMPcheckBox = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.mpMinCastValue = new System.Windows.Forms.NumericUpDown();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.groupBox24 = new CurePlease.GroupBoxEx();
+            this.groupBox24 = new Miraculix.GroupBoxEx();
             this.troubadour = new System.Windows.Forms.CheckBox();
             this.nightingale = new System.Windows.Forms.CheckBox();
             this.pianissimo = new System.Windows.Forms.CheckBox();
-            this.groupBox8 = new CurePlease.GroupBoxEx();
+            this.groupBox8 = new Miraculix.GroupBoxEx();
             this.LifeCycleBox = new System.Windows.Forms.CheckBox();
             this.EclipticAttritionBox = new System.Windows.Forms.CheckBox();
             this.RadialArcanaBox = new System.Windows.Forms.CheckBox();
             this.BlazeOfGloryBox = new System.Windows.Forms.CheckBox();
-            this.rdmJAgroup = new CurePlease.GroupBoxEx();
+            this.rdmJAgroup = new Miraculix.GroupBoxEx();
             this.composure = new System.Windows.Forms.CheckBox();
-            this.schJAgroup = new CurePlease.GroupBoxEx();
+            this.schJAgroup = new Miraculix.GroupBoxEx();
             this.addBlack = new System.Windows.Forms.CheckBox();
             this.darkArts = new System.Windows.Forms.CheckBox();
             this.sublimation = new System.Windows.Forms.CheckBox();
@@ -209,7 +209,7 @@
             this.penury = new System.Windows.Forms.CheckBox();
             this.addWhite = new System.Windows.Forms.CheckBox();
             this.lightArts = new System.Windows.Forms.CheckBox();
-            this.whmJAgroup = new CurePlease.GroupBoxEx();
+            this.whmJAgroup = new Miraculix.GroupBoxEx();
             this.DivineCaressBox = new System.Windows.Forms.CheckBox();
             this.DevotionBox = new System.Windows.Forms.CheckBox();
             this.afflatusMisery = new System.Windows.Forms.CheckBox();
@@ -222,55 +222,55 @@
             this.label39 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.groupBox30 = new CurePlease.GroupBoxEx();
+            this.groupBox30 = new Miraculix.GroupBoxEx();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label53 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.label54 = new System.Windows.Forms.Label();
-            this.groupBox31 = new CurePlease.GroupBoxEx();
+            this.groupBox31 = new Miraculix.GroupBoxEx();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label49 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label52 = new System.Windows.Forms.Label();
-            this.groupBox28 = new CurePlease.GroupBoxEx();
+            this.groupBox28 = new Miraculix.GroupBoxEx();
             this.label50 = new System.Windows.Forms.Label();
-            this.groupBox20 = new CurePlease.GroupBoxEx();
+            this.groupBox20 = new Miraculix.GroupBoxEx();
             this.song3 = new System.Windows.Forms.ComboBox();
             this.dummy1 = new System.Windows.Forms.ComboBox();
             this.label43 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
-            this.groupBox23 = new CurePlease.GroupBoxEx();
+            this.groupBox23 = new Miraculix.GroupBoxEx();
             this.clarionSong = new System.Windows.Forms.ComboBox();
             this.label47 = new System.Windows.Forms.Label();
-            this.groupBox22 = new CurePlease.GroupBoxEx();
+            this.groupBox22 = new Miraculix.GroupBoxEx();
             this.song4 = new System.Windows.Forms.ComboBox();
             this.dummy2 = new System.Windows.Forms.ComboBox();
             this.label42 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
-            this.groupBox21 = new CurePlease.GroupBoxEx();
+            this.groupBox21 = new Miraculix.GroupBoxEx();
             this.song2 = new System.Windows.Forms.ComboBox();
             this.label46 = new System.Windows.Forms.Label();
-            this.groupBox19 = new CurePlease.GroupBoxEx();
+            this.groupBox19 = new Miraculix.GroupBoxEx();
             this.song1 = new System.Windows.Forms.ComboBox();
             this.label45 = new System.Windows.Forms.Label();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.specifiedEngageTarget = new System.Windows.Forms.CheckBox();
             this.EnableLuopanSpells = new System.Windows.Forms.CheckBox();
             this.EnableGeoSpells = new System.Windows.Forms.CheckBox();
-            this.groupBox7 = new CurePlease.GroupBoxEx();
+            this.groupBox7 = new Miraculix.GroupBoxEx();
             this.label7 = new System.Windows.Forms.Label();
             this.entrustINDISpell = new System.Windows.Forms.ListBox();
-            this.groupBox6 = new CurePlease.GroupBoxEx();
+            this.groupBox6 = new Miraculix.GroupBoxEx();
             this.label6 = new System.Windows.Forms.Label();
             this.GEOSpell = new System.Windows.Forms.ListBox();
-            this.groupBox5 = new CurePlease.GroupBoxEx();
+            this.groupBox5 = new Miraculix.GroupBoxEx();
             this.INDISpell = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.groupBox34 = new CurePlease.GroupBoxEx();
+            this.groupBox34 = new Miraculix.GroupBoxEx();
             this.plUtsusemi = new System.Windows.Forms.CheckBox();
-            this.groupBox9 = new CurePlease.GroupBoxEx();
+            this.groupBox9 = new Miraculix.GroupBoxEx();
             this.AOE_Barstatus = new System.Windows.Forms.CheckBox();
             this.AOE_Barelemental = new System.Windows.Forms.CheckBox();
             this.plAuspice = new System.Windows.Forms.CheckBox();
@@ -284,7 +284,7 @@
             this.plShellra = new System.Windows.Forms.CheckBox();
             this.plShellralevel = new System.Windows.Forms.NumericUpDown();
             this.plProtectra = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new CurePlease.GroupBoxEx();
+            this.groupBox1 = new Miraculix.GroupBoxEx();
             this.label68 = new System.Windows.Forms.Label();
             this.autoAdloquium_Minutes = new System.Windows.Forms.NumericUpDown();
             this.label69 = new System.Windows.Forms.Label();
@@ -313,7 +313,7 @@
             this.regen1enabled = new System.Windows.Forms.CheckBox();
             this.regen2enabled = new System.Windows.Forms.CheckBox();
             this.regen3enabled = new System.Windows.Forms.CheckBox();
-            this.plBuffGroup = new CurePlease.GroupBoxEx();
+            this.plBuffGroup = new Miraculix.GroupBoxEx();
             this.plSpikes_Spell = new System.Windows.Forms.ComboBox();
             this.plSpikes = new System.Windows.Forms.CheckBox();
             this.panel14 = new System.Windows.Forms.Panel();
@@ -355,7 +355,7 @@
             this.plBlink = new System.Windows.Forms.CheckBox();
             this.plStoneskin = new System.Windows.Forms.CheckBox();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.groupBox27 = new CurePlease.GroupBoxEx();
+            this.groupBox27 = new Miraculix.GroupBoxEx();
             this.panel13 = new System.Windows.Forms.Panel();
             this.label66 = new System.Windows.Forms.Label();
             this.regenPerpetuance = new System.Windows.Forms.CheckBox();
@@ -380,8 +380,8 @@
             this.phalanxAccession = new System.Windows.Forms.CheckBox();
             this.blinkAccession = new System.Windows.Forms.CheckBox();
             this.stoneskinAccession = new System.Windows.Forms.CheckBox();
-            this.groupBox26 = new CurePlease.GroupBoxEx();
-            this.groupBox25 = new CurePlease.GroupBoxEx();
+            this.groupBox26 = new Miraculix.GroupBoxEx();
+            this.groupBox25 = new Miraculix.GroupBoxEx();
             this.accessionCure = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.label57 = new System.Windows.Forms.Label();
@@ -537,7 +537,7 @@
             this.monitoredDebuffEnabled = new System.Windows.Forms.CheckBox();
             this.plDebuffEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox12 = new CurePlease.GroupBoxEx();
+            this.groupBox12 = new Miraculix.GroupBoxEx();
             this.requiredCuragaNumbers = new System.Windows.Forms.NumericUpDown();
             this.label31 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
@@ -549,8 +549,8 @@
             this.curagaEnabled = new System.Windows.Forms.CheckBox();
             this.curaga2Enabled = new System.Windows.Forms.CheckBox();
             this.curaga3Enabled = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new CurePlease.GroupBoxEx();
-            this.groupBox35 = new CurePlease.GroupBoxEx();
+            this.groupBox2 = new Miraculix.GroupBoxEx();
+            this.groupBox35 = new Miraculix.GroupBoxEx();
             this.label62 = new System.Windows.Forms.Label();
             this.label60 = new System.Windows.Forms.Label();
             this.curePotency = new System.Windows.Forms.NumericUpDown();
@@ -563,7 +563,7 @@
             this.cure1enabled = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.debuffsPage = new System.Windows.Forms.TabPage();
-            this.debuffsGroupBox = new CurePlease.GroupBoxEx();
+            this.debuffsGroupBox = new Miraculix.GroupBoxEx();
             this.debuffsWarningLabel = new System.Windows.Forms.Label();
             this.debuffParalyze = new System.Windows.Forms.CheckBox();
             this.debuffBlind = new System.Windows.Forms.CheckBox();
@@ -1827,8 +1827,8 @@
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(237, 45);
             this.label67.TabIndex = 7;
-            this.label67.Text = "CTRL + ALT + F1           Toggle Pause/Start\r\nCTRL + ALT + F2            Start Cu" +
-    "rePlease \r\nCTRL + ALT + F3            Pause CurePlease";
+            this.label67.Text = "CTRL + ALT + F1           Toggle Pause/Start\r\nCTRL + ALT + F2            Start Mi" +
+    "raculix \r\nCTRL + ALT + F3            Pause Miraculix";
             // 
             // enableHotKeys
             // 
@@ -1853,7 +1853,7 @@
             this.groupBox18.Size = new System.Drawing.Size(395, 80);
             this.groupBox18.TabIndex = 18;
             this.groupBox18.TabStop = false;
-            this.groupBox18.Text = "CurePlease Addon Data";
+            this.groupBox18.Text = "Miraculix Addon Data";
             // 
             // groupBox17
             // 
@@ -2048,7 +2048,7 @@
             this.MinimiseonStart.Name = "MinimiseonStart";
             this.MinimiseonStart.Size = new System.Drawing.Size(187, 19);
             this.MinimiseonStart.TabIndex = 2;
-            this.MinimiseonStart.Text = "Minimise CurePlease on start";
+            this.MinimiseonStart.Text = "Minimise Miraculix on start";
             this.MinimiseonStart.UseVisualStyleBackColor = true;
             // 
             // pauseOnStartBox
