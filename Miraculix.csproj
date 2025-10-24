@@ -58,7 +58,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Cure Please Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Miraculix.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -157,12 +157,8 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="AshitaAddon\CurePlease_Addon\CurePlease_Addon.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
-    <None Include="WindowerAddon\CurePlease_Addon\CurePlease_Addon.lua" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -187,7 +183,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Cure Please Icon.ico" />
+    <Content Include="Miraculix.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

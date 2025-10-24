@@ -1,4 +1,4 @@
-﻿namespace Miraculix
+namespace Miraculix
 {
     using System;
     using System.Windows.Forms;
