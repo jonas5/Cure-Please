@@ -1,4 +1,4 @@
-﻿namespace CurePlease
+namespace Miraculix
 {
     using System.Windows.Forms;
 
@@ -17,7 +17,7 @@
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/atom0s/Cure-Please");
+            System.Diagnostics.Process.Start("https://github.com/Yoadam/Miraculix");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

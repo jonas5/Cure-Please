@@ -57,7 +57,7 @@ namespace Miraculix
             this.linkLabel1.Size = new System.Drawing.Size(196, 13);
             this.linkLabel1.TabIndex = 0;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "https://github.com/atom0s/Cure-Please";
+            this.linkLabel1.Text = "https://github.com/Yoadam/Miraculix";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label1
@@ -69,7 +69,7 @@ namespace Miraculix
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(198, 38);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Cure Please ";
+            this.label1.Text = "Miraculix ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -137,7 +137,7 @@ namespace Miraculix
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(171, 13);
             this.label9.TabIndex = 9;
-            this.label9.Text = "Latest Version of Cure Please Visit:";
+            this.label9.Text = "Latest Version of Miraculix Visit:";
             // 
             // label10
             // 
