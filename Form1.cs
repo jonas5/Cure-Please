@@ -1,6 +1,6 @@
-﻿namespace CurePlease
+namespace Miraculix
 {
-    using CurePlease.Properties;
+    using Miraculix.Properties;
     using EliteMMO.API;
     using System;
     using System.Collections.Generic;
@@ -3791,7 +3791,7 @@ private string GetBestSpellTier(string buffType, string targetName)
             }
             else
             {
-                player0.Text = "Inactive or out of zone";
+                player0.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player0.Enabled = false;
                 player0HP.Value = 0;
                 player0optionsButton.Enabled = false;
