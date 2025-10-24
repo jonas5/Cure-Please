@@ -2893,10 +2893,23 @@ namespace CurePlease
 
             // Debuffs
             config.enableDebuffs = enableDebuffs.Checked;
-            if (debuffDiaRadio.Checked) config.DiaBioSelection = "Dia";
-            if (debuffBioRadio.Checked) config.DiaBioSelection = "Bio";
-            if (elementalGroup1Radio.Checked) config.ElementalGroupSelection = "Group1";
-            if (elementalGroup2Radio.Checked) config.ElementalGroupSelection = "Group2";
+            if (debuffDiaRadio.Checked)
+            {
+                config.DiaBioSelection = "Dia";
+            }
+            else
+            {
+                config.DiaBioSelection = "Bio";
+            }
+
+            if (elementalGroup1Radio.Checked)
+            {
+                config.ElementalGroupSelection = "Group1";
+            }
+            else
+            {
+                config.ElementalGroupSelection = "Group2";
+            }
             config.debuffParalyze = debuffParalyze.Checked;
             config.debuffBlind = debuffBlind.Checked;
             config.debuffSlow = debuffSlow.Checked;
