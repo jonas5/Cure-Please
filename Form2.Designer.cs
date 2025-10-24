@@ -629,6 +629,34 @@
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            //
+            // debuffDiaRadio
+            //
+            this.debuffDiaRadio = new System.Windows.Forms.RadioButton();
+            //
+            // debuffBioRadio
+            //
+            this.debuffBioRadio = new System.Windows.Forms.RadioButton();
+            //
+            // elementalGroup1Radio
+            //
+            this.elementalGroup1Radio = new System.Windows.Forms.RadioButton();
+            //
+            // elementalGroup2Radio
+            //
+            this.elementalGroup2Radio = new System.Windows.Forms.RadioButton();
+            //
+            // elementalLegendLabel
+            //
+            this.elementalLegendLabel = new System.Windows.Forms.Label();
+            //
+            // diaBioPanel
+            //
+            this.diaBioPanel = new System.Windows.Forms.Panel();
+            //
+            // elementalPanel
+            //
+            this.elementalPanel = new System.Windows.Forms.Panel();
             this.groupBox34.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.plProtectralevel)).BeginInit();
