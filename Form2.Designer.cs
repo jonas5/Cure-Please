@@ -9034,3 +9034,5 @@
         private System.Windows.Forms.CheckBox debuffBind;
         private System.Windows.Forms.CheckBox debuffSilence;
         private System.Windows.Forms.Label debuffsWarningLabel;
+    }
+}
