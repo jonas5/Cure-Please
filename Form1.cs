@@ -7557,8 +7557,12 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form2 settings = new Form2(this);
-            settings.Show();
+            if (Form2 == null || Form2.IsDisposed)
+            {
+                Form2 = new Form2(this);
+            }
+            Form2.Show();
+            Form2.BringToFront();
         }
 
         private void player0optionsButton_Click(object sender, EventArgs e)
@@ -9819,16 +9823,14 @@ private void updateInstances_Tick(object sender, EventArgs e)
             Opacity = trackBar1.Value * 0.01;
         }
 
-        private Form settings;
-
         private void OptionsButton_Click(object sender, EventArgs e)
         {
-            if ((settings == null) || (settings.IsDisposed))
+            if (Form2 == null || Form2.IsDisposed)
             {
-                settings = new Form2(this);
+                Form2 = new Form2(this);
             }
-            settings.Show();
-
+            Form2.Show();
+            Form2.BringToFront();
         }
 
         private void ChatLogButton_Click(object sender, EventArgs e)
