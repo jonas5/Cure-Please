@@ -5520,8 +5520,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             if (CastingBackground_Check != true)
             {
-                _lastSpellCastTime = DateTime.Now;
-                _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
 
                 castingSpell = magic.Name[0];
@@ -10110,7 +10108,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
             switch (command)
             {
                 case "CAST_START":
-                    _lastSpellCastTime = DateTime.Now;
                     CastingBackground_Check = true;
                     castingLockLabel.Text = "PACKET: Casting is LOCKED";
                     if (!ProtectCasting.IsBusy) ProtectCasting.RunWorkerAsync();
@@ -10146,6 +10143,8 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
                     Task.Delay(3000).ContinueWith(_ =>
                     {
+                        _lastSpellCastTime = DateTime.Now;
+                        _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
                         castingLockLabel.Text = "Casting is UNLOCKED";
                         currentAction.Text = string.Empty;
                         castingSpell = string.Empty;
