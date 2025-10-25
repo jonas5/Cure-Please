@@ -8395,7 +8395,7 @@ namespace Miraculix
             // debuffParalyze
             // 
             this.debuffParalyze.AutoSize = true;
-            this.debuffParalyze.Location = new System.Drawing.Point(40, 47);
+            this.debuffParalyze.Location = new System.Drawing.Point(40, 22);
             this.debuffParalyze.Name = "debuffParalyze";
             this.debuffParalyze.Size = new System.Drawing.Size(73, 19);
             this.debuffParalyze.TabIndex = 6;

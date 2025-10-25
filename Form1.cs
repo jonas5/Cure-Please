@@ -6215,6 +6215,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                     }
                     _ELITEAPIPL.ThirdParty.SendString("/heal");
                 }
+                // If player is moving, reset the idle timer.
+                if ((_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
+                {
+                    _lastSpellCastTime = DateTime.Now;
+                    _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+                }
+
                 if (!pauseActions &&
                     Form2.config.autoHealWhenIdle &&
                     _ELITEAPIPL.Player.Status == 0 &&
@@ -6224,13 +6231,6 @@ private string GetBestSpellTier(string buffType, string targetName)
                 {
                     _ELITEAPIPL.ThirdParty.SendString("/heal");
                     _lastSpellCastTime = DateTime.Now; // Reset timer to avoid spamming /heal
-                }
-
-                // If player is moving, reset the idle timer.
-                if ((_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
-                {
-                    _lastSpellCastTime = DateTime.Now;
-                    _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
                 }
 
                 // Only perform actions if PL is stationary PAUSE GOES HERE
@@ -10316,6 +10316,21 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     {
                         string playerName = parts[1];
                         string debuffName = parts[2];
+
+                        // Reset internal timer for RDM debuffs if it matches the current target
+                        EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                        if (currentTarget != null && currentTarget.Name == playerName)
+                        {
+                            string debuffType = GetDebuffTypeForSpellName(debuffName);
+                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                            {
+                                // Set timer to now, making it eligible for immediate recast.
+                                targetDebuffTimers[debuffType] = DateTime.Now;
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF FADE] '{debuffName}' wore off '{playerName}'. Resetting timer for '{debuffType}'.");
+                            }
+                        }
+
+                        // This is for the WHM/SCH debuff removal logic
                         if (activePlayerDebuffs.ContainsKey(playerName))
                         {
                             activePlayerDebuffs[playerName].Remove(debuffName);
@@ -10784,7 +10799,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private async void RunDebuffLogic()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.enableDebuffs) return;
-
+            if (_ELITEAPIPL.Player.Status == 33) return;
             debuffTargetId = lockedTargetId;
             if (debuffTargetId == 0) return;
 
