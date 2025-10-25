@@ -8377,7 +8377,6 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.cure1amount)).EndInit();
             this.groupBox16.ResumeLayout(false);
             this.groupBox16.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.autoTargetOnLock_delay_seconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.healWhenMPBelow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.standAtMP_Percentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpMintempitemusage)).EndInit();
