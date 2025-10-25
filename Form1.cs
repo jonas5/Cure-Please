@@ -10972,6 +10972,16 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
 
         }
+
+        private void autoTargetOnLock_delay_CheckedChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void autoTargetOnLock_delay_seconds_ValueChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 
     // END OF THE FORM SCRIPT

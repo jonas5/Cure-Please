@@ -103,6 +103,8 @@ namespace Miraculix
             this.autoTarget = new System.Windows.Forms.CheckBox();
             this.autoTargetSpell = new System.Windows.Forms.TextBox();
             this.autoTargetOnLock = new System.Windows.Forms.CheckBox();
+            this.autoTargetOnLock_delay = new System.Windows.Forms.CheckBox();
+            this.autoTargetOnLock_delay_seconds = new System.Windows.Forms.NumericUpDown();
             this.DevotionTargetName = new System.Windows.Forms.TextBox();
             this.DevotionTargetType = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
@@ -563,8 +565,6 @@ namespace Miraculix
             this.debuffsPage = new System.Windows.Forms.TabPage();
             this.debuffsGroupBox = new Miraculix.GroupBoxEx();
             this.panel16 = new System.Windows.Forms.Panel();
-            this.autoTargetOnLock_delay = new System.Windows.Forms.CheckBox();
-            this.autoTargetOnLock_delay_seconds = new System.Windows.Forms.NumericUpDown();
             this.debuffParalyze = new System.Windows.Forms.CheckBox();
             this.debuffSlow = new System.Windows.Forms.CheckBox();
             this.debuffGravity = new System.Windows.Forms.CheckBox();
@@ -593,6 +593,7 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.cure2amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cure1amount)).BeginInit();
             this.groupBox16.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.autoTargetOnLock_delay_seconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.healWhenMPBelow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.standAtMP_Percentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpMintempitemusage)).BeginInit();
@@ -1424,12 +1425,9 @@ namespace Miraculix
             this.groupBox16.Controls.Add(this.Hate_SpellType);
             this.groupBox16.Controls.Add(this.autoTarget);
             this.groupBox16.Controls.Add(this.autoTargetSpell);
-            this.groupBox16.Controls.Add(this.autoTargetOnLock);
-            this.groupBox16.Controls.Add(this.autoTargetOnLock_delay);
-            this.groupBox16.Controls.Add(this.autoTargetOnLock_delay_seconds);
-            this.groupBox16.Location = new System.Drawing.Point(368, 351);
+            this.groupBox16.Location = new System.Drawing.Point(368, 324);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(431, 180);
+            this.groupBox16.Size = new System.Drawing.Size(431, 129);
             this.groupBox16.TabIndex = 50;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Auto Casting Spells";
@@ -1528,7 +1526,7 @@ namespace Miraculix
             // autoTargetOnLock
             // 
             this.autoTargetOnLock.AutoSize = true;
-            this.autoTargetOnLock.Location = new System.Drawing.Point(230, 101);
+            this.autoTargetOnLock.Location = new System.Drawing.Point(25, 72);
             this.autoTargetOnLock.Name = "autoTargetOnLock";
             this.autoTargetOnLock.Size = new System.Drawing.Size(127, 19);
             this.autoTargetOnLock.TabIndex = 18;
@@ -1538,25 +1536,25 @@ namespace Miraculix
             this.autoTargetOnLock.UseVisualStyleBackColor = true;
             // 
             // autoTargetOnLock_delay
-            //
+            // 
             this.autoTargetOnLock_delay.AutoSize = true;
-            this.autoTargetOnLock_delay.Location = new System.Drawing.Point(230, 126);
+            this.autoTargetOnLock_delay.Location = new System.Drawing.Point(158, 72);
             this.autoTargetOnLock_delay.Name = "autoTargetOnLock_delay";
-            this.autoTargetOnLock_delay.Size = new System.Drawing.Size(127, 19);
+            this.autoTargetOnLock_delay.Size = new System.Drawing.Size(103, 19);
             this.autoTargetOnLock_delay.TabIndex = 19;
             this.autoTargetOnLock_delay.Text = "with a delay of";
             this.toolTip1.SetToolTip(this.autoTargetOnLock_delay, "Adds a delay before auto-targeting.");
             this.autoTargetOnLock_delay.UseVisualStyleBackColor = true;
-            //
+            // 
             // autoTargetOnLock_delay_seconds
-            //
+            // 
             this.autoTargetOnLock_delay_seconds.DecimalPlaces = 1;
             this.autoTargetOnLock_delay_seconds.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.autoTargetOnLock_delay_seconds.Location = new System.Drawing.Point(355, 125);
+            this.autoTargetOnLock_delay_seconds.Location = new System.Drawing.Point(259, 70);
             this.autoTargetOnLock_delay_seconds.Maximum = new decimal(new int[] {
             10,
             0,
@@ -1566,7 +1564,7 @@ namespace Miraculix
             this.autoTargetOnLock_delay_seconds.Size = new System.Drawing.Size(50, 21);
             this.autoTargetOnLock_delay_seconds.TabIndex = 20;
             this.toolTip1.SetToolTip(this.autoTargetOnLock_delay_seconds, "The delay in seconds before auto-targeting.");
-            //
+            // 
             // DevotionTargetName
             // 
             this.DevotionTargetName.Location = new System.Drawing.Point(263, 45);
@@ -2112,12 +2110,16 @@ namespace Miraculix
             this.groupBox10.Controls.Add(this.TargetRemoval_Delay);
             this.groupBox10.Controls.Add(this.label58);
             this.groupBox10.Controls.Add(this.DisableTargettingCancel);
-            this.groupBox10.Location = new System.Drawing.Point(368, 481);
+            this.groupBox10.Controls.Add(this.autoTargetOnLock);
+            this.groupBox10.Controls.Add(this.autoTargetOnLock_delay);
+            this.groupBox10.Controls.Add(this.autoTargetOnLock_delay_seconds);
+            this.groupBox10.Location = new System.Drawing.Point(368, 453);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(431, 73);
+            this.groupBox10.Size = new System.Drawing.Size(431, 101);
             this.groupBox10.TabIndex = 52;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Targetting Control";
+            this.groupBox10.Enter += new System.EventHandler(this.groupBox10_Enter);
             // 
             // label59
             // 
@@ -2163,7 +2165,7 @@ namespace Miraculix
             this.groupBox36.Controls.Add(this.RadialArcanaMP);
             this.groupBox36.Controls.Add(this.Fullcircle_GEOTarget);
             this.groupBox36.Controls.Add(this.Fullcircle_DisableEnemy);
-            this.groupBox36.Location = new System.Drawing.Point(368, 112);
+            this.groupBox36.Location = new System.Drawing.Point(368, 98);
             this.groupBox36.Name = "groupBox36";
             this.groupBox36.Size = new System.Drawing.Size(431, 123);
             this.groupBox36.TabIndex = 51;
@@ -2274,7 +2276,7 @@ namespace Miraculix
             this.groupBox15.Controls.Add(this.label34);
             this.groupBox15.Controls.Add(this.label35);
             this.groupBox15.Controls.Add(this.DevotionMP);
-            this.groupBox15.Location = new System.Drawing.Point(368, 241);
+            this.groupBox15.Location = new System.Drawing.Point(368, 220);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Size = new System.Drawing.Size(431, 105);
             this.groupBox15.TabIndex = 49;
@@ -2412,7 +2414,7 @@ namespace Miraculix
             this.groupBox29.BorderColor = System.Drawing.Color.SlateGray;
             this.groupBox29.Controls.Add(this.label51);
             this.groupBox29.Controls.Add(this.sublimationMP);
-            this.groupBox29.Location = new System.Drawing.Point(368, 62);
+            this.groupBox29.Location = new System.Drawing.Point(368, 55);
             this.groupBox29.Name = "groupBox29";
             this.groupBox29.Size = new System.Drawing.Size(432, 44);
             this.groupBox29.TabIndex = 40;
@@ -2502,7 +2504,7 @@ namespace Miraculix
             this.groupBox4.Controls.Add(this.labelIdleHealTime);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(380, 185);
+            this.groupBox4.Size = new System.Drawing.Size(351, 185);
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MP Settings";
@@ -2543,7 +2545,7 @@ namespace Miraculix
             this.labelIdleHealTime.AutoSize = true;
             this.labelIdleHealTime.Location = new System.Drawing.Point(242, 153);
             this.labelIdleHealTime.Name = "labelIdleHealTime";
-            this.labelIdleHealTime.Size = new System.Drawing.Size(131, 15);
+            this.labelIdleHealTime.Size = new System.Drawing.Size(76, 15);
             this.labelIdleHealTime.TabIndex = 46;
             this.labelIdleHealTime.Text = "seconds/idle";
             this.labelIdleHealTime.Click += new System.EventHandler(this.labelIdleHealTime_Click);
@@ -8374,7 +8376,7 @@ namespace Miraculix
             this.enableDebuffs.TabIndex = 0;
             this.enableDebuffs.Text = "Enable Debuffs";
             this.enableDebuffs.UseVisualStyleBackColor = true;
-            //
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -8391,6 +8393,7 @@ namespace Miraculix
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = " ";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).EndInit();

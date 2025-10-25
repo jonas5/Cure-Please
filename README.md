@@ -22,6 +22,7 @@ Miraculix is a comprehensive assistance tool for the game Final Fantasy XI, desi
   - Auto-debuffing system for Red Mage to maintain debuffs on the current battle target.
   - Automated hate management spells to assist with tanking.
   - Auto-targeting system to engage enemies based on party status.
+  - **Delayed Auto-Target:** Optionally adds a configurable delay before automatically targeting a new enemy, giving the player time to complete manual actions.
 
 - **Job-Specific Logic:**
   - **Scholar (SCH):** Manages Light Arts, Dark Arts, and Stratagems to enhance spellcasting.
