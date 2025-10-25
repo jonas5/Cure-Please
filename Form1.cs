@@ -6217,7 +6217,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     }
                     _ELITEAPIPL.ThirdParty.SendString("/heal");
                 }
-                byte currentPlayerStatus = _ELITEAPIPL.Player.Status;
+                byte currentPlayerStatus = (byte)_ELITEAPIPL.Player.Status;
 
                 // If player just stood up from a non-standing state (like healing), reset the idle timer.
                 if (_previousPlayerStatus != (byte)Status.Standing && currentPlayerStatus == (byte)Status.Standing)
