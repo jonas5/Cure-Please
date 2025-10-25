@@ -32,6 +32,10 @@ namespace Miraculix
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.partyAutoProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.partyAutoShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoTargetOnLock_delay = new System.Windows.Forms.CheckBox();
+            this.autoTargetOnLock_delay_seconds = new System.Windows.Forms.NumericUpDown();
             this.buffUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.pipeStatusTimer = new System.Windows.Forms.Timer(this.components);
             this.player0optionsButton = new System.Windows.Forms.Button();
@@ -276,6 +280,7 @@ namespace Miraculix
             this.oopPlayerComboBoxes5 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons5 = new System.Windows.Forms.Button();
             this.oopPlayerHPs5 = new Miraculix.NewProgressBar();
+            ((System.ComponentModel.ISupportInitialize)(this.autoTargetOnLock_delay_seconds)).BeginInit();
             this.party0.SuspendLayout();
             this.playerOptions.SuspendLayout();
             this.party2.SuspendLayout();
@@ -291,6 +296,30 @@ namespace Miraculix
             this.oopGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
+            // autoTargetOnLock_delay
+            //
+            this.autoTargetOnLock_delay.AutoSize = true;
+            this.autoTargetOnLock_delay.Location = new System.Drawing.Point(246, 11);
+            this.autoTargetOnLock_delay.Name = "autoTargetOnLock_delay";
+            this.autoTargetOnLock_delay.Size = new System.Drawing.Size(87, 17);
+            this.autoTargetOnLock_delay.TabIndex = 1;
+            this.autoTargetOnLock_delay.Text = "Delay Target";
+            this.autoTargetOnLock_delay.UseVisualStyleBackColor = true;
+            this.autoTargetOnLock_delay.CheckedChanged += new System.EventHandler(this.autoTargetOnLock_delay_CheckedChanged_1);
+            //
+            // autoTargetOnLock_delay_seconds
+            //
+            this.autoTargetOnLock_delay_seconds.Location = new System.Drawing.Point(342, 8);
+            this.autoTargetOnLock_delay_seconds.Name = "autoTargetOnLock_delay_seconds";
+            this.autoTargetOnLock_delay_seconds.Size = new System.Drawing.Size(49, 20);
+            this.autoTargetOnLock_delay_seconds.TabIndex = 2;
+            this.autoTargetOnLock_delay_seconds.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.autoTargetOnLock_delay_seconds.ValueChanged += new System.EventHandler(this.autoTargetOnLock_delay_seconds_ValueChanged_1);
+            //
             // player0optionsButton
             // 
             this.player0optionsButton.BackColor = System.Drawing.SystemColors.Menu;
@@ -954,23 +983,8 @@ namespace Miraculix
             this.toolStripSeperator13.Name = "toolStripSeperator13";
             this.toolStripSeperator13.Size = new System.Drawing.Size(223, 6);
             // 
-            // autoShellToolStripMenuItem
-            // 
-            this.autoShellToolStripMenuItem.Name = "autoShellToolStripMenuItem";
-            this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.autoShellToolStripMenuItem.Text = "Auto Shell";
-            this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
-            // 
-            // autoProtectToolStripMenuItem
-            // 
-            this.autoProtectToolStripMenuItem.Name = "autoProtectToolStripMenuItem";
-            this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.autoProtectToolStripMenuItem.Text = "Auto Protect";
-            this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
-            // 
             // partyAutoProtectToolStripMenuItem
             //
-            this.partyAutoProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.partyAutoProtectToolStripMenuItem.Name = "partyAutoProtectToolStripMenuItem";
             this.partyAutoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoProtectToolStripMenuItem.Text = "Auto Protect";
@@ -978,11 +992,24 @@ namespace Miraculix
             //
             // partyAutoShellToolStripMenuItem
             //
-            this.partyAutoShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.partyAutoShellToolStripMenuItem.Name = "partyAutoShellToolStripMenuItem";
             this.partyAutoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoShellToolStripMenuItem.Text = "Auto Shell";
             this.partyAutoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
+            //
+            // autoShellToolStripMenuItem
+            //
+            this.autoShellToolStripMenuItem.Name = "autoShellToolStripMenuItem";
+            this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.autoShellToolStripMenuItem.Text = "Auto Shell";
+            this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
+            //
+            // autoProtectToolStripMenuItem
+            //
+            this.autoProtectToolStripMenuItem.Name = "autoProtectToolStripMenuItem";
+            this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.autoProtectToolStripMenuItem.Text = "Auto Protect";
+            this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
             //
             // stormspellToolStripMenuItem
             // 
@@ -2451,6 +2478,8 @@ namespace Miraculix
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox4.Controls.Add(this.autoTargetOnLock_delay);
+            this.groupBox4.Controls.Add(this.autoTargetOnLock_delay_seconds);
             this.groupBox4.Controls.Add(this.battleTargetLabel);
             this.groupBox4.ForeColor = System.Drawing.SystemColors.GrayText;
             this.groupBox4.Location = new System.Drawing.Point(453, 334);
@@ -2844,6 +2873,7 @@ namespace Miraculix
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this.autoTargetOnLock_delay_seconds)).EndInit();
             this.party0.ResumeLayout(false);
             this.party0.PerformLayout();
             this.playerOptions.ResumeLayout(false);
