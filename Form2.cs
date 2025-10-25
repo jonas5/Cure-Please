@@ -1818,13 +1818,22 @@ namespace Miraculix
             // DEBUFFS
             public bool enableDebuffs { get; set; }
             public string DiaBioSelection { get; set; }
+        public int DiaBioDuration { get; set; }
             public string ElementalGroupSelection { get; set; }
+        public int ElementalGroup1Duration { get; set; }
+        public int ElementalGroup2Duration { get; set; }
             public bool debuffParalyze { get; set; }
+        public int DebuffParalyzeDuration { get; set; }
             public bool debuffBlind { get; set; }
+        public int DebuffBlindDuration { get; set; }
             public bool debuffSlow { get; set; }
+        public int DebuffGravityDuration { get; set; }
             public bool debuffGravity { get; set; }
+        public int DebuffSlowDuration { get; set; }
             public bool debuffBind { get; set; }
+        public int DebuffBindDuration { get; set; }
             public bool debuffSilence { get; set; }
+        public int DebuffSilenceDuration { get; set; }
             public bool autoHealWhenIdle { get; set; }
             public decimal idleHealTime { get; set; }
          }
@@ -2365,6 +2374,17 @@ namespace Miraculix
                 config.debuffGravity = false;
                 config.debuffBind = false;
                 config.debuffSilence = false;
+
+                config.DiaBioDuration = 120;
+                config.ElementalGroup1Duration = 60;
+                config.ElementalGroup2Duration = 60;
+                config.DebuffParalyzeDuration = 60;
+                config.DebuffBlindDuration = 60;
+                config.DebuffSlowDuration = 60;
+                config.DebuffGravityDuration = 30;
+                config.DebuffBindDuration = 20;
+                config.DebuffSilenceDuration = 30;
+
                 config.autoHealWhenIdle = false;
                 config.idleHealTime = 10;
 
@@ -2906,6 +2926,17 @@ namespace Miraculix
             config.debuffGravity = debuffGravity.Checked;
             config.debuffBind = debuffBind.Checked;
             config.debuffSilence = debuffSilence.Checked;
+
+            config.DiaBioDuration = (int)debuffDiaBioDuration.Value;
+            config.ElementalGroup1Duration = (int)debuffElementalGroup1Duration.Value;
+            config.ElementalGroup2Duration = (int)debuffElementalGroup2Duration.Value;
+            config.DebuffParalyzeDuration = (int)debuffParalyzeDuration.Value;
+            config.DebuffBlindDuration = (int)debuffBlindDuration.Value;
+            config.DebuffSlowDuration = (int)debuffSlowDuration.Value;
+            config.DebuffGravityDuration = (int)debuffGravityDuration.Value;
+            config.DebuffBindDuration = (int)debuffBindDuration.Value;
+            config.DebuffSilenceDuration = (int)debuffSilenceDuration.Value;
+
             config.autoHealWhenIdle = autoHealWhenIdle.Checked;
             config.idleHealTime = idleHealTime.Value;
         }
@@ -4048,6 +4079,17 @@ namespace Miraculix
             debuffGravity.Checked = config.debuffGravity;
             debuffBind.Checked = config.debuffBind;
             debuffSilence.Checked = config.debuffSilence;
+
+            debuffDiaBioDuration.Value = config.DiaBioDuration;
+            debuffElementalGroup1Duration.Value = config.ElementalGroup1Duration;
+            debuffElementalGroup2Duration.Value = config.ElementalGroup2Duration;
+            debuffParalyzeDuration.Value = config.DebuffParalyzeDuration;
+            debuffBlindDuration.Value = config.DebuffBlindDuration;
+            debuffSlowDuration.Value = config.DebuffSlowDuration;
+            debuffGravityDuration.Value = config.DebuffGravityDuration;
+            debuffBindDuration.Value = config.DebuffBindDuration;
+            debuffSilenceDuration.Value = config.DebuffSilenceDuration;
+
             autoHealWhenIdle.Checked = config.autoHealWhenIdle;
             idleHealTime.Value = config.idleHealTime > 0 ? config.idleHealTime : 10;
         }

@@ -89,6 +89,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
         private Dictionary<string, DateTime> targetDebuffTimers = new Dictionary<string, DateTime>();
         private int debuffTimersTargetId = 0;
         private int _lastBuffedMemberIndex = -1;
+        private int _lastDebuffIndex = -1;
         private PartyState partyState = new PartyState();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
 
@@ -10739,19 +10740,19 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             switch (debuffType)
             {
-                case "Dia": return 60;
-                case "Bio": return 60;
-                case "Paralyze": return 90;
-                case "Blind": return 90;
-                case "Slow": return 90;
-                case "Gravity": return 30;
-                case "Silence": return 30;
-                case "Bind": return 30;
-                case "Elemental1": return 30; // Group 1
-                case "Rasp": return 30;       // Group 2
-                case "Frost": return 30;      // Group 2
-                case "Drown": return 30;      // Group 2
-                default: return 30; // Default duration
+                case "Dia": return (int)Form2.config.DiaBioDuration;
+                case "Bio": return (int)Form2.config.DiaBioDuration;
+                case "Paralyze": return (int)Form2.config.DebuffParalyzeDuration;
+                case "Blind": return (int)Form2.config.DebuffBlindDuration;
+                case "Slow": return (int)Form2.config.DebuffSlowDuration;
+                case "Gravity": return (int)Form2.config.DebuffGravityDuration;
+                case "Silence": return (int)Form2.config.DebuffSilenceDuration;
+                case "Bind": return (int)Form2.config.DebuffBindDuration;
+                case "Elemental1": return (int)Form2.config.ElementalGroup1Duration;
+                case "Rasp": return (int)Form2.config.ElementalGroup2Duration;
+                case "Frost": return (int)Form2.config.ElementalGroup2Duration;
+                case "Drown": return (int)Form2.config.ElementalGroup2Duration;
+                default: return 30;
             }
         }
 
@@ -10791,132 +10792,78 @@ private void updateInstances_Tick(object sender, EventArgs e)
             {
                 targetDebuffTimers.Clear();
                 debuffTimersTargetId = debuffTargetId;
+                _lastDebuffIndex = -1; // Reset rotation for new target
             }
 
             EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
             if (targetEntity == null || targetEntity.HealthPercent == 0 || targetEntity.Distance > 20) return;
 
-            // --- Group: Dia/Bio (Based on DiaBioSelection) ---
-            string diaBioSelection = Form2.config.DiaBioSelection;
-            if (diaBioSelection == "Dia")
+            var availableDebuffs = new List<Func<Task<bool>>>();
+
+            // --- Define Debuff Checks ---
+
+            // Dia/Bio Group
+            if (Form2.config.DiaBioSelection == "Dia")
+                availableDebuffs.Add(() => CheckAndCastDebuff("Dia", new[] { "Dia III", "Dia II", "Dia" }));
+            else if (Form2.config.DiaBioSelection == "Bio")
+                availableDebuffs.Add(() => CheckAndCastDebuff("Bio", new[] { "Bio III", "Bio II", "Bio" }));
+
+            // Other Debuffs
+            if (Form2.config.debuffParalyze) availableDebuffs.Add(() => CheckAndCastDebuff("Paralyze", new[] { "Paralyze II", "Paralyze" }));
+            if (Form2.config.debuffSlow) availableDebuffs.Add(() => CheckAndCastDebuff("Slow", new[] { "Slow II", "Slow" }));
+            if (Form2.config.debuffBlind) availableDebuffs.Add(() => CheckAndCastDebuff("Blind", new[] { "Blind II", "Blind" }));
+
+            // Elemental Group 1 (Mutually Exclusive)
+            if (Form2.config.ElementalGroupSelection == "Group1")
+                availableDebuffs.Add(() => CheckAndCastDebuff("Elemental1", new[] { "Choke", "Burn", "Shock" }));
+
+            // Elemental Group 2 (Stackable)
+            if (Form2.config.ElementalGroupSelection == "Group2")
             {
-                if (!targetDebuffTimers.ContainsKey("Dia") || DateTime.Now >= targetDebuffTimers["Dia"])
-                {
-                    var tiers = new[] { "Dia III", "Dia II", "Dia" };
-                    foreach (var tier in tiers)
-                    {
-                        if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
-                        {
-                            _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                            await Task.Delay(500);
-                            CastSpell("<t>", tier);
-                            return; // Cast one spell per tick
-                        }
-                    }
-                }
-            }
-            else if (diaBioSelection == "Bio")
-            {
-                if (!targetDebuffTimers.ContainsKey("Bio") || DateTime.Now >= targetDebuffTimers["Bio"])
-                {
-                    var tiers = new[] { "Bio III", "Bio II", "Bio" };
-                    foreach (var tier in tiers)
-                    {
-                        if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
-                        {
-                            _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                            await Task.Delay(500);
-                            CastSpell("<t>", tier);
-                            return; // Cast one spell per tick
-                        }
-                    }
-                }
+                availableDebuffs.Add(() => CheckAndCastDebuff("Rasp", new[] { "Rasp" }));
+                availableDebuffs.Add(() => CheckAndCastDebuff("Frost", new[] { "Frost" }));
+                availableDebuffs.Add(() => CheckAndCastDebuff("Drown", new[] { "Drown" }));
             }
 
-            // --- Group: Elementals (Based on ElementalGroupSelection) ---
-            string elementalSelection = Form2.config.ElementalGroupSelection;
-            if (elementalSelection == "Group1")
-            {
-                // Mutually exclusive: Choke > Burn > Shock
-                if (!targetDebuffTimers.ContainsKey("Elemental1") || DateTime.Now >= targetDebuffTimers["Elemental1"])
-                {
-                    string spellToCast = null;
-                    if (HasSpell("Choke") && CheckSpellRecast("Choke") == 0) spellToCast = "Choke";
-                    else if (HasSpell("Burn") && CheckSpellRecast("Burn") == 0) spellToCast = "Burn";
-                    else if (HasSpell("Shock") && CheckSpellRecast("Shock") == 0) spellToCast = "Shock";
+            // More Other Debuffs
+            if (Form2.config.debuffGravity) availableDebuffs.Add(() => CheckAndCastDebuff("Gravity", new[] { "Gravity II", "Gravity" }));
+            if (Form2.config.debuffSilence) availableDebuffs.Add(() => CheckAndCastDebuff("Silence", new[] { "Silence" }));
+            if (Form2.config.debuffBind) availableDebuffs.Add(() => CheckAndCastDebuff("Bind", new[] { "Bind" }));
 
-                    if (spellToCast != null)
+
+            if (availableDebuffs.Count == 0) return;
+
+            // --- Rotation Logic ---
+            int startIndex = (_lastDebuffIndex + 1) % availableDebuffs.Count;
+
+            for (int i = 0; i < availableDebuffs.Count; i++)
+            {
+                int currentIndex = (startIndex + i) % availableDebuffs.Count;
+                bool casted = await availableDebuffs[currentIndex]();
+                if (casted)
+                {
+                    _lastDebuffIndex = currentIndex;
+                    return; // Exit after one successful cast
+                }
+            }
+        }
+
+        private async Task<bool> CheckAndCastDebuff(string debuffType, string[] spellTiers)
+        {
+            if (!targetDebuffTimers.ContainsKey(debuffType) || DateTime.Now >= targetDebuffTimers[debuffType])
+            {
+                foreach (var spell in spellTiers)
+                {
+                    if (HasSpell(spell) && CheckSpellRecast(spell) == 0)
                     {
                         _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                        await Task.Delay(500);
-                        CastSpell("<t>", spellToCast);
-                        return; // Cast one spell per tick
+                        await Task.Delay(500); // Wait for target to register
+                        CastSpell("<t>", spell);
+                        return true; // Spell was cast
                     }
                 }
             }
-            else if (elementalSelection == "Group2")
-            {
-                // Stackable: Rasp, Frost, Drown
-                if (!targetDebuffTimers.ContainsKey("Rasp") || DateTime.Now >= targetDebuffTimers["Rasp"])
-                {
-                    if (HasSpell("Rasp") && CheckSpellRecast("Rasp") == 0)
-                    {
-                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                        await Task.Delay(500);
-                        CastSpell("<t>", "Rasp");
-                        return; // Cast one spell per tick
-                    }
-                }
-                if (!targetDebuffTimers.ContainsKey("Frost") || DateTime.Now >= targetDebuffTimers["Frost"])
-                {
-                    if (HasSpell("Frost") && CheckSpellRecast("Frost") == 0)
-                    {
-                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                        await Task.Delay(500);
-                        CastSpell("<t>", "Frost");
-                        return; // Cast one spell per tick
-                    }
-                }
-                if (!targetDebuffTimers.ContainsKey("Drown") || DateTime.Now >= targetDebuffTimers["Drown"])
-                {
-                    if (HasSpell("Drown") && CheckSpellRecast("Drown") == 0)
-                    {
-                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                        await Task.Delay(500);
-                        CastSpell("<t>", "Drown");
-                        return; // Cast one spell per tick
-                    }
-                }
-            }
-
-
-            // --- Group: Other Debuffs (Unchanged) ---
-            var otherDebuffs = new[]
-            {
-                new { Name = "Paralyze", Enabled = Form2.config.debuffParalyze, Tiers = new[] { "Paralyze II", "Paralyze" } },
-                new { Name = "Slow", Enabled = Form2.config.debuffSlow, Tiers = new[] { "Slow II", "Slow" } },
-                new { Name = "Blind", Enabled = Form2.config.debuffBlind, Tiers = new[] { "Blind II", "Blind" } },
-                new { Name = "Gravity", Enabled = Form2.config.debuffGravity, Tiers = new[] { "Gravity II", "Gravity" } },
-                new { Name = "Silence", Enabled = Form2.config.debuffSilence, Tiers = new[] { "Silence" } },
-                new { Name = "Bind", Enabled = Form2.config.debuffBind, Tiers = new[] { "Bind" } }
-            };
-
-            foreach (var debuff in otherDebuffs)
-            {
-                if (debuff.Enabled && (!targetDebuffTimers.ContainsKey(debuff.Name) || DateTime.Now >= targetDebuffTimers[debuff.Name]))
-                {
-                    foreach (var tier in debuff.Tiers)
-                    {
-                        if (HasSpell(tier) && CheckSpellRecast(tier) == 0)
-                        {
-                            _ELITEAPIPL.Target.SetTarget(debuffTargetId);
-                            await Task.Delay(500);
-                            CastSpell("<t>", tier);
-                            return;
-                        }
-                    }
-                }
-            }
+            return false; // Spell was not cast
         }
         private void oopGroupBox_Enter(object sender, EventArgs e)
         {
