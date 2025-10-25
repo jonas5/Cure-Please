@@ -3129,7 +3129,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             this.ClientSize = new System.Drawing.Size(874, 380);
 
             _lastSpellCastTime = DateTime.Now;
-            _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+            _idleHealThreshold = TimeSpan.FromSeconds((double)Form2.config.idleHealTime);
             _previousPlayerStatus = (byte)Status.Fighting;
         }
 
@@ -6221,7 +6221,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 if (_previousPlayerStatus != (byte)Status.Standing && currentPlayerStatus == (byte)Status.Standing)
                 {
                     _lastSpellCastTime = DateTime.Now;
-                    _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+                    _idleHealThreshold = TimeSpan.FromSeconds((double)Form2.config.idleHealTime);
                 }
                 _previousPlayerStatus = currentPlayerStatus;
 
@@ -6229,7 +6229,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                 if ((_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
                 {
                     _lastSpellCastTime = DateTime.Now;
-                    _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+                    _idleHealThreshold = TimeSpan.FromSeconds((double)Form2.config.idleHealTime);
                 }
 
                 if (!pauseActions &&
@@ -10144,7 +10144,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
                     Task.Delay(3000).ContinueWith(_ =>
                     {
                         _lastSpellCastTime = DateTime.Now;
-                        _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+                        _idleHealThreshold = TimeSpan.FromSeconds((double)Form2.config.idleHealTime);
                         castingLockLabel.Text = "Casting is UNLOCKED";
                         currentAction.Text = string.Empty;
                         castingSpell = string.Empty;
