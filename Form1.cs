@@ -8055,11 +8055,6 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoProtect_Enabled[playerOptionsSelected] = !autoProtect_Enabled[playerOptionsSelected];
         }
 
-        private void autoShellToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            autoShell_Enabled[playerOptionsSelected] = !autoShell_Enabled[playerOptionsSelected];
-        }
-
         private void enableDebuffRemovalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string generated_name = _ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name.ToLower();
