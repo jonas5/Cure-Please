@@ -9060,8 +9060,6 @@ namespace Miraculix
         private System.Windows.Forms.CheckBox regen2enabled;
         private System.Windows.Forms.CheckBox regen3enabled;
         private System.Windows.Forms.CheckBox autoTargetOnLock;
-        private System.Windows.Forms.CheckBox autoTargetOnLock_delay;
-        private System.Windows.Forms.NumericUpDown autoTargetOnLock_delay_seconds;
         private System.Windows.Forms.TabPage debuffsPage;
         private GroupBoxEx debuffsGroupBox;
         private System.Windows.Forms.CheckBox enableDebuffs;
