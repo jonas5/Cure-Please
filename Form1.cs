@@ -90,6 +90,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
         private int debuffTimersTargetId = 0;
         private int _lastBuffedMemberIndex = -1;
         private int _lastDebuffIndex = -1;
+        private byte _previousPlayerStatus;
         private PartyState partyState = new PartyState();
         private Dictionary<string, EliteAPI> partyMemberAPIs = new Dictionary<string, EliteAPI>();
 
@@ -3129,6 +3130,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
 
             _lastSpellCastTime = DateTime.Now;
             _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+            _previousPlayerStatus = (byte)Status.Fighting;
         }
 
         private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
@@ -6215,6 +6217,16 @@ private string GetBestSpellTier(string buffType, string targetName)
                     }
                     _ELITEAPIPL.ThirdParty.SendString("/heal");
                 }
+                byte currentPlayerStatus = _ELITEAPIPL.Player.Status;
+
+                // If player just stood up from a non-standing state (like healing), reset the idle timer.
+                if (_previousPlayerStatus != (byte)Status.Standing && currentPlayerStatus == (byte)Status.Standing)
+                {
+                    _lastSpellCastTime = DateTime.Now;
+                    _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+                }
+                _previousPlayerStatus = currentPlayerStatus;
+
                 // If player is moving, reset the idle timer.
                 if ((_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
                 {
