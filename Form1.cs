@@ -6225,6 +6225,13 @@ private string GetBestSpellTier(string buffType, string targetName)
                     _lastSpellCastTime = DateTime.Now; // Reset timer to avoid spamming /heal
                 }
 
+                // If player is moving, reset the idle timer.
+                if ((_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
+                {
+                    _lastSpellCastTime = DateTime.Now;
+                    _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
+                }
+
                 // Only perform actions if PL is stationary PAUSE GOES HERE
                 if ((_ELITEAPIPL.Player.X == plX) && (_ELITEAPIPL.Player.Y == plY) && (_ELITEAPIPL.Player.Z == plZ) && (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.LoggedIn) && JobAbilityLock_Check != true && CastingBackground_Check != true && curePlease_autofollow == false && ((_ELITEAPIPL.Player.Status == (uint)Status.Standing) || (_ELITEAPIPL.Player.Status == (uint)Status.Fighting)))
                 {
