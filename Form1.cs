@@ -10098,6 +10098,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
             switch (command)
             {
                 case "CAST_START":
+                    _lastSpellCastTime = DateTime.Now;
                     CastingBackground_Check = true;
                     castingLockLabel.Text = "PACKET: Casting is LOCKED";
                     if (!ProtectCasting.IsBusy) ProtectCasting.RunWorkerAsync();
