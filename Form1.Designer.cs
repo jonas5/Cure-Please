@@ -970,6 +970,7 @@ namespace Miraculix
             // 
             // partyAutoProtectToolStripMenuItem
             //
+            this.partyAutoProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.partyAutoProtectToolStripMenuItem.Name = "partyAutoProtectToolStripMenuItem";
             this.partyAutoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoProtectToolStripMenuItem.Text = "Auto Protect";
@@ -977,6 +978,7 @@ namespace Miraculix
             //
             // partyAutoShellToolStripMenuItem
             //
+            this.partyAutoShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.partyAutoShellToolStripMenuItem.Name = "partyAutoShellToolStripMenuItem";
             this.partyAutoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoShellToolStripMenuItem.Text = "Auto Shell";

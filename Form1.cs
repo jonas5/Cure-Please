@@ -1642,9 +1642,6 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
                 oopPlayerComboBoxes[i].SelectedIndexChanged += OopPlayerComboBox_SelectedIndexChanged;
                 oopPlayerOptionsButtons[i].Click += OopPlayerOptionsButton_Click;
             }
-            autoProtectToolStripMenuItem.Click += autoProtectToolStripMenuItem_Click;
-            autoShellToolStripMenuItem.Click += autoShellToolStripMenuItem_Click;
-
 
             currentAction.Text = string.Empty;
 
