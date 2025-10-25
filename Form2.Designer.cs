@@ -103,8 +103,6 @@ namespace Miraculix
             this.autoTarget = new System.Windows.Forms.CheckBox();
             this.autoTargetSpell = new System.Windows.Forms.TextBox();
             this.autoTargetOnLock = new System.Windows.Forms.CheckBox();
-            this.autoTargetOnLock_delay = new System.Windows.Forms.CheckBox();
-            this.autoTargetOnLock_delay_seconds = new System.Windows.Forms.NumericUpDown();
             this.DevotionTargetName = new System.Windows.Forms.TextBox();
             this.DevotionTargetType = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
@@ -593,7 +591,6 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.cure2amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cure1amount)).BeginInit();
             this.groupBox16.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.autoTargetOnLock_delay_seconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.healWhenMPBelow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.standAtMP_Percentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpMintempitemusage)).BeginInit();
@@ -1535,36 +1532,6 @@ namespace Miraculix
         "gic.");
             this.autoTargetOnLock.UseVisualStyleBackColor = true;
             // 
-            // autoTargetOnLock_delay
-            // 
-            this.autoTargetOnLock_delay.AutoSize = true;
-            this.autoTargetOnLock_delay.Location = new System.Drawing.Point(158, 72);
-            this.autoTargetOnLock_delay.Name = "autoTargetOnLock_delay";
-            this.autoTargetOnLock_delay.Size = new System.Drawing.Size(103, 19);
-            this.autoTargetOnLock_delay.TabIndex = 19;
-            this.autoTargetOnLock_delay.Text = "with a delay of";
-            this.toolTip1.SetToolTip(this.autoTargetOnLock_delay, "Adds a delay before auto-targeting.");
-            this.autoTargetOnLock_delay.UseVisualStyleBackColor = true;
-            // 
-            // autoTargetOnLock_delay_seconds
-            // 
-            this.autoTargetOnLock_delay_seconds.DecimalPlaces = 1;
-            this.autoTargetOnLock_delay_seconds.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.autoTargetOnLock_delay_seconds.Location = new System.Drawing.Point(259, 70);
-            this.autoTargetOnLock_delay_seconds.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.autoTargetOnLock_delay_seconds.Name = "autoTargetOnLock_delay_seconds";
-            this.autoTargetOnLock_delay_seconds.Size = new System.Drawing.Size(50, 21);
-            this.autoTargetOnLock_delay_seconds.TabIndex = 20;
-            this.toolTip1.SetToolTip(this.autoTargetOnLock_delay_seconds, "The delay in seconds before auto-targeting.");
-            // 
             // DevotionTargetName
             // 
             this.DevotionTargetName.Location = new System.Drawing.Point(263, 45);
@@ -2111,8 +2078,6 @@ namespace Miraculix
             this.groupBox10.Controls.Add(this.label58);
             this.groupBox10.Controls.Add(this.DisableTargettingCancel);
             this.groupBox10.Controls.Add(this.autoTargetOnLock);
-            this.groupBox10.Controls.Add(this.autoTargetOnLock_delay);
-            this.groupBox10.Controls.Add(this.autoTargetOnLock_delay_seconds);
             this.groupBox10.Location = new System.Drawing.Point(368, 453);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(431, 101);

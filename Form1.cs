@@ -1642,6 +1642,8 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
                 oopPlayerComboBoxes[i].SelectedIndexChanged += OopPlayerComboBox_SelectedIndexChanged;
                 oopPlayerOptionsButtons[i].Click += OopPlayerOptionsButton_Click;
             }
+            autoProtectToolStripMenuItem.Click += autoProtectToolStripMenuItem_Click;
+            autoShellToolStripMenuItem.Click += autoShellToolStripMenuItem_Click;
 
 
             currentAction.Text = string.Empty;
@@ -3129,28 +3131,6 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
 
             _lastSpellCastTime = DateTime.Now;
             _idleHealThreshold = TimeSpan.FromSeconds(_random.Next(5, 11));
-
-            autoTargetOnLock_delay.CheckedChanged += autoTargetOnLock_delay_CheckedChanged;
-            autoTargetOnLock_delay_seconds.ValueChanged += autoTargetOnLock_delay_seconds_ValueChanged;
-        }
-
-        private void autoTargetOnLock_delay_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Form2 != null && Form2.config != null)
-            {
-                Form2.config.autoTargetOnLock_delay = autoTargetOnLock_delay.Checked;
-                autoTargetOnLock_delay_seconds.Enabled = autoTargetOnLock_delay.Checked;
-                Form2.SaveSettings();
-            }
-        }
-
-        private void autoTargetOnLock_delay_seconds_ValueChanged(object sender, EventArgs e)
-        {
-            if (Form2 != null && Form2.config != null)
-            {
-                Form2.config.autoTargetOnLock_delay_seconds = autoTargetOnLock_delay_seconds.Value;
-                Form2.SaveSettings();
-            }
         }
 
         private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
@@ -5732,17 +5712,6 @@ private string GetBestSpellTier(string buffType, string targetName)
                 { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
             };
             partyState.UpdateBuffDefinitions(buff_definitions);
-
-            // Update the UI controls on the main form
-            if (autoTargetOnLock_delay != null)
-            {
-                autoTargetOnLock_delay.Checked = Form2.config.autoTargetOnLock_delay;
-            }
-            if (autoTargetOnLock_delay_seconds != null)
-            {
-                autoTargetOnLock_delay_seconds.Value = Form2.config.autoTargetOnLock_delay_seconds;
-                autoTargetOnLock_delay_seconds.Enabled = Form2.config.autoTargetOnLock_delay;
-            }
         }
 
         private bool IsOopPlayerInRange(string playerName)
@@ -5938,7 +5907,7 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             UpdateNearbyPlayers();
 
-            if (Form2.config.autoTargetOnLock_delay && _nextTargetSetTime != DateTime.MinValue && DateTime.Now >= _nextTargetSetTime)
+            if (Form2.config.autoTargetOnLock && _nextTargetSetTime != DateTime.MinValue && DateTime.Now >= _nextTargetSetTime)
             {
                 if (lockedTargetId != 0)
                 {
@@ -8086,6 +8055,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoProtect_Enabled[playerOptionsSelected] = !autoProtect_Enabled[playerOptionsSelected];
         }
 
+        private void autoShellToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            autoShell_Enabled[playerOptionsSelected] = !autoShell_Enabled[playerOptionsSelected];
+        }
+
         private void enableDebuffRemovalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string generated_name = _ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name.ToLower();
@@ -9176,13 +9150,9 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                             {
                                 debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Locking and returning index: {i}");
                                 lockedTargetId = i;
-                                if (Form2.config.autoTargetOnLock_delay)
+                                if (Form2.config.autoTargetOnLock)
                                 {
-                                    _nextTargetSetTime = DateTime.Now.AddSeconds((double)Form2.config.autoTargetOnLock_delay_seconds);
-                                }
-                                else if (Form2.config.autoTargetOnLock)
-                                {
-                                    _ELITEAPIPL.Target.SetTarget(i);
+                                    _nextTargetSetTime = DateTime.Now.AddSeconds(2);
                                 }
                                 battleTargetLabel.Text = $"{entity.Name} ({i})";
                                 return i;
@@ -9196,13 +9166,9 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                         {
                             debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Locking and returning index: {i}");
                             lockedTargetId = i;
-                            if (Form2.config.autoTargetOnLock_delay)
+                            if (Form2.config.autoTargetOnLock)
                             {
-                                _nextTargetSetTime = DateTime.Now.AddSeconds((double)Form2.config.autoTargetOnLock_delay_seconds);
-                            }
-                            else if (Form2.config.autoTargetOnLock)
-                            {
-                                _ELITEAPIPL.Target.SetTarget(i);
+                                _nextTargetSetTime = DateTime.Now.AddSeconds(2);
                             }
                             battleTargetLabel.Text = $"{entity.Name} ({i})";
                             return i;
