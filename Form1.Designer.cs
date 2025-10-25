@@ -835,8 +835,8 @@ namespace Miraculix
             this.toolStripMenuItem1,
             this.enableDebuffRemovalToolStripMenuItem,
             this.toolStripSeperator13,
-            this.autoProtectToolStripMenuItem,
-            this.autoShellToolStripMenuItem});
+            this.partyAutoProtectToolStripMenuItem,
+            this.partyAutoShellToolStripMenuItem});
             this.playerOptions.Name = "player0rightclick";
             this.playerOptions.Size = new System.Drawing.Size(227, 342);
             // 
@@ -968,6 +968,20 @@ namespace Miraculix
             this.autoProtectToolStripMenuItem.Text = "Auto Protect";
             this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
             // 
+            // partyAutoProtectToolStripMenuItem
+            //
+            this.partyAutoProtectToolStripMenuItem.Name = "partyAutoProtectToolStripMenuItem";
+            this.partyAutoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.partyAutoProtectToolStripMenuItem.Text = "Auto Protect";
+            this.partyAutoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
+            //
+            // partyAutoShellToolStripMenuItem
+            //
+            this.partyAutoShellToolStripMenuItem.Name = "partyAutoShellToolStripMenuItem";
+            this.partyAutoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.partyAutoShellToolStripMenuItem.Text = "Auto Shell";
+            this.partyAutoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
+            //
             // stormspellToolStripMenuItem
             // 
             this.stormspellToolStripMenuItem.Name = "stormspellToolStripMenuItem";
@@ -3103,5 +3117,7 @@ namespace Miraculix
         private ComboBox oopPlayerComboBoxes5;
         private Button oopPlayerOptionsButtons5;
         private NewProgressBar oopPlayerHPs5;
+        private ToolStripMenuItem partyAutoProtectToolStripMenuItem;
+        private ToolStripMenuItem partyAutoShellToolStripMenuItem;
     }
 }
