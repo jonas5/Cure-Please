@@ -9252,5 +9252,14 @@ namespace Miraculix
         private System.Windows.Forms.CheckBox autoHealWhenIdle;
         private System.Windows.Forms.NumericUpDown idleHealTime;
         private System.Windows.Forms.Label labelIdleHealTime;
+        private System.Windows.Forms.NumericUpDown debuffDiaBioDuration;
+        private System.Windows.Forms.NumericUpDown debuffElementalGroup1Duration;
+        private System.Windows.Forms.NumericUpDown debuffElementalGroup2Duration;
+        private System.Windows.Forms.NumericUpDown debuffParalyzeDuration;
+        private System.Windows.Forms.NumericUpDown debuffBlindDuration;
+        private System.Windows.Forms.NumericUpDown debuffSlowDuration;
+        private System.Windows.Forms.NumericUpDown debuffGravityDuration;
+        private System.Windows.Forms.NumericUpDown debuffBindDuration;
+        private System.Windows.Forms.NumericUpDown debuffSilenceDuration;
     }
 }
