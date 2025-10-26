@@ -18,6 +18,12 @@ Miraculix is a comprehensive assistance tool for the game Final Fantasy XI, desi
   - Automatically removes a wide range of debuffs from the player, party members, and out-of-party players.
   - Uses the appropriate spells (e.g., Paralyna, Silena, Cursna) or items (e.g., Echo Drops) to cleanse status ailments.
 
+- **Intelligent Profiling System:**
+  - The application now features a three-tiered profiling system to adapt its behavior based on the party's current situation. The current profile is displayed on the main UI.
+  - **Normal:** Standard mode where all features are active. Buffs and debuffs are cast as needed.
+  - **Degraded:** Activated when multiple party members are below their cure threshold. In this mode, healing is prioritized, and only essential buffs (Group 1: Regen, Refresh, Haste) are cast. Offensive debuffing is paused.
+  - **Critical:** Activated when any party member's HP drops below 50%. In this mode, all actions except for healing are suspended to focus entirely on party survival.
+
 - **Combat Assistance:**
   - Auto-debuffing system for Red Mage to maintain debuffs on the current battle target.
   - Automated hate management spells to assist with tanking.
