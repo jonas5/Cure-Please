@@ -104,6 +104,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
         private List<string> nearbyPlayers = new List<string>();
         private Dictionary<string, OopPlayerState> oopPlayerStates = new Dictionary<string, OopPlayerState>();
         private DateTime _lastPipeMessageTime;
+        private Profile _currentProfile = Profile.Normal;
         private DateTime _lastSpellCastTime;
         private TimeSpan _idleHealThreshold;
         private Random _random = new Random();
@@ -179,6 +180,13 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             CharacterLoginScreen = 0,
             Loading = 1,
             LoggedIn = 2
+        }
+
+        public enum Profile
+        {
+            Normal,
+            Degraded,
+            Critical
         }
 
         public enum Status : byte
@@ -4349,6 +4357,8 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void RunDebuffChecker()
         {
+            if (_currentProfile == Profile.Critical) return;
+
             for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
             {
                 if (oopPlayerEnables[i].Checked && oopPlayerComboBoxes[i].SelectedItem != null)
@@ -5725,10 +5735,61 @@ private string GetBestSpellTier(string buffType, string targetName)
             }
             return false;
         }
+
+        private void DetermineProfile()
+        {
+            var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
+                .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name))
+                .ToList();
+
+            if (!partyMembers.Any())
+            {
+                _currentProfile = Profile.Normal;
+                return;
+            }
+
+            int criticalHpCount = 0;
+            int degradedHpCount = 0;
+
+            foreach (var member in partyMembers)
+            {
+                if (member.CurrentHPP <= 50)
+                {
+                    criticalHpCount++;
+                }
+                if (member.CurrentHPP <= Form2.config.curePercentage)
+                {
+                    degradedHpCount++;
+                }
+            }
+
+            Profile newProfile;
+            if (criticalHpCount > 0)
+            {
+                newProfile = Profile.Critical;
+            }
+            else if (degradedHpCount > 1)
+            {
+                newProfile = Profile.Degraded;
+            }
+            else
+            {
+                newProfile = Profile.Normal;
+            }
+
+            if (newProfile != _currentProfile)
+            {
+                _ELITEAPIPL.ThirdParty.SendString($"/echo Profiling Status: {newProfile}");
+                _currentProfile = newProfile;
+            }
+        }
+
         private void CheckAndApplyBuffs()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || _ELITEAPIPL == null || _ELITEAPIMonitored == null) return;
             if (_ELITEAPIPL.Player.Status == 33) return;
+
+            if (_currentProfile == Profile.Critical) return;
 
             var activePartyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
                                         .Where(p => p.Active != 0 && partyState.Members.ContainsKey(p.Name))
@@ -5746,16 +5807,24 @@ private string GetBestSpellTier(string buffType, string targetName)
                     byte memberIndex = partyMember.MemberNumber;
 
                     if (!castingPossible(memberIndex)) continue;
-                    var buffsToCheck = new[]
+
+                    var buffsToConsider = new List<dynamic>();
+
+                    if (_currentProfile == Profile.Normal || _currentProfile == Profile.Degraded)
                     {
-                        new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) },
-                        new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] },
-                        new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] },
-                        new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] },
-                        new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] },
-                        new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] }
-                    };
-                    foreach (var buffInfo in buffsToCheck)
+                        buffsToConsider.Add(new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) });
+                        buffsToConsider.Add(new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] });
+                        buffsToConsider.Add(new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] });
+                    }
+
+                    if (_currentProfile == Profile.Normal && _ELITEAPIPL.Player.MPP > 90)
+                    {
+                        buffsToConsider.Add(new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] });
+                        buffsToConsider.Add(new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] });
+                        buffsToConsider.Add(new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] });
+                    }
+
+                    foreach (var buffInfo in buffsToConsider)
                     {
                         if (!buffInfo.Enabled) continue;
                         if (buffInfo.Name == "Regen")
@@ -5872,10 +5941,19 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void ProcessRecastQueue()
         {
             if (CastingBackground_Check || JobAbilityLock_Check) return;
+            if (_currentProfile == Profile.Critical) return;
 
             RecastRequest request;
             if (recastQueue.TryDequeue(out request))
             {
+                var group1Buffs = new[] { "Regen", "Refresh", "Haste" };
+                if (_currentProfile == Profile.Degraded && !group1Buffs.Contains(request.BuffName, StringComparer.OrdinalIgnoreCase))
+                {
+                    // In Degraded, only process Group 1 buffs. Re-queue others.
+                    recastQueue.Enqueue(request);
+                    return;
+                }
+
                 string cooldownKey = $"{request.PlayerName}:{request.BuffName}";
                 if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey])
                 {
@@ -5903,6 +5981,7 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            DetermineProfile();
             UpdateNearbyPlayers();
 
             if (Form2.config.autoTargetOnLock && _nextTargetSetTime != DateTime.MinValue && DateTime.Now >= _nextTargetSetTime)
@@ -5919,6 +5998,12 @@ private string GetBestSpellTier(string buffType, string targetName)
             {
                 var buffs = memberState.Buffs.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})");
                 debug_MSG_show.AppendLine($"    -> State for {memberState.Name}: [{string.Join(", ", buffs)}]");
+            }
+
+            if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical)
+            {
+                PrioritizeHealing();
+                if (CastingBackground_Check) return;
             }
 
             ProcessRecastQueue();
@@ -6282,177 +6367,10 @@ private string GetBestSpellTier(string buffType, string targetName)
                         }
                     }
 
-                    List<byte> cures_required = new List<byte>();
-
-                    int MemberOf_curaga = GeneratePT_structure();
-
-
-                    /////////////////////////// PL CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-                    if (_ELITEAPIPL.Player.HP > 0 && (_ELITEAPIPL.Player.HPP <= Form2.config.monitoredCurePercentage) && Form2.config.enableOutOfPartyHealing == true && PLInParty() == false)
+                    if (_currentProfile == Profile.Normal)
                     {
-                        CureCalculator_PL(false);
+                        PrioritizeHealing();
                     }
-
-
-
-                    /////////////////////////// CURAGA //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                    IOrderedEnumerable<EliteAPI.PartyMember> cParty_curaga = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active != 0 && p.Zone == _ELITEAPIPL.Player.ZoneId).OrderBy(p => p.CurrentHPP);
-
-                    int memberOF_curaga = GeneratePT_structure();
-
-                    if (memberOF_curaga != 0 && memberOF_curaga != 4)
-                    {
-                        foreach (EliteAPI.PartyMember pData in cParty_curaga)
-                        {
-                            if (memberOF_curaga == 1 && pData.MemberNumber >= 0 && pData.MemberNumber <= 5)
-                            {
-                                if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
-                                {
-                                    if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
-                                    {
-                                        cures_required.Add(pData.MemberNumber);
-                                    }
-                                }
-                            }
-                            else if (memberOF_curaga == 2 && pData.MemberNumber >= 6 && pData.MemberNumber <= 11)
-                            {
-                                if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
-                                {
-                                    if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
-                                    {
-                                        cures_required.Add(pData.MemberNumber);
-                                    }
-                                }
-                            }
-                            else if (memberOF_curaga == 3 && pData.MemberNumber >= 12 && pData.MemberNumber <= 17)
-                            {
-                                if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
-                                {
-                                    if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
-                                    {
-                                        cures_required.Add(pData.MemberNumber);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (cures_required.Count >= Form2.config.curagaRequiredMembers)
-                        {
-                            int lowestHP_id = cures_required.First();
-                            CuragaCalculatorAsync(lowestHP_id);
-                        }
-                    }
-
-                    /////////////////////////// CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                    //var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active >= 1).OrderBy(p => p.CurrentHPP).Select(p => p.Index);
-                    IEnumerable<byte> playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().OrderBy(p => p.CurrentHPP).OrderBy(p => p.Active == 0).Select(p => p.MemberNumber);
-
-                    // First run a check on the monitored target
-                    byte playerMonitoredHp = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Name == _ELITEAPIMonitored.Player.Name).OrderBy(p => p.Active == 0).Select(p => p.MemberNumber).FirstOrDefault();
-
-                    if (Form2.config.enableMonitoredPriority && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].Name == _ELITEAPIMonitored.Player.Name && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHPP <= Form2.config.monitoredCurePercentage))
-                    {
-                        CureCalculator(playerMonitoredHp, false);
-                    }
-                    else
-                    {
-                        // Now run a scan to check all targets in the High Priority Threshold
-                        foreach (byte id in playerHpOrder)
-                        {
-                            if ((highPriorityBoxes[id].Checked) && _ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <= Form2.config.priorityCurePercentage))
-                            {
-                                CureCalculator(id, true);
-                                break;
-                            }
-                        }
-
-                        // New Healing Logic
-                        foreach (byte id in playerHpOrder)
-                        {
-                            if (!castingPossible(id) || !enabledBoxes[id].Checked || _ELITEAPIMonitored.Party.GetPartyMember(id).Active < 1 || _ELITEAPIMonitored.Party.GetPartyMember(id).CurrentHP == 0)
-                                continue;
-
-                            var partyMember = _ELITEAPIMonitored.Party.GetPartyMember(id);
-                            bool needsCure = partyMember.CurrentHPP <= Form2.config.curePercentage;
-                            bool needsRegen = autoRegen_Enabled[id] && partyMember.CurrentHPP < 95;
-                            bool isPlayerLowMP = _ELITEAPIPL.Player.MPP < 50;
-
-                            if (!needsCure && !needsRegen)
-                                continue;
-
-                            var memberState = partyState.Members.ContainsKey(partyMember.Name) ? partyState.Members[partyMember.Name] : null;
-                            if (memberState == null) continue;
-
-                            var regenBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Regen"].Ids.Contains(b.Id));
-                            bool hasActiveRegen = regenBuff != null && regenBuff.Expiration > DateTime.Now;
-
-                            if (isPlayerLowMP)
-                            {
-                                // Low MP Priority: Regen > Cure, overrides setting
-                                if (needsRegen && !hasActiveRegen)
-                                {
-                                    Regen_Player(id);
-                                    break;
-                                }
-                                if (needsCure)
-                                {
-                                    CureCalculator(id, false);
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                // Normal MP, use the setting
-                                if (Form2.config.cureBeforeRegen)
-                                {
-                                    // Setting Priority: Cure > Regen
-                                    if (needsCure)
-                                    {
-                                        CureCalculator(id, false);
-                                        break;
-                                    }
-                                    if (needsRegen && !hasActiveRegen)
-                                    {
-                                        Regen_Player(id);
-                                        break;
-                                    }
-                                }
-                                else
-                                {
-                                    // Setting Priority: Regen > Cure
-                                    if (needsRegen && !hasActiveRegen)
-                                    {
-                                        Regen_Player(id);
-                                        break;
-                                    }
-                                    if (needsCure)
-                                    {
-                                        CureCalculator(id, false);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    for (int j = 0; j < oopPlayerComboBoxes.Length; j++)
-                    {
-                        if (oopPlayerComboBoxes[j].SelectedItem != null && oopPlayerEnables[j].Checked)
-                        {
-                            string playerName = oopPlayerComboBoxes[j].SelectedItem.ToString();
-                            if (oopPlayerStates.ContainsKey(playerName) && oopPlayerStates[playerName].CurrentHpPercent <= Form2.config.curePercentage)
-                            {
-                                if (IsOopPlayerInRange(playerName))
-                                {
-                                    CureCalculator_OOP(playerName);
-                                }
-                            }
-                        }
-                    }
-
 
                     // RUN DEBUFF REMOVAL - CONVERTED TO FUNCTION SO CAN BE RUN IN MULTIPLE AREAS
                     RunDebuffChecker();
@@ -10812,6 +10730,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
         {
             if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.enableDebuffs) return;
             if (_ELITEAPIPL.Player.Status == 33) return;
+            if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical) return;
             debuffTargetId = lockedTargetId;
             if (debuffTargetId == 0) return;
 
@@ -10920,6 +10839,222 @@ private void updateInstances_Tick(object sender, EventArgs e)
         private void autoTargetOnLock_delay_seconds_ValueChanged_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void PrioritizeHealing()
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check) return;
+
+            CheckBox[] enabledBoxes = new CheckBox[18];
+            enabledBoxes[0] = player0enabled;
+            enabledBoxes[1] = player1enabled;
+            enabledBoxes[2] = player2enabled;
+            enabledBoxes[3] = player3enabled;
+            enabledBoxes[4] = player4enabled;
+            enabledBoxes[5] = player5enabled;
+            enabledBoxes[6] = player6enabled;
+            enabledBoxes[7] = player7enabled;
+            enabledBoxes[8] = player8enabled;
+            enabledBoxes[9] = player9enabled;
+            enabledBoxes[10] = player10enabled;
+            enabledBoxes[11] = player11enabled;
+            enabledBoxes[12] = player12enabled;
+            enabledBoxes[13] = player13enabled;
+            enabledBoxes[14] = player14enabled;
+            enabledBoxes[15] = player15enabled;
+            enabledBoxes[16] = player16enabled;
+            enabledBoxes[17] = player17enabled;
+
+            // Set array values for GUI "High Priority" checkboxes
+            CheckBox[] highPriorityBoxes = new CheckBox[18];
+            highPriorityBoxes[0] = player0priority;
+            highPriorityBoxes[1] = player1priority;
+            highPriorityBoxes[2] = player2priority;
+            highPriorityBoxes[3] = player3priority;
+            highPriorityBoxes[4] = player4priority;
+            highPriorityBoxes[5] = player5priority;
+            highPriorityBoxes[6] = player6priority;
+            highPriorityBoxes[7] = player7priority;
+            highPriorityBoxes[8] = player8priority;
+            highPriorityBoxes[9] = player9priority;
+            highPriorityBoxes[10] = player10priority;
+            highPriorityBoxes[11] = player11priority;
+            highPriorityBoxes[12] = player12priority;
+            highPriorityBoxes[13] = player13priority;
+            highPriorityBoxes[14] = player14priority;
+            highPriorityBoxes[15] = player15priority;
+            highPriorityBoxes[16] = player16priority;
+            highPriorityBoxes[17] = player17priority;
+            List<byte> cures_required = new List<byte>();
+
+            int MemberOf_curaga = GeneratePT_structure();
+
+
+            /////////////////////////// PL CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            if (_ELITEAPIPL.Player.HP > 0 && (_ELITEAPIPL.Player.HPP <= Form2.config.monitoredCurePercentage) && Form2.config.enableOutOfPartyHealing == true && PLInParty() == false)
+            {
+                CureCalculator_PL(false);
+            }
+
+
+
+            /////////////////////////// CURAGA //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            IOrderedEnumerable<EliteAPI.PartyMember> cParty_curaga = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active != 0 && p.Zone == _ELITEAPIPL.Player.ZoneId).OrderBy(p => p.CurrentHPP);
+
+            int memberOF_curaga = GeneratePT_structure();
+
+            if (memberOF_curaga != 0 && memberOF_curaga != 4)
+            {
+                foreach (EliteAPI.PartyMember pData in cParty_curaga)
+                {
+                    if (memberOF_curaga == 1 && pData.MemberNumber >= 0 && pData.MemberNumber <= 5)
+                    {
+                        if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
+                        {
+                            if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
+                            {
+                                cures_required.Add(pData.MemberNumber);
+                            }
+                        }
+                    }
+                    else if (memberOF_curaga == 2 && pData.MemberNumber >= 6 && pData.MemberNumber <= 11)
+                    {
+                        if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
+                        {
+                            if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
+                            {
+                                cures_required.Add(pData.MemberNumber);
+                            }
+                        }
+                    }
+                    else if (memberOF_curaga == 3 && pData.MemberNumber >= 12 && pData.MemberNumber <= 17)
+                    {
+                        if (castingPossible(pData.MemberNumber) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].Active >= 1) && (enabledBoxes[pData.MemberNumber].Checked) && (_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHP > 0))
+                        {
+                            if ((_ELITEAPIMonitored.Party.GetPartyMembers()[pData.MemberNumber].CurrentHPP <= Form2.config.curagaCurePercentage) && (castingPossible(pData.MemberNumber)))
+                            {
+                                cures_required.Add(pData.MemberNumber);
+                            }
+                        }
+                    }
+                }
+
+                if (cures_required.Count >= Form2.config.curagaRequiredMembers)
+                {
+                    int lowestHP_id = cures_required.First();
+                    CuragaCalculatorAsync(lowestHP_id);
+                }
+            }
+
+            /////////////////////////// CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            //var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active >= 1).OrderBy(p => p.CurrentHPP).Select(p => p.Index);
+            IEnumerable<byte> playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().OrderBy(p => p.CurrentHPP).OrderBy(p => p.Active == 0).Select(p => p.MemberNumber);
+
+            // First run a check on the monitored target
+            byte playerMonitoredHp = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Name == _ELITEAPIMonitored.Player.Name).OrderBy(p => p.Active == 0).Select(p => p.MemberNumber).FirstOrDefault();
+
+            if (Form2.config.enableMonitoredPriority && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].Name == _ELITEAPIMonitored.Player.Name && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHPP <= Form2.config.monitoredCurePercentage))
+            {
+                CureCalculator(playerMonitoredHp, false);
+            }
+            else
+            {
+                // Now run a scan to check all targets in the High Priority Threshold
+                foreach (byte id in playerHpOrder)
+                {
+                    if ((highPriorityBoxes[id].Checked) && _ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <= Form2.config.priorityCurePercentage))
+                    {
+                        CureCalculator(id, true);
+                        break;
+                    }
+                }
+
+                // New Healing Logic
+                foreach (byte id in playerHpOrder)
+                {
+                    if (!castingPossible(id) || !enabledBoxes[id].Checked || _ELITEAPIMonitored.Party.GetPartyMember(id).Active < 1 || _ELITEAPIMonitored.Party.GetPartyMember(id).CurrentHP == 0)
+                        continue;
+
+                    var partyMember = _ELITEAPIMonitored.Party.GetPartyMember(id);
+                    bool needsCure = partyMember.CurrentHPP <= Form2.config.curePercentage;
+                    bool needsRegen = autoRegen_Enabled[id] && partyMember.CurrentHPP < 95;
+                    bool isPlayerLowMP = _ELITEAPIPL.Player.MPP < 50;
+
+                    if (!needsCure && !needsRegen)
+                        continue;
+
+                    var memberState = partyState.Members.ContainsKey(partyMember.Name) ? partyState.Members[partyMember.Name] : null;
+                    if (memberState == null) continue;
+
+                    var regenBuff = memberState.Buffs.FirstOrDefault(b => buff_definitions["Regen"].Ids.Contains(b.Id));
+                    bool hasActiveRegen = regenBuff != null && regenBuff.Expiration > DateTime.Now;
+
+                    if (isPlayerLowMP)
+                    {
+                        // Low MP Priority: Regen > Cure, overrides setting
+                        if (needsRegen && !hasActiveRegen)
+                        {
+                            Regen_Player(id);
+                            break;
+                        }
+                        if (needsCure)
+                        {
+                            CureCalculator(id, false);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        // Normal MP, use the setting
+                        if (Form2.config.cureBeforeRegen)
+                        {
+                            // Setting Priority: Cure > Regen
+                            if (needsCure)
+                            {
+                                CureCalculator(id, false);
+                                break;
+                            }
+                            if (needsRegen && !hasActiveRegen)
+                            {
+                                Regen_Player(id);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            // Setting Priority: Regen > Cure
+                            if (needsRegen && !hasActiveRegen)
+                            {
+                                Regen_Player(id);
+                                break;
+                            }
+                            if (needsCure)
+                            {
+                                CureCalculator(id, false);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            for (int j = 0; j < oopPlayerComboBoxes.Length; j++)
+            {
+                if (oopPlayerComboBoxes[j].SelectedItem != null && oopPlayerEnables[j].Checked)
+                {
+                    string playerName = oopPlayerComboBoxes[j].SelectedItem.ToString();
+                    if (oopPlayerStates.ContainsKey(playerName) && oopPlayerStates[playerName].CurrentHpPercent <= Form2.config.curePercentage)
+                    {
+                        if (IsOopPlayerInRange(playerName))
+                        {
+                            CureCalculator_OOP(playerName);
+                        }
+                    }
+                }
+            }
         }
     }
 
