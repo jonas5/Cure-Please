@@ -4357,8 +4357,6 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void RunDebuffChecker()
         {
-            if (_currentProfile == Profile.Critical) return;
-
             for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
             {
                 if (oopPlayerEnables[i].Checked && oopPlayerComboBoxes[i].SelectedItem != null)
@@ -5779,7 +5777,7 @@ private string GetBestSpellTier(string buffType, string targetName)
 
             if (newProfile != _currentProfile)
             {
-                _ELITEAPIPL.ThirdParty.SendString($"/echo Profiling Status: {newProfile}");
+                profileStatusLabel.Text = $"Profile: {newProfile}";
                 _currentProfile = newProfile;
             }
         }

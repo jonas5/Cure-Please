@@ -2310,6 +2310,16 @@ namespace Miraculix
             this.debug.UseVisualStyleBackColor = false;
             this.debug.Click += new System.EventHandler(this.Debug_Click);
             // 
+            // profileStatusLabel
+            //
+            this.profileStatusLabel.AutoSize = true;
+            this.profileStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profileStatusLabel.Location = new System.Drawing.Point(504, 9);
+            this.profileStatusLabel.Name = "profileStatusLabel";
+            this.profileStatusLabel.Size = new System.Drawing.Size(41, 15);
+            this.profileStatusLabel.TabIndex = 36;
+            this.profileStatusLabel.Text = "Profile: Normal";
+            //
             // updateInstances
             // 
             this.updateInstances.Enabled = true;
@@ -2831,6 +2841,7 @@ namespace Miraculix
             this.Controls.Add(this.party1);
             this.Controls.Add(this.party0);
             this.Controls.Add(this.debug);
+            this.Controls.Add(this.profileStatusLabel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -3121,5 +3132,6 @@ namespace Miraculix
         private NewProgressBar oopPlayerHPs5;
         private ToolStripMenuItem partyAutoProtectToolStripMenuItem;
         private ToolStripMenuItem partyAutoShellToolStripMenuItem;
+        private Label profileStatusLabel;
     }
 }
