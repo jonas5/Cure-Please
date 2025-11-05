@@ -3139,6 +3139,11 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             _lastSpellCastTime = DateTime.Now;
             _idleHealThreshold = TimeSpan.FromSeconds((double)Form2.config.idleHealTime);
             _previousPlayerStatus = (byte)Status.Fighting;
+
+            playerOptions.Items.Remove(autoHasteToolStripMenuItem);
+            playerOptions.Items.Remove(autoHasteIIToolStripMenuItem);
+            autoOptions.Items.Insert(0, autoHasteToolStripMenuItem);
+            autoOptions.Items.Insert(1, autoHasteIIToolStripMenuItem);
         }
 
         private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
