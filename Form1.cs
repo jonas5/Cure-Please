@@ -6018,6 +6018,12 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+
+            if ((_ELITEAPIPL.Player.Status == (byte)Status.Healing) || (_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
+            {
+                return;
+            }
+
             DetermineProfile();
             UpdateNearbyPlayers();
 
@@ -6037,16 +6043,18 @@ private string GetBestSpellTier(string buffType, string targetName)
                 debug_MSG_show.AppendLine($"    -> State for {memberState.Name}: [{string.Join(", ", buffs)}]");
             }
 
-            if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical)
-            {
-                PrioritizeHealing();
-                if (CastingBackground_Check) return;
-            }
+      
+                    if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical)
+                    {
+                        PrioritizeHealing();
+                        if (CastingBackground_Check) return;
+                    }
 
-            ProcessRecastQueue();
-            CheckAndApplyBuffs();
-            CheckEngagedStatus_Hate();
-            RunDebuffLogic();
+                    ProcessRecastQueue();
+                    CheckAndApplyBuffs();
+                    CheckEngagedStatus_Hate();
+                    RunDebuffLogic();
+     
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -7551,8 +7559,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player0optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 0;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[0];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[0];
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[0];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[0];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[0];
@@ -7565,8 +7571,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player1optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 1;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[1];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[1];
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[1];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[1];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[1];
@@ -7578,8 +7582,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player2optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 2;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[2];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[2];
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[2];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[2];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[2];
@@ -7591,8 +7593,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player3optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 3;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[3];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[3];
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[3];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[3];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[3];
@@ -7604,8 +7604,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player4optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 4;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[4];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[4];
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[4];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[4];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[4];
@@ -7617,8 +7615,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player5optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 5;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[5];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[5];
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[5];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[5];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[5];
@@ -7630,8 +7626,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player6optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 6;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[6];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[6];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[6];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[6];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[6];
@@ -7642,8 +7636,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player7optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 7;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[7];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[7];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[7];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[7];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[7];
@@ -7654,8 +7646,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player8optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 8;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[8];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[8];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[8];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[8];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[8];
@@ -7666,8 +7656,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player9optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 9;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[9];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[9];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[9];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[9];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[9];
@@ -7678,8 +7666,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player10optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 10;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[10];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[10];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[10];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[10];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[10];
@@ -7690,8 +7676,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player11optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 11;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[11];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[11];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[11];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[11];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[11];
@@ -7702,8 +7686,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player12optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 12;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[12];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[12];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[12];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[12];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[12];
@@ -7714,8 +7696,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player13optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 13;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[13];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[13];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[13];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[13];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[13];
@@ -7726,8 +7706,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player14optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 14;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[14];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[14];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[14];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[14];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[14];
@@ -7738,8 +7716,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player15optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 15;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[15];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[15];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[15];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[15];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[15];
@@ -7750,8 +7726,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player16optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 16;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[16];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[16];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[16];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[16];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[16];
@@ -7762,8 +7736,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player17optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 17;
-            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[17];
-            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[17];
             autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[17];
             autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[17];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[17];
@@ -7774,6 +7746,8 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player0buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 0;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[0];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[0];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[0];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[0];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[0];
@@ -7791,6 +7765,8 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player1buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 1;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[1];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[1];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[1];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[1];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[1];
@@ -7808,6 +7784,8 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player2buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 2;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[2];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[2];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[2];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[2];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[2];
@@ -7825,6 +7803,8 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player3buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 3;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[3];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[3];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[3];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[3];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[3];
@@ -7842,6 +7822,8 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player4buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 4;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[4];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[4];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[4];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[4];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[4];
@@ -7859,6 +7841,8 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player5buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 5;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[5];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[5];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[5];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[5];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[5];
@@ -7876,72 +7860,96 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player6buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 6;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[6];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[6];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
         private void player7buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 7;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[7];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[7];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
         private void player8buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 8;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[8];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[8];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
         private void player9buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 9;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[9];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[9];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
         private void player10buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 10;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[10];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[10];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
         private void player11buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 11;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[11];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[11];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
         private void player12buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 12;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[12];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[12];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
         private void player13buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 13;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[13];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[13];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
         private void player14buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 14;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[14];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[14];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
         private void player15buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 15;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[15];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[15];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
         private void player16buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 16;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[16];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[16];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
         private void player17buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 17;
+            autoHasteToolStripMenuItem.Checked = autoHasteEnabled[17];
+            autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[17];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
