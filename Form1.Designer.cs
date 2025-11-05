@@ -843,8 +843,6 @@ namespace Miraculix
             this.DevotionTargetToolStripMenuItem,
             this.HateEstablisherToolStripMenuItem,
             this.toolStripSeparator7,
-            this.autoHasteToolStripMenuItem,
-            this.autoHasteIIToolStripMenuItem,
             this.autoAdloquiumToolStripMenuItem,
             this.autoFlurryToolStripMenuItem,
             this.autoFlurryIIToolStripMenuItem,
@@ -2099,6 +2097,8 @@ namespace Miraculix
             // autoOptions
             // 
             this.autoOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoHasteToolStripMenuItem,
+            this.autoHasteIIToolStripMenuItem,
             this.autoPhalanxIIToolStripMenuItem1,
             this.autoRegenVToolStripMenuItem,
             this.autoRefreshIIToolStripMenuItem,
