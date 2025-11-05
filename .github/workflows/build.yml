@@ -19,4 +19,20 @@ jobs:
 
     - name: Build with MSBuild
       shell: cmd
-      run: '"C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe" Miraculix.sln /p:Configuration=Debug /p:Platform=x86'
+      run: '"C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe" Miraculix.sln /p:Configuration=Release /p:Platform=x86'
+
+    - name: Prepare release files
+      run: |
+        mkdir release
+        copy bin\Release\Miraculix.exe release\
+        copy bin\Release\*.dll release\
+        copy dlls\*.dll release\
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v1.0.0
+        name: Miraculix v1.0.0
+        files: release/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
