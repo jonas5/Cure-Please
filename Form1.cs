@@ -3765,6 +3765,7 @@ private string GetBestSpellTier(string buffType, string targetName)
 
             if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
             {
+                ReloadSettings();
                 if (Form2.config.pauseOnZoneBox == true)
                 {
                     song_casting = 0;
@@ -7946,18 +7947,18 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void autoHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHasteEnabled[playerOptionsSelected] = !autoHasteEnabled[playerOptionsSelected];
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            autoHasteEnabled[autoOptionsSelected] = !autoHasteEnabled[autoOptionsSelected];
+            autoHaste_IIEnabled[autoOptionsSelected] = false;
+            autoFlurryEnabled[autoOptionsSelected] = false;
+            autoFlurry_IIEnabled[autoOptionsSelected] = false;
         }
 
         private void autoHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHaste_IIEnabled[playerOptionsSelected] = !autoHaste_IIEnabled[playerOptionsSelected];
-            autoHasteEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            autoHaste_IIEnabled[autoOptionsSelected] = !autoHaste_IIEnabled[autoOptionsSelected];
+            autoHasteEnabled[autoOptionsSelected] = false;
+            autoFlurryEnabled[autoOptionsSelected] = false;
+            autoFlurry_IIEnabled[autoOptionsSelected] = false;
         }
 
         private void autoAdloquiumToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8979,7 +8980,7 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
                     }
                     else
                     {
-                        debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is no longer valid (HP: {lockedEntity.HealthPercent}%, Status: {lockedEntity.Status}). Searching for a new one.");
+                        debug_MSG_show.AppendLine($"  -> Locked target is no longer valid. Searching for a new one.");
                         lockedTargetId = 0; // Reset locked target
                         battleTargetLabel.Text = "Inactive";
                     }
@@ -8999,108 +9000,56 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
 
                 List<uint> friendlyIds = partyMembers.Select(p => p.ID).ToList();
 
-                // Add the controlling player's ID. GetPartyMember(0) refers to the player.
                 var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
                 if (plInfo != null)
                 {
                     friendlyIds.Add(plInfo.ID);
                 }
-
-                // Add the monitored player's ID. This might be redundant if they're in a party, but Distinct() will handle it.
                 var monitoredInfo = _ELITEAPIMonitored.Party.GetPartyMember(0);
                 if (monitoredInfo != null)
                 {
                     friendlyIds.Add(monitoredInfo.ID);
                 }
-
                 friendlyIds = friendlyIds.Distinct().ToList();
 
-                debug_MSG_show.AppendLine("Friendly names to ignore: " + string.Join(", ", friendlyNames));
-                debug_MSG_show.AppendLine("Friendly IDs for claim check: " + string.Join(", ", friendlyIds));
-                bool useSpecifiedTarget = Form2.config.AssistSpecifiedTarget && !string.IsNullOrEmpty(Form2.config.autoTarget_Target);
-                string targetName = useSpecifiedTarget ? Form2.config.autoTarget_Target.ToLower() : "N/A";
-                debug_MSG_show.AppendLine($"Config: useSpecifiedTarget={useSpecifiedTarget}, targetName='{targetName}'");
-                debug_MSG_show.AppendLine("Scanning entities...");
+                EliteAPI.XiEntity bestTarget = null;
+                int bestTargetId = 0;
+
+                debug_MSG_show.AppendLine("Scanning entities for best target...");
                 for (int i = 0; i < 2048; i++)
                 {
                     EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-                    if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0)
-                    {
-                        continue;
-                    }
-                    string entityNameLower = entity.Name.ToLower();
+                    if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0) continue;
+
                     var entityType = (TargetType)entity.Type;
-                    debug_MSG_show.AppendLine($"[Index:{i}] Checking '{entity.Name}' (HP: {entity.HealthPercent}%, Status: {entity.Status}, Dist: {entity.Distance:F1}, Type: {entityType})");
 
-                    if (entity.Status == 1 && !friendlyNames.Contains(entityNameLower))
+                    if (entity.Status == 1 && !friendlyNames.Contains(entity.Name.ToLower()))
                     {
-                        debug_MSG_show.AppendLine($"  -> Potential Target: '{entity.Name}' is fighting and not friendly.");
+                        if (!(entityType.HasFlag(TargetType.Enemy) || entityType.HasFlag(TargetType.NPC))) continue;
+                        if (entity.ClaimID != 0 && !friendlyIds.Contains(entity.ClaimID)) continue;
+                        if (entity.HealthPercent >= 100) continue;
+                        if (entity.Distance >= 21) continue;
 
-                        // Type Check
-                        if (!(entityType.HasFlag(TargetType.Enemy) || entityType.HasFlag(TargetType.NPC)))
+                        if (bestTarget == null || entity.MPP < bestTarget.MPP)
                         {
-                            debug_MSG_show.AppendLine($"  -> Skip: Type is '{entityType}', which is not an Enemy or NPC.");
-                            continue;
-                        }
-                        debug_MSG_show.AppendLine("  -> Pass: Type is Enemy or NPC.");
-
-                        // Claim Check
-                        if (entity.ClaimID != 0 && !friendlyIds.Contains(entity.ClaimID))
-                        {
-                            debug_MSG_show.AppendLine($"  -> Skip: Claimed by another player (ClaimID: {entity.ClaimID}).");
-                            continue;
-                        }
-                        debug_MSG_show.AppendLine("  -> Pass: Not claimed or claimed by a friendly player.");
-
-                        // HP Check
-                        if (entity.HealthPercent >= 100)
-                        {
-                            debug_MSG_show.AppendLine("  -> Skip: HP is 100%.");
-                            continue;
-                        }
-                        debug_MSG_show.AppendLine("  -> Pass: HP < 100%.");
-
-                        // Distance Check
-                        if (entity.Distance >= 21)
-                        {
-                            debug_MSG_show.AppendLine($"  -> Skip: Distance is {entity.Distance:F1} >= 21.");
-                            continue;
-                        }
-                        debug_MSG_show.AppendLine("  -> Pass: Distance < 21.");
-
-                        debug_MSG_show.AppendLine("  -> Pass: Enmity check skipped as per new logic.");
-
-                        if (useSpecifiedTarget)
-                        {
-                            if (entityNameLower == targetName)
-                            {
-                                debug_MSG_show.AppendLine($"  -> SUCCESS: Matched specified target name. Locking and returning index: {i}");
-                                lockedTargetId = i;
-                                if (Form2.config.autoTargetOnLock)
-                                {
-                                    _nextTargetSetTime = DateTime.Now.AddSeconds(2);
-                                }
-                                battleTargetLabel.Text = $"{entity.Name} ({i})";
-                                return i;
-                            }
-                            else
-                            {
-                                debug_MSG_show.AppendLine("  -> Skip: Does not match specified target name.");
-                            }
-                        }
-                        else
-                        {
-                            debug_MSG_show.AppendLine($"  -> SUCCESS: Found first valid engaged enemy. Locking and returning index: {i}");
-                            lockedTargetId = i;
-                            if (Form2.config.autoTargetOnLock)
-                            {
-                                _nextTargetSetTime = DateTime.Now.AddSeconds(2);
-                            }
-                            battleTargetLabel.Text = $"{entity.Name} ({i})";
-                            return i;
+                            bestTarget = entity;
+                            bestTargetId = i;
                         }
                     }
                 }
+
+                if (bestTarget != null)
+                {
+                    debug_MSG_show.AppendLine($"  -> SUCCESS: Found best target '{bestTarget.Name}' with lowest MP. Locking and returning index: {bestTargetId}");
+                    lockedTargetId = bestTargetId;
+                    if (Form2.config.autoTargetOnLock)
+                    {
+                        _nextTargetSetTime = DateTime.Now.AddSeconds(2);
+                    }
+                    battleTargetLabel.Text = $"{bestTarget.Name} ({bestTargetId})";
+                    return bestTargetId;
+                }
+
                 debug_MSG_show.AppendLine("No matching engaged target found.");
             }
             catch (Exception ex)
