@@ -25,8 +25,7 @@ jobs:
       run: |
         mkdir release
         copy bin\Release\Miraculix.exe release\
-        copy bin\Release\*.dll release\
-        copy dlls\*.dll release\
+        copy *.dll release\
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
