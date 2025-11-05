@@ -278,6 +278,7 @@ namespace Miraculix
             this.oopPlayerComboBoxes5 = new System.Windows.Forms.ComboBox();
             this.oopPlayerOptionsButtons5 = new System.Windows.Forms.Button();
             this.oopPlayerHPs5 = new Miraculix.NewProgressBar();
+            this.profileStatusLabel = new System.Windows.Forms.Label();
             this.party0.SuspendLayout();
             this.playerOptions.SuspendLayout();
             this.party2.SuspendLayout();
@@ -292,6 +293,20 @@ namespace Miraculix
             this.oopPlayerOptions.SuspendLayout();
             this.oopGroupBox.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // partyAutoProtectToolStripMenuItem
+            // 
+            this.partyAutoProtectToolStripMenuItem.Name = "partyAutoProtectToolStripMenuItem";
+            this.partyAutoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.partyAutoProtectToolStripMenuItem.Text = "Auto Protect";
+            this.partyAutoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
+            // 
+            // partyAutoShellToolStripMenuItem
+            // 
+            this.partyAutoShellToolStripMenuItem.Name = "partyAutoShellToolStripMenuItem";
+            this.partyAutoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.partyAutoShellToolStripMenuItem.Text = "Auto Shell";
+            this.partyAutoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
             // 
             // player0optionsButton
             // 
@@ -828,6 +843,8 @@ namespace Miraculix
             this.DevotionTargetToolStripMenuItem,
             this.HateEstablisherToolStripMenuItem,
             this.toolStripSeparator7,
+            this.autoHasteToolStripMenuItem,
+            this.autoHasteIIToolStripMenuItem,
             this.autoAdloquiumToolStripMenuItem,
             this.autoFlurryToolStripMenuItem,
             this.autoFlurryIIToolStripMenuItem,
@@ -954,34 +971,20 @@ namespace Miraculix
             this.toolStripSeperator13.Name = "toolStripSeperator13";
             this.toolStripSeperator13.Size = new System.Drawing.Size(223, 6);
             // 
-            // partyAutoProtectToolStripMenuItem
-            //
-            this.partyAutoProtectToolStripMenuItem.Name = "partyAutoProtectToolStripMenuItem";
-            this.partyAutoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.partyAutoProtectToolStripMenuItem.Text = "Auto Protect";
-            this.partyAutoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
-            //
-            // partyAutoShellToolStripMenuItem
-            //
-            this.partyAutoShellToolStripMenuItem.Name = "partyAutoShellToolStripMenuItem";
-            this.partyAutoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.partyAutoShellToolStripMenuItem.Text = "Auto Shell";
-            this.partyAutoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
-            //
             // autoShellToolStripMenuItem
-            //
+            // 
             this.autoShellToolStripMenuItem.Name = "autoShellToolStripMenuItem";
             this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.autoShellToolStripMenuItem.Text = "Auto Shell";
             this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
-            //
+            // 
             // autoProtectToolStripMenuItem
-            //
+            // 
             this.autoProtectToolStripMenuItem.Name = "autoProtectToolStripMenuItem";
             this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.autoProtectToolStripMenuItem.Text = "Auto Protect";
             this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
-            //
+            // 
             // stormspellToolStripMenuItem
             // 
             this.stormspellToolStripMenuItem.Name = "stormspellToolStripMenuItem";
@@ -2099,8 +2102,6 @@ namespace Miraculix
             this.autoPhalanxIIToolStripMenuItem1,
             this.autoRegenVToolStripMenuItem,
             this.autoRefreshIIToolStripMenuItem,
-            this.autoHasteToolStripMenuItem,
-            this.autoHasteIIToolStripMenuItem,
             this.toolStripSeparator1,
             this.SandstormToolStripMenuItem,
             this.RainstormToolStripMenuItem,
@@ -2310,17 +2311,6 @@ namespace Miraculix
             this.debug.UseVisualStyleBackColor = false;
             this.debug.Click += new System.EventHandler(this.Debug_Click);
             // 
-            // profileStatusLabel
-            //
-            this.profileStatusLabel = new System.Windows.Forms.Label();
-            this.profileStatusLabel.AutoSize = true;
-            this.profileStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.profileStatusLabel.Location = new System.Drawing.Point(504, 9);
-            this.profileStatusLabel.Name = "profileStatusLabel";
-            this.profileStatusLabel.Size = new System.Drawing.Size(41, 15);
-            this.profileStatusLabel.TabIndex = 36;
-            this.profileStatusLabel.Text = "Profile: Normal";
-            //
             // updateInstances
             // 
             this.updateInstances.Enabled = true;
@@ -2816,6 +2806,16 @@ namespace Miraculix
             this.oopPlayerHPs5.Name = "oopPlayerHPs5";
             this.oopPlayerHPs5.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs5.TabIndex = 4;
+            // 
+            // profileStatusLabel
+            // 
+            this.profileStatusLabel.AutoSize = true;
+            this.profileStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profileStatusLabel.Location = new System.Drawing.Point(255, 14);
+            this.profileStatusLabel.Name = "profileStatusLabel";
+            this.profileStatusLabel.Size = new System.Drawing.Size(89, 15);
+            this.profileStatusLabel.TabIndex = 36;
+            this.profileStatusLabel.Text = "Profile: Normal";
             // 
             // Form1
             // 

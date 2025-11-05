@@ -3358,6 +3358,31 @@ private void setinstance_Click(object sender, EventArgs e)
                     }
                 }
             }
+
+            if (Form2.config.EnableAddOn && LUA_Plugin_Loaded == 0)
+                {
+
+            if (WindowerMode == "Ashita")
+                {
+                    _ELITEAPIPL.ThirdParty.SendString("/load miraculix");
+                    Thread.Sleep(1500);
+
+
+                    _ELITEAPIPL.ThirdParty.SendString("/mx verify");
+                    if (Form2.config.enableHotKeys)
+                    {
+                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /mx toggle");
+                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /mx start");
+                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /mx pause");
+                    }
+                }
+
+                AddOnStatus_Click(sender, e);
+
+                LUA_Plugin_Loaded = 1;
+            }
+
+
         }
     }
 }
@@ -5737,13 +5762,26 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void DetermineProfile()
         {
+            CheckBox[] enabledBoxes = new CheckBox[] {
+                player0enabled, player1enabled, player2enabled, player3enabled, player4enabled, player5enabled,
+                player6enabled, player7enabled, player8enabled, player9enabled, player10enabled, player11enabled,
+                player12enabled, player13enabled, player14enabled, player15enabled, player16enabled, player17enabled
+            };
+
             var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
-                .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name))
+                .Where(p => p.Active != 0
+                         && !string.IsNullOrEmpty(p.Name)
+                         && p.MemberNumber < 18 // safety check
+                         && enabledBoxes[p.MemberNumber].Checked) // Only consider enabled members
                 .ToList();
 
             if (!partyMembers.Any())
             {
-                _currentProfile = Profile.Normal;
+                if (_currentProfile != Profile.Normal)
+                {
+                    _currentProfile = Profile.Normal;
+                    profileStatusLabel.Text = $"Profile: {Profile.Normal}";
+                }
                 return;
             }
 
@@ -8959,109 +8997,105 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
             }
         }
 
-        private int CheckEngagedStatus_Hate()
+
+private int CheckEngagedStatus_Hate()
+{
+    try
+    {
+        debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
+
+        // 1. Check if a target is already locked
+        if (lockedTargetId != 0)
         {
-            try
+            debug_MSG_show.AppendLine($"Checking locked target ID: {lockedTargetId}");
+            EliteAPI.XiEntity lockedEntity = _ELITEAPIPL.Entity.GetEntity(lockedTargetId);
+
+            // Check if the locked entity is still valid
+            if (lockedEntity != null && lockedEntity.HealthPercent > 0 && lockedEntity.Status == 1)
             {
-                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
-
-                // 1. Check if a target is already locked
-                if (lockedTargetId != 0)
-                {
-                    debug_MSG_show.AppendLine($"Checking locked target ID: {lockedTargetId}");
-                    EliteAPI.XiEntity lockedEntity = _ELITEAPIPL.Entity.GetEntity(lockedTargetId);
-
-                    // Check if the locked entity is still valid
-                    if (lockedEntity != null && lockedEntity.HealthPercent > 0 && lockedEntity.Status == 1)
-                    {
-                        debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
-                        battleTargetLabel.Text = $"{lockedEntity.Name} ({lockedTargetId})";
-                        return lockedTargetId;
-                    }
-                    else
-                    {
-                        debug_MSG_show.AppendLine($"  -> Locked target is no longer valid. Searching for a new one.");
-                        lockedTargetId = 0; // Reset locked target
-                        battleTargetLabel.Text = "Inactive";
-                    }
-                }
-
-                debug_MSG_show.AppendLine("No locked target. Starting new search.");
-
-                var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).ToList();
-                List<string> friendlyNames = partyMembers.Select(p => p.Name.ToLower()).ToList();
-                friendlyNames.Add(_ELITEAPIPL.Player.Name.ToLower());
-                if (_ELITEAPIPL.Player.Name.ToLower() != _ELITEAPIMonitored.Player.Name.ToLower())
-                {
-                    friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
-                }
-
-                friendlyNames = friendlyNames.Distinct().ToList();
-
-                List<uint> friendlyIds = partyMembers.Select(p => p.ID).ToList();
-
-                var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                if (plInfo != null)
-                {
-                    friendlyIds.Add(plInfo.ID);
-                }
-                var monitoredInfo = _ELITEAPIMonitored.Party.GetPartyMember(0);
-                if (monitoredInfo != null)
-                {
-                    friendlyIds.Add(monitoredInfo.ID);
-                }
-                friendlyIds = friendlyIds.Distinct().ToList();
-
-                EliteAPI.XiEntity bestTarget = null;
-                int bestTargetId = 0;
-
-                debug_MSG_show.AppendLine("Scanning entities for best target...");
-                for (int i = 0; i < 2048; i++)
-                {
-                    EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-                    if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0) continue;
-
-                    var entityType = (TargetType)entity.Type;
-
-                    if (entity.Status == 1 && !friendlyNames.Contains(entity.Name.ToLower()))
-                    {
-                        if (!(entityType.HasFlag(TargetType.Enemy) || entityType.HasFlag(TargetType.NPC))) continue;
-                        if (entity.ClaimID != 0 && !friendlyIds.Contains(entity.ClaimID)) continue;
-                        if (entity.HealthPercent >= 100) continue;
-                        if (entity.Distance >= 21) continue;
-
-                        if (bestTarget == null || entity.MPP < bestTarget.MPP)
-                        {
-                            bestTarget = entity;
-                            bestTargetId = i;
-                        }
-                    }
-                }
-
-                if (bestTarget != null)
-                {
-                    debug_MSG_show.AppendLine($"  -> SUCCESS: Found best target '{bestTarget.Name}' with lowest MP. Locking and returning index: {bestTargetId}");
-                    lockedTargetId = bestTargetId;
-                    if (Form2.config.autoTargetOnLock)
-                    {
-                        _nextTargetSetTime = DateTime.Now.AddSeconds(2);
-                    }
-                    battleTargetLabel.Text = $"{bestTarget.Name} ({bestTargetId})";
-                    return bestTargetId;
-                }
-
-                debug_MSG_show.AppendLine("No matching engaged target found.");
+                debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
+                battleTargetLabel.Text = $"{lockedEntity.Name} ({lockedTargetId})";
+                return lockedTargetId;
             }
-            catch (Exception ex)
+            else
             {
-                debug_MSG_show.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex.ToString()}");
+                debug_MSG_show.AppendLine($"  -> Locked target is no longer valid. Searching for a new one.");
+                lockedTargetId = 0; // Reset locked target
+                battleTargetLabel.Text = "Inactive";
             }
-            finally
-            {
-                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate END ---");
-            }
-            return 0;
         }
+
+        debug_MSG_show.AppendLine("No locked target. Starting new search.");
+
+        var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
+            .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).ToList();
+        List<string> friendlyNames = partyMembers.Select(p => p.Name.ToLower()).ToList();
+        friendlyNames.Add(_ELITEAPIPL.Player.Name.ToLower());
+        if (_ELITEAPIPL.Player.Name.ToLower() != _ELITEAPIMonitored.Player.Name.ToLower())
+        {
+            friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
+        }
+        friendlyNames = friendlyNames.Distinct().ToList();
+
+        List<uint> friendlyIds = partyMembers.Select(p => p.ID).ToList();
+        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+        if (plInfo != null) friendlyIds.Add(plInfo.ID);
+        var monitoredInfo = _ELITEAPIMonitored.Party.GetPartyMember(0);
+        if (monitoredInfo != null) friendlyIds.Add(monitoredInfo.ID);
+        friendlyIds = friendlyIds.Distinct().ToList();
+
+        EliteAPI.XiEntity bestTarget = null;
+        int bestTargetId = 0;
+
+        debug_MSG_show.AppendLine("Scanning entities for best target...");
+        for (int i = 0; i < 2048; i++)
+        {
+            EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
+            if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0) continue;
+
+            var entityType = (TargetType)entity.Type;
+
+            if (entity.Status == 1 && !friendlyNames.Contains(entity.Name.ToLower()))
+            {
+                if (!(entityType.HasFlag(TargetType.Enemy) || entityType.HasFlag(TargetType.NPC))) continue;
+                if (entity.ClaimID != 0 && !friendlyIds.Contains(entity.ClaimID)) continue;
+                if (entity.HealthPercent >= 100) continue;
+                if (entity.Distance >= 21) continue;
+
+                if (bestTarget == null || entity.HealthPercent < bestTarget.HealthPercent)
+                {
+                    bestTarget = entity;
+                    bestTargetId = i;
+                }
+            }
+        }
+
+        if (bestTarget != null)
+        {
+            debug_MSG_show.AppendLine($"  -> SUCCESS: Found best target '{bestTarget.Name}' with lowest HP. Locking and returning index: {bestTargetId}");
+            lockedTargetId = bestTargetId;
+            if (Form2.config.autoTargetOnLock)
+            {
+                _nextTargetSetTime = DateTime.Now.AddSeconds(2);
+            }
+            battleTargetLabel.Text = $"{bestTarget.Name} ({bestTargetId})";
+            return bestTargetId;
+        }
+
+        debug_MSG_show.AppendLine("No matching engaged target found.");
+    }
+    catch (Exception ex)
+    {
+        debug_MSG_show.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex}");
+    }
+    finally
+    {
+        debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate END ---");
+    }
+    return 0;
+}
+
+
 
         private int GrabGEOTargetID()
         {
@@ -10324,11 +10358,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
             {
                 if (WindowerMode == "Ashita")
                 {
-                    _ELITEAPIPL.ThirdParty.SendString(string.Format("/cpaddon verify"));
-                }
-                else if (WindowerMode == "Windower")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString(string.Format("//cpaddon verify"));
+                    _ELITEAPIPL.ThirdParty.SendString(string.Format("/mx verify"));
                 }
             }
         }

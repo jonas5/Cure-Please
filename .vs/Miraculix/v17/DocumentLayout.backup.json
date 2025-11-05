@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Youda\\Gits\\Cure-Please\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|C:\\Users\\Youda\\Gits\\Cure-Please\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|c:\\users\\youda\\gits\\cure-please\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|solutionrelative:form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
@@ -11,15 +15,11 @@
       "RelativeMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|solutionrelative:form2.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|c:\\users\\youda\\gits\\cure-please\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|C:\\Users\\Youda\\Gits\\Cure-Please\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|c:\\users\\youda\\gits\\cure-please\\form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "AbsoluteMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|C:\\Users\\Youda\\Gits\\Cure-Please\\form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
       "RelativeMoniker": "D:0:0:{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}|Miraculix.csproj|solutionrelative:form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
     },
     {
@@ -38,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
@@ -80,7 +80,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
@@ -96,8 +96,8 @@
               "Title": "Form2.cs",
               "DocumentMoniker": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.cs",
               "RelativeDocumentMoniker": "Form2.cs",
-              "ToolTip": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.cs",
-              "RelativeToolTip": "Form2.cs",
+              "ToolTip": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.cs*",
+              "RelativeToolTip": "Form2.cs*",
               "ViewState": "AgIAALIRAAAAAAAAAAAgwM4RAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-24T21:25:13.533Z",
@@ -105,12 +105,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Form2.Designer.cs",
               "DocumentMoniker": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.Designer.cs",
               "RelativeDocumentMoniker": "Form2.Designer.cs",
-              "ToolTip": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.Designer.cs",
-              "RelativeToolTip": "Form2.Designer.cs",
+              "ToolTip": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.Designer.cs*",
+              "RelativeToolTip": "Form2.Designer.cs*",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-24T21:09:00.698Z",
@@ -118,12 +118,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form2.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.cs",
               "RelativeDocumentMoniker": "Form2.cs",
-              "ToolTip": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.cs [Design]",
-              "RelativeToolTip": "Form2.cs [Design]",
+              "ToolTip": "C:\\Users\\Youda\\Gits\\Cure-Please\\Form2.cs [Design]*",
+              "RelativeToolTip": "Form2.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-24T17:15:02.474Z",
               "EditorCaption": " [Design]"
