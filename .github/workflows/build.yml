@@ -1,4 +1,4 @@
-name: Build Miraculix (.NET 4.5.1)
+name: Build on Self-Hosted Runner
 
 on:
   push:
@@ -8,20 +8,14 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: self-hosted
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
 
     - name: Restore NuGet packages
       run: nuget restore Miraculix.sln
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.1
-
-    - name: Build solution
+    - name: Build with MSBuild
       run: msbuild Miraculix.sln /p:Configuration=Release /p:Platform="x86"
