@@ -6037,16 +6037,22 @@ private string GetBestSpellTier(string buffType, string targetName)
                 debug_MSG_show.AppendLine($"    -> State for {memberState.Name}: [{string.Join(", ", buffs)}]");
             }
 
-            if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical)
+            if ((_ELITEAPIPL.Player.Status == (int)Status.Standing) || (_ELITEAPIPL.Player.Status == (int)Status.Fighting))
             {
-                PrioritizeHealing();
-                if (CastingBackground_Check) return;
-            }
+                if ((_ELITEAPIPL.Player.X == plX) && (_ELITEAPIPL.Player.Y == plY) && (_ELITEAPIPL.Player.Z == plZ))
+                {
+                    if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical)
+                    {
+                        PrioritizeHealing();
+                        if (CastingBackground_Check) return;
+                    }
 
-            ProcessRecastQueue();
-            CheckAndApplyBuffs();
-            CheckEngagedStatus_Hate();
-            RunDebuffLogic();
+                    ProcessRecastQueue();
+                    CheckAndApplyBuffs();
+                    CheckEngagedStatus_Hate();
+                    RunDebuffLogic();
+                }
+            }
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
