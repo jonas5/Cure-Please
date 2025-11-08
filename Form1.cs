@@ -6015,9 +6015,16 @@ private string GetBestSpellTier(string buffType, string targetName)
                 }
             }
         }
-        private void RunDispelLogic(string buffName)
+        private void RunDispelLogic(string actorName, string buffName)
         {
             if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.Dispel)
+            {
+                return;
+            }
+
+            // Ensure the mob that used the ability is our current locked target.
+            EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(lockedTargetId);
+            if (targetEntity == null || targetEntity.Name != actorName)
             {
                 return;
             }
@@ -6038,12 +6045,11 @@ private string GetBestSpellTier(string buffType, string targetName)
 
             if (shouldDispel)
             {
-                if (debuffTargetId != 0 && HasSpell("Dispel") && CheckSpellRecast("Dispel") == 0)
+                if (lockedTargetId != 0 && HasSpell("Dispel") && CheckSpellRecast("Dispel") == 0)
                 {
-                    EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
-                    if (targetEntity != null && targetEntity.HealthPercent > 0 && targetEntity.Distance < 21)
+                    if (targetEntity.HealthPercent > 0 && targetEntity.Distance < 21)
                     {
-                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                        _ELITEAPIPL.Target.SetTarget(lockedTargetId);
                         CastSpell("<t>", "Dispel", $"Dispelling {buffName}");
                     }
                 }
@@ -10325,11 +10331,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                     break;
-                case "DISPEL_BUFF":
-                    if (parts.Length == 2)
+                case "DISPEL_REQUESTED":
+                    if (parts.Length == 3)
                     {
-                        string buffName = parts[1];
-                        RunDispelLogic(buffName);
+                        string actorName = parts[1];
+                        string buffName = parts[2];
+                        RunDispelLogic(actorName, buffName);
                     }
                     break;
             }
