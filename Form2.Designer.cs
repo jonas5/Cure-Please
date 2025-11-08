@@ -8338,6 +8338,7 @@ namespace Miraculix
             this.debuffsGroupBox.Controls.Add(this.defenseBoostGroupBox);
             this.debuffsGroupBox.Controls.Add(this.magicShieldGroupBox);
             this.debuffsGroupBox.Controls.Add(this.evasionBoostGroupBox);
+            this.debuffsGroupBox.Controls.Add(this.Dispel);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
             this.debuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -8345,6 +8346,16 @@ namespace Miraculix
             this.debuffsGroupBox.TabStop = false;
             this.debuffsGroupBox.Text = "Auto-Debuff Settings";
             this.debuffsGroupBox.Enter += new System.EventHandler(this.debuffsGroupBox_Enter);
+            //
+            // Dispel
+            //
+            this.Dispel.AutoSize = true;
+            this.Dispel.Location = new System.Drawing.Point(600, 25);
+            this.Dispel.Name = "Dispel";
+            this.Dispel.Size = new System.Drawing.Size(110, 19);
+            this.Dispel.TabIndex = 24;
+            this.Dispel.Text = "Enable Dispel";
+            this.Dispel.UseVisualStyleBackColor = true;
             //
             // defenseBoostGroupBox
             //
@@ -9400,5 +9411,6 @@ namespace Miraculix
         private System.Windows.Forms.GroupBox evasionBoostGroupBox;
         private System.Windows.Forms.CheckBox evasionBoostCheckBox;
         private System.Windows.Forms.CheckedListBox evasionBoostCheckedListBox;
+        private System.Windows.Forms.CheckBox Dispel;
     }
 }

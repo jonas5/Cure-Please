@@ -1843,6 +1843,7 @@ namespace Miraculix
             public List<string> magicShieldAbilities { get; set; }
             public bool evasionBoost { get; set; }
             public List<string> evasionBoostAbilities { get; set; }
+            public bool Dispel { get; set; }
         }
 
         #endregion "== Settings Class"
@@ -2396,6 +2397,7 @@ namespace Miraculix
                 config.idleHealTime = 10;
 
                 // Dispel
+                config.Dispel = false;
                 config.defenseBoost = false;
                 config.magicShield = false;
                 config.evasionBoost = false;
@@ -2962,6 +2964,7 @@ namespace Miraculix
             config.defenseBoostAbilities = defenseBoostCheckedListBox.CheckedItems.Cast<string>().ToList();
             config.magicShieldAbilities = magicShieldCheckedListBox.CheckedItems.Cast<string>().ToList();
             config.evasionBoostAbilities = evasionBoostCheckedListBox.CheckedItems.Cast<string>().ToList();
+            config.Dispel = Dispel.Checked;
         }
 
         public void SaveSettings()
@@ -4146,6 +4149,7 @@ namespace Miraculix
                     evasionBoostCheckedListBox.SetItemChecked(i, true);
                 }
             }
+            Dispel.Checked = config.Dispel;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )
