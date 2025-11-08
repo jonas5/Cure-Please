@@ -8321,6 +8321,10 @@ namespace Miraculix
             // debuffsGroupBox
             // 
             this.debuffsGroupBox.BorderColor = System.Drawing.Color.SlateGray;
+            this.debuffsGroupBox.Controls.Add(this.autoDispel);
+            this.debuffsGroupBox.Controls.Add(this.dispelDefenseBoost);
+            this.debuffsGroupBox.Controls.Add(this.dispelMagicShield);
+            this.debuffsGroupBox.Controls.Add(this.dispelEvasionBoost);
             this.debuffsGroupBox.Controls.Add(this.panel16);
             this.debuffsGroupBox.Controls.Add(this.debuffsWarningLabel);
             this.debuffsGroupBox.Controls.Add(this.elementalPanel);
@@ -8504,6 +8508,42 @@ namespace Miraculix
             this.enableDebuffs.Text = "Enable Debuffs";
             this.enableDebuffs.UseVisualStyleBackColor = true;
             // 
+            // autoDispel
+            //
+            this.autoDispel.AutoSize = true;
+            this.autoDispel.Location = new System.Drawing.Point(600, 50);
+            this.autoDispel.Name = "autoDispel";
+            this.autoDispel.Size = new System.Drawing.Size(110, 19);
+            this.autoDispel.TabIndex = 16;
+            this.autoDispel.Text = "Enable Dispel";
+            //
+            // dispelDefenseBoost
+            //
+            this.dispelDefenseBoost.AutoSize = true;
+            this.dispelDefenseBoost.Location = new System.Drawing.Point(620, 75);
+            this.dispelDefenseBoost.Name = "dispelDefenseBoost";
+            this.dispelDefenseBoost.Size = new System.Drawing.Size(110, 19);
+            this.dispelDefenseBoost.TabIndex = 17;
+            this.dispelDefenseBoost.Text = "Defense Boost";
+            //
+            // dispelMagicShield
+            //
+            this.dispelMagicShield.AutoSize = true;
+            this.dispelMagicShield.Location = new System.Drawing.Point(620, 100);
+            this.dispelMagicShield.Name = "dispelMagicShield";
+            this.dispelMagicShield.Size = new System.Drawing.Size(110, 19);
+            this.dispelMagicShield.TabIndex = 18;
+            this.dispelMagicShield.Text = "Magic Shield";
+            //
+            // dispelEvasionBoost
+            //
+            this.dispelEvasionBoost.AutoSize = true;
+            this.dispelEvasionBoost.Location = new System.Drawing.Point(620, 125);
+            this.dispelEvasionBoost.Name = "dispelEvasionBoost";
+            this.dispelEvasionBoost.Size = new System.Drawing.Size(110, 19);
+            this.dispelEvasionBoost.TabIndex = 19;
+            this.dispelEvasionBoost.Text = "Evasion Boost";
+            //
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -9261,5 +9301,9 @@ namespace Miraculix
         private System.Windows.Forms.NumericUpDown debuffGravityDuration;
         private System.Windows.Forms.NumericUpDown debuffBindDuration;
         private System.Windows.Forms.NumericUpDown debuffSilenceDuration;
+        private System.Windows.Forms.CheckBox autoDispel;
+        private System.Windows.Forms.CheckBox dispelDefenseBoost;
+        private System.Windows.Forms.CheckBox dispelMagicShield;
+        private System.Windows.Forms.CheckBox dispelEvasionBoost;
     }
 }
