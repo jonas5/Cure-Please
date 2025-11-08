@@ -9301,9 +9301,5 @@ namespace Miraculix
         private System.Windows.Forms.NumericUpDown debuffGravityDuration;
         private System.Windows.Forms.NumericUpDown debuffBindDuration;
         private System.Windows.Forms.NumericUpDown debuffSilenceDuration;
-        private System.Windows.Forms.CheckBox autoDispel;
-        private System.Windows.Forms.CheckBox dispelDefenseBoost;
-        private System.Windows.Forms.CheckBox dispelMagicShield;
-        private System.Windows.Forms.CheckBox dispelEvasionBoost;
     }
 }

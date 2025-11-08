@@ -1836,10 +1836,6 @@ namespace Miraculix
         public int DebuffSilenceDuration { get; set; }
             public bool autoHealWhenIdle { get; set; }
             public decimal idleHealTime { get; set; }
-            public bool autoDispel { get; set; }
-            public bool dispelDefenseBoost { get; set; }
-            public bool dispelMagicShield { get; set; }
-            public bool dispelEvasionBoost { get; set; }
          }
 
         #endregion "== Settings Class"
@@ -2391,10 +2387,6 @@ namespace Miraculix
 
                 config.autoHealWhenIdle = false;
                 config.idleHealTime = 10;
-                config.autoDispel = false;
-            config.dispelDefenseBoost = false;
-            config.dispelMagicShield = false;
-            config.dispelEvasionBoost = false;
 
                 // OTHERS
 
@@ -2947,10 +2939,6 @@ namespace Miraculix
 
             config.autoHealWhenIdle = autoHealWhenIdle.Checked;
             config.idleHealTime = idleHealTime.Value;
-            config.autoDispel = autoDispel.Checked;
-            config.dispelDefenseBoost = dispelDefenseBoost.Checked;
-            config.dispelMagicShield = dispelMagicShield.Checked;
-            config.dispelEvasionBoost = dispelEvasionBoost.Checked;
         }
 
         public void SaveSettings()
@@ -4104,10 +4092,6 @@ namespace Miraculix
 
             autoHealWhenIdle.Checked = config.autoHealWhenIdle;
             idleHealTime.Value = config.idleHealTime > 0 ? config.idleHealTime : 10;
-            autoDispel.Checked = config.autoDispel;
-            dispelDefenseBoost.Checked = config.dispelDefenseBoost;
-            dispelMagicShield.Checked = config.dispelMagicShield;
-            dispelEvasionBoost.Checked = config.dispelEvasionBoost;
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )
