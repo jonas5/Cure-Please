@@ -8335,6 +8335,9 @@ namespace Miraculix
             this.elementalPanel.Controls.Add(this.debuffElementalGroup1Duration);
             this.elementalPanel.Controls.Add(this.debuffElementalGroup2Duration);
             this.diaBioPanel.Controls.Add(this.debuffDiaBioDuration);
+            this.debuffsGroupBox.Controls.Add(this.defenseBoostGroupBox);
+            this.debuffsGroupBox.Controls.Add(this.magicShieldGroupBox);
+            this.debuffsGroupBox.Controls.Add(this.evasionBoostGroupBox);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
             this.debuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -8342,6 +8345,133 @@ namespace Miraculix
             this.debuffsGroupBox.TabStop = false;
             this.debuffsGroupBox.Text = "Auto-Debuff Settings";
             this.debuffsGroupBox.Enter += new System.EventHandler(this.debuffsGroupBox_Enter);
+            //
+            // defenseBoostGroupBox
+            //
+            this.defenseBoostGroupBox.Controls.Add(this.defenseBoostCheckBox);
+            this.defenseBoostGroupBox.Controls.Add(this.defenseBoostCheckedListBox);
+            this.defenseBoostGroupBox.Location = new System.Drawing.Point(20, 250);
+            this.defenseBoostGroupBox.Name = "defenseBoostGroupBox";
+            this.defenseBoostGroupBox.Size = new System.Drawing.Size(240, 280);
+            this.defenseBoostGroupBox.TabIndex = 21;
+            this.defenseBoostGroupBox.TabStop = false;
+            //
+            // defenseBoostCheckBox
+            //
+            this.defenseBoostCheckBox.AutoSize = true;
+            this.defenseBoostCheckBox.Location = new System.Drawing.Point(5, 0);
+            this.defenseBoostCheckBox.Name = "defenseBoostCheckBox";
+            this.defenseBoostCheckBox.Size = new System.Drawing.Size(108, 19);
+            this.defenseBoostCheckBox.TabIndex = 1;
+            this.defenseBoostCheckBox.Text = "Defense Boost";
+            this.defenseBoostCheckBox.UseVisualStyleBackColor = true;
+            //
+            // defenseBoostCheckedListBox
+            //
+            this.defenseBoostCheckedListBox.FormattingEnabled = true;
+            this.defenseBoostCheckedListBox.Items.AddRange(new object[] {
+            "Harden Shell",
+            "Sand Shield",
+            "Scutum",
+            "Scissor Guard",
+            "Cocoon",
+            "Promyvion Barrier",
+            "Barrier Tusk",
+            "Arm Block",
+            "Shell Guard",
+            "Particle Shield",
+            "Amber Scutum",
+            "Aura of Persistence",
+            "Hexagon Belt",
+            "Parry",
+            "Shiko no Mitate",
+            "Molluscous Mutation",
+            "Reactor Cool"});
+            this.defenseBoostCheckedListBox.Location = new System.Drawing.Point(5, 25);
+            this.defenseBoostCheckedListBox.Name = "defenseBoostCheckedListBox";
+            this.defenseBoostCheckedListBox.Size = new System.Drawing.Size(230, 244);
+            this.defenseBoostCheckedListBox.TabIndex = 0;
+            //
+            // magicShieldGroupBox
+            //
+            this.magicShieldGroupBox.Controls.Add(this.magicShieldCheckBox);
+            this.magicShieldGroupBox.Controls.Add(this.magicShieldCheckedListBox);
+            this.magicShieldGroupBox.Location = new System.Drawing.Point(280, 250);
+            this.magicShieldGroupBox.Name = "magicShieldGroupBox";
+            this.magicShieldGroupBox.Size = new System.Drawing.Size(240, 280);
+            this.magicShieldGroupBox.TabIndex = 22;
+            this.magicShieldGroupBox.TabStop = false;
+            //
+            // magicShieldCheckBox
+            //
+            this.magicShieldCheckBox.AutoSize = true;
+            this.magicShieldCheckBox.Location = new System.Drawing.Point(5, 0);
+            this.magicShieldCheckBox.Name = "magicShieldCheckBox";
+            this.magicShieldCheckBox.Size = new System.Drawing.Size(98, 19);
+            this.magicShieldCheckBox.TabIndex = 1;
+            this.magicShieldCheckBox.Text = "Magic Shield";
+            this.magicShieldCheckBox.UseVisualStyleBackColor = true;
+            //
+            // magicShieldCheckedListBox
+            //
+            this.magicShieldCheckedListBox.FormattingEnabled = true;
+            this.magicShieldCheckedListBox.Items.AddRange(new object[] {
+            "Magic Barrier",
+            "Perfect Defense",
+            "Polar Bulwark",
+            "Spectral Barrier",
+            "Mind Wall",
+            "Discharger",
+            "Bastion of Twilight",
+            "Mana Screen",
+            "Hydro Blast",
+            "Immortal Shield"});
+            this.magicShieldCheckedListBox.Location = new System.Drawing.Point(5, 25);
+            this.magicShieldCheckedListBox.Name = "magicShieldCheckedListBox";
+            this.magicShieldCheckedListBox.Size = new System.Drawing.Size(230, 244);
+            this.magicShieldCheckedListBox.TabIndex = 0;
+            //
+            // evasionBoostGroupBox
+            //
+            this.evasionBoostGroupBox.Controls.Add(this.evasionBoostCheckBox);
+            this.evasionBoostGroupBox.Controls.Add(this.evasionBoostCheckedListBox);
+            this.evasionBoostGroupBox.Location = new System.Drawing.Point(540, 250);
+            this.evasionBoostGroupBox.Name = "evasionBoostGroupBox";
+            this.evasionBoostGroupBox.Size = new System.Drawing.Size(240, 280);
+            this.evasionBoostGroupBox.TabIndex = 23;
+            this.evasionBoostGroupBox.TabStop = false;
+            //
+            // evasionBoostCheckBox
+            //
+            this.evasionBoostCheckBox.AutoSize = true;
+            this.evasionBoostCheckBox.Location = new System.Drawing.Point(5, 0);
+            this.evasionBoostCheckBox.Name = "evasionBoostCheckBox";
+            this.evasionBoostCheckBox.Size = new System.Drawing.Size(105, 19);
+            this.evasionBoostCheckBox.TabIndex = 1;
+            this.evasionBoostCheckBox.Text = "Evasion Boost";
+            this.evasionBoostCheckBox.UseVisualStyleBackColor = true;
+            //
+            // evasionBoostCheckedListBox
+            //
+            this.evasionBoostCheckedListBox.FormattingEnabled = true;
+            this.evasionBoostCheckedListBox.Items.AddRange(new object[] {
+            "Sand Veil",
+            "Rhino Guard",
+            "Rabid Dance",
+            "Material Fend",
+            "Secretion",
+            "Warm-Up",
+            "Water Shield",
+            "Feather Barrier",
+            "Evasion",
+            "Hard Membrane",
+            "Sigh",
+            "Mirage",
+            "Wind Wall"});
+            this.evasionBoostCheckedListBox.Location = new System.Drawing.Point(5, 25);
+            this.evasionBoostCheckedListBox.Name = "evasionBoostCheckedListBox";
+            this.evasionBoostCheckedListBox.Size = new System.Drawing.Size(230, 244);
+            this.evasionBoostCheckedListBox.TabIndex = 0;
             //
             // debuffBindDuration
             //
@@ -9261,5 +9391,14 @@ namespace Miraculix
         private System.Windows.Forms.NumericUpDown debuffGravityDuration;
         private System.Windows.Forms.NumericUpDown debuffBindDuration;
         private System.Windows.Forms.NumericUpDown debuffSilenceDuration;
+        private System.Windows.Forms.GroupBox defenseBoostGroupBox;
+        private System.Windows.Forms.CheckBox defenseBoostCheckBox;
+        private System.Windows.Forms.CheckedListBox defenseBoostCheckedListBox;
+        private System.Windows.Forms.GroupBox magicShieldGroupBox;
+        private System.Windows.Forms.CheckBox magicShieldCheckBox;
+        private System.Windows.Forms.CheckedListBox magicShieldCheckedListBox;
+        private System.Windows.Forms.GroupBox evasionBoostGroupBox;
+        private System.Windows.Forms.CheckBox evasionBoostCheckBox;
+        private System.Windows.Forms.CheckedListBox evasionBoostCheckedListBox;
     }
 }

@@ -1836,7 +1836,14 @@ namespace Miraculix
         public int DebuffSilenceDuration { get; set; }
             public bool autoHealWhenIdle { get; set; }
             public decimal idleHealTime { get; set; }
-         }
+
+            public bool defenseBoost { get; set; }
+            public List<string> defenseBoostAbilities { get; set; }
+            public bool magicShield { get; set; }
+            public List<string> magicShieldAbilities { get; set; }
+            public bool evasionBoost { get; set; }
+            public List<string> evasionBoostAbilities { get; set; }
+        }
 
         #endregion "== Settings Class"
 
@@ -2387,6 +2394,14 @@ namespace Miraculix
 
                 config.autoHealWhenIdle = false;
                 config.idleHealTime = 10;
+
+                // Dispel
+                config.defenseBoost = false;
+                config.magicShield = false;
+                config.evasionBoost = false;
+                config.defenseBoostAbilities = new List<string>();
+                config.magicShieldAbilities = new List<string>();
+                config.evasionBoostAbilities = new List<string>();
 
                 // OTHERS
 
@@ -2939,6 +2954,14 @@ namespace Miraculix
 
             config.autoHealWhenIdle = autoHealWhenIdle.Checked;
             config.idleHealTime = idleHealTime.Value;
+
+            config.defenseBoost = defenseBoostCheckBox.Checked;
+            config.magicShield = magicShieldCheckBox.Checked;
+            config.evasionBoost = evasionBoostCheckBox.Checked;
+
+            config.defenseBoostAbilities = defenseBoostCheckedListBox.CheckedItems.Cast<string>().ToList();
+            config.magicShieldAbilities = magicShieldCheckedListBox.CheckedItems.Cast<string>().ToList();
+            config.evasionBoostAbilities = evasionBoostCheckedListBox.CheckedItems.Cast<string>().ToList();
         }
 
         public void SaveSettings()
@@ -4092,6 +4115,37 @@ namespace Miraculix
 
             autoHealWhenIdle.Checked = config.autoHealWhenIdle;
             idleHealTime.Value = config.idleHealTime > 0 ? config.idleHealTime : 10;
+
+            defenseBoostCheckBox.Checked = config.defenseBoost;
+            magicShieldCheckBox.Checked = config.magicShield;
+            evasionBoostCheckBox.Checked = config.evasionBoost;
+
+            if (config.defenseBoostAbilities == null) config.defenseBoostAbilities = new List<string>();
+            for (int i = 0; i < defenseBoostCheckedListBox.Items.Count; i++)
+            {
+                if (config.defenseBoostAbilities.Contains(defenseBoostCheckedListBox.Items[i].ToString()))
+                {
+                    defenseBoostCheckedListBox.SetItemChecked(i, true);
+                }
+            }
+
+            if (config.magicShieldAbilities == null) config.magicShieldAbilities = new List<string>();
+            for (int i = 0; i < magicShieldCheckedListBox.Items.Count; i++)
+            {
+                if (config.magicShieldAbilities.Contains(magicShieldCheckedListBox.Items[i].ToString()))
+                {
+                    magicShieldCheckedListBox.SetItemChecked(i, true);
+                }
+            }
+
+            if (config.evasionBoostAbilities == null) config.evasionBoostAbilities = new List<string>();
+            for (int i = 0; i < evasionBoostCheckedListBox.Items.Count; i++)
+            {
+                if (config.evasionBoostAbilities.Contains(evasionBoostCheckedListBox.Items[i].ToString()))
+                {
+                    evasionBoostCheckedListBox.SetItemChecked(i, true);
+                }
+            }
         }
 
         private void autoAdjust_Cure_Click ( object sender, EventArgs e )

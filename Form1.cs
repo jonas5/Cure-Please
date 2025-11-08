@@ -6015,7 +6015,40 @@ private string GetBestSpellTier(string buffType, string targetName)
                 }
             }
         }
+        private void RunDispelLogic(string buffName)
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.Dispel)
+            {
+                return;
+            }
 
+            bool shouldDispel = false;
+            if (Form2.config.defenseBoost && Form2.config.defenseBoostAbilities.Contains(buffName))
+            {
+                shouldDispel = true;
+            }
+            else if (Form2.config.magicShield && Form2.config.magicShieldAbilities.Contains(buffName))
+            {
+                shouldDispel = true;
+            }
+            else if (Form2.config.evasionBoost && Form2.config.evasionBoostAbilities.Contains(buffName))
+            {
+                shouldDispel = true;
+            }
+
+            if (shouldDispel)
+            {
+                if (debuffTargetId != 0 && HasSpell("Dispel") && CheckSpellRecast("Dispel") == 0)
+                {
+                    EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
+                    if (targetEntity != null && targetEntity.HealthPercent > 0 && targetEntity.Distance < 21)
+                    {
+                        _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                        CastSpell("<t>", "Dispel", $"Dispelling {buffName}");
+                    }
+                }
+            }
+        }
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
 
@@ -10290,6 +10323,13 @@ private void updateInstances_Tick(object sender, EventArgs e)
                                 }
                             }
                         }
+                    }
+                    break;
+                case "DISPEL_BUFF":
+                    if (parts.Length == 2)
+                    {
+                        string buffName = parts[1];
+                        RunDispelLogic(buffName);
                     }
                     break;
             }
