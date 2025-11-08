@@ -82,17 +82,17 @@ namespace Miraculix
             this.DevotionTargetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HateEstablisherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.autoHasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoHasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buffsHasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buffsHasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoAdloquiumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoFlurryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoFlurryIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buffsFlurryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buffsFlurryIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.enableDebuffRemovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeperator13 = new System.Windows.Forms.ToolStripSeparator();
-            this.autoShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buffsShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buffsProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stormspellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sneakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -203,7 +203,7 @@ namespace Miraculix
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.autoOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.buffOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.autoPhalanxIIToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.autoRegenVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoRefreshIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -284,7 +284,7 @@ namespace Miraculix
             this.party2.SuspendLayout();
             this.party1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            this.autoOptions.SuspendLayout();
+            this.buffOptions.SuspendLayout();
             this.charselect.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -299,14 +299,14 @@ namespace Miraculix
             this.partyAutoProtectToolStripMenuItem.Name = "partyAutoProtectToolStripMenuItem";
             this.partyAutoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoProtectToolStripMenuItem.Text = "Auto Protect";
-            this.partyAutoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
+            this.partyAutoProtectToolStripMenuItem.Click += new System.EventHandler(this.buffsProtectToolStripMenuItem_Click);
             // 
             // partyAutoShellToolStripMenuItem
             // 
             this.partyAutoShellToolStripMenuItem.Name = "partyAutoShellToolStripMenuItem";
             this.partyAutoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoShellToolStripMenuItem.Text = "Auto Shell";
-            this.partyAutoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
+            this.partyAutoShellToolStripMenuItem.Click += new System.EventHandler(this.buffsShellToolStripMenuItem_Click);
             // 
             // player0optionsButton
             // 
@@ -430,7 +430,7 @@ namespace Miraculix
             this.player5buffsButton.Name = "player5buffsButton";
             this.player5buffsButton.Size = new System.Drawing.Size(49, 19);
             this.player5buffsButton.TabIndex = 34;
-            this.player5buffsButton.Text = "AUTO";
+            this.player5buffsButton.Text = "BUFFS";
             this.toolTips.SetToolTip(this.player5buffsButton, "Auto Casting Party Spells for this Player");
             this.player5buffsButton.UseVisualStyleBackColor = false;
             this.player5buffsButton.Click += new System.EventHandler(this.player5buffsButton_Click);
@@ -448,7 +448,7 @@ namespace Miraculix
             this.player4buffsButton.Name = "player4buffsButton";
             this.player4buffsButton.Size = new System.Drawing.Size(49, 19);
             this.player4buffsButton.TabIndex = 33;
-            this.player4buffsButton.Text = "AUTO";
+            this.player4buffsButton.Text = "BUFFS";
             this.toolTips.SetToolTip(this.player4buffsButton, "Auto Casting Party Spells for this Player");
             this.player4buffsButton.UseVisualStyleBackColor = false;
             this.player4buffsButton.Click += new System.EventHandler(this.player4buffsButton_Click);
@@ -466,7 +466,7 @@ namespace Miraculix
             this.player3buffsButton.Name = "player3buffsButton";
             this.player3buffsButton.Size = new System.Drawing.Size(49, 19);
             this.player3buffsButton.TabIndex = 32;
-            this.player3buffsButton.Text = "AUTO";
+            this.player3buffsButton.Text = "BUFFS";
             this.toolTips.SetToolTip(this.player3buffsButton, "Auto Casting Party Spells for this Player");
             this.player3buffsButton.UseVisualStyleBackColor = false;
             this.player3buffsButton.Click += new System.EventHandler(this.player3buffsButton_Click);
@@ -484,7 +484,7 @@ namespace Miraculix
             this.player2buffsButton.Name = "player2buffsButton";
             this.player2buffsButton.Size = new System.Drawing.Size(49, 19);
             this.player2buffsButton.TabIndex = 31;
-            this.player2buffsButton.Text = "AUTO";
+            this.player2buffsButton.Text = "BUFFS";
             this.toolTips.SetToolTip(this.player2buffsButton, "Auto Casting Party Spells for this Player");
             this.player2buffsButton.UseVisualStyleBackColor = false;
             this.player2buffsButton.Click += new System.EventHandler(this.player2buffsButton_Click);
@@ -502,7 +502,7 @@ namespace Miraculix
             this.player1buffsButton.Name = "player1buffsButton";
             this.player1buffsButton.Size = new System.Drawing.Size(49, 19);
             this.player1buffsButton.TabIndex = 30;
-            this.player1buffsButton.Text = "AUTO";
+            this.player1buffsButton.Text = "BUFFS";
             this.toolTips.SetToolTip(this.player1buffsButton, "Auto Casting Party Spells for this Player");
             this.player1buffsButton.UseVisualStyleBackColor = false;
             this.player1buffsButton.Click += new System.EventHandler(this.player1buffsButton_Click);
@@ -520,7 +520,7 @@ namespace Miraculix
             this.player0buffsButton.Name = "player0buffsButton";
             this.player0buffsButton.Size = new System.Drawing.Size(49, 19);
             this.player0buffsButton.TabIndex = 29;
-            this.player0buffsButton.Text = "AUTO";
+            this.player0buffsButton.Text = "BUFFS";
             this.toolTips.SetToolTip(this.player0buffsButton, "Auto Casting Party Spells for this Player");
             this.player0buffsButton.UseVisualStyleBackColor = false;
             this.player0buffsButton.Click += new System.EventHandler(this.player0buffsButton_Click);
@@ -843,17 +843,11 @@ namespace Miraculix
             this.DevotionTargetToolStripMenuItem,
             this.HateEstablisherToolStripMenuItem,
             this.toolStripSeparator7,
-            this.autoHasteToolStripMenuItem,
-            this.autoHasteIIToolStripMenuItem,
             this.autoAdloquiumToolStripMenuItem,
-            this.autoFlurryToolStripMenuItem,
-            this.autoFlurryIIToolStripMenuItem,
             this.toolStripSeparator3,
             this.toolStripMenuItem1,
             this.enableDebuffRemovalToolStripMenuItem,
-            this.toolStripSeperator13,
-            this.partyAutoProtectToolStripMenuItem,
-            this.partyAutoShellToolStripMenuItem});
+            this.toolStripSeperator13});
             this.playerOptions.Name = "player0rightclick";
             this.playerOptions.Size = new System.Drawing.Size(227, 342);
             // 
@@ -909,21 +903,21 @@ namespace Miraculix
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(223, 6);
             // 
-            // autoHasteToolStripMenuItem
+            // buffsHasteToolStripMenuItem
             // 
-            this.autoHasteToolStripMenuItem.Name = "autoHasteToolStripMenuItem";
-            this.autoHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.autoHasteToolStripMenuItem.Text = "Auto Haste";
-            this.autoHasteToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
-            this.autoHasteToolStripMenuItem.Click += new System.EventHandler(this.autoHasteToolStripMenuItem_Click);
+            this.buffsHasteToolStripMenuItem.Name = "buffsHasteToolStripMenuItem";
+            this.buffsHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.buffsHasteToolStripMenuItem.Text = "Auto Haste";
+            this.buffsHasteToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
+            this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.buffsHasteToolStripMenuItem_Click);
             // 
-            // autoHasteIIToolStripMenuItem
+            // buffsHasteIIToolStripMenuItem
             // 
-            this.autoHasteIIToolStripMenuItem.Name = "autoHasteIIToolStripMenuItem";
-            this.autoHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.autoHasteIIToolStripMenuItem.Text = "Auto Haste II";
-            this.autoHasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
-            this.autoHasteIIToolStripMenuItem.Click += new System.EventHandler(this.autoHasteIIToolStripMenuItem_Click);
+            this.buffsHasteIIToolStripMenuItem.Name = "buffsHasteIIToolStripMenuItem";
+            this.buffsHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.buffsHasteIIToolStripMenuItem.Text = "Auto Haste II";
+            this.buffsHasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
+            this.buffsHasteIIToolStripMenuItem.Click += new System.EventHandler(this.buffsHasteIIToolStripMenuItem_Click);
             // 
             // autoAdloquiumToolStripMenuItem
             // 
@@ -933,21 +927,21 @@ namespace Miraculix
             this.autoAdloquiumToolStripMenuItem.ToolTipText = "Auto Adloquium (Default 3 minutes)";
             this.autoAdloquiumToolStripMenuItem.Click += new System.EventHandler(this.autoAdloquiumToolStripMenuItem_Click);
             // 
-            // autoFlurryToolStripMenuItem
+            // buffsFlurryToolStripMenuItem
             // 
-            this.autoFlurryToolStripMenuItem.Name = "autoFlurryToolStripMenuItem";
-            this.autoFlurryToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.autoFlurryToolStripMenuItem.Text = "Auto Flurry";
-            this.autoFlurryToolStripMenuItem.ToolTipText = "Auto Flurry (Default 3 minutes)";
-            this.autoFlurryToolStripMenuItem.Click += new System.EventHandler(this.autoFlurryToolStripMenuItem_Click);
+            this.buffsFlurryToolStripMenuItem.Name = "buffsFlurryToolStripMenuItem";
+            this.buffsFlurryToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.buffsFlurryToolStripMenuItem.Text = "Auto Flurry";
+            this.buffsFlurryToolStripMenuItem.ToolTipText = "Auto Flurry (Default 3 minutes)";
+            this.buffsFlurryToolStripMenuItem.Click += new System.EventHandler(this.buffsFlurryToolStripMenuItem_Click);
             // 
-            // autoFlurryIIToolStripMenuItem
+            // buffsFlurryIIToolStripMenuItem
             // 
-            this.autoFlurryIIToolStripMenuItem.Name = "autoFlurryIIToolStripMenuItem";
-            this.autoFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.autoFlurryIIToolStripMenuItem.Text = "Auto Flurry II";
-            this.autoFlurryIIToolStripMenuItem.ToolTipText = "Auto Flurry II (Default 3 minutes)";
-            this.autoFlurryIIToolStripMenuItem.Click += new System.EventHandler(this.autoFlurryIIToolStripMenuItem_Click);
+            this.buffsFlurryIIToolStripMenuItem.Name = "buffsFlurryIIToolStripMenuItem";
+            this.buffsFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.buffsFlurryIIToolStripMenuItem.Text = "Auto Flurry II";
+            this.buffsFlurryIIToolStripMenuItem.ToolTipText = "Auto Flurry II (Default 3 minutes)";
+            this.buffsFlurryIIToolStripMenuItem.Click += new System.EventHandler(this.buffsFlurryIIToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -971,19 +965,19 @@ namespace Miraculix
             this.toolStripSeperator13.Name = "toolStripSeperator13";
             this.toolStripSeperator13.Size = new System.Drawing.Size(223, 6);
             // 
-            // autoShellToolStripMenuItem
+            // buffsShellToolStripMenuItem
             // 
-            this.autoShellToolStripMenuItem.Name = "autoShellToolStripMenuItem";
-            this.autoShellToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.autoShellToolStripMenuItem.Text = "Auto Shell";
-            this.autoShellToolStripMenuItem.Click += new System.EventHandler(this.autoShellToolStripMenuItem_Click);
+            this.buffsShellToolStripMenuItem.Name = "buffsShellToolStripMenuItem";
+            this.buffsShellToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.buffsShellToolStripMenuItem.Text = "Auto Shell";
+            this.buffsShellToolStripMenuItem.Click += new System.EventHandler(this.buffsShellToolStripMenuItem_Click);
             // 
-            // autoProtectToolStripMenuItem
+            // buffsProtectToolStripMenuItem
             // 
-            this.autoProtectToolStripMenuItem.Name = "autoProtectToolStripMenuItem";
-            this.autoProtectToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.autoProtectToolStripMenuItem.Text = "Auto Protect";
-            this.autoProtectToolStripMenuItem.Click += new System.EventHandler(this.autoProtectToolStripMenuItem_Click);
+            this.buffsProtectToolStripMenuItem.Name = "buffsProtectToolStripMenuItem";
+            this.buffsProtectToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.buffsProtectToolStripMenuItem.Text = "Auto Protect";
+            this.buffsProtectToolStripMenuItem.Click += new System.EventHandler(this.buffsProtectToolStripMenuItem_Click);
             // 
             // stormspellToolStripMenuItem
             // 
@@ -2096,9 +2090,15 @@ namespace Miraculix
             this.trackBar1.Value = 100;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
-            // autoOptions
+            // buffOptions
             // 
-            this.autoOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buffOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buffsHasteToolStripMenuItem,
+            this.buffsHasteIIToolStripMenuItem,
+            this.buffsFlurryToolStripMenuItem,
+            this.buffsFlurryIIToolStripMenuItem,
+            this.partyAutoProtectToolStripMenuItem,
+            this.partyAutoShellToolStripMenuItem,
             this.autoPhalanxIIToolStripMenuItem1,
             this.autoRegenVToolStripMenuItem,
             this.autoRefreshIIToolStripMenuItem,
@@ -2111,8 +2111,8 @@ namespace Miraculix
             this.VoidstormToolStripMenuItem,
             this.ThunderstormToolStripMenuItem,
             this.HailstormToolStripMenuItem});
-            this.autoOptions.Name = "proshellOptions";
-            this.autoOptions.Size = new System.Drawing.Size(180, 252);
+            this.buffOptions.Name = "proshellOptions";
+            this.buffOptions.Size = new System.Drawing.Size(180, 252);
             // 
             // autoPhalanxIIToolStripMenuItem1
             // 
@@ -2465,8 +2465,8 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autoShellToolStripMenuItem,
-            this.autoProtectToolStripMenuItem});
+            this.buffsShellToolStripMenuItem,
+            this.buffsProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";
             this.oopPlayerOptions.Size = new System.Drawing.Size(142, 48);
             // 
@@ -2864,7 +2864,7 @@ namespace Miraculix
             this.party1.ResumeLayout(false);
             this.party1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            this.autoOptions.ResumeLayout(false);
+            this.buffOptions.ResumeLayout(false);
             this.charselect.ResumeLayout(false);
             this.charselect.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -2956,7 +2956,7 @@ namespace Miraculix
         private System.Windows.Forms.ContextMenuStrip playerOptions;
         private System.Windows.Forms.ToolStripMenuItem paralynaToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem autoHasteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buffsHasteToolStripMenuItem;
         private System.Windows.Forms.Button player1optionsButton;
         private System.Windows.Forms.ToolStripMenuItem eraseToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
@@ -2994,7 +2994,7 @@ namespace Miraculix
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem regenIVToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip autoOptions;
+        private System.Windows.Forms.ContextMenuStrip buffOptions;
         private System.Windows.Forms.Button player5buffsButton;
         private System.Windows.Forms.Button player4buffsButton;
         private System.Windows.Forms.Button player3buffsButton;
@@ -3019,12 +3019,12 @@ namespace Miraculix
         private System.Windows.Forms.ToolStripMenuItem autoRegenIVToolStripMenuItem1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ToolStripMenuItem regenIIIToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem autoProtectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buffsProtectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoProtectIVToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem enableDebuffRemovalToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeperator13;
         private System.Windows.Forms.ToolStripMenuItem autoProtectVToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem autoShellToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buffsShellToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoShellIVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoShellVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoRegenVToolStripMenuItem;
@@ -3037,10 +3037,10 @@ namespace Miraculix
         private System.Windows.Forms.ToolStripMenuItem DevotionTargetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem HateEstablisherToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem autoHasteIIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buffsHasteIIToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoAdloquiumToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem autoFlurryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem autoFlurryIIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buffsFlurryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buffsFlurryIIToolStripMenuItem;
         private ToolStripMenuItem autoRefreshIIToolStripMenuItem;
         public Button setinstance;
         public Button setinstance2;
