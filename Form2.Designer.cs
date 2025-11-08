@@ -571,6 +571,16 @@ namespace Miraculix
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.debuffsPage = new System.Windows.Forms.TabPage();
             this.debuffsGroupBox = new Miraculix.GroupBoxEx();
+            this.Dispel = new System.Windows.Forms.CheckBox();
+            this.defenseBoostGroupBox = new System.Windows.Forms.GroupBox();
+            this.defenseBoostCheckBox = new System.Windows.Forms.CheckBox();
+            this.defenseBoostCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.magicShieldGroupBox = new System.Windows.Forms.GroupBox();
+            this.magicShieldCheckBox = new System.Windows.Forms.CheckBox();
+            this.magicShieldCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.evasionBoostGroupBox = new System.Windows.Forms.GroupBox();
+            this.evasionBoostCheckBox = new System.Windows.Forms.CheckBox();
+            this.evasionBoostCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.panel16 = new System.Windows.Forms.Panel();
             this.debuffParalyze = new System.Windows.Forms.CheckBox();
             this.debuffSlow = new System.Windows.Forms.CheckBox();
@@ -694,6 +704,9 @@ namespace Miraculix
             this.tabControl1.SuspendLayout();
             this.debuffsPage.SuspendLayout();
             this.debuffsGroupBox.SuspendLayout();
+            this.defenseBoostGroupBox.SuspendLayout();
+            this.magicShieldGroupBox.SuspendLayout();
+            this.evasionBoostGroupBox.SuspendLayout();
             this.panel16.SuspendLayout();
             this.elementalPanel.SuspendLayout();
             this.diaBioPanel.SuspendLayout();
@@ -8326,19 +8339,10 @@ namespace Miraculix
             this.debuffsGroupBox.Controls.Add(this.elementalPanel);
             this.debuffsGroupBox.Controls.Add(this.diaBioPanel);
             this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
-            this.panel16.Controls.Add(this.debuffBindDuration);
-            this.panel16.Controls.Add(this.debuffSilenceDuration);
-            this.panel16.Controls.Add(this.debuffParalyzeDuration);
-            this.panel16.Controls.Add(this.debuffBlindDuration);
-            this.panel16.Controls.Add(this.debuffGravityDuration);
-            this.panel16.Controls.Add(this.debuffSlowDuration);
-            this.elementalPanel.Controls.Add(this.debuffElementalGroup1Duration);
-            this.elementalPanel.Controls.Add(this.debuffElementalGroup2Duration);
-            this.diaBioPanel.Controls.Add(this.debuffDiaBioDuration);
+            this.debuffsGroupBox.Controls.Add(this.Dispel);
             this.debuffsGroupBox.Controls.Add(this.defenseBoostGroupBox);
             this.debuffsGroupBox.Controls.Add(this.magicShieldGroupBox);
             this.debuffsGroupBox.Controls.Add(this.evasionBoostGroupBox);
-            this.debuffsGroupBox.Controls.Add(this.Dispel);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
             this.debuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -8350,31 +8354,31 @@ namespace Miraculix
             // Dispel
             //
             this.Dispel.AutoSize = true;
-            this.Dispel.Location = new System.Drawing.Point(600, 25);
+            this.Dispel.Location = new System.Drawing.Point(20, 250);
             this.Dispel.Name = "Dispel";
-            this.Dispel.Size = new System.Drawing.Size(110, 19);
-            this.Dispel.TabIndex = 24;
-            this.Dispel.Text = "Enable Dispel";
+            this.Dispel.Size = new System.Drawing.Size(60, 19);
+            this.Dispel.TabIndex = 16;
+            this.Dispel.Text = "Dispel";
             this.Dispel.UseVisualStyleBackColor = true;
             //
             // defenseBoostGroupBox
             //
             this.defenseBoostGroupBox.Controls.Add(this.defenseBoostCheckBox);
             this.defenseBoostGroupBox.Controls.Add(this.defenseBoostCheckedListBox);
-            this.defenseBoostGroupBox.Location = new System.Drawing.Point(20, 250);
+            this.defenseBoostGroupBox.Location = new System.Drawing.Point(20, 275);
             this.defenseBoostGroupBox.Name = "defenseBoostGroupBox";
-            this.defenseBoostGroupBox.Size = new System.Drawing.Size(240, 280);
-            this.defenseBoostGroupBox.TabIndex = 21;
+            this.defenseBoostGroupBox.Size = new System.Drawing.Size(250, 260);
+            this.defenseBoostGroupBox.TabIndex = 17;
             this.defenseBoostGroupBox.TabStop = false;
+            this.defenseBoostGroupBox.Text = "Defense Boost";
             //
             // defenseBoostCheckBox
             //
             this.defenseBoostCheckBox.AutoSize = true;
-            this.defenseBoostCheckBox.Location = new System.Drawing.Point(5, 0);
+            this.defenseBoostCheckBox.Location = new System.Drawing.Point(6, 0);
             this.defenseBoostCheckBox.Name = "defenseBoostCheckBox";
-            this.defenseBoostCheckBox.Size = new System.Drawing.Size(108, 19);
+            this.defenseBoostCheckBox.Size = new System.Drawing.Size(15, 14);
             this.defenseBoostCheckBox.TabIndex = 1;
-            this.defenseBoostCheckBox.Text = "Defense Boost";
             this.defenseBoostCheckBox.UseVisualStyleBackColor = true;
             //
             // defenseBoostCheckedListBox
@@ -8398,29 +8402,29 @@ namespace Miraculix
             "Shiko no Mitate",
             "Molluscous Mutation",
             "Reactor Cool"});
-            this.defenseBoostCheckedListBox.Location = new System.Drawing.Point(5, 25);
+            this.defenseBoostCheckedListBox.Location = new System.Drawing.Point(6, 20);
             this.defenseBoostCheckedListBox.Name = "defenseBoostCheckedListBox";
-            this.defenseBoostCheckedListBox.Size = new System.Drawing.Size(230, 244);
+            this.defenseBoostCheckedListBox.Size = new System.Drawing.Size(238, 228);
             this.defenseBoostCheckedListBox.TabIndex = 0;
             //
             // magicShieldGroupBox
             //
             this.magicShieldGroupBox.Controls.Add(this.magicShieldCheckBox);
             this.magicShieldGroupBox.Controls.Add(this.magicShieldCheckedListBox);
-            this.magicShieldGroupBox.Location = new System.Drawing.Point(280, 250);
+            this.magicShieldGroupBox.Location = new System.Drawing.Point(276, 275);
             this.magicShieldGroupBox.Name = "magicShieldGroupBox";
-            this.magicShieldGroupBox.Size = new System.Drawing.Size(240, 280);
-            this.magicShieldGroupBox.TabIndex = 22;
+            this.magicShieldGroupBox.Size = new System.Drawing.Size(250, 260);
+            this.magicShieldGroupBox.TabIndex = 18;
             this.magicShieldGroupBox.TabStop = false;
+            this.magicShieldGroupBox.Text = "Magic Shield";
             //
             // magicShieldCheckBox
             //
             this.magicShieldCheckBox.AutoSize = true;
-            this.magicShieldCheckBox.Location = new System.Drawing.Point(5, 0);
+            this.magicShieldCheckBox.Location = new System.Drawing.Point(6, 0);
             this.magicShieldCheckBox.Name = "magicShieldCheckBox";
-            this.magicShieldCheckBox.Size = new System.Drawing.Size(98, 19);
+            this.magicShieldCheckBox.Size = new System.Drawing.Size(15, 14);
             this.magicShieldCheckBox.TabIndex = 1;
-            this.magicShieldCheckBox.Text = "Magic Shield";
             this.magicShieldCheckBox.UseVisualStyleBackColor = true;
             //
             // magicShieldCheckedListBox
@@ -8437,29 +8441,29 @@ namespace Miraculix
             "Mana Screen",
             "Hydro Blast",
             "Immortal Shield"});
-            this.magicShieldCheckedListBox.Location = new System.Drawing.Point(5, 25);
+            this.magicShieldCheckedListBox.Location = new System.Drawing.Point(6, 20);
             this.magicShieldCheckedListBox.Name = "magicShieldCheckedListBox";
-            this.magicShieldCheckedListBox.Size = new System.Drawing.Size(230, 244);
+            this.magicShieldCheckedListBox.Size = new System.Drawing.Size(238, 228);
             this.magicShieldCheckedListBox.TabIndex = 0;
             //
             // evasionBoostGroupBox
             //
             this.evasionBoostGroupBox.Controls.Add(this.evasionBoostCheckBox);
             this.evasionBoostGroupBox.Controls.Add(this.evasionBoostCheckedListBox);
-            this.evasionBoostGroupBox.Location = new System.Drawing.Point(540, 250);
+            this.evasionBoostGroupBox.Location = new System.Drawing.Point(532, 275);
             this.evasionBoostGroupBox.Name = "evasionBoostGroupBox";
-            this.evasionBoostGroupBox.Size = new System.Drawing.Size(240, 280);
-            this.evasionBoostGroupBox.TabIndex = 23;
+            this.evasionBoostGroupBox.Size = new System.Drawing.Size(250, 260);
+            this.evasionBoostGroupBox.TabIndex = 19;
             this.evasionBoostGroupBox.TabStop = false;
+            this.evasionBoostGroupBox.Text = "Evasion Boost";
             //
             // evasionBoostCheckBox
             //
             this.evasionBoostCheckBox.AutoSize = true;
-            this.evasionBoostCheckBox.Location = new System.Drawing.Point(5, 0);
+            this.evasionBoostCheckBox.Location = new System.Drawing.Point(6, 0);
             this.evasionBoostCheckBox.Name = "evasionBoostCheckBox";
-            this.evasionBoostCheckBox.Size = new System.Drawing.Size(105, 19);
+            this.evasionBoostCheckBox.Size = new System.Drawing.Size(15, 14);
             this.evasionBoostCheckBox.TabIndex = 1;
-            this.evasionBoostCheckBox.Text = "Evasion Boost";
             this.evasionBoostCheckBox.UseVisualStyleBackColor = true;
             //
             // evasionBoostCheckedListBox
@@ -8479,9 +8483,9 @@ namespace Miraculix
             "Sigh",
             "Mirage",
             "Wind Wall"});
-            this.evasionBoostCheckedListBox.Location = new System.Drawing.Point(5, 25);
+            this.evasionBoostCheckedListBox.Location = new System.Drawing.Point(6, 20);
             this.evasionBoostCheckedListBox.Name = "evasionBoostCheckedListBox";
-            this.evasionBoostCheckedListBox.Size = new System.Drawing.Size(230, 244);
+            this.evasionBoostCheckedListBox.Size = new System.Drawing.Size(238, 228);
             this.evasionBoostCheckedListBox.TabIndex = 0;
             //
             // debuffBindDuration
@@ -8837,6 +8841,12 @@ namespace Miraculix
             this.debuffsPage.ResumeLayout(false);
             this.debuffsGroupBox.ResumeLayout(false);
             this.debuffsGroupBox.PerformLayout();
+            this.defenseBoostGroupBox.ResumeLayout(false);
+            this.defenseBoostGroupBox.PerformLayout();
+            this.magicShieldGroupBox.ResumeLayout(false);
+            this.magicShieldGroupBox.PerformLayout();
+            this.evasionBoostGroupBox.ResumeLayout(false);
+            this.evasionBoostGroupBox.PerformLayout();
             this.panel16.ResumeLayout(false);
             this.panel16.PerformLayout();
             this.elementalPanel.ResumeLayout(false);
@@ -9402,15 +9412,5 @@ namespace Miraculix
         private System.Windows.Forms.NumericUpDown debuffGravityDuration;
         private System.Windows.Forms.NumericUpDown debuffBindDuration;
         private System.Windows.Forms.NumericUpDown debuffSilenceDuration;
-        private System.Windows.Forms.GroupBox defenseBoostGroupBox;
-        private System.Windows.Forms.CheckBox defenseBoostCheckBox;
-        private System.Windows.Forms.CheckedListBox defenseBoostCheckedListBox;
-        private System.Windows.Forms.GroupBox magicShieldGroupBox;
-        private System.Windows.Forms.CheckBox magicShieldCheckBox;
-        private System.Windows.Forms.CheckedListBox magicShieldCheckedListBox;
-        private System.Windows.Forms.GroupBox evasionBoostGroupBox;
-        private System.Windows.Forms.CheckBox evasionBoostCheckBox;
-        private System.Windows.Forms.CheckedListBox evasionBoostCheckedListBox;
-        private System.Windows.Forms.CheckBox Dispel;
     }
 }
