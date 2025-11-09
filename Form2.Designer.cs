@@ -583,6 +583,25 @@ namespace Miraculix
             this.debuffDiaRadio = new System.Windows.Forms.RadioButton();
             this.debuffBioRadio = new System.Windows.Forms.RadioButton();
             this.enableDebuffs = new System.Windows.Forms.CheckBox();
+            this.Dispel = new System.Windows.Forms.CheckBox();
+            this.defenseBoostGroupBox = new System.Windows.Forms.GroupBox();
+            this.defenseBoostCheckBox = new System.Windows.Forms.CheckBox();
+            this.defenseBoostCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.magicShieldGroupBox = new System.Windows.Forms.GroupBox();
+            this.magicShieldCheckBox = new System.Windows.Forms.CheckBox();
+            this.magicShieldCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.evasionBoostGroupBox = new System.Windows.Forms.GroupBox();
+            this.evasionBoostCheckBox = new System.Windows.Forms.CheckBox();
+            this.evasionBoostCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBindDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSilenceDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffDiaBioDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffParalyzeDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBlindDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffGravityDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSlowDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup1Duration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup2Duration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).BeginInit();
@@ -697,6 +716,9 @@ namespace Miraculix
             this.panel16.SuspendLayout();
             this.elementalPanel.SuspendLayout();
             this.diaBioPanel.SuspendLayout();
+            this.defenseBoostGroupBox.SuspendLayout();
+            this.magicShieldGroupBox.SuspendLayout();
+            this.evasionBoostGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // autoHealWhenIdle
@@ -730,7 +752,7 @@ namespace Miraculix
             this.debuffBind.UseVisualStyleBackColor = true;
             // 
             // debuffBindDuration
-            //
+            // 
             this.debuffBindDuration.Location = new System.Drawing.Point(120, 147);
             this.debuffBindDuration.Maximum = new decimal(new int[] {
             300,
@@ -738,9 +760,9 @@ namespace Miraculix
             0,
             0});
             this.debuffBindDuration.Name = "debuffBindDuration";
-            this.debuffBindDuration.Size = new System.Drawing.Size(45, 21);
+            this.debuffBindDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffBindDuration.TabIndex = 12;
-            //
+            // 
             // elementalGroup2Radio
             // 
             this.elementalGroup2Radio.AutoSize = true;
@@ -772,9 +794,9 @@ namespace Miraculix
             this.debuffSilence.TabIndex = 10;
             this.debuffSilence.Text = "Silence";
             this.debuffSilence.UseVisualStyleBackColor = true;
-            //
+            // 
             // debuffSilenceDuration
-            //
+            // 
             this.debuffSilenceDuration.Location = new System.Drawing.Point(120, 47);
             this.debuffSilenceDuration.Maximum = new decimal(new int[] {
             300,
@@ -782,11 +804,11 @@ namespace Miraculix
             0,
             0});
             this.debuffSilenceDuration.Name = "debuffSilenceDuration";
-            this.debuffSilenceDuration.Size = new System.Drawing.Size(45, 21);
+            this.debuffSilenceDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffSilenceDuration.TabIndex = 13;
-            //
+            // 
             // debuffDiaBioDuration
-            //
+            // 
             this.debuffDiaBioDuration.Location = new System.Drawing.Point(200, 25);
             this.debuffDiaBioDuration.Maximum = new decimal(new int[] {
             300,
@@ -794,11 +816,11 @@ namespace Miraculix
             0,
             0});
             this.debuffDiaBioDuration.Name = "debuffDiaBioDuration";
-            this.debuffDiaBioDuration.Size = new System.Drawing.Size(45, 21);
+            this.debuffDiaBioDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffDiaBioDuration.TabIndex = 14;
-            //
+            // 
             // debuffParalyzeDuration
-            //
+            // 
             this.debuffParalyzeDuration.Location = new System.Drawing.Point(120, 22);
             this.debuffParalyzeDuration.Maximum = new decimal(new int[] {
             300,
@@ -806,11 +828,11 @@ namespace Miraculix
             0,
             0});
             this.debuffParalyzeDuration.Name = "debuffParalyzeDuration";
-            this.debuffParalyzeDuration.Size = new System.Drawing.Size(45, 21);
+            this.debuffParalyzeDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffParalyzeDuration.TabIndex = 15;
-            //
+            // 
             // debuffBlindDuration
-            //
+            // 
             this.debuffBlindDuration.Location = new System.Drawing.Point(120, 72);
             this.debuffBlindDuration.Maximum = new decimal(new int[] {
             300,
@@ -818,11 +840,11 @@ namespace Miraculix
             0,
             0});
             this.debuffBlindDuration.Name = "debuffBlindDuration";
-            this.debuffBlindDuration.Size = new System.Drawing.Size(45, 21);
+            this.debuffBlindDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffBlindDuration.TabIndex = 16;
-            //
+            // 
             // debuffGravityDuration
-            //
+            // 
             this.debuffGravityDuration.Location = new System.Drawing.Point(120, 97);
             this.debuffGravityDuration.Maximum = new decimal(new int[] {
             300,
@@ -830,11 +852,11 @@ namespace Miraculix
             0,
             0});
             this.debuffGravityDuration.Name = "debuffGravityDuration";
-            this.debuffGravityDuration.Size = new System.Drawing.Size(45, 21);
+            this.debuffGravityDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffGravityDuration.TabIndex = 17;
-            //
+            // 
             // debuffSlowDuration
-            //
+            // 
             this.debuffSlowDuration.Location = new System.Drawing.Point(120, 122);
             this.debuffSlowDuration.Maximum = new decimal(new int[] {
             300,
@@ -842,11 +864,11 @@ namespace Miraculix
             0,
             0});
             this.debuffSlowDuration.Name = "debuffSlowDuration";
-            this.debuffSlowDuration.Size = new System.Drawing.Size(45, 21);
+            this.debuffSlowDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffSlowDuration.TabIndex = 18;
-            //
+            // 
             // debuffElementalGroup1Duration
-            //
+            // 
             this.debuffElementalGroup1Duration.Location = new System.Drawing.Point(193, 13);
             this.debuffElementalGroup1Duration.Maximum = new decimal(new int[] {
             300,
@@ -854,11 +876,11 @@ namespace Miraculix
             0,
             0});
             this.debuffElementalGroup1Duration.Name = "debuffElementalGroup1Duration";
-            this.debuffElementalGroup1Duration.Size = new System.Drawing.Size(45, 21);
+            this.debuffElementalGroup1Duration.Size = new System.Drawing.Size(45, 20);
             this.debuffElementalGroup1Duration.TabIndex = 19;
-            //
+            // 
             // debuffElementalGroup2Duration
-            //
+            // 
             this.debuffElementalGroup2Duration.Location = new System.Drawing.Point(193, 51);
             this.debuffElementalGroup2Duration.Maximum = new decimal(new int[] {
             300,
@@ -866,7 +888,7 @@ namespace Miraculix
             0,
             0});
             this.debuffElementalGroup2Duration.Name = "debuffElementalGroup2Duration";
-            this.debuffElementalGroup2Duration.Size = new System.Drawing.Size(45, 21);
+            this.debuffElementalGroup2Duration.Size = new System.Drawing.Size(45, 20);
             this.debuffElementalGroup2Duration.TabIndex = 20;
             // 
             // button4
@@ -8326,15 +8348,10 @@ namespace Miraculix
             this.debuffsGroupBox.Controls.Add(this.elementalPanel);
             this.debuffsGroupBox.Controls.Add(this.diaBioPanel);
             this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
-            this.panel16.Controls.Add(this.debuffBindDuration);
-            this.panel16.Controls.Add(this.debuffSilenceDuration);
-            this.panel16.Controls.Add(this.debuffParalyzeDuration);
-            this.panel16.Controls.Add(this.debuffBlindDuration);
-            this.panel16.Controls.Add(this.debuffGravityDuration);
-            this.panel16.Controls.Add(this.debuffSlowDuration);
-            this.elementalPanel.Controls.Add(this.debuffElementalGroup1Duration);
-            this.elementalPanel.Controls.Add(this.debuffElementalGroup2Duration);
-            this.diaBioPanel.Controls.Add(this.debuffDiaBioDuration);
+            this.debuffsGroupBox.Controls.Add(this.Dispel);
+            this.debuffsGroupBox.Controls.Add(this.defenseBoostGroupBox);
+            this.debuffsGroupBox.Controls.Add(this.magicShieldGroupBox);
+            this.debuffsGroupBox.Controls.Add(this.evasionBoostGroupBox);
             this.debuffsGroupBox.Location = new System.Drawing.Point(6, 6);
             this.debuffsGroupBox.Name = "debuffsGroupBox";
             this.debuffsGroupBox.Size = new System.Drawing.Size(794, 545);
@@ -8342,42 +8359,6 @@ namespace Miraculix
             this.debuffsGroupBox.TabStop = false;
             this.debuffsGroupBox.Text = "Auto-Debuff Settings";
             this.debuffsGroupBox.Enter += new System.EventHandler(this.debuffsGroupBox_Enter);
-            //
-            // debuffBindDuration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffBindDuration)).EndInit();
-            //
-            // debuffSilenceDuration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffSilenceDuration)).EndInit();
-            //
-            // debuffDiaBioDuration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffDiaBioDuration)).EndInit();
-            //
-            // debuffParalyzeDuration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffParalyzeDuration)).EndInit();
-            //
-            // debuffBlindDuration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffBlindDuration)).EndInit();
-            //
-            // debuffGravityDuration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffGravityDuration)).EndInit();
-            //
-            // debuffSlowDuration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffSlowDuration)).EndInit();
-            //
-            // debuffElementalGroup1Duration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup1Duration)).EndInit();
-            //
-            // debuffElementalGroup2Duration
-            //
-            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup2Duration)).EndInit();
             // 
             // panel16
             // 
@@ -8504,6 +8485,144 @@ namespace Miraculix
             this.enableDebuffs.Text = "Enable Debuffs";
             this.enableDebuffs.UseVisualStyleBackColor = true;
             // 
+            // Dispel
+            // 
+            this.Dispel.AutoSize = true;
+            this.Dispel.Location = new System.Drawing.Point(20, 250);
+            this.Dispel.Name = "Dispel";
+            this.Dispel.Size = new System.Drawing.Size(61, 19);
+            this.Dispel.TabIndex = 16;
+            this.Dispel.Text = "Dispel";
+            this.Dispel.UseVisualStyleBackColor = true;
+            // 
+            // defenseBoostGroupBox
+            // 
+            this.defenseBoostGroupBox.Controls.Add(this.defenseBoostCheckBox);
+            this.defenseBoostGroupBox.Controls.Add(this.defenseBoostCheckedListBox);
+            this.defenseBoostGroupBox.Location = new System.Drawing.Point(20, 275);
+            this.defenseBoostGroupBox.Name = "defenseBoostGroupBox";
+            this.defenseBoostGroupBox.Size = new System.Drawing.Size(250, 260);
+            this.defenseBoostGroupBox.TabIndex = 17;
+            this.defenseBoostGroupBox.TabStop = false;
+            this.defenseBoostGroupBox.Text = "    Defense Boost";
+            // 
+            // defenseBoostCheckBox
+            // 
+            this.defenseBoostCheckBox.AutoSize = true;
+            this.defenseBoostCheckBox.Location = new System.Drawing.Point(6, 2);
+            this.defenseBoostCheckBox.Name = "defenseBoostCheckBox";
+            this.defenseBoostCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.defenseBoostCheckBox.TabIndex = 1;
+            this.defenseBoostCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // defenseBoostCheckedListBox
+            // 
+            this.defenseBoostCheckedListBox.FormattingEnabled = true;
+            this.defenseBoostCheckedListBox.Items.AddRange(new object[] {
+            "Harden Shell",
+            "Sand Shield",
+            "Scutum",
+            "Scissor Guard",
+            "Cocoon",
+            "Promyvion Barrier",
+            "Barrier Tusk",
+            "Arm Block",
+            "Shell Guard",
+            "Particle Shield",
+            "Amber Scutum",
+            "Aura of Persistence",
+            "Hexagon Belt",
+            "Parry",
+            "Shiko no Mitate",
+            "Molluscous Mutation",
+            "Reactor Cool"});
+            this.defenseBoostCheckedListBox.Location = new System.Drawing.Point(6, 20);
+            this.defenseBoostCheckedListBox.Name = "defenseBoostCheckedListBox";
+            this.defenseBoostCheckedListBox.Size = new System.Drawing.Size(238, 228);
+            this.defenseBoostCheckedListBox.TabIndex = 0;
+            // 
+            // magicShieldGroupBox
+            // 
+            this.magicShieldGroupBox.Controls.Add(this.magicShieldCheckBox);
+            this.magicShieldGroupBox.Controls.Add(this.magicShieldCheckedListBox);
+            this.magicShieldGroupBox.Location = new System.Drawing.Point(276, 275);
+            this.magicShieldGroupBox.Name = "magicShieldGroupBox";
+            this.magicShieldGroupBox.Size = new System.Drawing.Size(250, 260);
+            this.magicShieldGroupBox.TabIndex = 18;
+            this.magicShieldGroupBox.TabStop = false;
+            this.magicShieldGroupBox.Text = "    Magic Shield";
+            // 
+            // magicShieldCheckBox
+            // 
+            this.magicShieldCheckBox.AutoSize = true;
+            this.magicShieldCheckBox.Location = new System.Drawing.Point(6, 2);
+            this.magicShieldCheckBox.Name = "magicShieldCheckBox";
+            this.magicShieldCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.magicShieldCheckBox.TabIndex = 1;
+            this.magicShieldCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // magicShieldCheckedListBox
+            // 
+            this.magicShieldCheckedListBox.FormattingEnabled = true;
+            this.magicShieldCheckedListBox.Items.AddRange(new object[] {
+            "Magic Barrier",
+            "Perfect Defense",
+            "Polar Bulwark",
+            "Spectral Barrier",
+            "Mind Wall",
+            "Discharger",
+            "Bastion of Twilight",
+            "Mana Screen",
+            "Hydro Blast",
+            "Immortal Shield"});
+            this.magicShieldCheckedListBox.Location = new System.Drawing.Point(6, 20);
+            this.magicShieldCheckedListBox.Name = "magicShieldCheckedListBox";
+            this.magicShieldCheckedListBox.Size = new System.Drawing.Size(238, 228);
+            this.magicShieldCheckedListBox.TabIndex = 0;
+            // 
+            // evasionBoostGroupBox
+            // 
+            this.evasionBoostGroupBox.Controls.Add(this.evasionBoostCheckBox);
+            this.evasionBoostGroupBox.Controls.Add(this.evasionBoostCheckedListBox);
+            this.evasionBoostGroupBox.Location = new System.Drawing.Point(532, 275);
+            this.evasionBoostGroupBox.Name = "evasionBoostGroupBox";
+            this.evasionBoostGroupBox.Size = new System.Drawing.Size(250, 260);
+            this.evasionBoostGroupBox.TabIndex = 19;
+            this.evasionBoostGroupBox.TabStop = false;
+            this.evasionBoostGroupBox.Text = "    Evasion Boost";
+            this.evasionBoostGroupBox.Enter += new System.EventHandler(this.evasionBoostGroupBox_Enter);
+            // 
+            // evasionBoostCheckBox
+            // 
+            this.evasionBoostCheckBox.AutoSize = true;
+            this.evasionBoostCheckBox.Location = new System.Drawing.Point(6, 2);
+            this.evasionBoostCheckBox.Name = "evasionBoostCheckBox";
+            this.evasionBoostCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.evasionBoostCheckBox.TabIndex = 1;
+            this.evasionBoostCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // evasionBoostCheckedListBox
+            // 
+            this.evasionBoostCheckedListBox.FormattingEnabled = true;
+            this.evasionBoostCheckedListBox.Items.AddRange(new object[] {
+            "Sand Veil",
+            "Rhino Guard",
+            "Rabid Dance",
+            "Material Fend",
+            "Secretion",
+            "Warm-Up",
+            "Water Shield",
+            "Feather Barrier",
+            "Evasion",
+            "Hard Membrane",
+            "Sigh",
+            "Mirage",
+            "Wind Wall"});
+            this.evasionBoostCheckedListBox.Location = new System.Drawing.Point(6, 20);
+            this.evasionBoostCheckedListBox.Name = "evasionBoostCheckedListBox";
+            this.evasionBoostCheckedListBox.Size = new System.Drawing.Size(238, 228);
+            this.evasionBoostCheckedListBox.TabIndex = 0;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -8521,6 +8640,15 @@ namespace Miraculix
             this.Text = " ";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Form2_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBindDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSilenceDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffDiaBioDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffParalyzeDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBlindDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffGravityDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSlowDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup1Duration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup2Duration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).EndInit();
@@ -8578,15 +8706,6 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.sublimationMP)).EndInit();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffBindDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffSilenceDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffDiaBioDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffParalyzeDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffBlindDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffGravityDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffSlowDuration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup1Duration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup2Duration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConvertMP)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -8702,6 +8821,12 @@ namespace Miraculix
             this.elementalPanel.PerformLayout();
             this.diaBioPanel.ResumeLayout(false);
             this.diaBioPanel.PerformLayout();
+            this.defenseBoostGroupBox.ResumeLayout(false);
+            this.defenseBoostGroupBox.PerformLayout();
+            this.magicShieldGroupBox.ResumeLayout(false);
+            this.magicShieldGroupBox.PerformLayout();
+            this.evasionBoostGroupBox.ResumeLayout(false);
+            this.evasionBoostGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -9261,5 +9386,15 @@ namespace Miraculix
         private System.Windows.Forms.NumericUpDown debuffGravityDuration;
         private System.Windows.Forms.NumericUpDown debuffBindDuration;
         private System.Windows.Forms.NumericUpDown debuffSilenceDuration;
+        private System.Windows.Forms.CheckBox Dispel;
+        private System.Windows.Forms.GroupBox defenseBoostGroupBox;
+        private System.Windows.Forms.CheckBox defenseBoostCheckBox;
+        private System.Windows.Forms.CheckedListBox defenseBoostCheckedListBox;
+        private System.Windows.Forms.GroupBox magicShieldGroupBox;
+        private System.Windows.Forms.CheckBox magicShieldCheckBox;
+        private System.Windows.Forms.CheckedListBox magicShieldCheckedListBox;
+        private System.Windows.Forms.GroupBox evasionBoostGroupBox;
+        private System.Windows.Forms.CheckBox evasionBoostCheckBox;
+        private System.Windows.Forms.CheckedListBox evasionBoostCheckedListBox;
     }
 }
