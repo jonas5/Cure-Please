@@ -7599,10 +7599,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             playerOptionsSelected = 0;
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[0];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[0];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[0];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[0];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[0];
 
             playerOptions.Show(party0, new Point(0, 0));
         }
@@ -7611,10 +7607,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             playerOptionsSelected = 1;
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[1];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[1];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[1];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[1];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[1];
             playerOptions.Show(party0, new Point(0, 0));
         }
 
@@ -7622,10 +7614,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             playerOptionsSelected = 2;
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[2];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[2];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[2];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[2];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[2];
             playerOptions.Show(party0, new Point(0, 0));
         }
 
@@ -7633,10 +7621,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             playerOptionsSelected = 3;
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[3];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[3];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[3];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[3];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[3];
             playerOptions.Show(party0, new Point(0, 0));
         }
 
@@ -7644,10 +7628,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             playerOptionsSelected = 4;
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[4];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[4];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[4];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[4];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[4];
             playerOptions.Show(party0, new Point(0, 0));
         }
 
@@ -7655,130 +7635,78 @@ private string GetBestSpellTier(string buffType, string targetName)
         {
             playerOptionsSelected = 5;
             autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[5];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[5];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[5];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[5];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[5];
             playerOptions.Show(party0, new Point(0, 0));
         }
 
         private void player6optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 6;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[6];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[6];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[6];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[6];
             playerOptions.Show(party1, new Point(0, 0));
         }
 
         private void player7optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 7;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[7];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[7];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[7];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[7];
             playerOptions.Show(party1, new Point(0, 0));
         }
 
         private void player8optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 8;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[8];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[8];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[8];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[8];
             playerOptions.Show(party1, new Point(0, 0));
         }
 
         private void player9optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 9;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[9];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[9];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[9];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[9];
             playerOptions.Show(party1, new Point(0, 0));
         }
 
         private void player10optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 10;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[10];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[10];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[10];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[10];
             playerOptions.Show(party1, new Point(0, 0));
         }
 
         private void player11optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 11;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[11];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[11];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[11];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[11];
             playerOptions.Show(party1, new Point(0, 0));
         }
 
         private void player12optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 12;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[12];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[12];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[12];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[12];
             playerOptions.Show(party2, new Point(0, 0));
         }
 
         private void player13optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 13;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[13];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[13];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[13];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[13];
             playerOptions.Show(party2, new Point(0, 0));
         }
 
         private void player14optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 14;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[14];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[14];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[14];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[14];
             playerOptions.Show(party2, new Point(0, 0));
         }
 
         private void player15optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 15;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[15];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[15];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[15];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[15];
             playerOptions.Show(party2, new Point(0, 0));
         }
 
         private void player16optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 16;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[16];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[16];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[16];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[16];
             playerOptions.Show(party2, new Point(0, 0));
         }
 
         private void player17optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 17;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[17];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[17];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[17];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[17];
             playerOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7787,6 +7715,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 0;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[0];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[0];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[0];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[0];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[0];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[0];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[0];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[0];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[0];
@@ -7806,6 +7738,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 1;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[1];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[1];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[1];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[1];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[1];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[1];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[1];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[1];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[1];
@@ -7825,6 +7761,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 2;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[2];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[2];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[2];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[2];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[2];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[2];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[2];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[2];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[2];
@@ -7844,6 +7784,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 3;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[3];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[3];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[3];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[3];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[3];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[3];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[3];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[3];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[3];
@@ -7863,6 +7807,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 4;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[4];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[4];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[4];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[4];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[4];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[4];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[4];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[4];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[4];
@@ -7882,6 +7830,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 5;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[5];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[5];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[5];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[5];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[5];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[5];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[5];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[5];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[5];
@@ -7901,6 +7853,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 6;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[6];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[6];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[6];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[6];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[6];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[6];
             buffOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7909,6 +7865,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 7;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[7];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[7];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[7];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[7];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[7];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[7];
             buffOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7917,6 +7877,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 8;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[8];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[8];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[8];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[8];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[8];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[8];
             buffOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7925,6 +7889,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 9;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[9];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[9];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[9];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[9];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[9];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[9];
             buffOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7933,6 +7901,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 10;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[10];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[10];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[10];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[10];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[10];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[10];
             buffOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7941,6 +7913,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 11;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[11];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[11];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[11];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[11];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[11];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[11];
             buffOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7949,6 +7925,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 12;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[12];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[12];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[12];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[12];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[12];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[12];
             buffOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7957,6 +7937,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 13;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[13];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[13];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[13];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[13];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[13];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[13];
             buffOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7965,6 +7949,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 14;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[14];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[14];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[14];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[14];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[14];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[14];
             buffOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7973,6 +7961,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 15;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[15];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[15];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[15];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[15];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[15];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[15];
             buffOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7981,6 +7973,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 16;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[16];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[16];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[16];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[16];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[16];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[16];
             buffOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7989,6 +7985,10 @@ private string GetBestSpellTier(string buffType, string targetName)
             buffOptionsSelected = 17;
             buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[17];
             buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[17];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[17];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[17];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[17];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[17];
             buffOptions.Show(party2, new Point(0, 0));
         }
 
@@ -8231,74 +8231,74 @@ private string GetBestSpellTier(string buffType, string targetName)
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Viruna");
         }
 
-        private void setAllStormsFalse(byte autoOptionsSelected)
+        private void setAllStormsFalse(byte buffOptionsSelected)
         {
-            // MessageBox.Show("SONG DATA: " + activeStorm + " " + autoOptionsSelected);
+            // MessageBox.Show("SONG DATA: " + activeStorm + " " + buffOptionsSelected);
 
-            autoSandstormEnabled[autoOptionsSelected] = false;
-            autoRainstormEnabled[autoOptionsSelected] = false;
-            autoFirestormEnabled[autoOptionsSelected] = false;
-            autoWindstormEnabled[autoOptionsSelected] = false;
-            autoHailstormEnabled[autoOptionsSelected] = false;
-            autoThunderstormEnabled[autoOptionsSelected] = false;
-            autoVoidstormEnabled[autoOptionsSelected] = false;
-            autoAurorastormEnabled[autoOptionsSelected] = false;
+            autoSandstormEnabled[buffOptionsSelected] = false;
+            autoRainstormEnabled[buffOptionsSelected] = false;
+            autoFirestormEnabled[buffOptionsSelected] = false;
+            autoWindstormEnabled[buffOptionsSelected] = false;
+            autoHailstormEnabled[buffOptionsSelected] = false;
+            autoThunderstormEnabled[buffOptionsSelected] = false;
+            autoVoidstormEnabled[buffOptionsSelected] = false;
+            autoAurorastormEnabled[buffOptionsSelected] = false;
         }
 
         private void SandstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoSandstormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoSandstormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoSandstormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoSandstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void RainstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoRainstormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoRainstormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoRainstormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoRainstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void WindstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoWindstormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoWindstormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoWindstormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoWindstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void FirestormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoFirestormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoFirestormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoFirestormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoFirestormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void HailstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoHailstormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoHailstormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoHailstormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoHailstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void ThunderstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoThunderstormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoThunderstormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoThunderstormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoThunderstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void VoidstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoVoidstormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoVoidstormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoVoidstormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoVoidstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void AurorastormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoAurorastormEnabled[autoOptionsSelected];
-            setAllStormsFalse(autoOptionsSelected);
-            autoAurorastormEnabled[autoOptionsSelected] = !currentStatus;
+            bool currentStatus = autoAurorastormEnabled[buffOptionsSelected];
+            setAllStormsFalse(buffOptionsSelected);
+            autoAurorastormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void protectIVToolStripMenuItem_Click(object sender, EventArgs e)
