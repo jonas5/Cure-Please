@@ -864,8 +864,6 @@ namespace Miraculix
             this.HateEstablisherToolStripMenuItem,
             this.toolStripSeparator7,
             this.autoAdloquiumToolStripMenuItem,
-            this.buffsFlurryToolStripMenuItem,
-            this.buffsFlurryIIToolStripMenuItem,
             this.toolStripSeparator3,
             this.toolStripMenuItem1,
             this.enableDebuffRemovalToolStripMenuItem,
@@ -2085,6 +2083,8 @@ namespace Miraculix
             this.buffOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hasteIToolStripMenuItem,
             this.hasteIIToolStripMenuItem,
+            this.buffsFlurryToolStripMenuItem,
+            this.buffsFlurryIIToolStripMenuItem,
             this.partyAutoProtectToolStripMenuItem,
             this.partyAutoShellToolStripMenuItem,
             this.autoPhalanxIIToolStripMenuItem1,
@@ -3170,5 +3170,7 @@ namespace Miraculix
         private Button player17buffsButton;
         private ToolStripMenuItem hasteIToolStripMenuItem;
         private ToolStripMenuItem hasteIIToolStripMenuItem;
+        private ToolStripMenuItem buffsFlurryToolStripMenuItem;
+        private ToolStripMenuItem buffsFlurryIIToolStripMenuItem;
     }
 }
