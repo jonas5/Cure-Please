@@ -1264,16 +1264,16 @@ namespace Miraculix
             this.player17optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.player17optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.player17optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player17optionsButton.Location = new System.Drawing.Point(137, 187);
+            this.player17optionsButton.Location = new System.Drawing.Point(80, 187);
             this.player17optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.player17optionsButton.Name = "player17optionsButton";
             this.player17optionsButton.Size = new System.Drawing.Size(55, 19);
             this.player17optionsButton.TabIndex = 3;
-            this.player17buffsButton.Text = "BUFFS";
-            this.toolTips.SetToolTip(this.player17buffsButton, "View spells/options for this player.");
-            this.player17buffsButton.UseVisualStyleBackColor = false;
-            this.player17buffsButton.Click += new System.EventHandler(this.player17buffsButton_Click);
-            this.player17buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            this.player17optionsButton.Text = "MENU";
+            this.toolTips.SetToolTip(this.player17optionsButton, "View spells/options for this player.");
+            this.player17optionsButton.UseVisualStyleBackColor = false;
+            this.player17optionsButton.Click += new System.EventHandler(this.player17optionsButton_Click);
+            this.player17optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player16HP
             // 
@@ -2130,7 +2130,7 @@ namespace Miraculix
             this.ThunderstormToolStripMenuItem,
             this.HailstormToolStripMenuItem});
             this.buffOptions.Name = "proshellOptions";
-            this.buffOptions.Size = new System.Drawing.Size(180, 252);
+            this.buffOptions.Size = new System.Drawing.Size(180, 388);
             // 
             // autoPhalanxIIToolStripMenuItem1
             // 
