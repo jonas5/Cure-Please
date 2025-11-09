@@ -10025,12 +10025,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
             }
 
             // Party Player Options
-            autoHasteToolStripMenuItem.Enabled = connected;
-            autoHasteIIToolStripMenuItem.Enabled = connected;
-            autoProtectToolStripMenuItem.Enabled = connected;
+            buffsHasteToolStripMenuItem.Enabled = connected;
+            buffsHasteIIToolStripMenuItem.Enabled = connected;
+            buffsProtectToolStripMenuItem.Enabled = connected;
             shellToolStripMenuItem.Enabled = connected;
 
-            // Auto Options
+            // BUFFS Options
             autoRegenVToolStripMenuItem.Enabled = connected;
             autoRefreshIIToolStripMenuItem.Enabled = connected;
         }
