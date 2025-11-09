@@ -155,6 +155,18 @@ namespace Miraculix
             this.player13enabled = new System.Windows.Forms.CheckBox();
             this.player12priority = new System.Windows.Forms.CheckBox();
             this.player12enabled = new System.Windows.Forms.CheckBox();
+            this.oopPlayerBuffsButtons0 = new System.Windows.Forms.Button();
+            this.oopPlayerBuffsButtons1 = new System.Windows.Forms.Button();
+            this.oopPlayerBuffsButtons2 = new System.Windows.Forms.Button();
+            this.oopPlayerBuffsButtons3 = new System.Windows.Forms.Button();
+            this.oopPlayerBuffsButtons4 = new System.Windows.Forms.Button();
+            this.oopPlayerBuffsButtons5 = new System.Windows.Forms.Button();
+            this.player6buffsButton = new System.Windows.Forms.Button();
+            this.player7buffsButton = new System.Windows.Forms.Button();
+            this.player8buffsButton = new System.Windows.Forms.Button();
+            this.player9buffsButton = new System.Windows.Forms.Button();
+            this.player10buffsButton = new System.Windows.Forms.Button();
+            this.player11buffsButton = new System.Windows.Forms.Button();
             this.player17 = new System.Windows.Forms.Label();
             this.player16 = new System.Windows.Forms.Label();
             this.player15 = new System.Windows.Forms.Label();
@@ -3138,5 +3150,23 @@ namespace Miraculix
         private ToolStripMenuItem partyAutoProtectToolStripMenuItem;
         private ToolStripMenuItem partyAutoShellToolStripMenuItem;
         private Label profileStatusLabel;
+        private Button oopPlayerBuffsButtons0;
+        private Button oopPlayerBuffsButtons1;
+        private Button oopPlayerBuffsButtons2;
+        private Button oopPlayerBuffsButtons3;
+        private Button oopPlayerBuffsButtons4;
+        private Button oopPlayerBuffsButtons5;
+        private Button player6buffsButton;
+        private Button player7buffsButton;
+        private Button player8buffsButton;
+        private Button player9buffsButton;
+        private Button player10buffsButton;
+        private Button player11buffsButton;
+        private Button player12buffsButton;
+        private Button player13buffsButton;
+        private Button player14buffsButton;
+        private Button player15buffsButton;
+        private Button player16buffsButton;
+        private Button player17buffsButton;
     }
 }
