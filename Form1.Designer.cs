@@ -1192,26 +1192,26 @@ namespace Miraculix
             // 
             this.party2.BackColor = System.Drawing.Color.Transparent;
             this.party2.Controls.Add(this.player17HP);
-            this.party2.Controls.Add(this.player17optionsButton);
+            this.party2.Controls.Add(this.player17buffsButton);
             this.party2.Controls.Add(this.player16HP);
             this.party2.Controls.Add(this.player17priority);
             this.party2.Controls.Add(this.player15HP);
             this.party2.Controls.Add(this.player17enabled);
             this.party2.Controls.Add(this.player13HP);
-            this.party2.Controls.Add(this.player16optionsButton);
+            this.party2.Controls.Add(this.player16buffsButton);
             this.party2.Controls.Add(this.player14HP);
             this.party2.Controls.Add(this.player16priority);
             this.party2.Controls.Add(this.player12HP);
             this.party2.Controls.Add(this.player16enabled);
-            this.party2.Controls.Add(this.player15optionsButton);
+            this.party2.Controls.Add(this.player15buffsButton);
             this.party2.Controls.Add(this.player15priority);
             this.party2.Controls.Add(this.player15enabled);
-            this.party2.Controls.Add(this.player14optionsButton);
+            this.party2.Controls.Add(this.player14buffsButton);
             this.party2.Controls.Add(this.player14priority);
             this.party2.Controls.Add(this.player14enabled);
-            this.party2.Controls.Add(this.player13optionsButton);
+            this.party2.Controls.Add(this.player13buffsButton);
             this.party2.Controls.Add(this.player13priority);
-            this.party2.Controls.Add(this.player12optionsButton);
+            this.party2.Controls.Add(this.player12buffsButton);
             this.party2.Controls.Add(this.player13enabled);
             this.party2.Controls.Add(this.player12priority);
             this.party2.Controls.Add(this.player12enabled);
@@ -1251,11 +1251,11 @@ namespace Miraculix
             this.player17optionsButton.Name = "player17optionsButton";
             this.player17optionsButton.Size = new System.Drawing.Size(55, 19);
             this.player17optionsButton.TabIndex = 3;
-            this.player17optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player17optionsButton, "View spells/options for this player.");
-            this.player17optionsButton.UseVisualStyleBackColor = false;
-            this.player17optionsButton.Click += new System.EventHandler(this.player17optionsButton_Click);
-            this.player17optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            this.player17buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player17buffsButton, "View spells/options for this player.");
+            this.player17buffsButton.UseVisualStyleBackColor = false;
+            this.player17buffsButton.Click += new System.EventHandler(this.player17buffsButton_Click);
+            this.player17buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player16HP
             // 
@@ -1300,23 +1300,23 @@ namespace Miraculix
             this.player13HP.Size = new System.Drawing.Size(187, 12);
             this.player13HP.TabIndex = 48;
             // 
-            // player16optionsButton
-            // 
-            this.player16optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player16optionsButton.Enabled = false;
-            this.player16optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player16optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player16optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player16optionsButton.Location = new System.Drawing.Point(137, 151);
-            this.player16optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player16optionsButton.Name = "player16optionsButton";
-            this.player16optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player16optionsButton.TabIndex = 3;
-            this.player16optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player16optionsButton, "View spells/options for this player.");
-            this.player16optionsButton.UseVisualStyleBackColor = false;
-            this.player16optionsButton.Click += new System.EventHandler(this.player16optionsButton_Click);
-            this.player16optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player16buffsButton
+            //
+            this.player16buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player16buffsButton.Enabled = false;
+            this.player16buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player16buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player16buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player16buffsButton.Location = new System.Drawing.Point(137, 151);
+            this.player16buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player16buffsButton.Name = "player16buffsButton";
+            this.player16buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player16buffsButton.TabIndex = 3;
+            this.player16buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player16buffsButton, "View spells/options for this player.");
+            this.player16buffsButton.UseVisualStyleBackColor = false;
+            this.player16buffsButton.Click += new System.EventHandler(this.player16buffsButton_Click);
+            this.player16buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player14HP
             // 
@@ -1354,23 +1354,23 @@ namespace Miraculix
             this.toolTips.SetToolTip(this.player16enabled, "Check to enable actions on this player.");
             this.player16enabled.UseVisualStyleBackColor = true;
             // 
-            // player15optionsButton
-            // 
-            this.player15optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player15optionsButton.Enabled = false;
-            this.player15optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player15optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player15optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player15optionsButton.Location = new System.Drawing.Point(137, 115);
-            this.player15optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player15optionsButton.Name = "player15optionsButton";
-            this.player15optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player15optionsButton.TabIndex = 3;
-            this.player15optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player15optionsButton, "View spells/options for this player.");
-            this.player15optionsButton.UseVisualStyleBackColor = false;
-            this.player15optionsButton.Click += new System.EventHandler(this.player15optionsButton_Click);
-            this.player15optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player15buffsButton
+            //
+            this.player15buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player15buffsButton.Enabled = false;
+            this.player15buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player15buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player15buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player15buffsButton.Location = new System.Drawing.Point(137, 115);
+            this.player15buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player15buffsButton.Name = "player15buffsButton";
+            this.player15buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player15buffsButton.TabIndex = 3;
+            this.player15buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player15buffsButton, "View spells/options for this player.");
+            this.player15buffsButton.UseVisualStyleBackColor = false;
+            this.player15buffsButton.Click += new System.EventHandler(this.player15buffsButton_Click);
+            this.player15buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player15priority
             // 
@@ -1394,23 +1394,23 @@ namespace Miraculix
             this.toolTips.SetToolTip(this.player15enabled, "Check to enable actions on this player.");
             this.player15enabled.UseVisualStyleBackColor = true;
             // 
-            // player14optionsButton
-            // 
-            this.player14optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player14optionsButton.Enabled = false;
-            this.player14optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player14optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player14optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player14optionsButton.Location = new System.Drawing.Point(137, 79);
-            this.player14optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player14optionsButton.Name = "player14optionsButton";
-            this.player14optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player14optionsButton.TabIndex = 3;
-            this.player14optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player14optionsButton, "View spells/options for this player.");
-            this.player14optionsButton.UseVisualStyleBackColor = false;
-            this.player14optionsButton.Click += new System.EventHandler(this.player14optionsButton_Click);
-            this.player14optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player14buffsButton
+            //
+            this.player14buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player14buffsButton.Enabled = false;
+            this.player14buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player14buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player14buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player14buffsButton.Location = new System.Drawing.Point(137, 79);
+            this.player14buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player14buffsButton.Name = "player14buffsButton";
+            this.player14buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player14buffsButton.TabIndex = 3;
+            this.player14buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player14buffsButton, "View spells/options for this player.");
+            this.player14buffsButton.UseVisualStyleBackColor = false;
+            this.player14buffsButton.Click += new System.EventHandler(this.player14buffsButton_Click);
+            this.player14buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player14priority
             // 
@@ -1434,23 +1434,23 @@ namespace Miraculix
             this.toolTips.SetToolTip(this.player14enabled, "Check to enable actions on this player.");
             this.player14enabled.UseVisualStyleBackColor = true;
             // 
-            // player13optionsButton
-            // 
-            this.player13optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player13optionsButton.Enabled = false;
-            this.player13optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player13optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player13optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player13optionsButton.Location = new System.Drawing.Point(137, 43);
-            this.player13optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player13optionsButton.Name = "player13optionsButton";
-            this.player13optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player13optionsButton.TabIndex = 3;
-            this.player13optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player13optionsButton, "View spells/options for this player.");
-            this.player13optionsButton.UseVisualStyleBackColor = false;
-            this.player13optionsButton.Click += new System.EventHandler(this.player13optionsButton_Click);
-            this.player13optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player13buffsButton
+            //
+            this.player13buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player13buffsButton.Enabled = false;
+            this.player13buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player13buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player13buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player13buffsButton.Location = new System.Drawing.Point(137, 43);
+            this.player13buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player13buffsButton.Name = "player13buffsButton";
+            this.player13buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player13buffsButton.TabIndex = 3;
+            this.player13buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player13buffsButton, "View spells/options for this player.");
+            this.player13buffsButton.UseVisualStyleBackColor = false;
+            this.player13buffsButton.Click += new System.EventHandler(this.player13buffsButton_Click);
+            this.player13buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player13priority
             // 
@@ -1463,23 +1463,23 @@ namespace Miraculix
             this.toolTips.SetToolTip(this.player13priority, "Check to Enable Player Priority");
             this.player13priority.UseVisualStyleBackColor = true;
             // 
-            // player12optionsButton
-            // 
-            this.player12optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player12optionsButton.Enabled = false;
-            this.player12optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player12optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player12optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player12optionsButton.Location = new System.Drawing.Point(137, 9);
-            this.player12optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player12optionsButton.Name = "player12optionsButton";
-            this.player12optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player12optionsButton.TabIndex = 3;
-            this.player12optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player12optionsButton, "View spells/options for this player.");
-            this.player12optionsButton.UseVisualStyleBackColor = false;
-            this.player12optionsButton.Click += new System.EventHandler(this.player12optionsButton_Click);
-            this.player12optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player12buffsButton
+            //
+            this.player12buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player12buffsButton.Enabled = false;
+            this.player12buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player12buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player12buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player12buffsButton.Location = new System.Drawing.Point(137, 9);
+            this.player12buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player12buffsButton.Name = "player12buffsButton";
+            this.player12buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player12buffsButton.TabIndex = 3;
+            this.player12buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player12buffsButton, "View spells/options for this player.");
+            this.player12buffsButton.UseVisualStyleBackColor = false;
+            this.player12buffsButton.Click += new System.EventHandler(this.player12buffsButton_Click);
+            this.player12buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player13enabled
             // 
@@ -1739,22 +1739,22 @@ namespace Miraculix
             // 
             this.party1.BackColor = System.Drawing.Color.Transparent;
             this.party1.Controls.Add(this.player11HP);
-            this.party1.Controls.Add(this.player11optionsButton);
+            this.party1.Controls.Add(this.player11buffsButton);
             this.party1.Controls.Add(this.player10HP);
             this.party1.Controls.Add(this.player11priority);
             this.party1.Controls.Add(this.player9HP);
-            this.party1.Controls.Add(this.player10optionsButton);
+            this.party1.Controls.Add(this.player10buffsButton);
             this.party1.Controls.Add(this.player7HP);
             this.party1.Controls.Add(this.player11enabled);
             this.party1.Controls.Add(this.player8HP);
-            this.party1.Controls.Add(this.player9optionsButton);
+            this.party1.Controls.Add(this.player9buffsButton);
             this.party1.Controls.Add(this.player6HP);
             this.party1.Controls.Add(this.player10priority);
-            this.party1.Controls.Add(this.player8optionsButton);
+            this.party1.Controls.Add(this.player8buffsButton);
             this.party1.Controls.Add(this.player10enabled);
-            this.party1.Controls.Add(this.player7optionsButton);
+            this.party1.Controls.Add(this.player7buffsButton);
             this.party1.Controls.Add(this.player9priority);
-            this.party1.Controls.Add(this.player6optionsButton);
+            this.party1.Controls.Add(this.player6buffsButton);
             this.party1.Controls.Add(this.player9enabled);
             this.party1.Controls.Add(this.player8priority);
             this.party1.Controls.Add(this.player8enabled);
@@ -1787,23 +1787,23 @@ namespace Miraculix
             this.player11HP.Size = new System.Drawing.Size(187, 12);
             this.player11HP.TabIndex = 45;
             // 
-            // player11optionsButton
-            // 
-            this.player11optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player11optionsButton.Enabled = false;
-            this.player11optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player11optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player11optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player11optionsButton.Location = new System.Drawing.Point(137, 187);
-            this.player11optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player11optionsButton.Name = "player11optionsButton";
-            this.player11optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player11optionsButton.TabIndex = 3;
-            this.player11optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player11optionsButton, "View spells/options for this player.");
-            this.player11optionsButton.UseVisualStyleBackColor = false;
-            this.player11optionsButton.Click += new System.EventHandler(this.player11optionsButton_Click);
-            this.player11optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player11buffsButton
+            //
+            this.player11buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player11buffsButton.Enabled = false;
+            this.player11buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player11buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player11buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player11buffsButton.Location = new System.Drawing.Point(137, 187);
+            this.player11buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player11buffsButton.Name = "player11buffsButton";
+            this.player11buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player11buffsButton.TabIndex = 3;
+            this.player11buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player11buffsButton, "View spells/options for this player.");
+            this.player11buffsButton.UseVisualStyleBackColor = false;
+            this.player11buffsButton.Click += new System.EventHandler(this.player11buffsButton_Click);
+            this.player11buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player10HP
             // 
@@ -1830,23 +1830,23 @@ namespace Miraculix
             this.player9HP.Size = new System.Drawing.Size(187, 12);
             this.player9HP.TabIndex = 43;
             // 
-            // player10optionsButton
-            // 
-            this.player10optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player10optionsButton.Enabled = false;
-            this.player10optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player10optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player10optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player10optionsButton.Location = new System.Drawing.Point(137, 151);
-            this.player10optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player10optionsButton.Name = "player10optionsButton";
-            this.player10optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player10optionsButton.TabIndex = 3;
-            this.player10optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player10optionsButton, "View spells/options for this player.");
-            this.player10optionsButton.UseVisualStyleBackColor = false;
-            this.player10optionsButton.Click += new System.EventHandler(this.player10optionsButton_Click);
-            this.player10optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player10buffsButton
+            //
+            this.player10buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player10buffsButton.Enabled = false;
+            this.player10buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player10buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player10buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player10buffsButton.Location = new System.Drawing.Point(137, 151);
+            this.player10buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player10buffsButton.Name = "player10buffsButton";
+            this.player10buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player10buffsButton.TabIndex = 3;
+            this.player10buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player10buffsButton, "View spells/options for this player.");
+            this.player10buffsButton.UseVisualStyleBackColor = false;
+            this.player10buffsButton.Click += new System.EventHandler(this.player10buffsButton_Click);
+            this.player10buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player7HP
             // 
@@ -1862,23 +1862,23 @@ namespace Miraculix
             this.player8HP.Size = new System.Drawing.Size(187, 12);
             this.player8HP.TabIndex = 41;
             // 
-            // player9optionsButton
-            // 
-            this.player9optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player9optionsButton.Enabled = false;
-            this.player9optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player9optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player9optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player9optionsButton.Location = new System.Drawing.Point(137, 115);
-            this.player9optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player9optionsButton.Name = "player9optionsButton";
-            this.player9optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player9optionsButton.TabIndex = 3;
-            this.player9optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player9optionsButton, "View spells/options for this player.");
-            this.player9optionsButton.UseVisualStyleBackColor = false;
-            this.player9optionsButton.Click += new System.EventHandler(this.player9optionsButton_Click);
-            this.player9optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player9buffsButton
+            //
+            this.player9buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player9buffsButton.Enabled = false;
+            this.player9buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player9buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player9buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player9buffsButton.Location = new System.Drawing.Point(137, 115);
+            this.player9buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player9buffsButton.Name = "player9buffsButton";
+            this.player9buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player9buffsButton.TabIndex = 3;
+            this.player9buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player9buffsButton, "View spells/options for this player.");
+            this.player9buffsButton.UseVisualStyleBackColor = false;
+            this.player9buffsButton.Click += new System.EventHandler(this.player9buffsButton_Click);
+            this.player9buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player6HP
             // 
@@ -1898,41 +1898,41 @@ namespace Miraculix
             this.toolTips.SetToolTip(this.player10priority, "Check to Enable Player Priority");
             this.player10priority.UseVisualStyleBackColor = true;
             // 
-            // player8optionsButton
-            // 
-            this.player8optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player8optionsButton.Enabled = false;
-            this.player8optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player8optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player8optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player8optionsButton.Location = new System.Drawing.Point(137, 79);
-            this.player8optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player8optionsButton.Name = "player8optionsButton";
-            this.player8optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player8optionsButton.TabIndex = 3;
-            this.player8optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player8optionsButton, "View spells/options for this player.");
-            this.player8optionsButton.UseVisualStyleBackColor = false;
-            this.player8optionsButton.Click += new System.EventHandler(this.player8optionsButton_Click);
-            this.player8optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
-            // 
-            // player7optionsButton
-            // 
-            this.player7optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player7optionsButton.Enabled = false;
-            this.player7optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player7optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player7optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player7optionsButton.Location = new System.Drawing.Point(137, 43);
-            this.player7optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player7optionsButton.Name = "player7optionsButton";
-            this.player7optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player7optionsButton.TabIndex = 3;
-            this.player7optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player7optionsButton, "View spells/options for this player.");
-            this.player7optionsButton.UseVisualStyleBackColor = false;
-            this.player7optionsButton.Click += new System.EventHandler(this.player7optionsButton_Click);
-            this.player7optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player8buffsButton
+            //
+            this.player8buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player8buffsButton.Enabled = false;
+            this.player8buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player8buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player8buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player8buffsButton.Location = new System.Drawing.Point(137, 79);
+            this.player8buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player8buffsButton.Name = "player8buffsButton";
+            this.player8buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player8buffsButton.TabIndex = 3;
+            this.player8buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player8buffsButton, "View spells/options for this player.");
+            this.player8buffsButton.UseVisualStyleBackColor = false;
+            this.player8buffsButton.Click += new System.EventHandler(this.player8buffsButton_Click);
+            this.player8buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            //
+            // player7buffsButton
+            //
+            this.player7buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player7buffsButton.Enabled = false;
+            this.player7buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player7buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player7buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player7buffsButton.Location = new System.Drawing.Point(137, 43);
+            this.player7buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player7buffsButton.Name = "player7buffsButton";
+            this.player7buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player7buffsButton.TabIndex = 3;
+            this.player7buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player7buffsButton, "View spells/options for this player.");
+            this.player7buffsButton.UseVisualStyleBackColor = false;
+            this.player7buffsButton.Click += new System.EventHandler(this.player7buffsButton_Click);
+            this.player7buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player9priority
             // 
@@ -1945,23 +1945,23 @@ namespace Miraculix
             this.toolTips.SetToolTip(this.player9priority, "Check to Enable Player Priority");
             this.player9priority.UseVisualStyleBackColor = true;
             // 
-            // player6optionsButton
-            // 
-            this.player6optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player6optionsButton.Enabled = false;
-            this.player6optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player6optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player6optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player6optionsButton.Location = new System.Drawing.Point(137, 9);
-            this.player6optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player6optionsButton.Name = "player6optionsButton";
-            this.player6optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player6optionsButton.TabIndex = 3;
-            this.player6optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player6optionsButton, "View spells/options for this player.");
-            this.player6optionsButton.UseVisualStyleBackColor = false;
-            this.player6optionsButton.Click += new System.EventHandler(this.player6optionsButton_Click);
-            this.player6optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            // player6buffsButton
+            //
+            this.player6buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player6buffsButton.Enabled = false;
+            this.player6buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player6buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player6buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player6buffsButton.Location = new System.Drawing.Point(137, 9);
+            this.player6buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player6buffsButton.Name = "player6buffsButton";
+            this.player6buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player6buffsButton.TabIndex = 3;
+            this.player6buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player6buffsButton, "View spells/options for this player.");
+            this.player6buffsButton.UseVisualStyleBackColor = false;
+            this.player6buffsButton.Click += new System.EventHandler(this.player6buffsButton_Click);
+            this.player6buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player8priority
             // 
@@ -2465,42 +2465,46 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buffsHasteToolStripMenuItem,
+            this.buffsHasteIIToolStripMenuItem,
+            this.buffsFlurryToolStripMenuItem,
+            this.buffsFlurryIIToolStripMenuItem,
             this.buffsShellToolStripMenuItem,
             this.buffsProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";
-            this.oopPlayerOptions.Size = new System.Drawing.Size(142, 48);
+            this.oopPlayerOptions.Size = new System.Drawing.Size(142, 136);
             // 
             // oopGroupBox
             // 
             this.oopGroupBox.Controls.Add(this.oopPlayerEnables0);
             this.oopGroupBox.Controls.Add(this.oopPlayerPriorities0);
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes0);
-            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons0);
+            this.oopGroupBox.Controls.Add(this.oopPlayerBuffsButtons0);
             this.oopGroupBox.Controls.Add(this.oopPlayerHPs0);
             this.oopGroupBox.Controls.Add(this.oopPlayerEnables1);
             this.oopGroupBox.Controls.Add(this.oopPlayerPriorities1);
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes1);
-            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons1);
+            this.oopGroupBox.Controls.Add(this.oopPlayerBuffsButtons1);
             this.oopGroupBox.Controls.Add(this.oopPlayerHPs1);
             this.oopGroupBox.Controls.Add(this.oopPlayerEnables2);
             this.oopGroupBox.Controls.Add(this.oopPlayerPriorities2);
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes2);
-            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons2);
+            this.oopGroupBox.Controls.Add(this.oopPlayerBuffsButtons2);
             this.oopGroupBox.Controls.Add(this.oopPlayerHPs2);
             this.oopGroupBox.Controls.Add(this.oopPlayerEnables3);
             this.oopGroupBox.Controls.Add(this.oopPlayerPriorities3);
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes3);
-            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons3);
+            this.oopGroupBox.Controls.Add(this.oopPlayerBuffsButtons3);
             this.oopGroupBox.Controls.Add(this.oopPlayerHPs3);
             this.oopGroupBox.Controls.Add(this.oopPlayerEnables4);
             this.oopGroupBox.Controls.Add(this.oopPlayerPriorities4);
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes4);
-            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons4);
+            this.oopGroupBox.Controls.Add(this.oopPlayerBuffsButtons4);
             this.oopGroupBox.Controls.Add(this.oopPlayerHPs4);
             this.oopGroupBox.Controls.Add(this.oopPlayerEnables5);
             this.oopGroupBox.Controls.Add(this.oopPlayerPriorities5);
             this.oopGroupBox.Controls.Add(this.oopPlayerComboBoxes5);
-            this.oopGroupBox.Controls.Add(this.oopPlayerOptionsButtons5);
+            this.oopGroupBox.Controls.Add(this.oopPlayerBuffsButtons5);
             this.oopGroupBox.Controls.Add(this.oopPlayerHPs5);
             this.oopGroupBox.Location = new System.Drawing.Point(655, 104);
             this.oopGroupBox.Name = "oopGroupBox";
@@ -2541,17 +2545,17 @@ namespace Miraculix
             this.oopPlayerComboBoxes0.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes0.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
             // 
-            // oopPlayerOptionsButtons0
+            // oopPlayerBuffsButtons0
             // 
-            this.oopPlayerOptionsButtons0.ContextMenuStrip = this.oopPlayerOptions;
-            this.oopPlayerOptionsButtons0.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons0.Location = new System.Drawing.Point(137, 10);
-            this.oopPlayerOptionsButtons0.Name = "oopPlayerOptionsButtons0";
-            this.oopPlayerOptionsButtons0.Size = new System.Drawing.Size(55, 21);
-            this.oopPlayerOptionsButtons0.TabIndex = 3;
-            this.oopPlayerOptionsButtons0.Text = "MENU";
-            this.oopPlayerOptionsButtons0.UseVisualStyleBackColor = true;
-            this.oopPlayerOptionsButtons0.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerBuffsButtons0.ContextMenuStrip = this.oopPlayerOptions;
+            this.oopPlayerBuffsButtons0.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerBuffsButtons0.Location = new System.Drawing.Point(137, 10);
+            this.oopPlayerBuffsButtons0.Name = "oopPlayerBuffsButtons0";
+            this.oopPlayerBuffsButtons0.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerBuffsButtons0.TabIndex = 3;
+            this.oopPlayerBuffsButtons0.Text = "BUFFS";
+            this.oopPlayerBuffsButtons0.UseVisualStyleBackColor = true;
+            this.oopPlayerBuffsButtons0.Click += new System.EventHandler(this.OopPlayerBuffsButton_Click);
             // 
             // oopPlayerHPs0
             // 
@@ -2590,17 +2594,17 @@ namespace Miraculix
             this.oopPlayerComboBoxes1.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes1.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
             // 
-            // oopPlayerOptionsButtons1
+            // oopPlayerBuffsButtons1
             // 
-            this.oopPlayerOptionsButtons1.ContextMenuStrip = this.oopPlayerOptions;
-            this.oopPlayerOptionsButtons1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons1.Location = new System.Drawing.Point(137, 43);
-            this.oopPlayerOptionsButtons1.Name = "oopPlayerOptionsButtons1";
-            this.oopPlayerOptionsButtons1.Size = new System.Drawing.Size(55, 21);
-            this.oopPlayerOptionsButtons1.TabIndex = 3;
-            this.oopPlayerOptionsButtons1.Text = "MENU";
-            this.oopPlayerOptionsButtons1.UseVisualStyleBackColor = true;
-            this.oopPlayerOptionsButtons1.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerBuffsButtons1.ContextMenuStrip = this.oopPlayerOptions;
+            this.oopPlayerBuffsButtons1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerBuffsButtons1.Location = new System.Drawing.Point(137, 43);
+            this.oopPlayerBuffsButtons1.Name = "oopPlayerBuffsButtons1";
+            this.oopPlayerBuffsButtons1.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerBuffsButtons1.TabIndex = 3;
+            this.oopPlayerBuffsButtons1.Text = "BUFFS";
+            this.oopPlayerBuffsButtons1.UseVisualStyleBackColor = true;
+            this.oopPlayerBuffsButtons1.Click += new System.EventHandler(this.OopPlayerBuffsButton_Click);
             // 
             // oopPlayerHPs1
             // 
@@ -2640,17 +2644,17 @@ namespace Miraculix
             this.oopPlayerComboBoxes2.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes2.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
             // 
-            // oopPlayerOptionsButtons2
+            // oopPlayerBuffsButtons2
             // 
-            this.oopPlayerOptionsButtons2.ContextMenuStrip = this.oopPlayerOptions;
-            this.oopPlayerOptionsButtons2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons2.Location = new System.Drawing.Point(137, 78);
-            this.oopPlayerOptionsButtons2.Name = "oopPlayerOptionsButtons2";
-            this.oopPlayerOptionsButtons2.Size = new System.Drawing.Size(55, 21);
-            this.oopPlayerOptionsButtons2.TabIndex = 3;
-            this.oopPlayerOptionsButtons2.Text = "MENU";
-            this.oopPlayerOptionsButtons2.UseVisualStyleBackColor = true;
-            this.oopPlayerOptionsButtons2.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerBuffsButtons2.ContextMenuStrip = this.oopPlayerOptions;
+            this.oopPlayerBuffsButtons2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerBuffsButtons2.Location = new System.Drawing.Point(137, 78);
+            this.oopPlayerBuffsButtons2.Name = "oopPlayerBuffsButtons2";
+            this.oopPlayerBuffsButtons2.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerBuffsButtons2.TabIndex = 3;
+            this.oopPlayerBuffsButtons2.Text = "BUFFS";
+            this.oopPlayerBuffsButtons2.UseVisualStyleBackColor = true;
+            this.oopPlayerBuffsButtons2.Click += new System.EventHandler(this.OopPlayerBuffsButton_Click);
             // 
             // oopPlayerHPs2
             // 
@@ -2690,17 +2694,17 @@ namespace Miraculix
             this.oopPlayerComboBoxes3.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes3.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
             // 
-            // oopPlayerOptionsButtons3
+            // oopPlayerBuffsButtons3
             // 
-            this.oopPlayerOptionsButtons3.ContextMenuStrip = this.oopPlayerOptions;
-            this.oopPlayerOptionsButtons3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons3.Location = new System.Drawing.Point(137, 114);
-            this.oopPlayerOptionsButtons3.Name = "oopPlayerOptionsButtons3";
-            this.oopPlayerOptionsButtons3.Size = new System.Drawing.Size(55, 21);
-            this.oopPlayerOptionsButtons3.TabIndex = 3;
-            this.oopPlayerOptionsButtons3.Text = "MENU";
-            this.oopPlayerOptionsButtons3.UseVisualStyleBackColor = true;
-            this.oopPlayerOptionsButtons3.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerBuffsButtons3.ContextMenuStrip = this.oopPlayerOptions;
+            this.oopPlayerBuffsButtons3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerBuffsButtons3.Location = new System.Drawing.Point(137, 114);
+            this.oopPlayerBuffsButtons3.Name = "oopPlayerBuffsButtons3";
+            this.oopPlayerBuffsButtons3.Size = new System.Drawing.Size(55, 21);
+            this.oopPlayerBuffsButtons3.TabIndex = 3;
+            this.oopPlayerBuffsButtons3.Text = "BUFFS";
+            this.oopPlayerBuffsButtons3.UseVisualStyleBackColor = true;
+            this.oopPlayerBuffsButtons3.Click += new System.EventHandler(this.OopPlayerBuffsButton_Click);
             // 
             // oopPlayerHPs3
             // 
@@ -2739,17 +2743,17 @@ namespace Miraculix
             this.oopPlayerComboBoxes4.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes4.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
             // 
-            // oopPlayerOptionsButtons4
+            // oopPlayerBuffsButtons4
             // 
-            this.oopPlayerOptionsButtons4.ContextMenuStrip = this.oopPlayerOptions;
-            this.oopPlayerOptionsButtons4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons4.Location = new System.Drawing.Point(137, 151);
-            this.oopPlayerOptionsButtons4.Name = "oopPlayerOptionsButtons4";
-            this.oopPlayerOptionsButtons4.Size = new System.Drawing.Size(55, 19);
-            this.oopPlayerOptionsButtons4.TabIndex = 3;
-            this.oopPlayerOptionsButtons4.Text = "MENU";
-            this.oopPlayerOptionsButtons4.UseVisualStyleBackColor = true;
-            this.oopPlayerOptionsButtons4.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            this.oopPlayerBuffsButtons4.ContextMenuStrip = this.oopPlayerOptions;
+            this.oopPlayerBuffsButtons4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerBuffsButtons4.Location = new System.Drawing.Point(137, 151);
+            this.oopPlayerBuffsButtons4.Name = "oopPlayerBuffsButtons4";
+            this.oopPlayerBuffsButtons4.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerBuffsButtons4.TabIndex = 3;
+            this.oopPlayerBuffsButtons4.Text = "BUFFS";
+            this.oopPlayerBuffsButtons4.UseVisualStyleBackColor = true;
+            this.oopPlayerBuffsButtons4.Click += new System.EventHandler(this.OopPlayerBuffsButton_Click);
             // 
             // oopPlayerHPs4
             // 
@@ -2788,17 +2792,17 @@ namespace Miraculix
             this.oopPlayerComboBoxes5.DropDown += new System.EventHandler(this.OopPlayerComboBox_DropDown);
             this.oopPlayerComboBoxes5.SelectedIndexChanged += new System.EventHandler(this.OopPlayerComboBox_SelectedIndexChanged);
             // 
-            // oopPlayerOptionsButtons5
-            // 
-            this.oopPlayerOptionsButtons5.ContextMenuStrip = this.oopPlayerOptions;
-            this.oopPlayerOptionsButtons5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.oopPlayerOptionsButtons5.Location = new System.Drawing.Point(137, 187);
-            this.oopPlayerOptionsButtons5.Name = "oopPlayerOptionsButtons5";
-            this.oopPlayerOptionsButtons5.Size = new System.Drawing.Size(55, 19);
-            this.oopPlayerOptionsButtons5.TabIndex = 3;
-            this.oopPlayerOptionsButtons5.Text = "MENU";
-            this.oopPlayerOptionsButtons5.UseVisualStyleBackColor = true;
-            this.oopPlayerOptionsButtons5.Click += new System.EventHandler(this.OopPlayerOptionsButton_Click);
+            // oopPlayerBuffsButtons5
+            //
+            this.oopPlayerBuffsButtons5.ContextMenuStrip = this.oopPlayerOptions;
+            this.oopPlayerBuffsButtons5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.oopPlayerBuffsButtons5.Location = new System.Drawing.Point(137, 187);
+            this.oopPlayerBuffsButtons5.Name = "oopPlayerBuffsButtons5";
+            this.oopPlayerBuffsButtons5.Size = new System.Drawing.Size(55, 19);
+            this.oopPlayerBuffsButtons5.TabIndex = 3;
+            this.oopPlayerBuffsButtons5.Text = "BUFFS";
+            this.oopPlayerBuffsButtons5.UseVisualStyleBackColor = true;
+            this.oopPlayerBuffsButtons5.Click += new System.EventHandler(this.OopPlayerBuffsButton_Click);
             // 
             // oopPlayerHPs5
             // 

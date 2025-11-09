@@ -111,7 +111,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
         private ComboBox[] oopPlayerComboBoxes;
         private ProgressBar[] oopPlayerHPs;
         private CheckBox[] oopPlayerEnables;
-        private Button[] oopPlayerOptionsButtons;
+        private Button[] oopPlayerBuffsButtons;
         private Dictionary<string, Dictionary<string, bool>> oopBuffPreferences = new Dictionary<string, Dictionary<string, bool>>();
 
         private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
@@ -569,11 +569,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
       };
 
         private bool[] autoHaste_IIEnabled = new bool[]
       {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -613,11 +625,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
       };
 
         private bool[] autoFlurry_IIEnabled = new bool[]
       {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -657,11 +681,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
        };
 
         private bool[] autoRegen_Enabled = new bool[]
       {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -701,11 +737,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
       };
 
         private bool[] autoProtect_Enabled = new bool[]
       {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -745,11 +793,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
 };
 
         private bool[] autoRainstormEnabled = new bool[]
 {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -789,11 +849,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
 };
 
         private bool[] autoFirestormEnabled = new bool[]
 {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -833,11 +905,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
 };
 
         private bool[] autoThunderstormEnabled = new bool[]
 {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -877,11 +961,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
 };
 
         private bool[] autoAurorastormEnabled = new bool[]
 {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -923,11 +1019,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false
       };
 
         private bool[] autoAdloquium_Enabled = new bool[]
       {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -971,11 +1079,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
       };
 
         private DateTime[] playerHaste_II = new DateTime[]
       {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1015,11 +1135,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
       };
 
         private DateTime[] playerFlurry = new DateTime[]
       {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1059,11 +1191,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
       };
 
         private DateTime[] playerShell = new DateTime[]
       {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1103,11 +1247,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
       };
 
         private DateTime[] playerPhalanx_II = new DateTime[]
       {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1147,6 +1303,12 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
        };
 
@@ -1169,11 +1331,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
       };
 
         private DateTime[] playerAdloquium = new DateTime[]
       {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1278,11 +1452,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan()
       };
 
         private TimeSpan[] playerStormspellSpan = new TimeSpan[]
       {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1322,11 +1508,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan()
       };
 
         private TimeSpan[] playerFlurrySpan = new TimeSpan[]
       {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1366,11 +1564,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan()
       };
 
         private TimeSpan[] playerShell_Span = new TimeSpan[]
       {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1410,11 +1620,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan()
       };
 
         private TimeSpan[] playerPhalanx_IISpan = new TimeSpan[]
       {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1454,11 +1676,23 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan()
       };
 
         private TimeSpan[] playerRefresh_Span = new TimeSpan[]
       {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1482,6 +1716,12 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
 
         private TimeSpan[] playerAdloquium_Span = new TimeSpan[]
       {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1627,7 +1867,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             oopPlayerComboBoxes = new ComboBox[] { oopPlayerComboBoxes0, oopPlayerComboBoxes1, oopPlayerComboBoxes2, oopPlayerComboBoxes3, oopPlayerComboBoxes4, oopPlayerComboBoxes5 };
             oopPlayerHPs = new ProgressBar[] { oopPlayerHPs0, oopPlayerHPs1, oopPlayerHPs2, oopPlayerHPs3, oopPlayerHPs4, oopPlayerHPs5 };
             oopPlayerEnables = new CheckBox[] { oopPlayerEnables0, oopPlayerEnables1, oopPlayerEnables2, oopPlayerEnables3, oopPlayerEnables4, oopPlayerEnables5 };
-            oopPlayerOptionsButtons = new Button[] { oopPlayerOptionsButtons0, oopPlayerOptionsButtons1, oopPlayerOptionsButtons2, oopPlayerOptionsButtons3, oopPlayerOptionsButtons4, oopPlayerOptionsButtons5 };
+            oopPlayerBuffsButtons = new Button[] { oopPlayerBuffsButtons0, oopPlayerBuffsButtons1, oopPlayerBuffsButtons2, oopPlayerBuffsButtons3, oopPlayerBuffsButtons4, oopPlayerBuffsButtons5 };
 
             Form2 = new Form2(this);
             ReloadSettings();
@@ -1650,7 +1890,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             {
                 oopPlayerComboBoxes[i].DropDown += OopPlayerComboBox_DropDown;
                 oopPlayerComboBoxes[i].SelectedIndexChanged += OopPlayerComboBox_SelectedIndexChanged;
-                oopPlayerOptionsButtons[i].Click += OopPlayerOptionsButton_Click;
+                oopPlayerBuffsButtons[i].Click += OopPlayerBuffsButton_Click;
             }
 
             currentAction.Text = string.Empty;
@@ -3141,60 +3381,38 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
             _previousPlayerStatus = (byte)Status.Fighting;
         }
 
-        private void OopPlayerOptionsButton_Click(object sender, EventArgs e)
+        private void OopPlayerBuffsButton_Click(object sender, EventArgs e)
         {
             Button button = sender as Button;
             if (button != null)
             {
-                int index = Array.IndexOf(oopPlayerOptionsButtons, button);
+                int index = Array.IndexOf(oopPlayerBuffsButtons, button);
                 if (index != -1)
                 {
-                    playerOptionsSelected = (byte)(18 + index); // Use a different range for OOP players
+                    buffOptionsSelected = (byte)(18 + index);
                     string playerName = oopPlayerComboBoxes[index].SelectedItem?.ToString();
                     if (string.IsNullOrEmpty(playerName)) return;
 
-                    // Clear and rebuild menu
-                    oopPlayerOptions.Items.Clear();
+                    // Set checked states from arrays
+                    buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[buffOptionsSelected];
+                    buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[buffOptionsSelected];
+                    buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[buffOptionsSelected];
+                    buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[buffOptionsSelected];
+                    partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[buffOptionsSelected];
+                    partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[buffOptionsSelected];
+                    autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[buffOptionsSelected];
+                    autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[buffOptionsSelected];
+                    autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[buffOptionsSelected];
+                    SandstormToolStripMenuItem.Checked = autoSandstormEnabled[buffOptionsSelected];
+                    RainstormToolStripMenuItem.Checked = autoRainstormEnabled[buffOptionsSelected];
+                    WindstormToolStripMenuItem.Checked = autoWindstormEnabled[buffOptionsSelected];
+                    FirestormToolStripMenuItem.Checked = autoFirestormEnabled[buffOptionsSelected];
+                    HailstormToolStripMenuItem.Checked = autoHailstormEnabled[buffOptionsSelected];
+                    ThunderstormToolStripMenuItem.Checked = autoThunderstormEnabled[buffOptionsSelected];
+                    VoidstormToolStripMenuItem.Checked = autoVoidstormEnabled[buffOptionsSelected];
+                    AurorastormToolStripMenuItem.Checked = autoAurorastormEnabled[buffOptionsSelected];
 
-                    var buffs = new[] { "Protect", "Shell", "Haste" };
-
-                    if (!oopBuffPreferences.ContainsKey(playerName))
-                    {
-                        oopBuffPreferences[playerName] = new Dictionary<string, bool>();
-                    }
-                    var preferences = oopBuffPreferences[playerName];
-
-                    foreach (var buffName in buffs)
-                    {
-                        var menuItem = new ToolStripMenuItem($"Auto {buffName}");
-                        menuItem.CheckOnClick = true;
-                        menuItem.Checked = preferences.ContainsKey(buffName) && preferences[buffName];
-                        menuItem.Click += oopBuffToolStripMenuItem_Click;
-                        oopPlayerOptions.Items.Add(menuItem);
-                    }
-                    // Add a separator
-                    oopPlayerOptions.Items.Add(new ToolStripSeparator());
-
-                    // Create Debuffs sub-menu
-                    var debuffsMenuItem = new ToolStripMenuItem("Debuffs");
-
-                    if (!oopDebuffState.ContainsKey(playerName))
-                    {
-                        oopDebuffState[playerName] = new Dictionary<string, bool>();
-                    }
-                    var debuffPreferences = oopDebuffState[playerName];
-
-                    foreach (var spell in DebuffSpells)
-                    {
-                        var subMenuItem = new ToolStripMenuItem(spell.Name);
-                        subMenuItem.CheckOnClick = true;
-                        subMenuItem.Checked = debuffPreferences.ContainsKey(spell.Name) && debuffPreferences[spell.Name];
-                        subMenuItem.Click += debuffMenuItem_Click;
-                        debuffsMenuItem.DropDownItems.Add(subMenuItem);
-                    }
-
-                    oopPlayerOptions.Items.Add(debuffsMenuItem);
-                    oopPlayerOptions.Show(button, new Point(0, button.Height));
+                    buffOptions.Show(button, new Point(0, button.Height));
                 }
             }
         }
@@ -3924,168 +4142,168 @@ private string GetBestSpellTier(string buffType, string targetName)
             {
                 player6.Text = _ELITEAPIMonitored.Party.GetPartyMember(6).Name;
                 player6.Enabled = true;
-                player6optionsButton.Enabled = true;
+                player6buffsButton.Enabled = true;
             }
             else
             {
                 player6.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player6.Enabled = false;
                 player6HP.Value = 0;
-                player6optionsButton.Enabled = false;
+                player6buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(7))
             {
                 player7.Text = _ELITEAPIMonitored.Party.GetPartyMember(7).Name;
                 player7.Enabled = true;
-                player7optionsButton.Enabled = true;
+                player7buffsButton.Enabled = true;
             }
             else
             {
                 player7.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player7.Enabled = false;
                 player7HP.Value = 0;
-                player7optionsButton.Enabled = false;
+                player7buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(8))
             {
                 player8.Text = _ELITEAPIMonitored.Party.GetPartyMember(8).Name;
                 player8.Enabled = true;
-                player8optionsButton.Enabled = true;
+                player8buffsButton.Enabled = true;
             }
             else
             {
                 player8.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player8.Enabled = false;
                 player8HP.Value = 0;
-                player8optionsButton.Enabled = false;
+                player8buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(9))
             {
                 player9.Text = _ELITEAPIMonitored.Party.GetPartyMember(9).Name;
                 player9.Enabled = true;
-                player9optionsButton.Enabled = true;
+                player9buffsButton.Enabled = true;
             }
             else
             {
                 player9.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player9.Enabled = false;
                 player9HP.Value = 0;
-                player9optionsButton.Enabled = false;
+                player9buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(10))
             {
                 player10.Text = _ELITEAPIMonitored.Party.GetPartyMember(10).Name;
                 player10.Enabled = true;
-                player10optionsButton.Enabled = true;
+                player10buffsButton.Enabled = true;
             }
             else
             {
                 player10.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player10.Enabled = false;
                 player10HP.Value = 0;
-                player10optionsButton.Enabled = false;
+                player10buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(11))
             {
                 player11.Text = _ELITEAPIMonitored.Party.GetPartyMember(11).Name;
                 player11.Enabled = true;
-                player11optionsButton.Enabled = true;
+                player11buffsButton.Enabled = true;
             }
             else
             {
                 player11.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player11.Enabled = false;
                 player11HP.Value = 0;
-                player11optionsButton.Enabled = false;
+                player11buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(12))
             {
                 player12.Text = _ELITEAPIMonitored.Party.GetPartyMember(12).Name;
                 player12.Enabled = true;
-                player12optionsButton.Enabled = true;
+                player12buffsButton.Enabled = true;
             }
             else
             {
                 player12.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player12.Enabled = false;
                 player12HP.Value = 0;
-                player12optionsButton.Enabled = false;
+                player12buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(13))
             {
                 player13.Text = _ELITEAPIMonitored.Party.GetPartyMember(13).Name;
                 player13.Enabled = true;
-                player13optionsButton.Enabled = true;
+                player13buffsButton.Enabled = true;
             }
             else
             {
                 player13.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player13.Enabled = false;
                 player13HP.Value = 0;
-                player13optionsButton.Enabled = false;
+                player13buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(14))
             {
                 player14.Text = _ELITEAPIMonitored.Party.GetPartyMember(14).Name;
                 player14.Enabled = true;
-                player14optionsButton.Enabled = true;
+                player14buffsButton.Enabled = true;
             }
             else
             {
                 player14.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player14.Enabled = false;
                 player14HP.Value = 0;
-                player14optionsButton.Enabled = false;
+                player14buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(15))
             {
                 player15.Text = _ELITEAPIMonitored.Party.GetPartyMember(15).Name;
                 player15.Enabled = true;
-                player15optionsButton.Enabled = true;
+                player15buffsButton.Enabled = true;
             }
             else
             {
                 player15.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player15.Enabled = false;
                 player15HP.Value = 0;
-                player15optionsButton.Enabled = false;
+                player15buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(16))
             {
                 player16.Text = _ELITEAPIMonitored.Party.GetPartyMember(16).Name;
                 player16.Enabled = true;
-                player16optionsButton.Enabled = true;
+                player16buffsButton.Enabled = true;
             }
             else
             {
                 player16.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player16.Enabled = false;
                 player16HP.Value = 0;
-                player16optionsButton.Enabled = false;
+                player16buffsButton.Enabled = false;
             }
 
             if (partyMemberUpdateMethod(17))
             {
                 player17.Text = _ELITEAPIMonitored.Party.GetPartyMember(17).Name;
                 player17.Enabled = true;
-                player17optionsButton.Enabled = true;
+                player17buffsButton.Enabled = true;
             }
             else
             {
                 player17.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
                 player17.Enabled = false;
                 player17HP.Value = 0;
-                player17optionsButton.Enabled = false;
+                player17buffsButton.Enabled = false;
             }
         }
 
@@ -7638,76 +7856,148 @@ private string GetBestSpellTier(string buffType, string targetName)
             playerOptions.Show(party0, new Point(0, 0));
         }
 
-        private void player6optionsButton_Click(object sender, EventArgs e)
+        private void player6buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 6;
-            playerOptions.Show(party1, new Point(0, 0));
+            buffOptionsSelected = 6;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[6];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[6];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[6];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[6];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[6];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[6];
+            buffOptions.Show(party1, new Point(0, 0));
         }
 
-        private void player7optionsButton_Click(object sender, EventArgs e)
+        private void player7buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 7;
-            playerOptions.Show(party1, new Point(0, 0));
+            buffOptionsSelected = 7;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[7];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[7];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[7];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[7];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[7];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[7];
+            buffOptions.Show(party1, new Point(0, 0));
         }
 
-        private void player8optionsButton_Click(object sender, EventArgs e)
+        private void player8buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 8;
-            playerOptions.Show(party1, new Point(0, 0));
+            buffOptionsSelected = 8;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[8];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[8];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[8];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[8];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[8];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[8];
+            buffOptions.Show(party1, new Point(0, 0));
         }
 
-        private void player9optionsButton_Click(object sender, EventArgs e)
+        private void player9buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 9;
-            playerOptions.Show(party1, new Point(0, 0));
+            buffOptionsSelected = 9;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[9];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[9];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[9];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[9];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[9];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[9];
+            buffOptions.Show(party1, new Point(0, 0));
         }
 
-        private void player10optionsButton_Click(object sender, EventArgs e)
+        private void player10buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 10;
-            playerOptions.Show(party1, new Point(0, 0));
+            buffOptionsSelected = 10;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[10];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[10];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[10];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[10];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[10];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[10];
+            buffOptions.Show(party1, new Point(0, 0));
         }
 
-        private void player11optionsButton_Click(object sender, EventArgs e)
+        private void player11buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 11;
-            playerOptions.Show(party1, new Point(0, 0));
+            buffOptionsSelected = 11;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[11];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[11];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[11];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[11];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[11];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[11];
+            buffOptions.Show(party1, new Point(0, 0));
         }
 
-        private void player12optionsButton_Click(object sender, EventArgs e)
+        private void player12buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 12;
-            playerOptions.Show(party2, new Point(0, 0));
+            buffOptionsSelected = 12;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[12];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[12];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[12];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[12];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[12];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[12];
+            buffOptions.Show(party2, new Point(0, 0));
         }
 
-        private void player13optionsButton_Click(object sender, EventArgs e)
+        private void player13buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 13;
-            playerOptions.Show(party2, new Point(0, 0));
+            buffOptionsSelected = 13;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[13];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[13];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[13];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[13];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[13];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[13];
+            buffOptions.Show(party2, new Point(0, 0));
         }
 
-        private void player14optionsButton_Click(object sender, EventArgs e)
+        private void player14buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 14;
-            playerOptions.Show(party2, new Point(0, 0));
+            buffOptionsSelected = 14;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[14];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[14];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[14];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[14];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[14];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[14];
+            buffOptions.Show(party2, new Point(0, 0));
         }
 
-        private void player15optionsButton_Click(object sender, EventArgs e)
+        private void player15buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 15;
-            playerOptions.Show(party2, new Point(0, 0));
+            buffOptionsSelected = 15;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[15];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[15];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[15];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[15];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[15];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[15];
+            buffOptions.Show(party2, new Point(0, 0));
         }
 
-        private void player16optionsButton_Click(object sender, EventArgs e)
+        private void player16buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 16;
-            playerOptions.Show(party2, new Point(0, 0));
+            buffOptionsSelected = 16;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[16];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[16];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[16];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[16];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[16];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[16];
+            buffOptions.Show(party2, new Point(0, 0));
         }
 
-        private void player17optionsButton_Click(object sender, EventArgs e)
+        private void player17buffsButton_Click(object sender, EventArgs e)
         {
-            playerOptionsSelected = 17;
-            playerOptions.Show(party2, new Point(0, 0));
+            buffOptionsSelected = 17;
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[17];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[17];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[17];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[17];
+            buffsProtectToolStripMenuItem.Checked = autoProtect_Enabled[17];
+            buffsShellToolStripMenuItem.Checked = autoShell_Enabled[17];
+            buffOptions.Show(party2, new Point(0, 0));
         }
 
         private void player0buffsButton_Click(object sender, EventArgs e)
@@ -10019,7 +10309,7 @@ private void updateInstances_Tick(object sender, EventArgs e)
             }
 
             // OOP Player Options
-            foreach (var button in oopPlayerOptionsButtons)
+            foreach (var button in oopPlayerBuffsButtons)
             {
                 button.Enabled = connected;
             }
