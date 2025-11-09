@@ -864,6 +864,8 @@ namespace Miraculix
             this.HateEstablisherToolStripMenuItem,
             this.toolStripSeparator7,
             this.autoAdloquiumToolStripMenuItem,
+            this.buffsFlurryToolStripMenuItem,
+            this.buffsFlurryIIToolStripMenuItem,
             this.toolStripSeparator3,
             this.toolStripMenuItem1,
             this.enableDebuffRemovalToolStripMenuItem,
@@ -1186,6 +1188,7 @@ namespace Miraculix
             this.party2.Controls.Add(this.player17enabled);
             this.party2.Controls.Add(this.player13HP);
             this.party2.Controls.Add(this.player16buffsButton);
+            this.party2.Controls.Add(this.player17buffsButton);
             this.party2.Controls.Add(this.player14HP);
             this.party2.Controls.Add(this.player16priority);
             this.party2.Controls.Add(this.player12HP);
@@ -2105,6 +2108,7 @@ namespace Miraculix
             this.hasteIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.hasteIToolStripMenuItem.Text = "Auto Haste";
             this.hasteIToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
+            this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.hasteIToolStripMenuItem_Click);
             //
             // hasteIIToolStripMenuItem
             //
@@ -2112,6 +2116,7 @@ namespace Miraculix
             this.hasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.hasteIIToolStripMenuItem.Text = "Auto Haste II";
             this.hasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
+            this.buffsHasteIIToolStripMenuItem.Click += new System.EventHandler(this.hasteIIToolStripMenuItem_Click);
             //
             // autoPhalanxIIToolStripMenuItem1
             // 
@@ -2464,6 +2469,8 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hasteIToolStripMenuItem,
+            this.hasteIIToolStripMenuItem,
             this.buffsShellToolStripMenuItem,
             this.buffsProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";

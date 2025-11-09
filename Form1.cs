@@ -8230,15 +8230,6 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoShell_Enabled[buffOptionsSelected] = !autoShell_Enabled[buffOptionsSelected];
         }
 
-
-        private void hasteIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
-        }
-
         private void autoPhalanxIIToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             autoPhalanx_IIEnabled[buffOptionsSelected] = !autoPhalanx_IIEnabled[buffOptionsSelected];
