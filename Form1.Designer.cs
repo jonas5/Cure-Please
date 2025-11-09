@@ -32,6 +32,12 @@ namespace Miraculix
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.player12buffsButton = new System.Windows.Forms.Button();
+            this.player13buffsButton = new System.Windows.Forms.Button();
+            this.player14buffsButton = new System.Windows.Forms.Button();
+            this.player15buffsButton = new System.Windows.Forms.Button();
+            this.player16buffsButton = new System.Windows.Forms.Button();
+            this.player17buffsButton = new System.Windows.Forms.Button();
             this.partyAutoProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.partyAutoShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buffUpdateTimer = new System.Windows.Forms.Timer(this.components);
