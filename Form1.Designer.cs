@@ -222,6 +222,8 @@ namespace Miraculix
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.buffOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.hasteIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoPhalanxIIToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.autoRegenVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoRefreshIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -861,8 +863,6 @@ namespace Miraculix
             this.DevotionTargetToolStripMenuItem,
             this.HateEstablisherToolStripMenuItem,
             this.toolStripSeparator7,
-            this.buffsHasteToolStripMenuItem,
-            this.buffsHasteIIToolStripMenuItem,
             this.autoAdloquiumToolStripMenuItem,
             this.toolStripSeparator3,
             this.toolStripMenuItem1,
@@ -922,22 +922,6 @@ namespace Miraculix
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(223, 6);
-            // 
-            // buffsHasteToolStripMenuItem
-            // 
-            this.buffsHasteToolStripMenuItem.Name = "buffsHasteToolStripMenuItem";
-            this.buffsHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.buffsHasteToolStripMenuItem.Text = "Auto Haste";
-            this.buffsHasteToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
-            this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.buffsHasteToolStripMenuItem_Click);
-            // 
-            // buffsHasteIIToolStripMenuItem
-            // 
-            this.buffsHasteIIToolStripMenuItem.Name = "buffsHasteIIToolStripMenuItem";
-            this.buffsHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.buffsHasteIIToolStripMenuItem.Text = "Auto Haste II";
-            this.buffsHasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
-            this.buffsHasteIIToolStripMenuItem.Click += new System.EventHandler(this.buffsHasteIIToolStripMenuItem_Click);
             // 
             // autoAdloquiumToolStripMenuItem
             // 
@@ -1212,7 +1196,6 @@ namespace Miraculix
             // 
             this.party2.BackColor = System.Drawing.Color.Transparent;
             this.party2.Controls.Add(this.player17HP);
-            this.party2.Controls.Add(this.player17buffsButton);
             this.party2.Controls.Add(this.player16HP);
             this.party2.Controls.Add(this.player17priority);
             this.party2.Controls.Add(this.player15HP);
@@ -2501,8 +2484,6 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buffsHasteToolStripMenuItem,
-            this.buffsHasteIIToolStripMenuItem,
             this.buffsFlurryToolStripMenuItem,
             this.buffsFlurryIIToolStripMenuItem,
             this.buffsShellToolStripMenuItem,
@@ -2996,7 +2977,6 @@ namespace Miraculix
         private System.Windows.Forms.ContextMenuStrip playerOptions;
         private System.Windows.Forms.ToolStripMenuItem paralynaToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem buffsHasteToolStripMenuItem;
         private System.Windows.Forms.Button player1optionsButton;
         private System.Windows.Forms.ToolStripMenuItem eraseToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
@@ -3077,7 +3057,6 @@ namespace Miraculix
         private System.Windows.Forms.ToolStripMenuItem DevotionTargetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem HateEstablisherToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem buffsHasteIIToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoAdloquiumToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buffsFlurryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buffsFlurryIIToolStripMenuItem;

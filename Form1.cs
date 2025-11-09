@@ -8230,6 +8230,7 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoShell_Enabled[buffOptionsSelected] = !autoShell_Enabled[buffOptionsSelected];
         }
 
+
         private void buffsHasteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
@@ -10995,15 +10996,6 @@ private void updateInstances_Tick(object sender, EventArgs e)
 
         }
 
-        private void oopPlayerHPs2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void oopPlayerHPs1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void party1_Enter(object sender, EventArgs e)
         {
