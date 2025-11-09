@@ -7856,7 +7856,6 @@ private string GetBestSpellTier(string buffType, string targetName)
             playerOptions.Show(party0, new Point(0, 0));
         }
 
-
         private void player0buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 0;
@@ -8178,7 +8177,7 @@ private string GetBestSpellTier(string buffType, string targetName)
             }
         }
 
-        private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void hasteIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
             autoHaste_IIEnabled[buffOptionsSelected] = false;
@@ -8186,7 +8185,7 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
-        private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
+        private void hasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
             autoHasteEnabled[buffOptionsSelected] = false;

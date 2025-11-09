@@ -861,6 +861,8 @@ namespace Miraculix
             this.DevotionTargetToolStripMenuItem,
             this.HateEstablisherToolStripMenuItem,
             this.toolStripSeparator7,
+            this.buffsHasteToolStripMenuItem,
+            this.buffsHasteIIToolStripMenuItem,
             this.autoAdloquiumToolStripMenuItem,
             this.toolStripSeparator3,
             this.toolStripMenuItem1,
@@ -1256,24 +1258,24 @@ namespace Miraculix
             this.player17HP.Name = "player17HP";
             this.player17HP.Size = new System.Drawing.Size(187, 12);
             this.player17HP.TabIndex = 51;
-            // 
-            // player17optionsButton
-            // 
-            this.player17optionsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.player17optionsButton.Enabled = false;
-            this.player17optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.player17optionsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player17optionsButton.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.player17optionsButton.Location = new System.Drawing.Point(80, 187);
-            this.player17optionsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.player17optionsButton.Name = "player17optionsButton";
-            this.player17optionsButton.Size = new System.Drawing.Size(55, 19);
-            this.player17optionsButton.TabIndex = 3;
-            this.player17optionsButton.Text = "MENU";
-            this.toolTips.SetToolTip(this.player17optionsButton, "View spells/options for this player.");
-            this.player17optionsButton.UseVisualStyleBackColor = false;
-            this.player17optionsButton.Click += new System.EventHandler(this.player17optionsButton_Click);
-            this.player17optionsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
+            //
+            // player17buffsButton
+            //
+            this.player17buffsButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.player17buffsButton.Enabled = false;
+            this.player17buffsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.player17buffsButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player17buffsButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.player17buffsButton.Location = new System.Drawing.Point(137, 187);
+            this.player17buffsButton.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.player17buffsButton.Name = "player17buffsButton";
+            this.player17buffsButton.Size = new System.Drawing.Size(55, 19);
+            this.player17buffsButton.TabIndex = 3;
+            this.player17buffsButton.Text = "BUFFS";
+            this.toolTips.SetToolTip(this.player17buffsButton, "View spells/options for this player.");
+            this.player17buffsButton.UseVisualStyleBackColor = false;
+            this.player17buffsButton.Click += new System.EventHandler(this.player17buffsButton_Click);
+            this.player17buffsButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // player16HP
             // 
@@ -2111,8 +2113,8 @@ namespace Miraculix
             // buffOptions
             // 
             this.buffOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buffsHasteToolStripMenuItem,
-            this.buffsHasteIIToolStripMenuItem,
+            this.hasteIToolStripMenuItem,
+            this.hasteIIToolStripMenuItem,
             this.buffsFlurryToolStripMenuItem,
             this.buffsFlurryIIToolStripMenuItem,
             this.partyAutoProtectToolStripMenuItem,
@@ -2130,8 +2132,24 @@ namespace Miraculix
             this.ThunderstormToolStripMenuItem,
             this.HailstormToolStripMenuItem});
             this.buffOptions.Name = "proshellOptions";
-            this.buffOptions.Size = new System.Drawing.Size(180, 388);
-            // 
+            this.buffOptions.Size = new System.Drawing.Size(180, 252);
+            //
+            // hasteIToolStripMenuItem
+            //
+            this.hasteIToolStripMenuItem.Name = "hasteIToolStripMenuItem";
+            this.hasteIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.hasteIToolStripMenuItem.Text = "Auto Haste";
+            this.hasteIToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
+            this.hasteIToolStripMenuItem.Click += new System.EventHandler(this.hasteIToolStripMenuItem_Click);
+            //
+            // hasteIIToolStripMenuItem
+            //
+            this.hasteIIToolStripMenuItem.Name = "hasteIIToolStripMenuItem";
+            this.hasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.hasteIIToolStripMenuItem.Text = "Auto Haste II";
+            this.hasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
+            this.hasteIIToolStripMenuItem.Click += new System.EventHandler(this.hasteIIToolStripMenuItem_Click);
+            //
             // autoPhalanxIIToolStripMenuItem1
             // 
             this.autoPhalanxIIToolStripMenuItem1.Name = "autoPhalanxIIToolStripMenuItem1";
@@ -3174,5 +3192,7 @@ namespace Miraculix
         private Button player15buffsButton;
         private Button player16buffsButton;
         private Button player17buffsButton;
+        private ToolStripMenuItem hasteIToolStripMenuItem;
+        private ToolStripMenuItem hasteIIToolStripMenuItem;
     }
 }
