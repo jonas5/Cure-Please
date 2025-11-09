@@ -3023,13 +3023,9 @@ namespace Miraculix
         private System.Windows.Forms.GroupBox charselect;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripMenuItem refreshIIToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshIIIToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem regenIIToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem stormspellToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem protectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem protectIVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem protectVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem shellToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem shellIVToolStripMenuItem;
@@ -3172,5 +3168,10 @@ namespace Miraculix
         private ToolStripMenuItem hasteIIToolStripMenuItem;
         private ToolStripMenuItem buffsFlurryToolStripMenuItem;
         private ToolStripMenuItem buffsFlurryIIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshIIIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem regenIIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem regenIIIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem protectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem protectIVToolStripMenuItem;
     }
 }
