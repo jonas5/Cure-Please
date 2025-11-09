@@ -2108,7 +2108,7 @@ namespace Miraculix
             this.hasteIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.hasteIToolStripMenuItem.Text = "Auto Haste";
             this.hasteIToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
-            this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.hasteIToolStripMenuItem_Click);
+            this.hasteIToolStripMenuItem.Click += new System.EventHandler(this.hasteIToolStripMenuItem_Click);
             //
             // hasteIIToolStripMenuItem
             //
@@ -2116,7 +2116,23 @@ namespace Miraculix
             this.hasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.hasteIIToolStripMenuItem.Text = "Auto Haste II";
             this.hasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
-            this.buffsHasteIIToolStripMenuItem.Click += new System.EventHandler(this.hasteIIToolStripMenuItem_Click);
+            this.hasteIIToolStripMenuItem.Click += new System.EventHandler(this.hasteIIToolStripMenuItem_Click);
+            //
+            // buffsFlurryToolStripMenuItem
+            //
+            this.buffsFlurryToolStripMenuItem.Name = "buffsFlurryToolStripMenuItem";
+            this.buffsFlurryToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.buffsFlurryToolStripMenuItem.Text = "Auto Flurry";
+            this.buffsFlurryToolStripMenuItem.ToolTipText = "Auto Flurry (Default 3 minutes)";
+            this.buffsFlurryToolStripMenuItem.Click += new System.EventHandler(this.buffsFlurryToolStripMenuItem_Click);
+            //
+            // buffsFlurryIIToolStripMenuItem
+            //
+            this.buffsFlurryIIToolStripMenuItem.Name = "buffsFlurryIIToolStripMenuItem";
+            this.buffsFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.buffsFlurryIIToolStripMenuItem.Text = "Auto Flurry II";
+            this.buffsFlurryIIToolStripMenuItem.ToolTipText = "Auto Flurry II (Default 3 minutes)";
+            this.buffsFlurryIIToolStripMenuItem.Click += new System.EventHandler(this.buffsFlurryIIToolStripMenuItem_Click);
             //
             // autoPhalanxIIToolStripMenuItem1
             // 
