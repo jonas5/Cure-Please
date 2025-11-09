@@ -931,22 +931,6 @@ namespace Miraculix
             this.autoAdloquiumToolStripMenuItem.ToolTipText = "Auto Adloquium (Default 3 minutes)";
             this.autoAdloquiumToolStripMenuItem.Click += new System.EventHandler(this.autoAdloquiumToolStripMenuItem_Click);
             // 
-            // buffsFlurryToolStripMenuItem
-            // 
-            this.buffsFlurryToolStripMenuItem.Name = "buffsFlurryToolStripMenuItem";
-            this.buffsFlurryToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.buffsFlurryToolStripMenuItem.Text = "Auto Flurry";
-            this.buffsFlurryToolStripMenuItem.ToolTipText = "Auto Flurry (Default 3 minutes)";
-            this.buffsFlurryToolStripMenuItem.Click += new System.EventHandler(this.buffsFlurryToolStripMenuItem_Click);
-            // 
-            // buffsFlurryIIToolStripMenuItem
-            // 
-            this.buffsFlurryIIToolStripMenuItem.Name = "buffsFlurryIIToolStripMenuItem";
-            this.buffsFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.buffsFlurryIIToolStripMenuItem.Text = "Auto Flurry II";
-            this.buffsFlurryIIToolStripMenuItem.ToolTipText = "Auto Flurry II (Default 3 minutes)";
-            this.buffsFlurryIIToolStripMenuItem.Click += new System.EventHandler(this.buffsFlurryIIToolStripMenuItem_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -2098,8 +2082,6 @@ namespace Miraculix
             this.buffOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hasteIToolStripMenuItem,
             this.hasteIIToolStripMenuItem,
-            this.buffsFlurryToolStripMenuItem,
-            this.buffsFlurryIIToolStripMenuItem,
             this.partyAutoProtectToolStripMenuItem,
             this.partyAutoShellToolStripMenuItem,
             this.autoPhalanxIIToolStripMenuItem1,
@@ -2123,7 +2105,6 @@ namespace Miraculix
             this.hasteIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.hasteIToolStripMenuItem.Text = "Auto Haste";
             this.hasteIToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
-            this.hasteIToolStripMenuItem.Click += new System.EventHandler(this.hasteIToolStripMenuItem_Click);
             //
             // hasteIIToolStripMenuItem
             //
@@ -2131,7 +2112,6 @@ namespace Miraculix
             this.hasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.hasteIIToolStripMenuItem.Text = "Auto Haste II";
             this.hasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
-            this.hasteIIToolStripMenuItem.Click += new System.EventHandler(this.hasteIIToolStripMenuItem_Click);
             //
             // autoPhalanxIIToolStripMenuItem1
             // 
@@ -2484,12 +2464,10 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buffsFlurryToolStripMenuItem,
-            this.buffsFlurryIIToolStripMenuItem,
             this.buffsShellToolStripMenuItem,
             this.buffsProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";
-            this.oopPlayerOptions.Size = new System.Drawing.Size(142, 136);
+            this.oopPlayerOptions.Size = new System.Drawing.Size(142, 92);
             // 
             // oopGroupBox
             // 
@@ -2629,7 +2607,6 @@ namespace Miraculix
             this.oopPlayerHPs1.Name = "oopPlayerHPs1";
             this.oopPlayerHPs1.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs1.TabIndex = 4;
-            this.oopPlayerHPs1.Click += new System.EventHandler(this.oopPlayerHPs1_Click);
             // 
             // oopPlayerEnables2
             // 
@@ -2679,7 +2656,6 @@ namespace Miraculix
             this.oopPlayerHPs2.Name = "oopPlayerHPs2";
             this.oopPlayerHPs2.Size = new System.Drawing.Size(182, 12);
             this.oopPlayerHPs2.TabIndex = 4;
-            this.oopPlayerHPs2.Click += new System.EventHandler(this.oopPlayerHPs2_Click);
             // 
             // oopPlayerEnables3
             // 
@@ -3058,8 +3034,6 @@ namespace Miraculix
         private System.Windows.Forms.ToolStripMenuItem HateEstablisherToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem autoAdloquiumToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem buffsFlurryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem buffsFlurryIIToolStripMenuItem;
         private ToolStripMenuItem autoRefreshIIToolStripMenuItem;
         public Button setinstance;
         public Button setinstance2;
