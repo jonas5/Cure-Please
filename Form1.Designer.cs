@@ -313,6 +313,7 @@ namespace Miraculix
             // 
             // partyAutoProtectToolStripMenuItem
             // 
+            this.partyAutoProtectToolStripMenuItem.CheckOnClick = true;
             this.partyAutoProtectToolStripMenuItem.Name = "partyAutoProtectToolStripMenuItem";
             this.partyAutoProtectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoProtectToolStripMenuItem.Text = "Auto Protect";
@@ -320,6 +321,7 @@ namespace Miraculix
             // 
             // partyAutoShellToolStripMenuItem
             // 
+            this.partyAutoShellToolStripMenuItem.CheckOnClick = true;
             this.partyAutoShellToolStripMenuItem.Name = "partyAutoShellToolStripMenuItem";
             this.partyAutoShellToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.partyAutoShellToolStripMenuItem.Text = "Auto Shell";
@@ -2080,6 +2082,7 @@ namespace Miraculix
             // buffsHasteToolStripMenuItem
             //
             this.buffsHasteToolStripMenuItem = new ToolStripMenuItem();
+            this.buffsHasteToolStripMenuItem.CheckOnClick = true;
             this.buffsHasteToolStripMenuItem.Name = "hasteToolStripMenuItem";
             this.buffsHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsHasteToolStripMenuItem.Text = "Auto Haste";
@@ -2091,6 +2094,7 @@ namespace Miraculix
             // buffsHasteIIToolStripMenuItem
             //
             this.buffsHasteIIToolStripMenuItem = new ToolStripMenuItem();
+            this.buffsHasteIIToolStripMenuItem.CheckOnClick = true;
             this.buffsHasteIIToolStripMenuItem.Name = "buffsHasteIIToolStripMenuItem";
             this.buffsHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsHasteIIToolStripMenuItem.Text = "Auto Haste II";
@@ -2101,6 +2105,7 @@ namespace Miraculix
             // 
             // buffsFlurryToolStripMenuItem
             // 
+            this.buffsFlurryToolStripMenuItem.CheckOnClick = true;
             this.buffsFlurryToolStripMenuItem.Name = "buffsFlurryToolStripMenuItem";
             this.buffsFlurryToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsFlurryToolStripMenuItem.Text = "Auto Flurry";
@@ -2109,6 +2114,7 @@ namespace Miraculix
             // 
             // buffsFlurryIIToolStripMenuItem
             // 
+            this.buffsFlurryIIToolStripMenuItem.CheckOnClick = true;
             this.buffsFlurryIIToolStripMenuItem.Name = "buffsFlurryIIToolStripMenuItem";
             this.buffsFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsFlurryIIToolStripMenuItem.Text = "Auto Flurry II";
@@ -2117,6 +2123,7 @@ namespace Miraculix
             //
             // autoPhalanxIIToolStripMenuItem1
             // 
+            this.autoPhalanxIIToolStripMenuItem1.CheckOnClick = true;
             this.autoPhalanxIIToolStripMenuItem1.Name = "autoPhalanxIIToolStripMenuItem1";
             this.autoPhalanxIIToolStripMenuItem1.Size = new System.Drawing.Size(179, 22);
             this.autoPhalanxIIToolStripMenuItem1.Text = "Auto Phalanx II";
@@ -2124,6 +2131,7 @@ namespace Miraculix
             // 
             // autoRegenVToolStripMenuItem
             // 
+            this.autoRegenVToolStripMenuItem.CheckOnClick = true;
             this.autoRegenVToolStripMenuItem.Name = "autoRegenVToolStripMenuItem";
             this.autoRegenVToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.autoRegenVToolStripMenuItem.Text = "Auto Regen";
@@ -2131,6 +2139,7 @@ namespace Miraculix
             // 
             // autoRefreshIIToolStripMenuItem
             // 
+            this.autoRefreshIIToolStripMenuItem.CheckOnClick = true;
             this.autoRefreshIIToolStripMenuItem.Name = "autoRefreshIIToolStripMenuItem";
             this.autoRefreshIIToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.autoRefreshIIToolStripMenuItem.Text = "Auto Refresh";
@@ -2143,6 +2152,7 @@ namespace Miraculix
             // 
             // SandstormToolStripMenuItem
             // 
+            this.SandstormToolStripMenuItem.CheckOnClick = true;
             this.SandstormToolStripMenuItem.Name = "SandstormToolStripMenuItem";
             this.SandstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.SandstormToolStripMenuItem.Text = "Auto Sandstorm";
@@ -2150,6 +2160,7 @@ namespace Miraculix
             // 
             // RainstormToolStripMenuItem
             // 
+            this.RainstormToolStripMenuItem.CheckOnClick = true;
             this.RainstormToolStripMenuItem.Name = "RainstormToolStripMenuItem";
             this.RainstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.RainstormToolStripMenuItem.Text = "Auto Rainstorm";
@@ -2157,6 +2168,7 @@ namespace Miraculix
             // 
             // WindstormToolStripMenuItem
             // 
+            this.WindstormToolStripMenuItem.CheckOnClick = true;
             this.WindstormToolStripMenuItem.Name = "WindstormToolStripMenuItem";
             this.WindstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.WindstormToolStripMenuItem.Text = "Auto Windstorm";
@@ -2164,6 +2176,7 @@ namespace Miraculix
             // 
             // FirestormToolStripMenuItem
             // 
+            this.FirestormToolStripMenuItem.CheckOnClick = true;
             this.FirestormToolStripMenuItem.Name = "FirestormToolStripMenuItem";
             this.FirestormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.FirestormToolStripMenuItem.Text = "Auto Firestorm";
@@ -2171,6 +2184,7 @@ namespace Miraculix
             // 
             // AurorastormToolStripMenuItem
             // 
+            this.AurorastormToolStripMenuItem.CheckOnClick = true;
             this.AurorastormToolStripMenuItem.Name = "AurorastormToolStripMenuItem";
             this.AurorastormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.AurorastormToolStripMenuItem.Text = "Auto Aurorastorm";
@@ -2178,6 +2192,7 @@ namespace Miraculix
             // 
             // VoidstormToolStripMenuItem
             // 
+            this.VoidstormToolStripMenuItem.CheckOnClick = true;
             this.VoidstormToolStripMenuItem.Name = "VoidstormToolStripMenuItem";
             this.VoidstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.VoidstormToolStripMenuItem.Text = "Auto Voidstorm";
@@ -2185,6 +2200,7 @@ namespace Miraculix
             // 
             // ThunderstormToolStripMenuItem
             // 
+            this.ThunderstormToolStripMenuItem.CheckOnClick = true;
             this.ThunderstormToolStripMenuItem.Name = "ThunderstormToolStripMenuItem";
             this.ThunderstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.ThunderstormToolStripMenuItem.Text = "Auto Thunderstorm";
@@ -2192,6 +2208,7 @@ namespace Miraculix
             // 
             // HailstormToolStripMenuItem
             // 
+            this.HailstormToolStripMenuItem.CheckOnClick = true;
             this.HailstormToolStripMenuItem.Name = "HailstormToolStripMenuItem";
             this.HailstormToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.HailstormToolStripMenuItem.Text = "Auto Hailstorm";

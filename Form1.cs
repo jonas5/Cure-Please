@@ -10659,6 +10659,35 @@ namespace Miraculix
                         RunDispelLogic(actorName, buffName);
                     }
                     break;
+                case "BUFF_APPLIED":
+                    if (parts.Length == 3)
+                    {
+                        string playerName = parts[1];
+                        string buffName = parts[2];
+                        if (partyState.Members.ContainsKey(playerName))
+                        {
+                            partyState.ResetBuffTimer(playerName, buffName);
+                        }
+                    }
+                    break;
+                case "BUFF_FADED":
+                     if (parts.Length == 3)
+                    {
+                        string playerName = parts[1];
+                        string buffName = parts[2];
+                         if (partyState.Members.ContainsKey(playerName))
+                        {
+                            var memberState = partyState.Members[playerName];
+                            if (buff_definitions.ContainsKey(buffName)) {
+                                var buffDef = buff_definitions[buffName];
+                                 if (buffDef != null)
+                                 {
+                                    memberState.Buffs.RemoveAll(b => buffDef.Ids.Contains(b.Id));
+                                 }
+                            }
+                        }
+                    }
+                    break;
             }
         }
 
