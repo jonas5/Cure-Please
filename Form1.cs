@@ -2926,7 +2926,7 @@ namespace Miraculix
             activeprocessids.SelectedIndex = POLID.SelectedIndex;
 
             _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
-            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Player.ID);
+            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Party.GetPartyMember(0).ID);
             partyMemberAPIs[_ELITEAPIPL.Player.Name] = _ELITEAPIPL;
             plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
             Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
