@@ -602,6 +602,14 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.debuffSlowDuration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup1Duration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup2Duration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffDiaBioCooldown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalCooldown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffParalyzeCooldown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBlindCooldown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSlowCooldown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffGravityCooldown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBindCooldown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSilenceCooldown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).BeginInit();
@@ -763,6 +771,18 @@ namespace Miraculix
             this.debuffBindDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffBindDuration.TabIndex = 12;
             // 
+            // debuffBindCooldown
+            //
+            this.debuffBindCooldown.Location = new System.Drawing.Point(170, 147);
+            this.debuffBindCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffBindCooldown.Name = "debuffBindCooldown";
+            this.debuffBindCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffBindCooldown.TabIndex = 27;
+            //
             // elementalGroup2Radio
             // 
             this.elementalGroup2Radio.AutoSize = true;
@@ -807,6 +827,18 @@ namespace Miraculix
             this.debuffSilenceDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffSilenceDuration.TabIndex = 13;
             // 
+            // debuffSilenceCooldown
+            //
+            this.debuffSilenceCooldown.Location = new System.Drawing.Point(170, 47);
+            this.debuffSilenceCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffSilenceCooldown.Name = "debuffSilenceCooldown";
+            this.debuffSilenceCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffSilenceCooldown.TabIndex = 28;
+            //
             // debuffDiaBioDuration
             // 
             this.debuffDiaBioDuration.Location = new System.Drawing.Point(200, 25);
@@ -819,6 +851,18 @@ namespace Miraculix
             this.debuffDiaBioDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffDiaBioDuration.TabIndex = 14;
             // 
+            // debuffDiaBioCooldown
+            //
+            this.debuffDiaBioCooldown.Location = new System.Drawing.Point(250, 25);
+            this.debuffDiaBioCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffDiaBioCooldown.Name = "debuffDiaBioCooldown";
+            this.debuffDiaBioCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffDiaBioCooldown.TabIndex = 21;
+            //
             // debuffParalyzeDuration
             // 
             this.debuffParalyzeDuration.Location = new System.Drawing.Point(120, 22);
@@ -831,6 +875,18 @@ namespace Miraculix
             this.debuffParalyzeDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffParalyzeDuration.TabIndex = 15;
             // 
+            // debuffParalyzeCooldown
+            //
+            this.debuffParalyzeCooldown.Location = new System.Drawing.Point(170, 22);
+            this.debuffParalyzeCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffParalyzeCooldown.Name = "debuffParalyzeCooldown";
+            this.debuffParalyzeCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffParalyzeCooldown.TabIndex = 23;
+            //
             // debuffBlindDuration
             // 
             this.debuffBlindDuration.Location = new System.Drawing.Point(120, 72);
@@ -843,6 +899,18 @@ namespace Miraculix
             this.debuffBlindDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffBlindDuration.TabIndex = 16;
             // 
+            // debuffBlindCooldown
+            //
+            this.debuffBlindCooldown.Location = new System.Drawing.Point(170, 72);
+            this.debuffBlindCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffBlindCooldown.Name = "debuffBlindCooldown";
+            this.debuffBlindCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffBlindCooldown.TabIndex = 24;
+            //
             // debuffGravityDuration
             // 
             this.debuffGravityDuration.Location = new System.Drawing.Point(120, 97);
@@ -855,6 +923,18 @@ namespace Miraculix
             this.debuffGravityDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffGravityDuration.TabIndex = 17;
             // 
+            // debuffGravityCooldown
+            //
+            this.debuffGravityCooldown.Location = new System.Drawing.Point(170, 97);
+            this.debuffGravityCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffGravityCooldown.Name = "debuffGravityCooldown";
+            this.debuffGravityCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffGravityCooldown.TabIndex = 25;
+            //
             // debuffSlowDuration
             // 
             this.debuffSlowDuration.Location = new System.Drawing.Point(120, 122);
@@ -867,6 +947,18 @@ namespace Miraculix
             this.debuffSlowDuration.Size = new System.Drawing.Size(45, 20);
             this.debuffSlowDuration.TabIndex = 18;
             // 
+            // debuffSlowCooldown
+            //
+            this.debuffSlowCooldown.Location = new System.Drawing.Point(170, 122);
+            this.debuffSlowCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffSlowCooldown.Name = "debuffSlowCooldown";
+            this.debuffSlowCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffSlowCooldown.TabIndex = 26;
+            //
             // debuffElementalGroup1Duration
             // 
             this.debuffElementalGroup1Duration.Location = new System.Drawing.Point(193, 13);
@@ -891,6 +983,18 @@ namespace Miraculix
             this.debuffElementalGroup2Duration.Size = new System.Drawing.Size(45, 20);
             this.debuffElementalGroup2Duration.TabIndex = 20;
             // 
+            // debuffElementalCooldown
+            //
+            this.debuffElementalCooldown.Location = new System.Drawing.Point(244, 51);
+            this.debuffElementalCooldown.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.debuffElementalCooldown.Name = "debuffElementalCooldown";
+            this.debuffElementalCooldown.Size = new System.Drawing.Size(45, 20);
+            this.debuffElementalCooldown.TabIndex = 22;
+            //
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(661, 597);
@@ -8649,6 +8753,14 @@ namespace Miraculix
             ((System.ComponentModel.ISupportInitialize)(this.debuffSlowDuration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup1Duration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.debuffElementalGroup2Duration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffDiaBioCooldown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffElementalCooldown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffParalyzeCooldown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBlindCooldown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSlowCooldown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffGravityCooldown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffBindCooldown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debuffSilenceCooldown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curagaCurePercentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga5Amount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.curaga4Amount)).EndInit();
@@ -9369,6 +9481,14 @@ namespace Miraculix
         private System.Windows.Forms.Label elementalLegendLabel;
         private System.Windows.Forms.CheckBox debuffBind;
         private System.Windows.Forms.CheckBox debuffSilence;
+        private System.Windows.Forms.NumericUpDown debuffDiaBioCooldown;
+        private System.Windows.Forms.NumericUpDown debuffElementalCooldown;
+        private System.Windows.Forms.NumericUpDown debuffParalyzeCooldown;
+        private System.Windows.Forms.NumericUpDown debuffBlindCooldown;
+        private System.Windows.Forms.NumericUpDown debuffSlowCooldown;
+        private System.Windows.Forms.NumericUpDown debuffGravityCooldown;
+        private System.Windows.Forms.NumericUpDown debuffBindCooldown;
+        private System.Windows.Forms.NumericUpDown debuffSilenceCooldown;
         private System.Windows.Forms.Label debuffsWarningLabel;
         private System.Windows.Forms.Panel diaBioPanel;
         private System.Windows.Forms.Panel elementalPanel;

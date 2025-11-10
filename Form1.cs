@@ -9567,6 +9567,27 @@ namespace Miraculix
             buffsFlurryToolStripMenuItem.Enabled = connected;
             buffsFlurryIIToolStripMenuItem.Enabled = connected;
         }
+        public void SendSettingsToPlugin()
+        {
+            if (IsPipeConnected)
+            {
+                var settings = new List<string>();
+                settings.Add($"SETTING|debuffDiaBioCooldown={Form2.config.debuffDiaBioCooldown}");
+                settings.Add($"SETTING|debuffElementalCooldown={Form2.config.debuffElementalCooldown}");
+                settings.Add($"SETTING|debuffParalyzeCooldown={Form2.config.debuffParalyzeCooldown}");
+                settings.Add($"SETTING|debuffSilenceCooldown={Form2.config.debuffSilenceCooldown}");
+                settings.Add($"SETTING|debuffBlindCooldown={Form2.config.debuffBlindCooldown}");
+                settings.Add($"SETTING|debuffGravityCooldown={Form2.config.debuffGravityCooldown}");
+                settings.Add($"SETTING|debuffSlowCooldown={Form2.config.debuffSlowCooldown}");
+                settings.Add($"SETTING|debuffBindCooldown={Form2.config.debuffBindCooldown}");
+
+                foreach (var setting in settings)
+                {
+                    _pipeClient.Send(setting);
+                }
+            }
+        }
+
         private void PipeClient_MessageReceived(string message)
         {
             if (InvokeRequired)

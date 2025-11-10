@@ -28,13 +28,32 @@ public class NamedPipeClient
         Task.Run(() => ClientLoop(_cancellationTokenSource.Token));
     }
 
+    public void Send(string message)
+    {
+        if (IsConnected && _pipeClient != null && _pipeClient.CanWrite)
+        {
+            try
+            {
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(message + "\n");
+                _pipeClient.Write(buffer, 0, buffer.Length);
+                _pipeClient.Flush();
+            }
+            catch (IOException)
+            {
+                // Pipe may have been closed
+                _pipeClient?.Dispose();
+                Disconnected?.Invoke();
+            }
+        }
+    }
+
     private async Task ClientLoop(CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
             try
             {
-                _pipeClient = new NamedPipeClientStream(".", _pipeName, PipeDirection.In);
+                _pipeClient = new NamedPipeClientStream(".", _pipeName, PipeDirection.InOut);
                 _pipeClient.Connect(5000);
                 Connected?.Invoke();
 
