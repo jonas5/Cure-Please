@@ -3663,6 +3663,33 @@ namespace Miraculix
                 case "phalanx":
                     spellTiers.AddRange(new[] { "Phalanx II", "Phalanx" });
                     break;
+                case "storm":
+                    var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
+                    if (partyMember != null)
+                    {
+                        string stormSpell = CheckStormspell(partyMember.MemberNumber);
+                        if (stormSpell != "false")
+                        {
+                            spellTiers.Add(stormSpell);
+                        }
+                    }
+                    else
+                    {
+                        // Check if it's an OOP player
+                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+                        {
+                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
+                            {
+                                string stormSpell = CheckStormspell((byte)(18 + i));
+                                if (stormSpell != "false")
+                                {
+                                    spellTiers.Add(stormSpell);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
                 default:
                     return null;
             }
@@ -5959,7 +5986,8 @@ namespace Miraculix
                 { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefresh_Minutes * 60) } },
                 { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxIIMinutes * 60) } },
                 { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtect_Minutes * 60) } },
-                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
+                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } },
+                { "Storm", new BuffInfo { Ids = new List<int> { 178, 179, 180, 181, 182, 183, 184, 185, 589, 590, 591, 592, 593, 594, 595, 596 }, Duration = 300 } } // TODO: Make duration configurable
             };
             partyState.UpdateBuffDefinitions(buff_definitions);
         }
@@ -6077,6 +6105,7 @@ namespace Miraculix
                         buffsToConsider.Add(new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] });
                         buffsToConsider.Add(new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] });
                         buffsToConsider.Add(new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] });
+                        buffsToConsider.Add(new { Name = "Storm", Enabled = CheckIfAutoStormspellEnabled(memberIndex) });
                     }
 
                     foreach (var buffInfo in buffsToConsider)
@@ -6178,6 +6207,7 @@ namespace Miraculix
             else if (lowerBuffName.Contains("shell")) buffType = "Shell";
             else if (lowerBuffName.Contains("refresh")) buffType = "Refresh";
             else if (lowerBuffName.Contains("phalanx")) buffType = "Phalanx";
+            else if (lowerBuffName.Contains("storm")) buffType = "Storm";
 
             if (buffType != null)
             {
@@ -8317,39 +8347,51 @@ namespace Miraculix
 
         private void buffsFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurryEnabled[buffOptionsSelected] = !autoFlurryEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            if (((ToolStripMenuItem)sender).Checked)
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            }
         }
 
         private void buffsFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurry_IIEnabled[buffOptionsSelected] = !autoFlurry_IIEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            if (((ToolStripMenuItem)sender).Checked)
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+            }
         }
 
         private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            autoHasteEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            if (((ToolStripMenuItem)sender).Checked)
+            {
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            }
         }
 
         private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            autoHaste_IIEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            if (((ToolStripMenuItem)sender).Checked)
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            }
         }
 
         private void buffsProtectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoProtect_Enabled[buffOptionsSelected] = !autoProtect_Enabled[buffOptionsSelected];
+            autoProtect_Enabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void enableDebuffRemovalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8360,22 +8402,34 @@ namespace Miraculix
 
         private void buffsShellToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoShell_Enabled[buffOptionsSelected] = !autoShell_Enabled[buffOptionsSelected];
+            autoShell_Enabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void autoPhalanxIIToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            autoPhalanx_IIEnabled[buffOptionsSelected] = !autoPhalanx_IIEnabled[buffOptionsSelected];
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null)
+            {
+                autoPhalanx_IIEnabled[buffOptionsSelected] = menuItem.Checked;
+            }
         }
 
         private void autoRegenVToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoRegen_Enabled[buffOptionsSelected] = !autoRegen_Enabled[buffOptionsSelected];
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null)
+            {
+                autoRegen_Enabled[buffOptionsSelected] = menuItem.Checked;
+            }
         }
 
         private void autoRefreshIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoRefreshEnabled[buffOptionsSelected] = !autoRefreshEnabled[buffOptionsSelected];
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null)
+            {
+                autoRefreshEnabled[buffOptionsSelected] = menuItem.Checked;
+            }
         }
 
         private void hasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8519,58 +8573,50 @@ namespace Miraculix
 
         private void SandstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoSandstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoSandstormEnabled[buffOptionsSelected] = !currentStatus;
+            autoSandstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void RainstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoRainstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoRainstormEnabled[buffOptionsSelected] = !currentStatus;
+            autoRainstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void WindstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoWindstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoWindstormEnabled[buffOptionsSelected] = !currentStatus;
+            autoWindstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void FirestormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoFirestormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoFirestormEnabled[buffOptionsSelected] = !currentStatus;
+            autoFirestormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void HailstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoHailstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoHailstormEnabled[buffOptionsSelected] = !currentStatus;
+            autoHailstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void ThunderstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoThunderstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoThunderstormEnabled[buffOptionsSelected] = !currentStatus;
+            autoThunderstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void VoidstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoVoidstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoVoidstormEnabled[buffOptionsSelected] = !currentStatus;
+            autoVoidstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void AurorastormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoAurorastormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoAurorastormEnabled[buffOptionsSelected] = !currentStatus;
+            autoAurorastormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void protectIVToolStripMenuItem_Click(object sender, EventArgs e)

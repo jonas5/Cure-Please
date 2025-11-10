@@ -94,6 +94,7 @@ private:
     std::string m_lastSpellTargetName;
     bool m_PipeConnected = false;
     bool m_isZoning = false;
+    std::map<std::string, std::map<std::string, std::chrono::steady_clock::time_point>> m_spellTimers;
 
     std::string GetEntityNameById(uint32_t id)
     {
@@ -190,11 +191,68 @@ public:
     }
 
     bool HandleCommand(int32_t mode, const char* command, bool injected) override {
+        std::string cmd(command);
+        if (cmd.rfind("cdstatus", 0) == 0) {
+            std::stringstream ss(cmd);
+            std::string arg;
+            std::vector<std::string> args;
+            while (ss >> arg) {
+                args.push_back(arg);
+            }
+
+            if (args.size() == 3) {
+                std::string targetName = args[1];
+                std::string spellName = args[2];
+                auto target_it = m_spellTimers.find(targetName);
+                if (target_it != m_spellTimers.end()) {
+                    auto spell_it = target_it->second.find(spellName);
+                    if (spell_it != target_it->second.end()) {
+                        auto now = std::chrono::steady_clock::now();
+                        auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - spell_it->second).count();
+                        int cooldown = 0;
+                        for (const auto& pair : spells) {
+                            if (pair.second.name == spellName) {
+                                cooldown = pair.second.cooldown;
+                                break;
+                            }
+                        }
+                        long long remaining = cooldown - elapsed;
+                        if (remaining > 0) {
+                            m_AshitaCore->GetChatManager()->Writef(121, false, ("Cooldown for " + spellName + " on " + targetName + ": " + std::to_string(remaining) + "s").c_str());
+                        }
+                        else {
+                            m_AshitaCore->GetChatManager()->Writef(121, false, ("Cooldown for " + spellName + " on " + targetName + " is up.").c_str());
+                        }
+                    }
+                    else {
+                        m_AshitaCore->GetChatManager()->Writef(121, false, ("No cooldown found for " + spellName + " on " + targetName).c_str());
+                    }
+                }
+                else {
+                    m_AshitaCore->GetChatManager()->Writef(121, false, ("No cooldowns found for " + targetName).c_str());
+                }
+            }
+            return true;
+        }
         return false;
     }
 
     bool HandleIncomingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified, uint32_t sizeChunk, const uint8_t* dataChunk, bool injected, bool blocked) override
     {
+        // Packet 0x00A: Zone Change
+        if (id == 0x00A && size >= 4)
+        {
+            if (!m_isZoning) {
+                m_isZoning = true;
+                m_spellTimers.clear();
+                WriteToPipe("LOG|Zoning detected, clearing all spell timers.\n");
+            }
+        }
+        else if (id != 0x00A)
+        {
+            m_isZoning = false;
+        }
+
         // Packet 0x29: Action (Ability)
         if (id == 0x29 && size >= 16)
         {
@@ -241,16 +299,48 @@ public:
             {
                 uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
                 uint16_t spellId = *reinterpret_cast<const uint16_t*>(data + 28) & 0x3FF;
-                uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 32);
 
                 std::string actorName = GetEntityNameById(actorId);
-                std::string targetName = GetEntityNameById(targetId);
                 std::string spellName = ResolveSpellName(spellId);
 
-                std::stringstream log;
-                log << "LOG|" << GetTimestamp() << " [MAGIC] " << spellName << " (" << spellId << ")"
-                    << " - Actor: " << actorName << ", Target[0]: " << targetName << "\n";
-                WriteToPipe(log.str());
+                auto it = spells.find(spellId);
+                if (it != spells.end())
+                {
+                    const auto& spell = it->second;
+                    uint8_t targetCount = 1;
+                    if (spell.aoe > 0) {
+                        targetCount = data[13];
+                    }
+
+                    for (uint8_t i = 0; i < targetCount; ++i)
+                    {
+                        uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 32 + i * 4);
+                        std::string targetName = GetEntityNameById(targetId);
+
+                        if (targetName == "Unknown" || targetName == "None") continue;
+
+                        std::stringstream log;
+                        log << "LOG|" << GetTimestamp() << " [MAGIC] " << spellName << " (" << spellId << ")"
+                            << " - Actor: " << actorName << ", Target[" << (int)i << "]: " << targetName << "\n";
+                        WriteToPipe(log.str());
+
+                        if (spell.cooldown > 0)
+                        {
+                            m_spellTimers[targetName][spell.name] = std::chrono::steady_clock::now();
+                            WriteToPipe("BUFF_APPLIED|" + targetName + "|" + spell.name + "\n");
+                        }
+                    }
+                }
+                else
+                {
+                    // Original behavior for spells not in our map
+                    uint32_t targetId = *reinterpret_cast<const uint32_t*>(data + 32);
+                    std::string targetName = GetEntityNameById(targetId);
+                    std::stringstream log;
+                    log << "LOG|" << GetTimestamp() << " [MAGIC] " << spellName << " (" << spellId << ")"
+                        << " - Actor: " << actorName << ", Target[0]: " << targetName << "\n";
+                    WriteToPipe(log.str());
+                }
 
                 WriteToPipe("CAST_FINISH\n");
             }
@@ -301,8 +391,23 @@ public:
             if (pos_wears_off1 != std::string::npos && pos_wears_off2 != std::string::npos && pos_wears_off1 < pos_wears_off2)
             {
                 std::string player_name = message.substr(0, pos_wears_off1);
-                std::string debuff_name = message.substr(pos_wears_off1 + wears_off_str1.length(), pos_wears_off2 - (pos_wears_off1 + wears_off_str1.length()));
-                WriteToPipe("DEBUFF_FADED|" + player_name + "|" + debuff_name + "\n");
+                std::string buff_name = message.substr(pos_wears_off1 + wears_off_str1.length(), pos_wears_off2 - (pos_wears_off1 + wears_off_str1.length()));
+
+                bool is_buff = false;
+                for (const auto& pair : spells) {
+                    if (pair.second.name == buff_name && pair.second.cooldown > 0) {
+                        is_buff = true;
+                        break;
+                    }
+                }
+
+                if (is_buff) {
+                    WriteToPipe("BUFF_FADED|" + player_name + "|" + buff_name + "\n");
+                    m_spellTimers[player_name].erase(buff_name);
+                }
+                else {
+                    WriteToPipe("DEBUFF_FADED|" + player_name + "|" + buff_name + "\n");
+                }
                 return false;
             }
         }
