@@ -130,10 +130,12 @@ namespace Miraculix
             new DebuffSpell { Name = "Blindna", Debuff = StatusEffect.Blindness }
         };
         // BARD SONG VARIABLES
+#pragma warning disable CS0414
         private int song_casting = 0;
 
         private int PL_BRDCount = 0;
         private bool ForceSongRecast = false;
+#pragma warning restore CS0414
         private string Last_Song_Cast = string.Empty;
 
 
@@ -2927,7 +2929,7 @@ namespace Miraculix
             activeprocessids.SelectedIndex = POLID.SelectedIndex;
 
             _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
-            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Player.ID);
+            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Party.GetPartyMember(0).ID);
             partyMemberAPIs[_ELITEAPIPL.Player.Name] = _ELITEAPIPL;
             plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
             Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
@@ -5208,7 +5210,7 @@ namespace Miraculix
                     string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "spell_log.txt");
                     File.AppendAllText(logPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [{callerName}] Casting {spellName} on {partyMemberName}{Environment.NewLine}");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Optionally handle logging errors, e.g., by writing to a different log or showing a message box.
                     // For now, we'll just ignore them to prevent the application from crashing.
