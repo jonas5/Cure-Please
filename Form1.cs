@@ -8079,10 +8079,6 @@ namespace Miraculix
         private void button3_Click(object sender, EventArgs e)
         {
 
-
-            song_casting = 0;
-            ForceSongRecast = true;
-
             if (pauseActions == false)
             {
                 pauseButton.Text = "Paused!";

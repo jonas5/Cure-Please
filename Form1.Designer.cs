@@ -2284,7 +2284,6 @@ namespace Miraculix
             // 
             this.resetSongTimer.Enabled = true;
             this.resetSongTimer.Interval = 60000;
-            this.resetSongTimer.Tick += new System.EventHandler(this.resetSongTimer_Tick);
             // 
             // checkSCHCharges
             // 
