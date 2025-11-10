@@ -108,6 +108,8 @@ namespace Miraculix
         private DateTime _lastSpellCastTime;
         private TimeSpan _idleHealThreshold;
         private Random _random = new Random();
+        private string lastSpellName = string.Empty;
+        private string lastSpellTarget = string.Empty;
         private ComboBox[] oopPlayerComboBoxes;
         private ProgressBar[] oopPlayerHPs;
         private CheckBox[] oopPlayerEnables;
@@ -5820,6 +5822,8 @@ namespace Miraculix
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
 
                 castingSpell = magic.Name[0];
+                lastSpellName = castingSpell;
+                lastSpellTarget = partyMemberName;
 
                 _ELITEAPIPL.ThirdParty.SendString("/ma \"" + castingSpell + "\" " + partyMemberName);
 
@@ -6000,7 +6004,7 @@ namespace Miraculix
             buff_definitions = new Dictionary<string, BuffInfo>
             {
                 { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = (int)(Form2.config.autoRegen_Minutes * 60) } },
-                { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = (int)(Form2.config.autoHasteMinutes * 60) } },
+                { "Haste", new BuffInfo { Ids = new List<int> { 33, 265, 562 }, Duration = (int)(Form2.config.autoHasteMinutes * 60) } },
                 { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefresh_Minutes * 60) } },
                 { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxIIMinutes * 60) } },
                 { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtect_Minutes * 60) } },
@@ -10412,6 +10416,11 @@ namespace Miraculix
                 case "CAST_INTERRUPT":
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
+                    string buffNameToRecast = GetBuffNameForSpellId((ushort)_ELITEAPIPL.Resources.GetSpell(lastSpellName, 0).Index);
+                    if (!string.IsNullOrEmpty(buffNameToRecast) && !string.IsNullOrEmpty(lastSpellTarget))
+                    {
+                        recastQueue.Enqueue(new RecastRequest { PlayerName = lastSpellTarget, BuffName = buffNameToRecast });
+                    }
                     Task.Delay(3000).ContinueWith(_ =>
                     {
                         if (castingLockLabel.Text == "PACKET: Casting is INTERRUPTED")
@@ -10425,6 +10434,11 @@ namespace Miraculix
                 case "CAST_BLOCKED":
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is BLOCKED";
+                    string buffNameToRecastBlocked = GetBuffNameForSpellId((ushort)_ELITEAPIPL.Resources.GetSpell(lastSpellName, 0).Index);
+                    if (!string.IsNullOrEmpty(buffNameToRecastBlocked) && !string.IsNullOrEmpty(lastSpellTarget))
+                    {
+                        recastQueue.Enqueue(new RecastRequest { PlayerName = lastSpellTarget, BuffName = buffNameToRecastBlocked });
+                    }
                     Task.Delay(3000).ContinueWith(_ =>
                     {
                         if (castingLockLabel.Text == "PACKET: Casting is BLOCKED")
@@ -10444,6 +10458,8 @@ namespace Miraculix
                         castingLockLabel.Text = "Casting is UNLOCKED";
                         currentAction.Text = string.Empty;
                         castingSpell = string.Empty;
+                        lastSpellName = string.Empty;
+                        lastSpellTarget = string.Empty;
                         CastingBackground_Check = false;
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                     break;
