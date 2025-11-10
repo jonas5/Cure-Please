@@ -1834,6 +1834,14 @@ namespace Miraculix
             public int DebuffBindDuration { get; set; }
             public bool debuffSilence { get; set; }
             public int DebuffSilenceDuration { get; set; }
+            public int debuffDiaBioCooldown { get; set; }
+            public int debuffElementalCooldown { get; set; }
+            public int debuffParalyzeCooldown { get; set; }
+            public int debuffBlindCooldown { get; set; }
+            public int debuffSlowCooldown { get; set; }
+            public int debuffGravityCooldown { get; set; }
+            public int debuffBindCooldown { get; set; }
+            public int debuffSilenceCooldown { get; set; }
             public bool autoHealWhenIdle { get; set; }
             public decimal idleHealTime { get; set; }
 
@@ -2392,6 +2400,15 @@ namespace Miraculix
                 config.DebuffGravityDuration = 30;
                 config.DebuffBindDuration = 20;
                 config.DebuffSilenceDuration = 30;
+
+                config.debuffDiaBioCooldown = 240;
+                config.debuffElementalCooldown = 240;
+                config.debuffParalyzeCooldown = 240;
+                config.debuffBlindCooldown = 240;
+                config.debuffSlowCooldown = 240;
+                config.debuffGravityCooldown = 240;
+                config.debuffBindCooldown = 240;
+                config.debuffSilenceCooldown = 240;
 
                 config.autoHealWhenIdle = false;
                 config.idleHealTime = 10;
@@ -2954,6 +2971,15 @@ namespace Miraculix
             config.DebuffBindDuration = (int)debuffBindDuration.Value;
             config.DebuffSilenceDuration = (int)debuffSilenceDuration.Value;
 
+            config.debuffDiaBioCooldown = (int)debuffDiaBioCooldown.Value;
+            config.debuffElementalCooldown = (int)debuffElementalCooldown.Value;
+            config.debuffParalyzeCooldown = (int)debuffParalyzeCooldown.Value;
+            config.debuffBlindCooldown = (int)debuffBlindCooldown.Value;
+            config.debuffSlowCooldown = (int)debuffSlowCooldown.Value;
+            config.debuffGravityCooldown = (int)debuffGravityCooldown.Value;
+            config.debuffBindCooldown = (int)debuffBindCooldown.Value;
+            config.debuffSilenceCooldown = (int)debuffSilenceCooldown.Value;
+
             config.autoHealWhenIdle = autoHealWhenIdle.Checked;
             config.idleHealTime = idleHealTime.Value;
 
@@ -2974,6 +3000,7 @@ namespace Miraculix
             if (mainForm != null)
             {
                 mainForm.ReloadSettings();
+                mainForm.SendSettingsToPlugin();
             }
 
             try
@@ -4115,6 +4142,15 @@ namespace Miraculix
             debuffGravityDuration.Value = config.DebuffGravityDuration;
             debuffBindDuration.Value = config.DebuffBindDuration;
             debuffSilenceDuration.Value = config.DebuffSilenceDuration;
+
+            debuffDiaBioCooldown.Value = config.debuffDiaBioCooldown;
+            debuffElementalCooldown.Value = config.debuffElementalCooldown;
+            debuffParalyzeCooldown.Value = config.debuffParalyzeCooldown;
+            debuffBlindCooldown.Value = config.debuffBlindCooldown;
+            debuffSlowCooldown.Value = config.debuffSlowCooldown;
+            debuffGravityCooldown.Value = config.debuffGravityCooldown;
+            debuffBindCooldown.Value = config.debuffBindCooldown;
+            debuffSilenceCooldown.Value = config.debuffSilenceCooldown;
 
             autoHealWhenIdle.Checked = config.autoHealWhenIdle;
             idleHealTime.Value = config.idleHealTime > 0 ? config.idleHealTime : 10;
