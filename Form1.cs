@@ -11,6 +11,7 @@ namespace Miraculix
     using System.Net;
     using System.Net.Sockets;
     using System.Runtime.InteropServices;
+    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -106,8 +107,6 @@ namespace Miraculix
         private DateTime _lastPipeMessageTime;
         private Profile _currentProfile = Profile.Normal;
         private DateTime _lastSpellCastTime;
-        private string lastSpellName;
-        private string lastSpellTarget;
         private TimeSpan _idleHealThreshold;
         private Random _random = new Random();
         private ComboBox[] oopPlayerComboBoxes;
@@ -131,11 +130,23 @@ namespace Miraculix
             new DebuffSpell { Name = "Blindna", Debuff = StatusEffect.Blindness }
         };
         // BARD SONG VARIABLES
+        private int song_casting = 0;
+
+        private int PL_BRDCount = 0;
+        private bool ForceSongRecast = false;
         private string Last_Song_Cast = string.Empty;
 
 
         private uint PL_Index = 0;
         private uint Monitored_Index = 0;
+
+
+        //  private int song_casting = 0;
+        //  private string LastSongCast = String.Empty;
+
+
+        // private bool ForceSongRecast = false;
+        //  private string Last_Song_Cast = String.Empty;
 
 
         // GEO ENGAGED CHECK
@@ -2916,7 +2927,7 @@ namespace Miraculix
             activeprocessids.SelectedIndex = POLID.SelectedIndex;
 
             _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
-            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Party.GetPartyMember(0).ID);
+            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Player.ID);
             partyMemberAPIs[_ELITEAPIPL.Player.Name] = _ELITEAPIPL;
             plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
             Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
@@ -2926,6 +2937,8 @@ namespace Miraculix
             plPosition.Enabled = true;
             setinstance2.Enabled = true;
             Form2.config.autoFollowName = string.Empty;
+
+            ForceSongRecast = true;
 
             var polProcesses = GetFFXIProcesses(requireVisibleWindow: true);
             foreach (var dats in polProcesses)
@@ -3074,30 +3087,8 @@ namespace Miraculix
                         if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
                         if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
                     }
-                    else
-                    {
-                        // Likely an OOP player, find their index in the settings arrays
-                        int playerIndex = -1;
-                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
-                        {
-                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
-                            {
-                                playerIndex = 18 + i;
-                                break;
-                            }
-                        }
-
-                        if (playerIndex != -1)
-                        {
-                            if (autoHaste_IIEnabled[playerIndex]) spellTiers.Add("Haste II");
-                            if (autoHasteEnabled[playerIndex]) spellTiers.Add("Haste");
-                        }
-                        else
-                        {
-                            // Fallback for manual casts or if player not found
-                            spellTiers.AddRange(new[] { "Haste II", "Haste" });
-                        }
-                    }
+                    // Fallback if not found or settings not specific
+                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
                     break;
                 case "regen":
                     // Tiered selection based on settings, highest preferred first.
@@ -3461,6 +3452,8 @@ namespace Miraculix
                 ReloadSettings();
                 if (Form2.config.pauseOnZoneBox == true)
                 {
+                    song_casting = 0;
+                    ForceSongRecast = true;
                     if (pauseActions != true)
                     {
                         pauseButton.Text = "Zoned, paused.";
@@ -3471,6 +3464,8 @@ namespace Miraculix
                 }
                 else
                 {
+                    song_casting = 0;
+                    ForceSongRecast = true;
 
                     if (pauseActions != true)
                     {
@@ -5204,29 +5199,21 @@ namespace Miraculix
         }
 
 
-        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras, [System.Runtime.CompilerServices.CallerMemberName] string callerName = "")
+        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras, [CallerMemberName] string callerName = "")
         {
-            LogToFile($"'{callerName}' is attempting to cast '{spellName}' on '{partyMemberName}'. OptionalExtras: {OptionalExtras ?? "None"}");
-            lastSpellName = spellName;
-            lastSpellTarget = partyMemberName;
-            string lowerSpellName = spellName.ToLower();
-            string buffType = null;
-            foreach (var buffDef in buff_definitions)
-            {
-                if (lowerSpellName.Contains(buffDef.Key.ToLower()))
-                {
-                    buffType = buffDef.Key;
-                    break;
-                }
-            }
-            if (buffType != null && partyState.Members.ContainsKey(partyMemberName))
-            {
-                partyState.ResetBuffTimer(partyMemberName, buffType);
-                LogToFile($"Optimistically reset buff timer for {partyMemberName} - {buffType}.");
-            }
-
             if (CastingBackground_Check != true)
             {
+                try
+                {
+                    string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "spell_log.txt");
+                    File.AppendAllText(logPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [{callerName}] Casting {spellName} on {partyMemberName}{Environment.NewLine}");
+                }
+                catch (Exception ex)
+                {
+                    // Optionally handle logging errors, e.g., by writing to a different log or showing a message box.
+                    // For now, we'll just ignore them to prevent the application from crashing.
+                }
+
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
 
                 castingSpell = magic.Name[0];
@@ -5256,20 +5243,6 @@ namespace Miraculix
 
             }
 
-        }
-
-        private void LogToFile(string message)
-        {
-            string logFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "spell_log.txt");
-            try
-            {
-                File.AppendAllText(logFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}{Environment.NewLine}");
-            }
-            catch (Exception ex)
-            {
-                // To avoid crashing the application, just print the error to the debug console.
-                Debug.WriteLine($"Failed to write to log file: {ex.Message}");
-            }
         }
 
         private void hastePlayer(byte partyMemberId)
@@ -7778,56 +7751,33 @@ namespace Miraculix
         private void buffsFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurryEnabled[buffOptionsSelected] = !autoFlurryEnabled[buffOptionsSelected];
-            if (autoFlurryEnabled[buffOptionsSelected])
-            {
-                autoHasteEnabled[buffOptionsSelected] = false;
-                autoHaste_IIEnabled[buffOptionsSelected] = false;
-                autoFlurry_IIEnabled[buffOptionsSelected] = false;
-            }
-            UpdateHasteMenuItems();
+            autoHasteEnabled[buffOptionsSelected] = false;
+            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurry_IIEnabled[buffOptionsSelected] = !autoFlurry_IIEnabled[buffOptionsSelected];
-            if (autoFlurry_IIEnabled[buffOptionsSelected])
-            {
-                autoHasteEnabled[buffOptionsSelected] = false;
-                autoFlurryEnabled[buffOptionsSelected] = false;
-                autoHaste_IIEnabled[buffOptionsSelected] = false;
-            }
-            UpdateHasteMenuItems();
+            autoHasteEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoHaste_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
-            if (autoHasteEnabled[buffOptionsSelected])
-            {
-                autoHaste_IIEnabled[buffOptionsSelected] = false;
-                autoFlurryEnabled[buffOptionsSelected] = false;
-                autoFlurry_IIEnabled[buffOptionsSelected] = false;
-            }
-            UpdateHasteMenuItems();
+            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
-            if (autoHaste_IIEnabled[buffOptionsSelected])
-            {
-                autoHasteEnabled[buffOptionsSelected] = false;
-                autoFlurryEnabled[buffOptionsSelected] = false;
-                autoFlurry_IIEnabled[buffOptionsSelected] = false;
-            }
-            UpdateHasteMenuItems();
-        }
-        private void UpdateHasteMenuItems()
-        {
-            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[buffOptionsSelected];
-            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[buffOptionsSelected];
-            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[buffOptionsSelected];
-            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[buffOptionsSelected];
+            autoHasteEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsProtectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8078,6 +8028,10 @@ namespace Miraculix
 
         private void button3_Click(object sender, EventArgs e)
         {
+
+
+            song_casting = 0;
+            ForceSongRecast = true;
 
             if (pauseActions == false)
             {
@@ -8593,6 +8547,11 @@ namespace Miraculix
             {
                 return 4;
             }
+        }
+
+        private void resetSongTimer_Tick(object sender, EventArgs e)
+        {
+            song_casting = 0;
         }
 
         private void checkSCHCharges_Tick(object sender, EventArgs e)
@@ -9632,23 +9591,6 @@ namespace Miraculix
                     break;
 
                 case "CAST_INTERRUPT":
-                    if (!string.IsNullOrEmpty(lastSpellName) && !string.IsNullOrEmpty(lastSpellTarget))
-                    {
-                        EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(lastSpellName.Trim(), 0);
-                        if (magic != null)
-                        {
-                            string buffType = GetBuffNameForSpellId(magic.Index);
-                            if (buffType != null && partyState.Members.ContainsKey(lastSpellTarget))
-                            {
-                                var memberState = partyState.Members[lastSpellTarget];
-                                var buffDef = buff_definitions[buffType];
-                                memberState.Buffs.RemoveAll(b => buffDef.Ids.Contains(b.Id));
-                                LogToFile($"Reverted optimistic state for {lastSpellTarget} - {buffType} due to cast interruption.");
-                            }
-                        }
-                        lastSpellName = null;
-                        lastSpellTarget = null;
-                    }
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
                     Task.Delay(3000).ContinueWith(_ =>
@@ -9662,23 +9604,6 @@ namespace Miraculix
                     break;
 
                 case "CAST_BLOCKED":
-                    if (!string.IsNullOrEmpty(lastSpellName) && !string.IsNullOrEmpty(lastSpellTarget))
-                    {
-                        EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(lastSpellName.Trim(), 0);
-                        if (magic != null)
-                        {
-                            string buffType = GetBuffNameForSpellId(magic.Index);
-                            if (buffType != null && partyState.Members.ContainsKey(lastSpellTarget))
-                            {
-                                var memberState = partyState.Members[lastSpellTarget];
-                                var buffDef = buff_definitions[buffType];
-                                memberState.Buffs.RemoveAll(b => buffDef.Ids.Contains(b.Id));
-                                LogToFile($"Reverted optimistic state for {lastSpellTarget} - {buffType} due to cast blocked.");
-                            }
-                        }
-                        lastSpellName = null;
-                        lastSpellTarget = null;
-                    }
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is BLOCKED";
                     Task.Delay(3000).ContinueWith(_ =>
@@ -9691,8 +9616,6 @@ namespace Miraculix
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                     break;
                 case "CAST_FINISH":
-                    lastSpellName = null;
-                    lastSpellTarget = null;
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
                     Task.Delay(3000).ContinueWith(_ =>
