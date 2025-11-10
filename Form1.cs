@@ -3452,6 +3452,7 @@ namespace Miraculix
             if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
             {
                 ReloadSettings();
+                SendSettingsToPlugin();
                 if (Form2.config.pauseOnZoneBox == true)
                 {
                     song_casting = 0;
