@@ -3394,8 +3394,8 @@ namespace Miraculix
                     if (string.IsNullOrEmpty(playerName)) return;
 
                     // Set checked states from arrays
-                    hasteIToolStripMenuItem.Checked = autoHasteEnabled[buffOptionsSelected];
-                    hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[buffOptionsSelected];
+                    buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[buffOptionsSelected];
+                    buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[buffOptionsSelected];
                     buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[buffOptionsSelected];
                     buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[buffOptionsSelected];
                     partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[buffOptionsSelected];
@@ -7859,8 +7859,8 @@ namespace Miraculix
         private void player0buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 0;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[0];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[0];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[0];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[0];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[0];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[0];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[0];
@@ -7882,8 +7882,8 @@ namespace Miraculix
         private void player7buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 7;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[7];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[7];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[7];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[7];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[7];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[7];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[7];
@@ -7905,8 +7905,8 @@ namespace Miraculix
         private void player8buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 8;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[8];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[8];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[8];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[8];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[8];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[8];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[8];
@@ -7928,8 +7928,8 @@ namespace Miraculix
         private void player9buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 9;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[9];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[9];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[9];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[9];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[9];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[9];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[9];
@@ -7951,8 +7951,8 @@ namespace Miraculix
         private void player10buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 10;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[10];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[10];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[10];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[10];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[10];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[10];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[10];
@@ -7974,8 +7974,8 @@ namespace Miraculix
         private void player11buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 11;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[11];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[11];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[11];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[11];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[11];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[11];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[11];
@@ -7997,8 +7997,8 @@ namespace Miraculix
         private void player12buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 12;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[12];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[12];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[12];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[12];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[12];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[12];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[12];
@@ -8020,8 +8020,8 @@ namespace Miraculix
         private void player13buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 13;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[13];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[13];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[13];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[13];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[13];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[13];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[13];
@@ -8043,8 +8043,8 @@ namespace Miraculix
         private void player14buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 14;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[14];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[14];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[14];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[14];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[14];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[14];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[14];
@@ -8066,8 +8066,8 @@ namespace Miraculix
         private void player15buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 15;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[15];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[15];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[15];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[15];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[15];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[15];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[15];
@@ -8089,8 +8089,8 @@ namespace Miraculix
         private void player16buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 16;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[16];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[16];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[16];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[16];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[16];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[16];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[16];
@@ -8112,8 +8112,8 @@ namespace Miraculix
         private void player17buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 17;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[17];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[17];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[17];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[17];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[17];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[17];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[17];
@@ -8135,8 +8135,8 @@ namespace Miraculix
         private void player1buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 1;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[1];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[1];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[1];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[1];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[1];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[1];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[1];
@@ -8158,8 +8158,8 @@ namespace Miraculix
         private void player2buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 2;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[2];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[2];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[2];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[2];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[2];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[2];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[2];
@@ -8181,8 +8181,8 @@ namespace Miraculix
         private void player3buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 3;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[3];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[3];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[3];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[3];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[3];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[3];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[3];
@@ -8204,8 +8204,8 @@ namespace Miraculix
         private void player4buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 4;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[4];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[4];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[4];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[4];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[4];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[4];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[4];
@@ -8227,8 +8227,8 @@ namespace Miraculix
         private void player5buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 5;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[5];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[5];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[5];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[5];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[5];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[5];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[5];
@@ -8250,8 +8250,8 @@ namespace Miraculix
         private void player6buffsButton_Click(object sender, EventArgs e)
         {
             buffOptionsSelected = 6;
-            hasteIToolStripMenuItem.Checked = autoHasteEnabled[6];
-            hasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[6];
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[6];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[6];
             buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[6];
             buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[6];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[6];
@@ -8309,21 +8309,6 @@ namespace Miraculix
             }
         }
 
-        private void hasteIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
-        }
-
-        private void hasteIIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
-        }
 
         private void autoAdloquiumToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -8344,6 +8329,22 @@ namespace Miraculix
             autoHasteEnabled[buffOptionsSelected] = false;
             autoFlurryEnabled[buffOptionsSelected] = false;
             autoHaste_IIEnabled[buffOptionsSelected] = false;
+        }
+
+        private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
+            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+        }
+
+        private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
+            autoHasteEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsProtectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -10296,8 +10297,8 @@ namespace Miraculix
             }
 
             // Party Player Options
-            hasteIToolStripMenuItem.Enabled = connected;
-            hasteIIToolStripMenuItem.Enabled = connected;
+            buffsHasteToolStripMenuItem.Enabled = connected;
+            buffsHasteIIToolStripMenuItem.Enabled = connected;
             partyAutoProtectToolStripMenuItem.Enabled = connected;
             shellToolStripMenuItem.Enabled = connected;
 
