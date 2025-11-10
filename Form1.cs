@@ -3643,11 +3643,29 @@ namespace Miraculix
                     if (partyMember != null)
                     {
                         byte memberIndex = partyMember.MemberNumber;
+                        if (autoFlurry_IIEnabled[memberIndex]) spellTiers.Add("Flurry II");
                         if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
+                        if (autoFlurryEnabled[memberIndex]) spellTiers.Add("Flurry");
                         if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
                     }
+                    else
+                    {
+                        // Check if it's an OOP player
+                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+                        {
+                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
+                            {
+                                byte memberIndex = (byte)(18 + i);
+                                if (autoFlurry_IIEnabled[memberIndex]) spellTiers.Add("Flurry II");
+                                if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
+                                if (autoFlurryEnabled[memberIndex]) spellTiers.Add("Flurry");
+                                if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
+                                break;
+                            }
+                        }
+                    }
                     // Fallback if not found or settings not specific
-                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
+                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Flurry II", "Haste II", "Flurry", "Haste" });
                     break;
                 case "regen":
                     // Tiered selection based on settings, highest preferred first.
@@ -6095,7 +6113,7 @@ namespace Miraculix
 
                     if (_currentProfile == Profile.Normal || _currentProfile == Profile.Degraded)
                     {
-                        buffsToConsider.Add(new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) });
+                        buffsToConsider.Add(new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex] || autoFlurryEnabled[memberIndex] || autoFlurry_IIEnabled[memberIndex]) });
                         buffsToConsider.Add(new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] });
                         buffsToConsider.Add(new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] });
                     }
@@ -8348,44 +8366,56 @@ namespace Miraculix
         private void buffsFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurryEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
-            if (((ToolStripMenuItem)sender).Checked)
+            if (autoFlurryEnabled[buffOptionsSelected])
             {
                 autoHasteEnabled[buffOptionsSelected] = false;
+                buffsHasteToolStripMenuItem.Checked = false;
                 autoHaste_IIEnabled[buffOptionsSelected] = false;
+                buffsHasteIIToolStripMenuItem.Checked = false;
                 autoFlurry_IIEnabled[buffOptionsSelected] = false;
+                buffsFlurryIIToolStripMenuItem.Checked = false;
             }
         }
 
         private void buffsFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurry_IIEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
-            if (((ToolStripMenuItem)sender).Checked)
+            if (autoFlurry_IIEnabled[buffOptionsSelected])
             {
                 autoHasteEnabled[buffOptionsSelected] = false;
+                buffsHasteToolStripMenuItem.Checked = false;
                 autoFlurryEnabled[buffOptionsSelected] = false;
+                buffsFlurryToolStripMenuItem.Checked = false;
                 autoHaste_IIEnabled[buffOptionsSelected] = false;
+                buffsHasteIIToolStripMenuItem.Checked = false;
             }
         }
 
         private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHasteEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
-            if (((ToolStripMenuItem)sender).Checked)
+            if (autoHasteEnabled[buffOptionsSelected])
             {
                 autoHaste_IIEnabled[buffOptionsSelected] = false;
+                buffsHasteIIToolStripMenuItem.Checked = false;
                 autoFlurryEnabled[buffOptionsSelected] = false;
+                buffsFlurryToolStripMenuItem.Checked = false;
                 autoFlurry_IIEnabled[buffOptionsSelected] = false;
+                buffsFlurryIIToolStripMenuItem.Checked = false;
             }
         }
 
         private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHaste_IIEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
-            if (((ToolStripMenuItem)sender).Checked)
+            if (autoHaste_IIEnabled[buffOptionsSelected])
             {
                 autoHasteEnabled[buffOptionsSelected] = false;
+                buffsHasteToolStripMenuItem.Checked = false;
                 autoFlurryEnabled[buffOptionsSelected] = false;
+                buffsFlurryToolStripMenuItem.Checked = false;
                 autoFlurry_IIEnabled[buffOptionsSelected] = false;
+                buffsFlurryIIToolStripMenuItem.Checked = false;
             }
         }
 
