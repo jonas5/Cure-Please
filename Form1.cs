@@ -5200,6 +5200,7 @@ namespace Miraculix
 
         private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
         {
+            LogToFile($"Attempting to cast '{spellName}' on '{partyMemberName}'. OptionalExtras: {OptionalExtras ?? "None"}");
             if (CastingBackground_Check != true)
             {
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
@@ -5231,6 +5232,20 @@ namespace Miraculix
 
             }
 
+        }
+
+        private void LogToFile(string message)
+        {
+            string logFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "spell_log.txt");
+            try
+            {
+                File.AppendAllText(logFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}{Environment.NewLine}");
+            }
+            catch (Exception ex)
+            {
+                // To avoid crashing the application, just print the error to the debug console.
+                Debug.WriteLine($"Failed to write to log file: {ex.Message}");
+            }
         }
 
         private void hastePlayer(byte partyMemberId)
