@@ -114,7 +114,6 @@ namespace Miraculix
         private Button[] oopPlayerBuffsButtons;
         private Dictionary<string, Dictionary<string, bool>> oopBuffPreferences = new Dictionary<string, Dictionary<string, bool>>();
 
-        private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
         private Dictionary<string, Dictionary<string, bool>> oopDebuffState = new Dictionary<string, Dictionary<string, bool>>();
         private Dictionary<string, HashSet<string>> activePlayerDebuffs = new Dictionary<string, HashSet<string>>();
         public class DebuffSpell
@@ -6091,9 +6090,6 @@ namespace Miraculix
                                 continue;
                             }
                         }
-                        string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
-                        if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey]) continue;
-
                         var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
                         if (buff == null || buff.Expiration <= DateTime.Now)
                         {
@@ -6101,7 +6097,6 @@ namespace Miraculix
                             if (!string.IsNullOrEmpty(spellToCast))
                             {
                                 CastSpell(memberState.Name, spellToCast);
-                                buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
                                 _lastBuffedMemberIndex = memberIndexInPartyList;
                                 return;
                             }
@@ -6209,13 +6204,6 @@ namespace Miraculix
                     return;
                 }
 
-                string cooldownKey = $"{request.PlayerName}:{request.BuffName}";
-                if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey])
-                {
-                    recastQueue.Enqueue(request); // Re-queue for later
-                    return;
-                }
-
                 string spellToCast = GetSpellForBuff(request.BuffName, request.PlayerName);
 
                 if (!string.IsNullOrEmpty(spellToCast) && CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
@@ -6224,7 +6212,6 @@ namespace Miraculix
                     if (partyMember != null && castingPossible(partyMember.MemberNumber))
                     {
                         CastSpell(request.PlayerName, spellToCast);
-                        buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
                     }
                 }
                 else
