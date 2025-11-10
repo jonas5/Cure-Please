@@ -8599,11 +8599,6 @@ namespace Miraculix
             }
         }
 
-        private void resetSongTimer_Tick(object sender, EventArgs e)
-        {
-            song_casting = 0;
-        }
-
         private void checkSCHCharges_Tick(object sender, EventArgs e)
         {
             if (_ELITEAPIPL != null && _ELITEAPIMonitored != null)
