@@ -7771,33 +7771,56 @@ namespace Miraculix
         private void buffsFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurryEnabled[buffOptionsSelected] = !autoFlurryEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            if (autoFlurryEnabled[buffOptionsSelected])
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            }
+            UpdateHasteMenuItems();
         }
 
         private void buffsFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurry_IIEnabled[buffOptionsSelected] = !autoFlurry_IIEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            if (autoFlurry_IIEnabled[buffOptionsSelected])
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+            }
+            UpdateHasteMenuItems();
         }
 
         private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            if (autoHasteEnabled[buffOptionsSelected])
+            {
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            }
+            UpdateHasteMenuItems();
         }
 
         private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            if (autoHaste_IIEnabled[buffOptionsSelected])
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            }
+            UpdateHasteMenuItems();
+        }
+        private void UpdateHasteMenuItems()
+        {
+            buffsHasteToolStripMenuItem.Checked = autoHasteEnabled[buffOptionsSelected];
+            buffsHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[buffOptionsSelected];
+            buffsFlurryToolStripMenuItem.Checked = autoFlurryEnabled[buffOptionsSelected];
+            buffsFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[buffOptionsSelected];
         }
 
         private void buffsProtectToolStripMenuItem_Click(object sender, EventArgs e)

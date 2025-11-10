@@ -2082,19 +2082,17 @@ namespace Miraculix
             // buffsHasteToolStripMenuItem
             //
             this.buffsHasteToolStripMenuItem = new ToolStripMenuItem();
-            this.buffsHasteToolStripMenuItem.CheckOnClick = true;
-            this.buffsHasteToolStripMenuItem.Name = "hasteToolStripMenuItem";
+            this.buffsHasteToolStripMenuItem.Name = "buffsHasteToolStripMenuItem";
             this.buffsHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsHasteToolStripMenuItem.Text = "Auto Haste";
             this.buffsHasteToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
-            this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.hasteToolStripMenuItem_Click);
+            this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.buffsHasteToolStripMenuItem_Click);
 
 
             //
             // buffsHasteIIToolStripMenuItem
             //
             this.buffsHasteIIToolStripMenuItem = new ToolStripMenuItem();
-            this.buffsHasteIIToolStripMenuItem.CheckOnClick = true;
             this.buffsHasteIIToolStripMenuItem.Name = "buffsHasteIIToolStripMenuItem";
             this.buffsHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsHasteIIToolStripMenuItem.Text = "Auto Haste II";
@@ -2105,7 +2103,6 @@ namespace Miraculix
             // 
             // buffsFlurryToolStripMenuItem
             // 
-            this.buffsFlurryToolStripMenuItem.CheckOnClick = true;
             this.buffsFlurryToolStripMenuItem.Name = "buffsFlurryToolStripMenuItem";
             this.buffsFlurryToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsFlurryToolStripMenuItem.Text = "Auto Flurry";
@@ -2114,7 +2111,6 @@ namespace Miraculix
             // 
             // buffsFlurryIIToolStripMenuItem
             // 
-            this.buffsFlurryIIToolStripMenuItem.CheckOnClick = true;
             this.buffsFlurryIIToolStripMenuItem.Name = "buffsFlurryIIToolStripMenuItem";
             this.buffsFlurryIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsFlurryIIToolStripMenuItem.Text = "Auto Flurry II";
