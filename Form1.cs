@@ -5198,9 +5198,9 @@ namespace Miraculix
         }
 
 
-        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
+        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras, [System.Runtime.CompilerServices.CallerMemberName] string callerName = "")
         {
-            LogToFile($"Attempting to cast '{spellName}' on '{partyMemberName}'. OptionalExtras: {OptionalExtras ?? "None"}");
+            LogToFile($"'{callerName}' is attempting to cast '{spellName}' on '{partyMemberName}'. OptionalExtras: {OptionalExtras ?? "None"}");
             if (CastingBackground_Check != true)
             {
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
