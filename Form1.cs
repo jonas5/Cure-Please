@@ -2927,8 +2927,6 @@ namespace Miraculix
             setinstance2.Enabled = true;
             Form2.config.autoFollowName = string.Empty;
 
-            ForceSongRecast = true;
-
             var polProcesses = GetFFXIProcesses(requireVisibleWindow: true);
             foreach (var dats in polProcesses)
             {
@@ -3463,8 +3461,6 @@ namespace Miraculix
                 ReloadSettings();
                 if (Form2.config.pauseOnZoneBox == true)
                 {
-                    song_casting = 0;
-                    ForceSongRecast = true;
                     if (pauseActions != true)
                     {
                         pauseButton.Text = "Zoned, paused.";
@@ -3475,8 +3471,6 @@ namespace Miraculix
                 }
                 else
                 {
-                    song_casting = 0;
-                    ForceSongRecast = true;
 
                     if (pauseActions != true)
                     {
