@@ -10,6 +10,7 @@ namespace Miraculix
     {
         public int Id { get; set; }
         public DateTime Expiration { get; set; }
+        public DateTime AppliedTime { get; set; }
     }
 
     public class PartyMemberState
@@ -91,7 +92,8 @@ namespace Miraculix
                     member.Buffs.Add(new ActiveBuff
                     {
                         Id = buffInfo.Ids.First(),
-                        Expiration = newExpiration
+                        Expiration = newExpiration,
+                        AppliedTime = DateTime.Now
                     });
                 }
             }

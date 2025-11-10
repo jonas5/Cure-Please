@@ -10250,13 +10250,21 @@ namespace Miraculix
                         string oldBuffsLog = string.Join(", ", currentBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Polling for {characterName}. Polled IDs: [{string.Join(", ", polledBuffIds)}]. Before merge: [{oldBuffsLog}]");
 
-                        // Remove buffs that are no longer present in the API and have expired according to our timer
+                        // Remove buffs that are no longer present in the API, respecting a grace period for newly applied buffs.
                         memberState.Buffs.RemoveAll(buff =>
                         {
-                            bool shouldRemove = !polledBuffIds.Contains(buff.Id) && buff.Expiration <= DateTime.Now;
+                            // A buff should be removed if it's NOT in the polled list from the game
+                            // AND EITHER its expiration time has passed OR it's outside the 5-second grace period since it was applied.
+                            // This prevents buffs from being removed immediately after being cast if there's a delay for them to appear in-game.
+                            bool isExpired = buff.Expiration <= DateTime.Now;
+                            bool isOutsideGracePeriod = (DateTime.Now - buff.AppliedTime).TotalSeconds > 5;
+                            bool isMissingFromPoll = !polledBuffIds.Contains(buff.Id);
+
+                            bool shouldRemove = isMissingFromPoll && (isExpired || isOutsideGracePeriod);
+
                             if (shouldRemove)
                             {
-                                debug_MSG_show.AppendLine($"    -> Removing expired buff {buff.Id} (Expired at {buff.Expiration:HH:mm:ss})");
+                                debug_MSG_show.AppendLine($"    -> Removing buff {buff.Id}. Reason: Missing from poll and (Expired: {isExpired} OR Outside Grace Period: {isOutsideGracePeriod})");
                             }
                             return shouldRemove;
                         });
@@ -10273,7 +10281,8 @@ namespace Miraculix
                                         var newBuff = new ActiveBuff
                                         {
                                             Id = polledId,
-                                            Expiration = DateTime.Now.AddSeconds(def.Value.Duration)
+                                            Expiration = DateTime.Now.AddSeconds(def.Value.Duration),
+                                            AppliedTime = DateTime.Now
                                         };
                                         memberState.Buffs.Add(newBuff);
                                         debug_MSG_show.AppendLine($"    -> Adding new buff {polledId} (cast by other?). Expires at {newBuff.Expiration:HH:mm:ss}");
