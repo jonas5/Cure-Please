@@ -8369,7 +8369,8 @@ namespace Miraculix
 
         private void buffsFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurryEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoFlurryEnabled[buffOptionsSelected] = !autoFlurryEnabled[buffOptionsSelected];
+            ((ToolStripMenuItem)sender).Checked = autoFlurryEnabled[buffOptionsSelected];
             if (autoFlurryEnabled[buffOptionsSelected])
             {
                 autoHasteEnabled[buffOptionsSelected] = false;
@@ -8383,7 +8384,8 @@ namespace Miraculix
 
         private void buffsFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurry_IIEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoFlurry_IIEnabled[buffOptionsSelected] = !autoFlurry_IIEnabled[buffOptionsSelected];
+            ((ToolStripMenuItem)sender).Checked = autoFlurry_IIEnabled[buffOptionsSelected];
             if (autoFlurry_IIEnabled[buffOptionsSelected])
             {
                 autoHasteEnabled[buffOptionsSelected] = false;
@@ -8397,7 +8399,8 @@ namespace Miraculix
 
         private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHasteEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
+            ((ToolStripMenuItem)sender).Checked = autoHasteEnabled[buffOptionsSelected];
             if (autoHasteEnabled[buffOptionsSelected])
             {
                 autoHaste_IIEnabled[buffOptionsSelected] = false;
@@ -8411,7 +8414,8 @@ namespace Miraculix
 
         private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHaste_IIEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
+            ((ToolStripMenuItem)sender).Checked = autoHaste_IIEnabled[buffOptionsSelected];
             if (autoHaste_IIEnabled[buffOptionsSelected])
             {
                 autoHasteEnabled[buffOptionsSelected] = false;
