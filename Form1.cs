@@ -11,6 +11,7 @@ namespace Miraculix
     using System.Net;
     using System.Net.Sockets;
     using System.Runtime.InteropServices;
+    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -114,7 +115,6 @@ namespace Miraculix
         private Button[] oopPlayerBuffsButtons;
         private Dictionary<string, Dictionary<string, bool>> oopBuffPreferences = new Dictionary<string, Dictionary<string, bool>>();
 
-        private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
         private Dictionary<string, Dictionary<string, bool>> oopDebuffState = new Dictionary<string, Dictionary<string, bool>>();
         private Dictionary<string, HashSet<string>> activePlayerDebuffs = new Dictionary<string, HashSet<string>>();
         public class DebuffSpell
@@ -130,10 +130,12 @@ namespace Miraculix
             new DebuffSpell { Name = "Blindna", Debuff = StatusEffect.Blindness }
         };
         // BARD SONG VARIABLES
+#pragma warning disable CS0414
         private int song_casting = 0;
 
         private int PL_BRDCount = 0;
         private bool ForceSongRecast = false;
+#pragma warning restore CS0414
         private string Last_Song_Cast = string.Empty;
 
 
@@ -1060,286 +1062,6 @@ namespace Miraculix
 
         private DateTime currentTime = DateTime.Now;
 
-        private DateTime[] playerHaste = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerHaste_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerStormspell = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerFlurry = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerFlurry_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerShell = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerProtect = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPhalanx_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerRegen = new DateTime[]
-       {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-       };
-
-        private DateTime[] playerRefresh = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
         private DateTime[] playerAdloquium = new DateTime[]
       {
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1432,287 +1154,6 @@ namespace Miraculix
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
       };
-
-        private TimeSpan[] playerHasteSpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerStormspellSpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerHaste_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerFlurrySpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerFlurry_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerShell_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerProtect_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerPhalanx_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerRegen_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerRefresh_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
 
         private TimeSpan[] playerAdloquium_Span = new TimeSpan[]
       {
@@ -3488,6 +2929,8 @@ namespace Miraculix
             activeprocessids.SelectedIndex = POLID.SelectedIndex;
 
             _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
+            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Party.GetPartyMember(0).ID);
+            partyMemberAPIs[_ELITEAPIPL.Player.Name] = _ELITEAPIPL;
             plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
             Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
 
@@ -5099,10 +4542,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerHaste[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerHaste_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerFlurry[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerFlurry_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
                                             // IF SUBLIMATION IS NOT ACTIVE, YET NEITHER IS REFRESH DESPITE BEING
@@ -5111,7 +4550,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerRefresh[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);  // ERROR
                                                 }
                                             }
                                             // IF REGEN IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER TO
@@ -5120,7 +4558,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerRegen[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
                                             // IF PROTECT IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER TO
@@ -5129,7 +4566,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerProtect[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
 
@@ -5139,7 +4575,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerShell[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
                                             // IF PHALANX II IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER
@@ -5148,7 +4583,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerPhalanx_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
 
                                             }
@@ -5161,7 +4595,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerStormspell[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
 
@@ -5768,10 +5201,21 @@ namespace Miraculix
         }
 
 
-        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
+        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras, [CallerMemberName] string callerName = "")
         {
             if (CastingBackground_Check != true)
             {
+                try
+                {
+                    string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "spell_log.txt");
+                    File.AppendAllText(logPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [{callerName}] Casting {spellName} on {partyMemberName}{Environment.NewLine}");
+                }
+                catch (Exception)
+                {
+                    // Optionally handle logging errors, e.g., by writing to a different log or showing a message box.
+                    // For now, we'll just ignore them to prevent the application from crashing.
+                }
+
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
 
                 castingSpell = magic.Name[0];
@@ -5806,43 +5250,36 @@ namespace Miraculix
         private void hastePlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Haste");
-            playerHaste[partyMemberId] = DateTime.Now;
         }
 
         private void haste_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Haste II");
-            playerHaste_II[partyMemberId] = DateTime.Now;
         }
 
         private void AdloquiumPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Adloquium");
-            playerAdloquium[partyMemberId] = DateTime.Now;
         }
 
         private void FlurryPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Flurry");
-            playerFlurry[partyMemberId] = DateTime.Now;
         }
 
         private void Flurry_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Flurry II");
-            playerFlurry_II[partyMemberId] = DateTime.Now;
         }
 
         private void Phalanx_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Phalanx II");
-            playerPhalanx_II[partyMemberId] = DateTime.Now;
         }
 
         private void StormSpellPlayer(byte partyMemberId, string Spell)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, Spell);
-            playerStormspell[partyMemberId] = DateTime.Now;
         }
 
 
@@ -5857,7 +5294,6 @@ namespace Miraculix
             if (!string.IsNullOrEmpty(spellToCast))
             {
                 CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, spellToCast);
-                playerRegen[partyMemberId] = DateTime.Now;
             }
         }
 
@@ -5865,14 +5301,12 @@ namespace Miraculix
         {
             string[] refresh_spells = { "Refresh", "Refresh II", "Refresh III" };
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, refresh_spells[Form2.config.autoRefresh_Spell]);
-            playerRefresh[partyMemberId] = DateTime.Now;
         }
 
         private void protectPlayer(byte partyMemberId)
         {
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, protect_spells[Form2.config.autoProtect_Spell]);
-            playerProtect[partyMemberId] = DateTime.Now;
         }
 
         private void shellPlayer(byte partyMemberId)
@@ -5880,7 +5314,6 @@ namespace Miraculix
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
 
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, shell_spells[Form2.config.autoShell_Spell]);
-            playerShell[partyMemberId] = DateTime.Now;
         }
 
         private bool ActiveSpikes()
@@ -5951,6 +5384,8 @@ namespace Miraculix
         public void ReloadSettings()
         {
             if (Form2.config == null) Form2.config = new Form2.MySettings();
+            var songDuration = (int)(Form2.config.recastSongTime * 60);
+            if (songDuration == 0) songDuration = 120; // Default to 2 minutes if not set
 
             buff_definitions = new Dictionary<string, BuffInfo>
             {
@@ -5959,7 +5394,19 @@ namespace Miraculix
                 { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefresh_Minutes * 60) } },
                 { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxIIMinutes * 60) } },
                 { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtect_Minutes * 60) } },
-                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
+                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } },
+                // Bard Songs
+                { "Minne", new BuffInfo { Ids = new List<int> { 197 }, Duration = songDuration } },
+                { "Minuet", new BuffInfo { Ids = new List<int> { 198 }, Duration = songDuration } },
+                { "Paeon", new BuffInfo { Ids = new List<int> { 195 }, Duration = songDuration } },
+                { "Madrigal", new BuffInfo { Ids = new List<int> { 199 }, Duration = songDuration } },
+                { "Prelude", new BuffInfo { Ids = new List<int> { 200 }, Duration = songDuration } },
+                { "Etude", new BuffInfo { Ids = new List<int> { 215 }, Duration = songDuration } },
+                { "Ballad", new BuffInfo { Ids = new List<int> { 196 }, Duration = songDuration } },
+                { "March", new BuffInfo { Ids = new List<int> { 214 }, Duration = songDuration } },
+                { "Carol", new BuffInfo { Ids = new List<int> { 216 }, Duration = songDuration } },
+                { "Hymnus", new BuffInfo { Ids = new List<int> { 218 }, Duration = songDuration } },
+                { "Scherzo", new BuffInfo { Ids = new List<int> { 222 }, Duration = songDuration } }
             };
             partyState.UpdateBuffDefinitions(buff_definitions);
         }
@@ -6091,9 +5538,6 @@ namespace Miraculix
                                 continue;
                             }
                         }
-                        string cooldownKey = $"{memberState.Name}:{buffInfo.Name}";
-                        if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey]) continue;
-
                         var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
                         if (buff == null || buff.Expiration <= DateTime.Now)
                         {
@@ -6101,7 +5545,6 @@ namespace Miraculix
                             if (!string.IsNullOrEmpty(spellToCast))
                             {
                                 CastSpell(memberState.Name, spellToCast);
-                                buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
                                 _lastBuffedMemberIndex = memberIndexInPartyList;
                                 return;
                             }
@@ -6209,13 +5652,6 @@ namespace Miraculix
                     return;
                 }
 
-                string cooldownKey = $"{request.PlayerName}:{request.BuffName}";
-                if (buffCooldowns.ContainsKey(cooldownKey) && DateTime.Now < buffCooldowns[cooldownKey])
-                {
-                    recastQueue.Enqueue(request); // Re-queue for later
-                    return;
-                }
-
                 string spellToCast = GetSpellForBuff(request.BuffName, request.PlayerName);
 
                 if (!string.IsNullOrEmpty(spellToCast) && CheckSpellRecast(spellToCast) == 0 && HasSpell(spellToCast))
@@ -6224,7 +5660,6 @@ namespace Miraculix
                     if (partyMember != null && castingPossible(partyMember.MemberNumber))
                     {
                         CastSpell(request.PlayerName, spellToCast);
-                        buffCooldowns[cooldownKey] = DateTime.Now.AddSeconds(10);
                     }
                 }
                 else
@@ -9660,220 +9095,51 @@ namespace Miraculix
 
         public void Run_BardSongs()
         {
+            if (!Form2.config.enableSinging || _ELITEAPIPL.Player.Status == 33 || plStatusCheck(StatusEffect.Silence))
+                return;
 
-
-
-
-
-
-
-            PL_BRDCount = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == 195 || b == 196 || b == 197 || b == 198 || b == 199 || b == 200 || b == 201 || b == 214 || b == 215 || b == 216 || b == 218 || b == 219 || b == 222).Count();
-
-
-
-            if ((Form2.config.enableSinging) && _ELITEAPIPL.Player.Status != 33)
+            var songsToCast = new List<SongData>
             {
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song1),
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song2),
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song3),
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song4)
+            }.Where(s => s != null && s.song_name.ToLower() != "blank").ToList();
 
-                SongData song_1 = SongInfo.Where(c => c.song_position == Form2.config.song1).FirstOrDefault();
-                SongData song_2 = SongInfo.Where(c => c.song_position == Form2.config.song2).FirstOrDefault();
-                SongData song_3 = SongInfo.Where(c => c.song_position == Form2.config.song3).FirstOrDefault();
-                SongData song_4 = SongInfo.Where(c => c.song_position == Form2.config.song4).FirstOrDefault();
+            if (!songsToCast.Any()) return;
 
-                SongData dummy1_song = SongInfo.Where(c => c.song_position == Form2.config.dummy1).FirstOrDefault();
-                SongData dummy2_song = SongInfo.Where(c => c.song_position == Form2.config.dummy2).FirstOrDefault();
+            var playerState = partyState.Members.ContainsKey(_ELITEAPIPL.Player.Name) ? partyState.Members[_ELITEAPIPL.Player.Name] : null;
+            if (playerState == null) return;
 
-                // Check the distance of the Monitored player
-                int Monitoreddistance = 50;
+            foreach (var song in songsToCast)
+            {
+                var buffDef = buff_definitions.Values.FirstOrDefault(b => b.Ids.Contains(song.buff_id));
+                if (buffDef == null) continue;
 
-
-                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Target.GetTargetInfo().TargetIndex);
-                Monitoreddistance = (int)monitoredTarget.Distance;
-
-                int Songs_Possible = 0;
-
-                if (song_1.song_name.ToLower() != "blank")
+                var activeBuff = playerState.Buffs.FirstOrDefault(b => buffDef.Ids.Contains(b.Id));
+                if (activeBuff == null || activeBuff.Expiration <= DateTime.Now)
                 {
-                    Songs_Possible++;
-                }
-                if (song_2.song_name.ToLower() != "blank")
-                {
-                    Songs_Possible++;
-                }
-                if (dummy1_song != null && dummy1_song.song_name.ToLower() != "blank")
-                {
-                    Songs_Possible++;
-                }
-                if (dummy2_song != null && dummy2_song.song_name.ToLower() != "blank")
-                {
-                    Songs_Possible++;
-                }
-
-                // List to make it easy to check how many of each buff is needed.
-                List<int> SongDataMax = new List<int> { song_1.buff_id, song_2.buff_id, song_3.buff_id, song_4.buff_id };
-
-                // Check Whether e have the songs Currently Up
-                int count1_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.buff_id).Count();
-                int count2_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.buff_id).Count();
-                int count3_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.buff_id).Count();
-                int count4_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.buff_id).Count();
-                int count5_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.buff_id).Count();
-                int count6_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.buff_id).Count();
-
-                int MON_count1_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.buff_id).Count();
-                int MON_count2_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.buff_id).Count();
-                int MON_count3_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.buff_id).Count();
-                int MON_count4_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.buff_id).Count();
-                int MON_count5_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.buff_id).Count();
-                int MON_count6_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.buff_id).Count();
-
-
-                if (ForceSongRecast == true) { song_casting = 0; ForceSongRecast = false; }
-
-
-                // SONG NUMBER #4
-                if (song_casting == 3 && PL_BRDCount >= 3 && song_4.song_name.ToLower() != "blank" && count6_type < SongDataMax.Where(c => c == song_4.buff_id).Count() && Last_Song_Cast != song_4.song_name)
-                {
-                    if (PL_BRDCount == 3)
+                    if (CheckSpellRecast(song.song_name) == 0 && HasSpell(song.song_name))
                     {
-                        if (CheckSpellRecast(dummy2_song.song_name) == 0 && (HasSpell(dummy2_song.song_name)) && JobChecker(dummy2_song.song_name) == true)
+                        // Prioritize using Troubadour or Nightingale if available and no songs are up
+                        if (!playerState.Buffs.Any(b => buff_definitions.Values.Any(def => def.Ids.Contains(b.Id) && def.Duration > 100))) // Check if any song is up
                         {
-                            CastSpell("<me>", dummy2_song.song_name);
+                            if (Form2.config.Troubadour && HasAbility("Troubadour") && GetAbilityRecast("Troubadour") == 0)
+                            {
+                                JobAbility_Wait("Troubadour", "Troubadour");
+                                return; // Wait for next tick
+                            }
+                            if (Form2.config.Nightingale && HasAbility("Nightingale") && GetAbilityRecast("Nightingale") == 0)
+                            {
+                                JobAbility_Wait("Nightingale", "Nightingale");
+                                return; // Wait for next tick
+                            }
                         }
-                    }
-                    else
-                    {
-                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)) && JobChecker(song_4.song_name) == true)
-                        {
-                            CastSpell("<me>", song_4.song_name);
-                            Last_Song_Cast = song_4.song_name;
-                            Last_SongCast_Timer[0] = DateTime.Now;
-                            playerSong4[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
 
-                }
-                else if (song_casting == 3 && song_4.song_name.ToLower() != "blank" && count6_type >= SongDataMax.Where(c => c == song_4.buff_id).Count())
-                {
-                    song_casting = 0;
-                }
-
-
-                // SONG NUMBER #3
-                else if (song_casting == 2 && PL_BRDCount >= 2 && song_3.song_name.ToLower() != "blank" && count4_type < SongDataMax.Where(c => c == song_3.buff_id).Count() && Last_Song_Cast != song_3.song_name)
-                {
-                    if (PL_BRDCount == 2)
-                    {
-                        if (CheckSpellRecast(dummy1_song.song_name) == 0 && (HasSpell(dummy1_song.song_name)) && JobChecker(dummy1_song.song_name) == true)
-                        {
-                            CastSpell("<me>", dummy1_song.song_name);
-                        }
-                    }
-                    else
-                    {
-                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)) && JobChecker(song_3.song_name) == true)
-                        {
-                            CastSpell("<me>", song_3.song_name);
-                            Last_Song_Cast = song_3.song_name;
-                            Last_SongCast_Timer[0] = DateTime.Now;
-                            playerSong3[0] = DateTime.Now;
-                            song_casting = 3;
-                        }
+                        CastSpell("<me>", song.song_name);
+                        return; // Cast one song per tick
                     }
                 }
-                else if (song_casting == 2 && song_3.song_name.ToLower() != "blank" && count4_type >= SongDataMax.Where(c => c == song_3.buff_id).Count())
-                {
-                    song_casting = 3;
-                }
-
-
-                // SONG NUMBER #2
-                else if (song_casting == 1 && song_2.song_name.ToLower() != "blank" && count2_type < SongDataMax.Where(c => c == song_2.buff_id).Count() && Last_Song_Cast != song_4.song_name)
-                {
-                    if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)) && JobChecker(song_2.song_name) == true)
-                    {
-                        CastSpell("<me>", song_2.song_name);
-                        Last_Song_Cast = song_2.song_name;
-                        Last_SongCast_Timer[0] = DateTime.Now;
-                        playerSong2[0] = DateTime.Now;
-                        song_casting = 2;
-                    }
-                }
-                else if (song_casting == 1 && song_2.song_name.ToLower() != "blank" && count2_type >= SongDataMax.Where(c => c == song_2.buff_id).Count())
-                {
-                    song_casting = 2;
-                }
-
-                // SONG NUMBER #1
-                else if ((song_casting == 0) && song_1.song_name.ToLower() != "blank" && count1_type < SongDataMax.Where(c => c == song_1.buff_id).Count() && Last_Song_Cast != song_4.song_name)
-                {
-                    if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)) && JobChecker(song_1.song_name) == true)
-                    {
-                        CastSpell("<me>", song_1.song_name);
-                        Last_Song_Cast = song_1.song_name;
-                        Last_SongCast_Timer[0] = DateTime.Now;
-                        playerSong1[0] = DateTime.Now;
-                        song_casting = 1;
-                    }
-
-                }
-                else if (song_casting == 0 && song_2.song_name.ToLower() != "blank" && count1_type >= SongDataMax.Where(c => c == song_1.buff_id).Count())
-                {
-                    song_casting = 1;
-                }
-
-
-                // ONCE ALL SONGS HAVE BEEN CAST ONLY RECAST THEM WHEN THEY MEET THE THRESHOLD SET ON SONG RECAST AND BLOCK IF IT'S SET AT LAUNCH DEFAULTS
-                if (playerSong1[0] != DefaultTime && playerSong1_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)) && JobChecker(song_1.song_name) == true)
-                        {
-                            CastSpell("<me>", song_1.song_name);
-                            playerSong1[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong2[0] != DefaultTime && playerSong2_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)) && JobChecker(song_2.song_name) == true)
-                        {
-                            CastSpell("<me>", song_2.song_name);
-                            playerSong2[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong3[0] != DefaultTime && playerSong3_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)) && JobChecker(song_3.song_name) == true)
-                        {
-                            CastSpell("<me>", song_3.song_name);
-                            playerSong3[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong4[0] != DefaultTime && playerSong4_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)) && JobChecker(song_4.song_name) == true)
-                        {
-                            CastSpell("<me>", song_4.song_name);
-                            playerSong4[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-
-
             }
         }
 
@@ -10166,16 +9432,9 @@ namespace Miraculix
                         string oldBuffsLog = string.Join(", ", currentBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Polling for {characterName}. Polled IDs: [{string.Join(", ", polledBuffIds)}]. Before merge: [{oldBuffsLog}]");
 
-                        // Remove buffs that are no longer present in the API and have expired according to our timer
-                        memberState.Buffs.RemoveAll(buff =>
-                        {
-                            bool shouldRemove = !polledBuffIds.Contains(buff.Id) && buff.Expiration <= DateTime.Now;
-                            if (shouldRemove)
-                            {
-                                debug_MSG_show.AppendLine($"    -> Removing expired buff {buff.Id} (Expired at {buff.Expiration:HH:mm:ss})");
-                            }
-                            return shouldRemove;
-                        });
+                        // The buff removal logic has been moved to the BUFF_FADED pipe message handler
+                        // to create a purely event-driven system for buffs cast by this application.
+                        // The polling timer is now only responsible for adding buffs cast by other players.
 
                         // Add new buffs that appeared in the API (e.g., cast by another player)
                         foreach (var polledId in polledBuffIds)
@@ -10308,6 +9567,27 @@ namespace Miraculix
             buffsFlurryToolStripMenuItem.Enabled = connected;
             buffsFlurryIIToolStripMenuItem.Enabled = connected;
         }
+        public void SendSettingsToPlugin()
+        {
+            if (IsPipeConnected)
+            {
+                var settings = new List<string>();
+                settings.Add($"SETTING|debuffDiaBioCooldown={Form2.config.debuffDiaBioCooldown}");
+                settings.Add($"SETTING|debuffElementalCooldown={Form2.config.debuffElementalCooldown}");
+                settings.Add($"SETTING|debuffParalyzeCooldown={Form2.config.debuffParalyzeCooldown}");
+                settings.Add($"SETTING|debuffSilenceCooldown={Form2.config.debuffSilenceCooldown}");
+                settings.Add($"SETTING|debuffBlindCooldown={Form2.config.debuffBlindCooldown}");
+                settings.Add($"SETTING|debuffGravityCooldown={Form2.config.debuffGravityCooldown}");
+                settings.Add($"SETTING|debuffSlowCooldown={Form2.config.debuffSlowCooldown}");
+                settings.Add($"SETTING|debuffBindCooldown={Form2.config.debuffBindCooldown}");
+
+                foreach (var setting in settings)
+                {
+                    _pipeClient.Send(setting);
+                }
+            }
+        }
+
         private void PipeClient_MessageReceived(string message)
         {
             if (InvokeRequired)
@@ -10611,6 +9891,36 @@ namespace Miraculix
                         string actorName = parts[1];
                         string buffName = parts[2];
                         RunDispelLogic(actorName, buffName);
+                    }
+                    break;
+                case "BUFF_APPLIED":
+                    if (parts.Length == 3)
+                    {
+                        string playerName = parts[1];
+                        string buffName = parts[2];
+                        if (partyState.Members.ContainsKey(playerName))
+                        {
+                            partyState.ResetBuffTimer(playerName, buffName);
+                        }
+                    }
+                    break;
+                case "BUFF_FADED":
+                    if (parts.Length == 3)
+                    {
+                        string playerName = parts[1];
+                        string buffName = parts[2];
+                        if (partyState.Members.ContainsKey(playerName))
+                        {
+                            var memberState = partyState.Members[playerName];
+                            if (buff_definitions.ContainsKey(buffName))
+                            {
+                                var buffDef = buff_definitions[buffName];
+                                if (buffDef != null)
+                                {
+                                    memberState.Buffs.RemoveAll(b => buffDef.Ids.Contains(b.Id));
+                                }
+                            }
+                        }
                     }
                     break;
             }
