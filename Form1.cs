@@ -3664,10 +3664,10 @@ namespace Miraculix
                     spellTiers.AddRange(new[] { "Phalanx II", "Phalanx" });
                     break;
                 case "storm":
-                    var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
-                    if (partyMember != null)
+                    var partyMemberStorm = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
+                    if (partyMemberStorm != null)
                     {
-                        string stormSpell = CheckStormspell(partyMember.MemberNumber);
+                        string stormSpell = CheckStormspell(partyMemberStorm.MemberNumber);
                         if (stormSpell != "false")
                         {
                             spellTiers.Add(stormSpell);
