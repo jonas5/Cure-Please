@@ -1059,753 +1059,6 @@ namespace Miraculix
 
         private DateTime currentTime = DateTime.Now;
 
-        private DateTime[] playerHaste = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerHaste_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerStormspell = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerFlurry = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerFlurry_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerShell = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerProtect = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPhalanx_II = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerRegen = new DateTime[]
-       {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-       };
-
-        private DateTime[] playerRefresh = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerAdloquium = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong1 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong2 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong3 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerSong4 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] Last_SongCast_Timer = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo1_1 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo2_1 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo1_2 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private DateTime[] playerPianissimo2_2 = new DateTime[]
-      {
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0),
-            new DateTime(1970, 1, 1, 0, 0, 0)
-      };
-
-        private TimeSpan[] playerHasteSpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerStormspellSpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerHaste_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerFlurrySpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerFlurry_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerShell_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerProtect_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerPhalanx_IISpan = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerRegen_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerRefresh_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-
-        private TimeSpan[] playerAdloquium_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong1_Span = new TimeSpan[]
-      {
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong2_Span = new TimeSpan[]
-      {
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong3_Span = new TimeSpan[]
-      {
-            new TimeSpan()
-      };
-
-        private TimeSpan[] playerSong4_Span = new TimeSpan[]
-     {
-            new TimeSpan()
-     };
-
-        private TimeSpan[] Last_SongCast_Timer_Span = new TimeSpan[]
-     {
-            new TimeSpan()
-     };
-
-        private TimeSpan[] pianissimo1_1_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
-        private TimeSpan[] pianissimo2_1_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
-        private TimeSpan[] pianissimo1_2_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
-        private TimeSpan[] pianissimo2_2_Span = new TimeSpan[]
-      {
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-            new TimeSpan(),
-      };
-
         private void PaintBorderlessGroupBox(object sender, PaintEventArgs e)
         {
             GroupBox box = sender as GroupBox;
@@ -5098,10 +4351,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerHaste[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerHaste_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerFlurry[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
-                                                    playerFlurry_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
                                             // IF SUBLIMATION IS NOT ACTIVE, YET NEITHER IS REFRESH DESPITE BEING
@@ -5110,7 +4359,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerRefresh[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);  // ERROR
                                                 }
                                             }
                                             // IF REGEN IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER TO
@@ -5119,7 +4367,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerRegen[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
                                             // IF PROTECT IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER TO
@@ -5128,7 +4375,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerProtect[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
 
@@ -5138,7 +4384,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerShell[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
                                             // IF PHALANX II IS NOT ACTIVE DESPITE BEING ENABLED RESET THE TIMER
@@ -5147,7 +4392,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerPhalanx_II[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
 
                                             }
@@ -5160,7 +4404,6 @@ namespace Miraculix
                                             {
                                                 if (ptMember != null)
                                                 {
-                                                    playerStormspell[ptMember.MemberNumber] = new DateTime(1970, 1, 1, 0, 0, 0);
                                                 }
                                             }
 
@@ -5805,43 +5048,36 @@ namespace Miraculix
         private void hastePlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Haste");
-            playerHaste[partyMemberId] = DateTime.Now;
         }
 
         private void haste_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Haste II");
-            playerHaste_II[partyMemberId] = DateTime.Now;
         }
 
         private void AdloquiumPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Adloquium");
-            playerAdloquium[partyMemberId] = DateTime.Now;
         }
 
         private void FlurryPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Flurry");
-            playerFlurry[partyMemberId] = DateTime.Now;
         }
 
         private void Flurry_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Flurry II");
-            playerFlurry_II[partyMemberId] = DateTime.Now;
         }
 
         private void Phalanx_IIPlayer(byte partyMemberId)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, "Phalanx II");
-            playerPhalanx_II[partyMemberId] = DateTime.Now;
         }
 
         private void StormSpellPlayer(byte partyMemberId, string Spell)
         {
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, Spell);
-            playerStormspell[partyMemberId] = DateTime.Now;
         }
 
 
@@ -5856,7 +5092,6 @@ namespace Miraculix
             if (!string.IsNullOrEmpty(spellToCast))
             {
                 CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, spellToCast);
-                playerRegen[partyMemberId] = DateTime.Now;
             }
         }
 
@@ -5864,14 +5099,12 @@ namespace Miraculix
         {
             string[] refresh_spells = { "Refresh", "Refresh II", "Refresh III" };
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, refresh_spells[Form2.config.autoRefresh_Spell]);
-            playerRefresh[partyMemberId] = DateTime.Now;
         }
 
         private void protectPlayer(byte partyMemberId)
         {
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, protect_spells[Form2.config.autoProtect_Spell]);
-            playerProtect[partyMemberId] = DateTime.Now;
         }
 
         private void shellPlayer(byte partyMemberId)
@@ -5879,7 +5112,6 @@ namespace Miraculix
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
 
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, shell_spells[Form2.config.autoShell_Spell]);
-            playerShell[partyMemberId] = DateTime.Now;
         }
 
         private bool ActiveSpikes()
@@ -6317,41 +5549,6 @@ namespace Miraculix
 
             // Grab current time for calculations below
             currentTime = DateTime.Now;
-
-            // Calculate time since Songs were cast on particular player
-            playerSong1_Span[0] = currentTime.Subtract(playerSong1[0]);
-            playerSong2_Span[0] = currentTime.Subtract(playerSong2[0]);
-            playerSong3_Span[0] = currentTime.Subtract(playerSong3[0]);
-            playerSong4_Span[0] = currentTime.Subtract(playerSong4[0]);
-
-            // Calculate time since Adloquium were cast on particular player
-            playerAdloquium_Span[0] = currentTime.Subtract(playerAdloquium[0]);
-            playerAdloquium_Span[1] = currentTime.Subtract(playerAdloquium[1]);
-            playerAdloquium_Span[2] = currentTime.Subtract(playerAdloquium[2]);
-            playerAdloquium_Span[3] = currentTime.Subtract(playerAdloquium[3]);
-            playerAdloquium_Span[4] = currentTime.Subtract(playerAdloquium[4]);
-            playerAdloquium_Span[5] = currentTime.Subtract(playerAdloquium[5]);
-            playerAdloquium_Span[6] = currentTime.Subtract(playerAdloquium[6]);
-            playerAdloquium_Span[7] = currentTime.Subtract(playerAdloquium[7]);
-            playerAdloquium_Span[8] = currentTime.Subtract(playerAdloquium[8]);
-            playerAdloquium_Span[9] = currentTime.Subtract(playerAdloquium[9]);
-            playerAdloquium_Span[10] = currentTime.Subtract(playerAdloquium[10]);
-            playerAdloquium_Span[11] = currentTime.Subtract(playerAdloquium[11]);
-            playerAdloquium_Span[12] = currentTime.Subtract(playerAdloquium[12]);
-            playerAdloquium_Span[13] = currentTime.Subtract(playerAdloquium[13]);
-            playerAdloquium_Span[14] = currentTime.Subtract(playerAdloquium[14]);
-            playerAdloquium_Span[15] = currentTime.Subtract(playerAdloquium[15]);
-            playerAdloquium_Span[16] = currentTime.Subtract(playerAdloquium[16]);
-            playerAdloquium_Span[17] = currentTime.Subtract(playerAdloquium[17]);
-
-
-            Last_SongCast_Timer_Span[0] = currentTime.Subtract(Last_SongCast_Timer[0]);
-
-            // Calculate time since Piannisimo Songs were cast on particular player
-            pianissimo1_1_Span[0] = currentTime.Subtract(playerPianissimo1_1[0]);
-            pianissimo2_1_Span[0] = currentTime.Subtract(playerPianissimo2_1[0]);
-            pianissimo1_2_Span[0] = currentTime.Subtract(playerPianissimo1_2[0]);
-            pianissimo2_2_Span[0] = currentTime.Subtract(playerPianissimo2_2[0]);
 
             // Set array values for GUI "Enabled" checkboxes
             CheckBox[] enabledBoxes = new CheckBox[18];
