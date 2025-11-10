@@ -108,8 +108,6 @@ namespace Miraculix
         private DateTime _lastSpellCastTime;
         private TimeSpan _idleHealThreshold;
         private Random _random = new Random();
-        private string lastSpellName = string.Empty;
-        private string lastSpellTarget = string.Empty;
         private ComboBox[] oopPlayerComboBoxes;
         private ProgressBar[] oopPlayerHPs;
         private CheckBox[] oopPlayerEnables;
@@ -3645,29 +3643,11 @@ namespace Miraculix
                     if (partyMember != null)
                     {
                         byte memberIndex = partyMember.MemberNumber;
-                        if (autoFlurry_IIEnabled[memberIndex]) spellTiers.Add("Flurry II");
                         if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
-                        if (autoFlurryEnabled[memberIndex]) spellTiers.Add("Flurry");
                         if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
                     }
-                    else
-                    {
-                        // Check if it's an OOP player
-                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
-                        {
-                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
-                            {
-                                byte memberIndex = (byte)(18 + i);
-                                if (autoFlurry_IIEnabled[memberIndex]) spellTiers.Add("Flurry II");
-                                if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
-                                if (autoFlurryEnabled[memberIndex]) spellTiers.Add("Flurry");
-                                if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
-                                break;
-                            }
-                        }
-                    }
                     // Fallback if not found or settings not specific
-                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Flurry II", "Haste II", "Flurry", "Haste" });
+                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
                     break;
                 case "regen":
                     // Tiered selection based on settings, highest preferred first.
@@ -3682,33 +3662,6 @@ namespace Miraculix
                     break;
                 case "phalanx":
                     spellTiers.AddRange(new[] { "Phalanx II", "Phalanx" });
-                    break;
-                case "storm":
-                    var partyMemberStorm = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
-                    if (partyMemberStorm != null)
-                    {
-                        string stormSpell = CheckStormspell(partyMemberStorm.MemberNumber);
-                        if (stormSpell != "false")
-                        {
-                            spellTiers.Add(stormSpell);
-                        }
-                    }
-                    else
-                    {
-                        // Check if it's an OOP player
-                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
-                        {
-                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
-                            {
-                                string stormSpell = CheckStormspell((byte)(18 + i));
-                                if (stormSpell != "false")
-                                {
-                                    spellTiers.Add(stormSpell);
-                                }
-                                break;
-                            }
-                        }
-                    }
                     break;
                 default:
                     return null;
@@ -5822,8 +5775,6 @@ namespace Miraculix
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
 
                 castingSpell = magic.Name[0];
-                lastSpellName = castingSpell;
-                lastSpellTarget = partyMemberName;
 
                 _ELITEAPIPL.ThirdParty.SendString("/ma \"" + castingSpell + "\" " + partyMemberName);
 
@@ -6004,12 +5955,11 @@ namespace Miraculix
             buff_definitions = new Dictionary<string, BuffInfo>
             {
                 { "Regen", new BuffInfo { Ids = new List<int> { 42, 597, 598, 599, 600 }, Duration = (int)(Form2.config.autoRegen_Minutes * 60) } },
-                { "Haste", new BuffInfo { Ids = new List<int> { 33, 265, 562 }, Duration = (int)(Form2.config.autoHasteMinutes * 60) } },
+                { "Haste", new BuffInfo { Ids = new List<int> { 33, 562 }, Duration = (int)(Form2.config.autoHasteMinutes * 60) } },
                 { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefresh_Minutes * 60) } },
                 { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxIIMinutes * 60) } },
                 { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtect_Minutes * 60) } },
-                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } },
-                { "Storm", new BuffInfo { Ids = new List<int> { 178, 179, 180, 181, 182, 183, 184, 185, 589, 590, 591, 592, 593, 594, 595, 596 }, Duration = 300 } } // TODO: Make duration configurable
+                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
             };
             partyState.UpdateBuffDefinitions(buff_definitions);
         }
@@ -6117,7 +6067,7 @@ namespace Miraculix
 
                     if (_currentProfile == Profile.Normal || _currentProfile == Profile.Degraded)
                     {
-                        buffsToConsider.Add(new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex] || autoFlurryEnabled[memberIndex] || autoFlurry_IIEnabled[memberIndex]) });
+                        buffsToConsider.Add(new { Name = "Haste", Enabled = (autoHaste_IIEnabled[memberIndex] || autoHasteEnabled[memberIndex]) });
                         buffsToConsider.Add(new { Name = "Refresh", Enabled = autoRefreshEnabled[memberIndex] });
                         buffsToConsider.Add(new { Name = "Regen", Enabled = autoRegen_Enabled[memberIndex] });
                     }
@@ -6127,7 +6077,6 @@ namespace Miraculix
                         buffsToConsider.Add(new { Name = "Phalanx", Enabled = autoPhalanx_IIEnabled[memberIndex] });
                         buffsToConsider.Add(new { Name = "Protect", Enabled = autoProtect_Enabled[memberIndex] });
                         buffsToConsider.Add(new { Name = "Shell", Enabled = autoShell_Enabled[memberIndex] });
-                        buffsToConsider.Add(new { Name = "Storm", Enabled = CheckIfAutoStormspellEnabled(memberIndex) });
                     }
 
                     foreach (var buffInfo in buffsToConsider)
@@ -6229,7 +6178,6 @@ namespace Miraculix
             else if (lowerBuffName.Contains("shell")) buffType = "Shell";
             else if (lowerBuffName.Contains("refresh")) buffType = "Refresh";
             else if (lowerBuffName.Contains("phalanx")) buffType = "Phalanx";
-            else if (lowerBuffName.Contains("storm")) buffType = "Storm";
 
             if (buffType != null)
             {
@@ -8370,66 +8318,38 @@ namespace Miraculix
         private void buffsFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurryEnabled[buffOptionsSelected] = !autoFlurryEnabled[buffOptionsSelected];
-            ((ToolStripMenuItem)sender).Checked = autoFlurryEnabled[buffOptionsSelected];
-            if (autoFlurryEnabled[buffOptionsSelected])
-            {
-                autoHasteEnabled[buffOptionsSelected] = false;
-                buffsHasteToolStripMenuItem.Checked = false;
-                autoHaste_IIEnabled[buffOptionsSelected] = false;
-                buffsHasteIIToolStripMenuItem.Checked = false;
-                autoFlurry_IIEnabled[buffOptionsSelected] = false;
-                buffsFlurryIIToolStripMenuItem.Checked = false;
-            }
+            autoHasteEnabled[buffOptionsSelected] = false;
+            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoFlurry_IIEnabled[buffOptionsSelected] = !autoFlurry_IIEnabled[buffOptionsSelected];
-            ((ToolStripMenuItem)sender).Checked = autoFlurry_IIEnabled[buffOptionsSelected];
-            if (autoFlurry_IIEnabled[buffOptionsSelected])
-            {
-                autoHasteEnabled[buffOptionsSelected] = false;
-                buffsHasteToolStripMenuItem.Checked = false;
-                autoFlurryEnabled[buffOptionsSelected] = false;
-                buffsFlurryToolStripMenuItem.Checked = false;
-                autoHaste_IIEnabled[buffOptionsSelected] = false;
-                buffsHasteIIToolStripMenuItem.Checked = false;
-            }
+            autoHasteEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoHaste_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
-            ((ToolStripMenuItem)sender).Checked = autoHasteEnabled[buffOptionsSelected];
-            if (autoHasteEnabled[buffOptionsSelected])
-            {
-                autoHaste_IIEnabled[buffOptionsSelected] = false;
-                buffsHasteIIToolStripMenuItem.Checked = false;
-                autoFlurryEnabled[buffOptionsSelected] = false;
-                buffsFlurryToolStripMenuItem.Checked = false;
-                autoFlurry_IIEnabled[buffOptionsSelected] = false;
-                buffsFlurryIIToolStripMenuItem.Checked = false;
-            }
+            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
-            ((ToolStripMenuItem)sender).Checked = autoHaste_IIEnabled[buffOptionsSelected];
-            if (autoHaste_IIEnabled[buffOptionsSelected])
-            {
-                autoHasteEnabled[buffOptionsSelected] = false;
-                buffsHasteToolStripMenuItem.Checked = false;
-                autoFlurryEnabled[buffOptionsSelected] = false;
-                buffsFlurryToolStripMenuItem.Checked = false;
-                autoFlurry_IIEnabled[buffOptionsSelected] = false;
-                buffsFlurryIIToolStripMenuItem.Checked = false;
-            }
+            autoHasteEnabled[buffOptionsSelected] = false;
+            autoFlurryEnabled[buffOptionsSelected] = false;
+            autoFlurry_IIEnabled[buffOptionsSelected] = false;
         }
 
         private void buffsProtectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoProtect_Enabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoProtect_Enabled[buffOptionsSelected] = !autoProtect_Enabled[buffOptionsSelected];
         }
 
         private void enableDebuffRemovalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8440,34 +8360,22 @@ namespace Miraculix
 
         private void buffsShellToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoShell_Enabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoShell_Enabled[buffOptionsSelected] = !autoShell_Enabled[buffOptionsSelected];
         }
 
         private void autoPhalanxIIToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
-            if (menuItem != null)
-            {
-                autoPhalanx_IIEnabled[buffOptionsSelected] = menuItem.Checked;
-            }
+            autoPhalanx_IIEnabled[buffOptionsSelected] = !autoPhalanx_IIEnabled[buffOptionsSelected];
         }
 
         private void autoRegenVToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
-            if (menuItem != null)
-            {
-                autoRegen_Enabled[buffOptionsSelected] = menuItem.Checked;
-            }
+            autoRegen_Enabled[buffOptionsSelected] = !autoRegen_Enabled[buffOptionsSelected];
         }
 
         private void autoRefreshIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
-            if (menuItem != null)
-            {
-                autoRefreshEnabled[buffOptionsSelected] = menuItem.Checked;
-            }
+            autoRefreshEnabled[buffOptionsSelected] = !autoRefreshEnabled[buffOptionsSelected];
         }
 
         private void hasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8611,50 +8519,58 @@ namespace Miraculix
 
         private void SandstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoSandstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoSandstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoSandstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void RainstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoRainstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoRainstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoRainstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void WindstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoWindstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoWindstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoWindstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void FirestormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoFirestormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoFirestormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoFirestormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void HailstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoHailstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoHailstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoHailstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void ThunderstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoThunderstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoThunderstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoThunderstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void VoidstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoVoidstormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoVoidstormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoVoidstormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void AurorastormToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool currentStatus = autoAurorastormEnabled[buffOptionsSelected];
             setAllStormsFalse(buffOptionsSelected);
-            autoAurorastormEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
+            autoAurorastormEnabled[buffOptionsSelected] = !currentStatus;
         }
 
         private void protectIVToolStripMenuItem_Click(object sender, EventArgs e)
@@ -10250,24 +10166,9 @@ namespace Miraculix
                         string oldBuffsLog = string.Join(", ", currentBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Polling for {characterName}. Polled IDs: [{string.Join(", ", polledBuffIds)}]. Before merge: [{oldBuffsLog}]");
 
-                        // Remove buffs that are no longer present in the API, respecting a grace period for newly applied buffs.
-                        memberState.Buffs.RemoveAll(buff =>
-                        {
-                            // A buff should be removed if it's NOT in the polled list from the game
-                            // AND EITHER its expiration time has passed OR it's outside the 5-second grace period since it was applied.
-                            // This prevents buffs from being removed immediately after being cast if there's a delay for them to appear in-game.
-                            bool isExpired = buff.Expiration <= DateTime.Now;
-                            bool isOutsideGracePeriod = (DateTime.Now - buff.AppliedTime).TotalSeconds > 5;
-                            bool isMissingFromPoll = !polledBuffIds.Contains(buff.Id);
-
-                            bool shouldRemove = isMissingFromPoll && (isExpired || isOutsideGracePeriod);
-
-                            if (shouldRemove)
-                            {
-                                debug_MSG_show.AppendLine($"    -> Removing buff {buff.Id}. Reason: Missing from poll and (Expired: {isExpired} OR Outside Grace Period: {isOutsideGracePeriod})");
-                            }
-                            return shouldRemove;
-                        });
+                        // The buff removal logic has been moved to the BUFF_FADED pipe message handler
+                        // to create a purely event-driven system for buffs cast by this application.
+                        // The polling timer is now only responsible for adding buffs cast by other players.
 
                         // Add new buffs that appeared in the API (e.g., cast by another player)
                         foreach (var polledId in polledBuffIds)
@@ -10281,8 +10182,7 @@ namespace Miraculix
                                         var newBuff = new ActiveBuff
                                         {
                                             Id = polledId,
-                                            Expiration = DateTime.Now.AddSeconds(def.Value.Duration),
-                                            AppliedTime = DateTime.Now
+                                            Expiration = DateTime.Now.AddSeconds(def.Value.Duration)
                                         };
                                         memberState.Buffs.Add(newBuff);
                                         debug_MSG_show.AppendLine($"    -> Adding new buff {polledId} (cast by other?). Expires at {newBuff.Expiration:HH:mm:ss}");
@@ -10429,11 +10329,6 @@ namespace Miraculix
                 case "CAST_INTERRUPT":
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
-                    string buffNameToRecast = GetBuffNameForSpellId((ushort)_ELITEAPIPL.Resources.GetSpell(lastSpellName, 0).Index);
-                    if (!string.IsNullOrEmpty(buffNameToRecast) && !string.IsNullOrEmpty(lastSpellTarget))
-                    {
-                        recastQueue.Enqueue(new RecastRequest { PlayerName = lastSpellTarget, BuffName = buffNameToRecast });
-                    }
                     Task.Delay(3000).ContinueWith(_ =>
                     {
                         if (castingLockLabel.Text == "PACKET: Casting is INTERRUPTED")
@@ -10447,11 +10342,6 @@ namespace Miraculix
                 case "CAST_BLOCKED":
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is BLOCKED";
-                    string buffNameToRecastBlocked = GetBuffNameForSpellId((ushort)_ELITEAPIPL.Resources.GetSpell(lastSpellName, 0).Index);
-                    if (!string.IsNullOrEmpty(buffNameToRecastBlocked) && !string.IsNullOrEmpty(lastSpellTarget))
-                    {
-                        recastQueue.Enqueue(new RecastRequest { PlayerName = lastSpellTarget, BuffName = buffNameToRecastBlocked });
-                    }
                     Task.Delay(3000).ContinueWith(_ =>
                     {
                         if (castingLockLabel.Text == "PACKET: Casting is BLOCKED")
@@ -10471,8 +10361,6 @@ namespace Miraculix
                         castingLockLabel.Text = "Casting is UNLOCKED";
                         currentAction.Text = string.Empty;
                         castingSpell = string.Empty;
-                        lastSpellName = string.Empty;
-                        lastSpellTarget = string.Empty;
                         CastingBackground_Check = false;
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                     break;
