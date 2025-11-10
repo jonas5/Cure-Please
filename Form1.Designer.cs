@@ -220,8 +220,6 @@ namespace Miraculix
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.buffOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.hasteIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoPhalanxIIToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.autoRegenVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoRefreshIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2102,6 +2100,7 @@ namespace Miraculix
             //
             // buffsHasteToolStripMenuItem
             //
+            this.buffsHasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buffsHasteToolStripMenuItem.Name = "buffsHasteToolStripMenuItem";
             this.buffsHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsHasteToolStripMenuItem.Text = "Auto Haste";
@@ -2110,6 +2109,7 @@ namespace Miraculix
             //
             // buffsHasteIIToolStripMenuItem
             //
+            this.buffsHasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buffsHasteIIToolStripMenuItem.Name = "buffsHasteIIToolStripMenuItem";
             this.buffsHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.buffsHasteIIToolStripMenuItem.Text = "Auto Haste II";
@@ -2483,8 +2483,8 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hasteIToolStripMenuItem,
-            this.hasteIIToolStripMenuItem,
+            this.buffsHasteToolStripMenuItem,
+            this.buffsHasteIIToolStripMenuItem,
             this.buffsShellToolStripMenuItem,
             this.buffsProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";
