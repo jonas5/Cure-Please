@@ -1059,6 +1059,192 @@ namespace Miraculix
 
         private DateTime currentTime = DateTime.Now;
 
+        private DateTime[] playerAdloquium = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerSong1 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerSong2 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerSong3 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerSong4 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] Last_SongCast_Timer = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerPianissimo1_1 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerPianissimo2_1 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerPianissimo1_2 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private DateTime[] playerPianissimo2_2 = new DateTime[]
+      {
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0),
+            new DateTime(1970, 1, 1, 0, 0, 0)
+      };
+
+        private TimeSpan[] playerAdloquium_Span = new TimeSpan[]
+      {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan()
+      };
+
+        private TimeSpan[] playerSong1_Span = new TimeSpan[]
+      {
+            new TimeSpan()
+      };
+
+        private TimeSpan[] playerSong2_Span = new TimeSpan[]
+      {
+            new TimeSpan()
+      };
+
+        private TimeSpan[] playerSong3_Span = new TimeSpan[]
+      {
+            new TimeSpan()
+      };
+
+        private TimeSpan[] playerSong4_Span = new TimeSpan[]
+     {
+            new TimeSpan()
+     };
+
+        private TimeSpan[] Last_SongCast_Timer_Span = new TimeSpan[]
+     {
+            new TimeSpan()
+     };
+
+        private TimeSpan[] pianissimo1_1_Span = new TimeSpan[]
+      {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+      };
+
+        private TimeSpan[] pianissimo2_1_Span = new TimeSpan[]
+      {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+      };
+
+        private TimeSpan[] pianissimo1_2_Span = new TimeSpan[]
+      {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+      };
+
+        private TimeSpan[] pianissimo2_2_Span = new TimeSpan[]
+      {
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+            new TimeSpan(),
+      };
+
         private void PaintBorderlessGroupBox(object sender, PaintEventArgs e)
         {
             GroupBox box = sender as GroupBox;
@@ -2740,6 +2926,8 @@ namespace Miraculix
             activeprocessids.SelectedIndex = POLID.SelectedIndex;
 
             _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
+            partyState.AddOrUpdateMember(_ELITEAPIPL.Player.Name, _ELITEAPIPL.Player.ID);
+            partyMemberAPIs[_ELITEAPIPL.Player.Name] = _ELITEAPIPL;
             plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
             Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
 
@@ -5182,6 +5370,8 @@ namespace Miraculix
         public void ReloadSettings()
         {
             if (Form2.config == null) Form2.config = new Form2.MySettings();
+            var songDuration = (int)(Form2.config.recastSongTime * 60);
+            if (songDuration == 0) songDuration = 120; // Default to 2 minutes if not set
 
             buff_definitions = new Dictionary<string, BuffInfo>
             {
@@ -5190,7 +5380,19 @@ namespace Miraculix
                 { "Refresh", new BuffInfo { Ids = new List<int> { 43, 631, 632 }, Duration = (int)(Form2.config.autoRefresh_Minutes * 60) } },
                 { "Phalanx", new BuffInfo { Ids = new List<int> { 116 }, Duration = (int)(Form2.config.autoPhalanxIIMinutes * 60) } },
                 { "Protect", new BuffInfo { Ids = new List<int> { 40, 601, 602, 603, 604 }, Duration = (int)(Form2.config.autoProtect_Minutes * 60) } },
-                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } }
+                { "Shell", new BuffInfo { Ids = new List<int> { 41, 605, 606, 607, 608 }, Duration = (int)(Form2.config.autoShellMinutes * 60) } },
+                // Bard Songs
+                { "Minne", new BuffInfo { Ids = new List<int> { 197 }, Duration = songDuration } },
+                { "Minuet", new BuffInfo { Ids = new List<int> { 198 }, Duration = songDuration } },
+                { "Paeon", new BuffInfo { Ids = new List<int> { 195 }, Duration = songDuration } },
+                { "Madrigal", new BuffInfo { Ids = new List<int> { 199 }, Duration = songDuration } },
+                { "Prelude", new BuffInfo { Ids = new List<int> { 200 }, Duration = songDuration } },
+                { "Etude", new BuffInfo { Ids = new List<int> { 215 }, Duration = songDuration } },
+                { "Ballad", new BuffInfo { Ids = new List<int> { 196 }, Duration = songDuration } },
+                { "March", new BuffInfo { Ids = new List<int> { 214 }, Duration = songDuration } },
+                { "Carol", new BuffInfo { Ids = new List<int> { 216 }, Duration = songDuration } },
+                { "Hymnus", new BuffInfo { Ids = new List<int> { 218 }, Duration = songDuration } },
+                { "Scherzo", new BuffInfo { Ids = new List<int> { 222 }, Duration = songDuration } }
             };
             partyState.UpdateBuffDefinitions(buff_definitions);
         }
@@ -5549,6 +5751,41 @@ namespace Miraculix
 
             // Grab current time for calculations below
             currentTime = DateTime.Now;
+
+            // Calculate time since Songs were cast on particular player
+            playerSong1_Span[0] = currentTime.Subtract(playerSong1[0]);
+            playerSong2_Span[0] = currentTime.Subtract(playerSong2[0]);
+            playerSong3_Span[0] = currentTime.Subtract(playerSong3[0]);
+            playerSong4_Span[0] = currentTime.Subtract(playerSong4[0]);
+
+            // Calculate time since Adloquium were cast on particular player
+            playerAdloquium_Span[0] = currentTime.Subtract(playerAdloquium[0]);
+            playerAdloquium_Span[1] = currentTime.Subtract(playerAdloquium[1]);
+            playerAdloquium_Span[2] = currentTime.Subtract(playerAdloquium[2]);
+            playerAdloquium_Span[3] = currentTime.Subtract(playerAdloquium[3]);
+            playerAdloquium_Span[4] = currentTime.Subtract(playerAdloquium[4]);
+            playerAdloquium_Span[5] = currentTime.Subtract(playerAdloquium[5]);
+            playerAdloquium_Span[6] = currentTime.Subtract(playerAdloquium[6]);
+            playerAdloquium_Span[7] = currentTime.Subtract(playerAdloquium[7]);
+            playerAdloquium_Span[8] = currentTime.Subtract(playerAdloquium[8]);
+            playerAdloquium_Span[9] = currentTime.Subtract(playerAdloquium[9]);
+            playerAdloquium_Span[10] = currentTime.Subtract(playerAdloquium[10]);
+            playerAdloquium_Span[11] = currentTime.Subtract(playerAdloquium[11]);
+            playerAdloquium_Span[12] = currentTime.Subtract(playerAdloquium[12]);
+            playerAdloquium_Span[13] = currentTime.Subtract(playerAdloquium[13]);
+            playerAdloquium_Span[14] = currentTime.Subtract(playerAdloquium[14]);
+            playerAdloquium_Span[15] = currentTime.Subtract(playerAdloquium[15]);
+            playerAdloquium_Span[16] = currentTime.Subtract(playerAdloquium[16]);
+            playerAdloquium_Span[17] = currentTime.Subtract(playerAdloquium[17]);
+
+
+            Last_SongCast_Timer_Span[0] = currentTime.Subtract(Last_SongCast_Timer[0]);
+
+            // Calculate time since Piannisimo Songs were cast on particular player
+            pianissimo1_1_Span[0] = currentTime.Subtract(playerPianissimo1_1[0]);
+            pianissimo2_1_Span[0] = currentTime.Subtract(playerPianissimo2_1[0]);
+            pianissimo1_2_Span[0] = currentTime.Subtract(playerPianissimo1_2[0]);
+            pianissimo2_2_Span[0] = currentTime.Subtract(playerPianissimo2_2[0]);
 
             // Set array values for GUI "Enabled" checkboxes
             CheckBox[] enabledBoxes = new CheckBox[18];
@@ -8844,220 +9081,51 @@ namespace Miraculix
 
         public void Run_BardSongs()
         {
+            if (!Form2.config.enableSinging || _ELITEAPIPL.Player.Status == 33 || plStatusCheck(StatusEffect.Silence))
+                return;
 
-
-
-
-
-
-
-            PL_BRDCount = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == 195 || b == 196 || b == 197 || b == 198 || b == 199 || b == 200 || b == 201 || b == 214 || b == 215 || b == 216 || b == 218 || b == 219 || b == 222).Count();
-
-
-
-            if ((Form2.config.enableSinging) && _ELITEAPIPL.Player.Status != 33)
+            var songsToCast = new List<SongData>
             {
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song1),
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song2),
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song3),
+                SongInfo.FirstOrDefault(s => s.song_position == Form2.config.song4)
+            }.Where(s => s != null && s.song_name.ToLower() != "blank").ToList();
 
-                SongData song_1 = SongInfo.Where(c => c.song_position == Form2.config.song1).FirstOrDefault();
-                SongData song_2 = SongInfo.Where(c => c.song_position == Form2.config.song2).FirstOrDefault();
-                SongData song_3 = SongInfo.Where(c => c.song_position == Form2.config.song3).FirstOrDefault();
-                SongData song_4 = SongInfo.Where(c => c.song_position == Form2.config.song4).FirstOrDefault();
+            if (!songsToCast.Any()) return;
 
-                SongData dummy1_song = SongInfo.Where(c => c.song_position == Form2.config.dummy1).FirstOrDefault();
-                SongData dummy2_song = SongInfo.Where(c => c.song_position == Form2.config.dummy2).FirstOrDefault();
+            var playerState = partyState.Members.ContainsKey(_ELITEAPIPL.Player.Name) ? partyState.Members[_ELITEAPIPL.Player.Name] : null;
+            if (playerState == null) return;
 
-                // Check the distance of the Monitored player
-                int Monitoreddistance = 50;
+            foreach (var song in songsToCast)
+            {
+                var buffDef = buff_definitions.Values.FirstOrDefault(b => b.Ids.Contains(song.buff_id));
+                if (buffDef == null) continue;
 
-
-                EliteAPI.XiEntity monitoredTarget = _ELITEAPIPL.Entity.GetEntity((int)_ELITEAPIMonitored.Target.GetTargetInfo().TargetIndex);
-                Monitoreddistance = (int)monitoredTarget.Distance;
-
-                int Songs_Possible = 0;
-
-                if (song_1.song_name.ToLower() != "blank")
+                var activeBuff = playerState.Buffs.FirstOrDefault(b => buffDef.Ids.Contains(b.Id));
+                if (activeBuff == null || activeBuff.Expiration <= DateTime.Now)
                 {
-                    Songs_Possible++;
-                }
-                if (song_2.song_name.ToLower() != "blank")
-                {
-                    Songs_Possible++;
-                }
-                if (dummy1_song != null && dummy1_song.song_name.ToLower() != "blank")
-                {
-                    Songs_Possible++;
-                }
-                if (dummy2_song != null && dummy2_song.song_name.ToLower() != "blank")
-                {
-                    Songs_Possible++;
-                }
-
-                // List to make it easy to check how many of each buff is needed.
-                List<int> SongDataMax = new List<int> { song_1.buff_id, song_2.buff_id, song_3.buff_id, song_4.buff_id };
-
-                // Check Whether e have the songs Currently Up
-                int count1_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.buff_id).Count();
-                int count2_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.buff_id).Count();
-                int count3_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.buff_id).Count();
-                int count4_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.buff_id).Count();
-                int count5_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.buff_id).Count();
-                int count6_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.buff_id).Count();
-
-                int MON_count1_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.buff_id).Count();
-                int MON_count2_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.buff_id).Count();
-                int MON_count3_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.buff_id).Count();
-                int MON_count4_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.buff_id).Count();
-                int MON_count5_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.buff_id).Count();
-                int MON_count6_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.buff_id).Count();
-
-
-                if (ForceSongRecast == true) { song_casting = 0; ForceSongRecast = false; }
-
-
-                // SONG NUMBER #4
-                if (song_casting == 3 && PL_BRDCount >= 3 && song_4.song_name.ToLower() != "blank" && count6_type < SongDataMax.Where(c => c == song_4.buff_id).Count() && Last_Song_Cast != song_4.song_name)
-                {
-                    if (PL_BRDCount == 3)
+                    if (CheckSpellRecast(song.song_name) == 0 && HasSpell(song.song_name))
                     {
-                        if (CheckSpellRecast(dummy2_song.song_name) == 0 && (HasSpell(dummy2_song.song_name)) && JobChecker(dummy2_song.song_name) == true)
+                        // Prioritize using Troubadour or Nightingale if available and no songs are up
+                        if (!playerState.Buffs.Any(b => buff_definitions.Values.Any(def => def.Ids.Contains(b.Id) && def.Duration > 100))) // Check if any song is up
                         {
-                            CastSpell("<me>", dummy2_song.song_name);
+                            if (Form2.config.Troubadour && HasAbility("Troubadour") && GetAbilityRecast("Troubadour") == 0)
+                            {
+                                JobAbility_Wait("Troubadour", "Troubadour");
+                                return; // Wait for next tick
+                            }
+                            if (Form2.config.Nightingale && HasAbility("Nightingale") && GetAbilityRecast("Nightingale") == 0)
+                            {
+                                JobAbility_Wait("Nightingale", "Nightingale");
+                                return; // Wait for next tick
+                            }
                         }
-                    }
-                    else
-                    {
-                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)) && JobChecker(song_4.song_name) == true)
-                        {
-                            CastSpell("<me>", song_4.song_name);
-                            Last_Song_Cast = song_4.song_name;
-                            Last_SongCast_Timer[0] = DateTime.Now;
-                            playerSong4[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
 
-                }
-                else if (song_casting == 3 && song_4.song_name.ToLower() != "blank" && count6_type >= SongDataMax.Where(c => c == song_4.buff_id).Count())
-                {
-                    song_casting = 0;
-                }
-
-
-                // SONG NUMBER #3
-                else if (song_casting == 2 && PL_BRDCount >= 2 && song_3.song_name.ToLower() != "blank" && count4_type < SongDataMax.Where(c => c == song_3.buff_id).Count() && Last_Song_Cast != song_3.song_name)
-                {
-                    if (PL_BRDCount == 2)
-                    {
-                        if (CheckSpellRecast(dummy1_song.song_name) == 0 && (HasSpell(dummy1_song.song_name)) && JobChecker(dummy1_song.song_name) == true)
-                        {
-                            CastSpell("<me>", dummy1_song.song_name);
-                        }
-                    }
-                    else
-                    {
-                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)) && JobChecker(song_3.song_name) == true)
-                        {
-                            CastSpell("<me>", song_3.song_name);
-                            Last_Song_Cast = song_3.song_name;
-                            Last_SongCast_Timer[0] = DateTime.Now;
-                            playerSong3[0] = DateTime.Now;
-                            song_casting = 3;
-                        }
+                        CastSpell("<me>", song.song_name);
+                        return; // Cast one song per tick
                     }
                 }
-                else if (song_casting == 2 && song_3.song_name.ToLower() != "blank" && count4_type >= SongDataMax.Where(c => c == song_3.buff_id).Count())
-                {
-                    song_casting = 3;
-                }
-
-
-                // SONG NUMBER #2
-                else if (song_casting == 1 && song_2.song_name.ToLower() != "blank" && count2_type < SongDataMax.Where(c => c == song_2.buff_id).Count() && Last_Song_Cast != song_4.song_name)
-                {
-                    if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)) && JobChecker(song_2.song_name) == true)
-                    {
-                        CastSpell("<me>", song_2.song_name);
-                        Last_Song_Cast = song_2.song_name;
-                        Last_SongCast_Timer[0] = DateTime.Now;
-                        playerSong2[0] = DateTime.Now;
-                        song_casting = 2;
-                    }
-                }
-                else if (song_casting == 1 && song_2.song_name.ToLower() != "blank" && count2_type >= SongDataMax.Where(c => c == song_2.buff_id).Count())
-                {
-                    song_casting = 2;
-                }
-
-                // SONG NUMBER #1
-                else if ((song_casting == 0) && song_1.song_name.ToLower() != "blank" && count1_type < SongDataMax.Where(c => c == song_1.buff_id).Count() && Last_Song_Cast != song_4.song_name)
-                {
-                    if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)) && JobChecker(song_1.song_name) == true)
-                    {
-                        CastSpell("<me>", song_1.song_name);
-                        Last_Song_Cast = song_1.song_name;
-                        Last_SongCast_Timer[0] = DateTime.Now;
-                        playerSong1[0] = DateTime.Now;
-                        song_casting = 1;
-                    }
-
-                }
-                else if (song_casting == 0 && song_2.song_name.ToLower() != "blank" && count1_type >= SongDataMax.Where(c => c == song_1.buff_id).Count())
-                {
-                    song_casting = 1;
-                }
-
-
-                // ONCE ALL SONGS HAVE BEEN CAST ONLY RECAST THEM WHEN THEY MEET THE THRESHOLD SET ON SONG RECAST AND BLOCK IF IT'S SET AT LAUNCH DEFAULTS
-                if (playerSong1[0] != DefaultTime && playerSong1_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)) && JobChecker(song_1.song_name) == true)
-                        {
-                            CastSpell("<me>", song_1.song_name);
-                            playerSong1[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong2[0] != DefaultTime && playerSong2_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)) && JobChecker(song_2.song_name) == true)
-                        {
-                            CastSpell("<me>", song_2.song_name);
-                            playerSong2[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong3[0] != DefaultTime && playerSong3_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)) && JobChecker(song_3.song_name) == true)
-                        {
-                            CastSpell("<me>", song_3.song_name);
-                            playerSong3[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-                else if (playerSong4[0] != DefaultTime && playerSong4_Span[0].Minutes >= Form2.config.recastSongTime)
-                {
-                    if ((Form2.config.SongsOnlyWhenNear && Monitoreddistance < 10) || Form2.config.SongsOnlyWhenNear == false)
-                    {
-                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)) && JobChecker(song_4.song_name) == true)
-                        {
-                            CastSpell("<me>", song_4.song_name);
-                            playerSong4[0] = DateTime.Now;
-                            song_casting = 0;
-                        }
-                    }
-                }
-
-
             }
         }
 
