@@ -106,6 +106,8 @@ namespace Miraculix
         private DateTime _lastPipeMessageTime;
         private Profile _currentProfile = Profile.Normal;
         private DateTime _lastSpellCastTime;
+        private string lastSpellName;
+        private string lastSpellTarget;
         private TimeSpan _idleHealThreshold;
         private Random _random = new Random();
         private ComboBox[] oopPlayerComboBoxes;
@@ -129,23 +131,11 @@ namespace Miraculix
             new DebuffSpell { Name = "Blindna", Debuff = StatusEffect.Blindness }
         };
         // BARD SONG VARIABLES
-        private int song_casting = 0;
-
-        private int PL_BRDCount = 0;
-        private bool ForceSongRecast = false;
         private string Last_Song_Cast = string.Empty;
 
 
         private uint PL_Index = 0;
         private uint Monitored_Index = 0;
-
-
-        //  private int song_casting = 0;
-        //  private string LastSongCast = String.Empty;
-
-
-        // private bool ForceSongRecast = false;
-        //  private string Last_Song_Cast = String.Empty;
 
 
         // GEO ENGAGED CHECK
@@ -3086,8 +3076,30 @@ namespace Miraculix
                         if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
                         if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
                     }
-                    // Fallback if not found or settings not specific
-                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
+                    else
+                    {
+                        // Likely an OOP player, find their index in the settings arrays
+                        int playerIndex = -1;
+                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+                        {
+                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
+                            {
+                                playerIndex = 18 + i;
+                                break;
+                            }
+                        }
+
+                        if (playerIndex != -1)
+                        {
+                            if (autoHaste_IIEnabled[playerIndex]) spellTiers.Add("Haste II");
+                            if (autoHasteEnabled[playerIndex]) spellTiers.Add("Haste");
+                        }
+                        else
+                        {
+                            // Fallback for manual casts or if player not found
+                            spellTiers.AddRange(new[] { "Haste II", "Haste" });
+                        }
+                    }
                     break;
                 case "regen":
                     // Tiered selection based on settings, highest preferred first.
@@ -5201,7 +5213,8 @@ namespace Miraculix
         private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras, [System.Runtime.CompilerServices.CallerMemberName] string callerName = "")
         {
             LogToFile($"'{callerName}' is attempting to cast '{spellName}' on '{partyMemberName}'. OptionalExtras: {OptionalExtras ?? "None"}");
-
+            lastSpellName = spellName;
+            lastSpellTarget = partyMemberName;
             string lowerSpellName = spellName.ToLower();
             string buffType = null;
             foreach (var buffDef in buff_definitions)
@@ -9634,6 +9647,23 @@ namespace Miraculix
                     break;
 
                 case "CAST_INTERRUPT":
+                    if (!string.IsNullOrEmpty(lastSpellName) && !string.IsNullOrEmpty(lastSpellTarget))
+                    {
+                        EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(lastSpellName.Trim(), 0);
+                        if (magic != null)
+                        {
+                            string buffType = GetBuffNameForSpellId(magic.Index);
+                            if (buffType != null && partyState.Members.ContainsKey(lastSpellTarget))
+                            {
+                                var memberState = partyState.Members[lastSpellTarget];
+                                var buffDef = buff_definitions[buffType];
+                                memberState.Buffs.RemoveAll(b => buffDef.Ids.Contains(b.Id));
+                                LogToFile($"Reverted optimistic state for {lastSpellTarget} - {buffType} due to cast interruption.");
+                            }
+                        }
+                        lastSpellName = null;
+                        lastSpellTarget = null;
+                    }
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
                     Task.Delay(3000).ContinueWith(_ =>
@@ -9647,6 +9677,23 @@ namespace Miraculix
                     break;
 
                 case "CAST_BLOCKED":
+                    if (!string.IsNullOrEmpty(lastSpellName) && !string.IsNullOrEmpty(lastSpellTarget))
+                    {
+                        EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(lastSpellName.Trim(), 0);
+                        if (magic != null)
+                        {
+                            string buffType = GetBuffNameForSpellId(magic.Index);
+                            if (buffType != null && partyState.Members.ContainsKey(lastSpellTarget))
+                            {
+                                var memberState = partyState.Members[lastSpellTarget];
+                                var buffDef = buff_definitions[buffType];
+                                memberState.Buffs.RemoveAll(b => buffDef.Ids.Contains(b.Id));
+                                LogToFile($"Reverted optimistic state for {lastSpellTarget} - {buffType} due to cast blocked.");
+                            }
+                        }
+                        lastSpellName = null;
+                        lastSpellTarget = null;
+                    }
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is BLOCKED";
                     Task.Delay(3000).ContinueWith(_ =>
@@ -9659,6 +9706,8 @@ namespace Miraculix
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                     break;
                 case "CAST_FINISH":
+                    lastSpellName = null;
+                    lastSpellTarget = null;
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
                     Task.Delay(3000).ContinueWith(_ =>
