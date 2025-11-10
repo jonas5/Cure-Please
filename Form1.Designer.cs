@@ -88,8 +88,6 @@ namespace Miraculix
             this.DevotionTargetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HateEstablisherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.buffsHasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buffsHasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoAdloquiumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buffsFlurryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buffsFlurryIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
