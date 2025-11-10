@@ -5201,6 +5201,23 @@ namespace Miraculix
         private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras, [System.Runtime.CompilerServices.CallerMemberName] string callerName = "")
         {
             LogToFile($"'{callerName}' is attempting to cast '{spellName}' on '{partyMemberName}'. OptionalExtras: {OptionalExtras ?? "None"}");
+
+            string lowerSpellName = spellName.ToLower();
+            string buffType = null;
+            foreach (var buffDef in buff_definitions)
+            {
+                if (lowerSpellName.Contains(buffDef.Key.ToLower()))
+                {
+                    buffType = buffDef.Key;
+                    break;
+                }
+            }
+            if (buffType != null && partyState.Members.ContainsKey(partyMemberName))
+            {
+                partyState.ResetBuffTimer(partyMemberName, buffType);
+                LogToFile($"Optimistically reset buff timer for {partyMemberName} - {buffType}.");
+            }
+
             if (CastingBackground_Check != true)
             {
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
