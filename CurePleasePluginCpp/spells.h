@@ -44,6 +44,7 @@ inline std::unordered_map<uint16_t, Spell> spells = {
     {54,  {54,  "Stoneskin", 0, 0}},
     {55,  {55,  "Aquaveil", 0, 0}},
     {57,  {57,  "Haste", 0, 180}},
+    {58,  {58,  "Haste II", 0, 180}},
     {60,  {60,  "Phalanx", 0, 300}},
     {108, {108, "Regen", 0, 60}},
     {109, {109, "Regen II", 0, 60}},

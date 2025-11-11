@@ -3082,16 +3082,41 @@ namespace Miraculix
                         return null; // Player knows no version of Shell.
                     }
                 case "haste":
+                    byte memberIndex = 255;
                     var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
                     if (partyMember != null)
                     {
-                        byte memberIndex = partyMember.MemberNumber;
-                        if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
-                        if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
+                        memberIndex = partyMember.MemberNumber;
                     }
-                    // Fallback if not found or settings not specific
-                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
-                    break;
+                    else
+                    {
+                        int oopIndex = -1;
+                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+                        {
+                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
+                            {
+                                oopIndex = i;
+                                break;
+                            }
+                        }
+                        if (oopIndex != -1)
+                        {
+                            memberIndex = (byte)(18 + oopIndex);
+                        }
+                    }
+
+                    if (memberIndex != 255)
+                    {
+                        if (autoHaste_IIEnabled[memberIndex] && HasSpell("Haste II"))
+                        {
+                            return "Haste II";
+                        }
+                        if (autoHasteEnabled[memberIndex] && HasSpell("Haste"))
+                        {
+                            return "Haste";
+                        }
+                    }
+                    return null;
                 case "regen":
                     // Tiered selection based on settings, highest preferred first.
                     spellTiers.Add("Regen V");
@@ -3452,6 +3477,7 @@ namespace Miraculix
             if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
             {
                 ReloadSettings();
+                SendSettingsToPlugin();
                 if (Form2.config.pauseOnZoneBox == true)
                 {
                     song_casting = 0;
@@ -3473,10 +3499,15 @@ namespace Miraculix
                     {
                         pauseButton.Text = "Zoned, waiting.";
                         pauseButton.ForeColor = Color.Red;
-                        await Task.Delay(100);
-                        Thread.Sleep(17000);
+                        pauseActions = true;
+                        actionTimer.Enabled = false;
+
+                        await Task.Delay(17000);
+
                         pauseButton.Text = "Pause";
                         pauseButton.ForeColor = Color.Black;
+                        pauseActions = false;
+                        actionTimer.Enabled = true;
                     }
                 }
                 ActiveBuffs.Clear();
@@ -7747,44 +7778,76 @@ namespace Miraculix
 
         private void autoAdloquiumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoAdloquium_Enabled[playerOptionsSelected] = !autoAdloquium_Enabled[playerOptionsSelected];
+            autoAdloquium_Enabled[playerOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void buffsFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurryEnabled[buffOptionsSelected] = !autoFlurryEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoFlurryEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                buffsHasteToolStripMenuItem.Checked = false;
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+                buffsHasteIIToolStripMenuItem.Checked = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+                buffsFlurryIIToolStripMenuItem.Checked = false;
+            }
         }
 
         private void buffsFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurry_IIEnabled[buffOptionsSelected] = !autoFlurry_IIEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoFlurry_IIEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                buffsHasteToolStripMenuItem.Checked = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                buffsFlurryToolStripMenuItem.Checked = false;
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+                buffsHasteIIToolStripMenuItem.Checked = false;
+            }
         }
 
         private void buffsHasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHasteEnabled[buffOptionsSelected] = !autoHasteEnabled[buffOptionsSelected];
-            autoHaste_IIEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoHasteEnabled[buffOptionsSelected] = menuItem.Checked;
+            oopBuffPreferences[oopPlayerComboBoxes[buffOptionsSelected - 18].SelectedItem.ToString()]["Haste"] = menuItem.Checked;
+
+            if (menuItem.Checked)
+            {
+                autoHaste_IIEnabled[buffOptionsSelected] = false;
+                buffsHasteIIToolStripMenuItem.Checked = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                buffsFlurryToolStripMenuItem.Checked = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+                buffsFlurryIIToolStripMenuItem.Checked = false;
+            }
         }
 
         private void buffsHasteIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoHaste_IIEnabled[buffOptionsSelected] = !autoHaste_IIEnabled[buffOptionsSelected];
-            autoHasteEnabled[buffOptionsSelected] = false;
-            autoFlurryEnabled[buffOptionsSelected] = false;
-            autoFlurry_IIEnabled[buffOptionsSelected] = false;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoHaste_IIEnabled[buffOptionsSelected] = menuItem.Checked;
+            oopBuffPreferences[oopPlayerComboBoxes[buffOptionsSelected - 18].SelectedItem.ToString()]["Haste II"] = menuItem.Checked;
+
+            if (menuItem.Checked)
+            {
+                autoHasteEnabled[buffOptionsSelected] = false;
+                buffsHasteToolStripMenuItem.Checked = false;
+                autoFlurryEnabled[buffOptionsSelected] = false;
+                buffsFlurryToolStripMenuItem.Checked = false;
+                autoFlurry_IIEnabled[buffOptionsSelected] = false;
+                buffsFlurryIIToolStripMenuItem.Checked = false;
+            }
         }
 
         private void buffsProtectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoProtect_Enabled[buffOptionsSelected] = !autoProtect_Enabled[buffOptionsSelected];
+            autoProtect_Enabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void enableDebuffRemovalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7795,22 +7858,22 @@ namespace Miraculix
 
         private void buffsShellToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoShell_Enabled[buffOptionsSelected] = !autoShell_Enabled[buffOptionsSelected];
+            autoShell_Enabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void autoPhalanxIIToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            autoPhalanx_IIEnabled[buffOptionsSelected] = !autoPhalanx_IIEnabled[buffOptionsSelected];
+            autoPhalanx_IIEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void autoRegenVToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoRegen_Enabled[buffOptionsSelected] = !autoRegen_Enabled[buffOptionsSelected];
+            autoRegen_Enabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void autoRefreshIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoRefreshEnabled[buffOptionsSelected] = !autoRefreshEnabled[buffOptionsSelected];
+            autoRefreshEnabled[buffOptionsSelected] = ((ToolStripMenuItem)sender).Checked;
         }
 
         private void hasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7938,74 +8001,188 @@ namespace Miraculix
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Viruna");
         }
 
-        private void setAllStormsFalse(byte buffOptionsSelected)
-        {
-            // MessageBox.Show("SONG DATA: " + activeStorm + " " + buffOptionsSelected);
-
-            autoSandstormEnabled[buffOptionsSelected] = false;
-            autoRainstormEnabled[buffOptionsSelected] = false;
-            autoFirestormEnabled[buffOptionsSelected] = false;
-            autoWindstormEnabled[buffOptionsSelected] = false;
-            autoHailstormEnabled[buffOptionsSelected] = false;
-            autoThunderstormEnabled[buffOptionsSelected] = false;
-            autoVoidstormEnabled[buffOptionsSelected] = false;
-            autoAurorastormEnabled[buffOptionsSelected] = false;
-        }
-
         private void SandstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoSandstormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoSandstormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoSandstormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoRainstormEnabled[buffOptionsSelected] = false;
+                RainstormToolStripMenuItem.Checked = false;
+                autoWindstormEnabled[buffOptionsSelected] = false;
+                WindstormToolStripMenuItem.Checked = false;
+                autoFirestormEnabled[buffOptionsSelected] = false;
+                FirestormToolStripMenuItem.Checked = false;
+                autoHailstormEnabled[buffOptionsSelected] = false;
+                HailstormToolStripMenuItem.Checked = false;
+                autoThunderstormEnabled[buffOptionsSelected] = false;
+                ThunderstormToolStripMenuItem.Checked = false;
+                autoVoidstormEnabled[buffOptionsSelected] = false;
+                VoidstormToolStripMenuItem.Checked = false;
+                autoAurorastormEnabled[buffOptionsSelected] = false;
+                AurorastormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void RainstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoRainstormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoRainstormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoRainstormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoSandstormEnabled[buffOptionsSelected] = false;
+                SandstormToolStripMenuItem.Checked = false;
+                autoWindstormEnabled[buffOptionsSelected] = false;
+                WindstormToolStripMenuItem.Checked = false;
+                autoFirestormEnabled[buffOptionsSelected] = false;
+                FirestormToolStripMenuItem.Checked = false;
+                autoHailstormEnabled[buffOptionsSelected] = false;
+                HailstormToolStripMenuItem.Checked = false;
+                autoThunderstormEnabled[buffOptionsSelected] = false;
+                ThunderstormToolStripMenuItem.Checked = false;
+                autoVoidstormEnabled[buffOptionsSelected] = false;
+                VoidstormToolStripMenuItem.Checked = false;
+                autoAurorastormEnabled[buffOptionsSelected] = false;
+                AurorastormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void WindstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoWindstormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoWindstormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoWindstormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoSandstormEnabled[buffOptionsSelected] = false;
+                SandstormToolStripMenuItem.Checked = false;
+                autoRainstormEnabled[buffOptionsSelected] = false;
+                RainstormToolStripMenuItem.Checked = false;
+                autoFirestormEnabled[buffOptionsSelected] = false;
+                FirestormToolStripMenuItem.Checked = false;
+                autoHailstormEnabled[buffOptionsSelected] = false;
+                HailstormToolStripMenuItem.Checked = false;
+                autoThunderstormEnabled[buffOptionsSelected] = false;
+                ThunderstormToolStripMenuItem.Checked = false;
+                autoVoidstormEnabled[buffOptionsSelected] = false;
+                VoidstormToolStripMenuItem.Checked = false;
+                autoAurorastormEnabled[buffOptionsSelected] = false;
+                AurorastormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void FirestormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoFirestormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoFirestormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoFirestormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoSandstormEnabled[buffOptionsSelected] = false;
+                SandstormToolStripMenuItem.Checked = false;
+                autoRainstormEnabled[buffOptionsSelected] = false;
+                RainstormToolStripMenuItem.Checked = false;
+                autoWindstormEnabled[buffOptionsSelected] = false;
+                WindstormToolStripMenuItem.Checked = false;
+                autoHailstormEnabled[buffOptionsSelected] = false;
+                HailstormToolStripMenuItem.Checked = false;
+                autoThunderstormEnabled[buffOptionsSelected] = false;
+                ThunderstormToolStripMenuItem.Checked = false;
+                autoVoidstormEnabled[buffOptionsSelected] = false;
+                VoidstormToolStripMenuItem.Checked = false;
+                autoAurorastormEnabled[buffOptionsSelected] = false;
+                AurorastormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void HailstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoHailstormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoHailstormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoHailstormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoSandstormEnabled[buffOptionsSelected] = false;
+                SandstormToolStripMenuItem.Checked = false;
+                autoRainstormEnabled[buffOptionsSelected] = false;
+                RainstormToolStripMenuItem.Checked = false;
+                autoWindstormEnabled[buffOptionsSelected] = false;
+                WindstormToolStripMenuItem.Checked = false;
+                autoFirestormEnabled[buffOptionsSelected] = false;
+                FirestormToolStripMenuItem.Checked = false;
+                autoThunderstormEnabled[buffOptionsSelected] = false;
+                ThunderstormToolStripMenuItem.Checked = false;
+                autoVoidstormEnabled[buffOptionsSelected] = false;
+                VoidstormToolStripMenuItem.Checked = false;
+                autoAurorastormEnabled[buffOptionsSelected] = false;
+                AurorastormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void ThunderstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoThunderstormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoThunderstormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoThunderstormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoSandstormEnabled[buffOptionsSelected] = false;
+                SandstormToolStripMenuItem.Checked = false;
+                autoRainstormEnabled[buffOptionsSelected] = false;
+                RainstormToolStripMenuItem.Checked = false;
+                autoWindstormEnabled[buffOptionsSelected] = false;
+                WindstormToolStripMenuItem.Checked = false;
+                autoFirestormEnabled[buffOptionsSelected] = false;
+                FirestormToolStripMenuItem.Checked = false;
+                autoHailstormEnabled[buffOptionsSelected] = false;
+                HailstormToolStripMenuItem.Checked = false;
+                autoVoidstormEnabled[buffOptionsSelected] = false;
+                VoidstormToolStripMenuItem.Checked = false;
+                autoAurorastormEnabled[buffOptionsSelected] = false;
+                AurorastormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void VoidstormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoVoidstormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoVoidstormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoVoidstormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoSandstormEnabled[buffOptionsSelected] = false;
+                SandstormToolStripMenuItem.Checked = false;
+                autoRainstormEnabled[buffOptionsSelected] = false;
+                RainstormToolStripMenuItem.Checked = false;
+                autoWindstormEnabled[buffOptionsSelected] = false;
+                WindstormToolStripMenuItem.Checked = false;
+                autoFirestormEnabled[buffOptionsSelected] = false;
+                FirestormToolStripMenuItem.Checked = false;
+                autoHailstormEnabled[buffOptionsSelected] = false;
+                HailstormToolStripMenuItem.Checked = false;
+                autoThunderstormEnabled[buffOptionsSelected] = false;
+                ThunderstormToolStripMenuItem.Checked = false;
+                autoAurorastormEnabled[buffOptionsSelected] = false;
+                AurorastormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void AurorastormToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool currentStatus = autoAurorastormEnabled[buffOptionsSelected];
-            setAllStormsFalse(buffOptionsSelected);
-            autoAurorastormEnabled[buffOptionsSelected] = !currentStatus;
+            var menuItem = (ToolStripMenuItem)sender;
+            autoAurorastormEnabled[buffOptionsSelected] = menuItem.Checked;
+            if (menuItem.Checked)
+            {
+                autoSandstormEnabled[buffOptionsSelected] = false;
+                SandstormToolStripMenuItem.Checked = false;
+                autoRainstormEnabled[buffOptionsSelected] = false;
+                RainstormToolStripMenuItem.Checked = false;
+                autoWindstormEnabled[buffOptionsSelected] = false;
+                WindstormToolStripMenuItem.Checked = false;
+                autoFirestormEnabled[buffOptionsSelected] = false;
+                FirestormToolStripMenuItem.Checked = false;
+                autoHailstormEnabled[buffOptionsSelected] = false;
+                HailstormToolStripMenuItem.Checked = false;
+                autoThunderstormEnabled[buffOptionsSelected] = false;
+                ThunderstormToolStripMenuItem.Checked = false;
+                autoVoidstormEnabled[buffOptionsSelected] = false;
+                VoidstormToolStripMenuItem.Checked = false;
+            }
         }
 
         private void protectIVToolStripMenuItem_Click(object sender, EventArgs e)
@@ -9378,6 +9555,7 @@ namespace Miraculix
             }
             IsPipeConnected = true;
             UpdateUiForPipeStatus();
+            SendSettingsToPlugin(); // Resync settings on connect
             AddOnStatus.BackColor = Color.ForestGreen;
             AddOnStatus.Text = "Connected";
         }
@@ -9571,20 +9749,23 @@ namespace Miraculix
         {
             if (IsPipeConnected)
             {
-                var settings = new List<string>();
-                settings.Add($"SETTING|debuffDiaBioCooldown={Form2.config.debuffDiaBioCooldown}");
-                settings.Add($"SETTING|debuffElementalCooldown={Form2.config.debuffElementalCooldown}");
-                settings.Add($"SETTING|debuffParalyzeCooldown={Form2.config.debuffParalyzeCooldown}");
-                settings.Add($"SETTING|debuffSilenceCooldown={Form2.config.debuffSilenceCooldown}");
-                settings.Add($"SETTING|debuffBlindCooldown={Form2.config.debuffBlindCooldown}");
-                settings.Add($"SETTING|debuffGravityCooldown={Form2.config.debuffGravityCooldown}");
-                settings.Add($"SETTING|debuffSlowCooldown={Form2.config.debuffSlowCooldown}");
-                settings.Add($"SETTING|debuffBindCooldown={Form2.config.debuffBindCooldown}");
-
-                foreach (var setting in settings)
+                Task.Run(() =>
                 {
-                    _pipeClient.Send(setting);
-                }
+                    var settings = new List<string>();
+                    settings.Add($"SETTING|debuffDiaBioCooldown={Form2.config.debuffDiaBioCooldown}");
+                    settings.Add($"SETTING|debuffElementalCooldown={Form2.config.debuffElementalCooldown}");
+                    settings.Add($"SETTING|debuffParalyzeCooldown={Form2.config.debuffParalyzeCooldown}");
+                    settings.Add($"SETTING|debuffSilenceCooldown={Form2.config.debuffSilenceCooldown}");
+                    settings.Add($"SETTING|debuffBlindCooldown={Form2.config.debuffBlindCooldown}");
+                    settings.Add($"SETTING|debuffGravityCooldown={Form2.config.debuffGravityCooldown}");
+                    settings.Add($"SETTING|debuffSlowCooldown={Form2.config.debuffSlowCooldown}");
+                    settings.Add($"SETTING|debuffBindCooldown={Form2.config.debuffBindCooldown}");
+
+                    foreach (var setting in settings)
+                    {
+                        _pipeClient.Send(setting);
+                    }
+                });
             }
         }
 
