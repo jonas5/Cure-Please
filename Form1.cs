@@ -10743,6 +10743,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         _ELITEAPIPL.Target.SetTarget(debuffTargetId);
                         await Task.Delay(500); // Wait for target to register
                         CastSpell("<t>", spell);
+
+                        // Proactively set the timer to prevent immediate recasting.
+                        int duration = GetDebuffDuration(debuffType);
+                        targetDebuffTimers[debuffType] = DateTime.Now.AddSeconds(duration);
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF CAST] Set timer for '{debuffType}' for {duration}s.");
+
                         return true; // Spell was cast
                     }
                 }
