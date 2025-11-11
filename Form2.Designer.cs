@@ -699,6 +699,109 @@ namespace Miraculix
             this.diaBioPanel.SuspendLayout();
             this.SuspendLayout();
             // 
+            // defenseBoostDispel
+            //
+            this.defenseBoostDispel = new System.Windows.Forms.CheckBox();
+            this.defenseBoostDispel.AutoSize = true;
+            this.defenseBoostDispel.Location = new System.Drawing.Point(580, 50);
+            this.defenseBoostDispel.Name = "defenseBoostDispel";
+            this.defenseBoostDispel.Size = new System.Drawing.Size(120, 20);
+            this.defenseBoostDispel.TabIndex = 0;
+            this.defenseBoostDispel.Text = "Defense Boost";
+            this.defenseBoostDispel.UseVisualStyleBackColor = true;
+            //
+            // defenseBoostCheckedListBox
+            //
+            this.defenseBoostCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.defenseBoostCheckedListBox.FormattingEnabled = true;
+            this.defenseBoostCheckedListBox.Items.AddRange(new object[] {
+            "Adamantoises - Harden Shell",
+            "Antica - Sand Shield",
+            "Bugards - Scutum",
+            "Crabs - Scissor Guard",
+            "Crawlers - Cocoon",
+            "Gorgers - Promyvion Barrier",
+            "Marids - Barrier Tusk",
+            "Orcs - Arm Block",
+            "Quadav - Shell Guard",
+            "Ultima/Proto-Ultima - Particle Shield",
+            "Wamouracampa - Amber Scutum",
+            "Wanderers - Aura of Persistence",
+            "Weepers - Hexagon Belt",
+            "Yagudo - Parry, Shiko no Mitate",
+            "Xzomit - Molluscous Mutation",
+            "Zdei - Reactor Cool"});
+            this.defenseBoostCheckedListBox.Location = new System.Drawing.Point(580, 75);
+            this.defenseBoostCheckedListBox.Name = "defenseBoostCheckedListBox";
+            this.defenseBoostCheckedListBox.Size = new System.Drawing.Size(200, 100);
+            this.defenseBoostCheckedListBox.TabIndex = 1;
+            //
+            // magicShieldDispel
+            //
+            this.magicShieldDispel = new System.Windows.Forms.CheckBox();
+            this.magicShieldDispel.AutoSize = true;
+            this.magicShieldDispel.Location = new System.Drawing.Point(580, 180);
+            this.magicShieldDispel.Name = "magicShieldDispel";
+            this.magicShieldDispel.Size = new System.Drawing.Size(120, 20);
+            this.magicShieldDispel.TabIndex = 2;
+            this.magicShieldDispel.Text = "Magic Shield";
+            this.magicShieldDispel.UseVisualStyleBackColor = true;
+            //
+            // magicShieldCheckedListBox
+            //
+            this.magicShieldCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.magicShieldCheckedListBox.FormattingEnabled = true;
+            this.magicShieldCheckedListBox.Items.AddRange(new object[] {
+            "Ahriman - Magic Barrier",
+            "Alexander (Monster) - Perfect Defense",
+            "Hydra - Polar Bulwark",
+            "Magic Pot - Spectral Barrier",
+            "Mammets - Mind Wall",
+            "Omega - Discharger",
+            "Promathia - Bastion of Twilight",
+            "Proto-Ultima - Mana Screen",
+            "Ruszors - Hydro Blast",
+            "Shadow Lord - during magic stance",
+            "Soulflayers - Immortal Shield"});
+            this.magicShieldCheckedListBox.Location = new System.Drawing.Point(580, 205);
+            this.magicShieldCheckedListBox.Name = "magicShieldCheckedListBox";
+            this.magicShieldCheckedListBox.Size = new System.Drawing.Size(200, 100);
+            this.magicShieldCheckedListBox.TabIndex = 3;
+            //
+            // evasionBoostDispel
+            //
+            this.evasionBoostDispel = new System.Windows.Forms.CheckBox();
+            this.evasionBoostDispel.AutoSize = true;
+            this.evasionBoostDispel.Location = new System.Drawing.Point(580, 310);
+            this.evasionBoostDispel.Name = "evasionBoostDispel";
+            this.evasionBoostDispel.Size = new System.Drawing.Size(120, 20);
+            this.evasionBoostDispel.TabIndex = 4;
+            this.evasionBoostDispel.Text = "Evasion Boost";
+            this.evasionBoostDispel.UseVisualStyleBackColor = true;
+            //
+            // evasionBoostCheckedListBox
+            //
+            this.evasionBoostCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.evasionBoostCheckedListBox.FormattingEnabled = true;
+            this.evasionBoostCheckedListBox.Items.AddRange(new object[] {
+            "Antica - Sand Veil",
+            "Beetles - Rhino Guard",
+            "Buffalo - Rabid Dance",
+            "Cravers - Material Fend",
+            "Lizards - Secretion",
+            "Mamool Ja - Warm-Up",
+            "Pugils - Water Shield",
+            "Rocs - Feather Barrier",
+            "Scorpions - Evasion",
+            "Sea Monks - Hard Membrane",
+            "Tonberries - Sigh",
+            "Wanderers - Mirage",
+            "Wyverns - Wind Wall"});
+            this.evasionBoostCheckedListBox.Location = new System.Drawing.Point(580, 335);
+            this.evasionBoostCheckedListBox.Name = "evasionBoostCheckedListBox";
+            this.evasionBoostCheckedListBox.Size = new System.Drawing.Size(200, 100);
+            this.evasionBoostCheckedListBox.TabIndex = 5;
+            //
             // autoHealWhenIdle
             // 
             this.autoHealWhenIdle.AutoSize = true;
@@ -8326,6 +8429,21 @@ namespace Miraculix
             this.debuffsGroupBox.Controls.Add(this.elementalPanel);
             this.debuffsGroupBox.Controls.Add(this.diaBioPanel);
             this.debuffsGroupBox.Controls.Add(this.enableDebuffs);
+            this.debuffsGroupBox.Controls.Add(this.defenseBoostDispel);
+            this.debuffsGroupBox.Controls.Add(this.defenseBoostCheckedListBox);
+            this.debuffsGroupBox.Controls.Add(this.magicShieldDispel);
+            this.debuffsGroupBox.Controls.Add(this.magicShieldCheckedListBox);
+            this.debuffsGroupBox.Controls.Add(this.evasionBoostDispel);
+            this.debuffsGroupBox.Controls.Add(this.evasionBoostCheckedListBox);
+            this.dispel = new System.Windows.Forms.CheckBox();
+            this.dispel.AutoSize = true;
+            this.dispel.Location = new System.Drawing.Point(580, 25);
+            this.dispel.Name = "dispel";
+            this.dispel.Size = new System.Drawing.Size(120, 20);
+            this.dispel.TabIndex = 6;
+            this.dispel.Text = "Dispel";
+            this.dispel.UseVisualStyleBackColor = true;
+            this.debuffsGroupBox.Controls.Add(this.dispel);
             this.panel16.Controls.Add(this.debuffBindDuration);
             this.panel16.Controls.Add(this.debuffSilenceDuration);
             this.panel16.Controls.Add(this.debuffParalyzeDuration);

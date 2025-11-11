@@ -117,6 +117,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
         private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
         private Dictionary<string, Dictionary<string, bool>> oopDebuffState = new Dictionary<string, Dictionary<string, bool>>();
         private Dictionary<string, HashSet<string>> activePlayerDebuffs = new Dictionary<string, HashSet<string>>();
+        private Dictionary<int, HashSet<string>> mobBuffs = new Dictionary<int, HashSet<string>>();
         public class DebuffSpell
         {
             public string Name { get; set; }
@@ -6054,6 +6055,7 @@ private string GetBestSpellTier(string buffType, string targetName)
                     CheckAndApplyBuffs();
                     CheckEngagedStatus_Hate();
                     RunDebuffLogic();
+                     RunDispelLogic();
      
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
@@ -10245,6 +10247,29 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                     break;
+                case "MOB_BUFF_APPLIED":
+                    if (parts.Length == 3)
+                    {
+                        int mobId = int.Parse(parts[1]);
+                        string buffName = parts[2];
+                        if (!mobBuffs.ContainsKey(mobId))
+                        {
+                            mobBuffs[mobId] = new HashSet<string>();
+                        }
+                        mobBuffs[mobId].Add(buffName);
+                    }
+                    break;
+                case "MOB_BUFF_FADED":
+                    if (parts.Length == 3)
+                    {
+                        int mobId = int.Parse(parts[1]);
+                        string buffName = parts[2];
+                        if (mobBuffs.ContainsKey(mobId))
+                        {
+                            mobBuffs[mobId].Remove(buffName);
+                        }
+                    }
+                    break;
             }
         }
 
@@ -10732,6 +10757,67 @@ private void updateInstances_Tick(object sender, EventArgs e)
             }
         }
 
+        private async void RunDispelLogic()
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.dispel) return;
+            if (_ELITEAPIPL.Player.Status == 33) return;
+
+            debuffTargetId = lockedTargetId;
+            if (debuffTargetId == 0) return;
+
+            EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
+            if (targetEntity == null || targetEntity.HealthPercent == 0 || targetEntity.Distance > 20) return;
+
+            if (mobBuffs.ContainsKey(debuffTargetId))
+            {
+                var buffs = mobBuffs[debuffTargetId];
+                if (buffs.Count > 0)
+                {
+                    if (Form2.config.defenseBoostDispel)
+                    {
+                        if (await CheckAndDispelBuffs(Form2.config.defenseBoostDispelItems, buffs)) return;
+                    }
+                    if (Form2.config.magicShieldDispel)
+                    {
+                        if (await CheckAndDispelBuffs(Form2.config.magicShieldDispelItems, buffs)) return;
+                    }
+                    if (Form2.config.evasionBoostDispel)
+                    {
+                        if (await CheckAndDispelBuffs(Form2.config.evasionBoostDispelItems, buffs)) return;
+                    }
+                }
+            }
+        }
+
+        private async Task<bool> CheckAndDispelBuffs(System.Collections.Generic.List<string> buffEntries, HashSet<string> activeBuffs)
+        {
+            foreach (var buffEntry in buffEntries)
+            {
+                var parts = buffEntry.Split(new[] { " - " }, StringSplitOptions.None);
+                if (parts.Length > 1)
+                {
+                    var abilityPart = parts[1];
+                    var abilityNames = abilityPart.Split(',').Select(s => s.Trim());
+
+                    foreach (var rawAbilityName in abilityNames)
+                    {
+                        var abilityName = rawAbilityName.Split('(')[0].Trim();
+
+                        if (activeBuffs.Contains(abilityName))
+                        {
+                            if (HasSpell("Dispel") && CheckSpellRecast("Dispel") == 0)
+                            {
+                                _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                                await Task.Delay(500);
+                                CastSpell("<t>", "Dispel");
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         private async Task<bool> CheckAndCastDebuff(string debuffType, string[] spellTiers)
         {
             if (!targetDebuffTimers.ContainsKey(debuffType) || DateTime.Now >= targetDebuffTimers[debuffType])
