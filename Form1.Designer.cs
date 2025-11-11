@@ -846,9 +846,7 @@ namespace Miraculix
             this.toolStripSeparator3,
             this.toolStripMenuItem1,
             this.enableDebuffRemovalToolStripMenuItem,
-            this.toolStripSeperator13,
-            this.partyAutoProtectToolStripMenuItem,
-            this.partyAutoShellToolStripMenuItem});
+            this.toolStripSeperator13});
             this.playerOptions.Name = "player0rightclick";
             this.playerOptions.Size = new System.Drawing.Size(227, 342);
             // 
@@ -2102,6 +2100,8 @@ namespace Miraculix
             this.autoPhalanxIIToolStripMenuItem1,
             this.autoRegenVToolStripMenuItem,
             this.autoRefreshIIToolStripMenuItem,
+            this.partyAutoProtectToolStripMenuItem,
+            this.partyAutoShellToolStripMenuItem,
             this.toolStripSeparator1,
             this.SandstormToolStripMenuItem,
             this.RainstormToolStripMenuItem,
