@@ -5569,8 +5569,9 @@ namespace Miraculix
                                 continue;
                             }
                         }
-                        var buff = memberState.Buffs.FirstOrDefault(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id));
-                        if (buff == null || buff.Expiration <= DateTime.Now)
+
+                        bool hasActiveBuff = memberState.Buffs.Any(b => buff_definitions[buffInfo.Name].Ids.Contains(b.Id) && b.Expiration > DateTime.Now);
+                        if (!hasActiveBuff)
                         {
                             string spellToCast = GetBestSpellTier(buffInfo.Name, memberState.Name);
                             if (!string.IsNullOrEmpty(spellToCast))
@@ -5741,7 +5742,6 @@ namespace Miraculix
         }
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
-
             if ((_ELITEAPIPL.Player.Status == (byte)Status.Healing) || (_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
             {
                 return;
