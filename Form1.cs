@@ -3474,10 +3474,15 @@ namespace Miraculix
                     {
                         pauseButton.Text = "Zoned, waiting.";
                         pauseButton.ForeColor = Color.Red;
-                        await Task.Delay(100);
-                        Thread.Sleep(17000);
+                        pauseActions = true;
+                        actionTimer.Enabled = false;
+
+                        await Task.Delay(17000);
+
                         pauseButton.Text = "Pause";
                         pauseButton.ForeColor = Color.Black;
+                        pauseActions = false;
+                        actionTimer.Enabled = true;
                     }
                 }
                 ActiveBuffs.Clear();
