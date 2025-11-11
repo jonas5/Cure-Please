@@ -98,8 +98,6 @@ namespace Miraculix
             this.buffsShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buffsProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stormspellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buffsHasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buffsHasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sneakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2081,13 +2079,13 @@ namespace Miraculix
             //
             // buffsHasteToolStripMenuItem
             //
-            this.buffsHasteToolStripMenuItem = new ToolStripMenuItem();
-            this.buffsHasteToolStripMenuItem.CheckOnClick = true;
-            this.buffsHasteToolStripMenuItem.Name = "hasteToolStripMenuItem";
-            this.buffsHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.buffsHasteToolStripMenuItem.Text = "Auto Haste";
-            this.buffsHasteToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
-            this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.hasteToolStripMenuItem_Click);
+            //this.buffsHasteToolStripMenuItem = new ToolStripMenuItem();
+            //this.buffsHasteToolStripMenuItem.CheckOnClick = true;
+            //this.buffsHasteToolStripMenuItem.Name = "hasteToolStripMenuItem";
+            //this.buffsHasteToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            //this.buffsHasteToolStripMenuItem.Text = "Auto Haste";
+            //this.buffsHasteToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
+            //this.buffsHasteToolStripMenuItem.Click += new System.EventHandler(this.hasteToolStripMenuItem_Click);
 
 
             //
@@ -2097,8 +2095,8 @@ namespace Miraculix
             this.buffsHasteIIToolStripMenuItem.CheckOnClick = true;
             this.buffsHasteIIToolStripMenuItem.Name = "buffsHasteIIToolStripMenuItem";
             this.buffsHasteIIToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.buffsHasteIIToolStripMenuItem.Text = "Auto Haste II";
-            this.buffsHasteIIToolStripMenuItem.ToolTipText = "Auto Haste II (Default 3 minutes)";
+            this.buffsHasteIIToolStripMenuItem.Text = "Auto Haste";
+            this.buffsHasteIIToolStripMenuItem.ToolTipText = "Auto Haste (Default 3 minutes)";
             this.buffsHasteIIToolStripMenuItem.Click += new System.EventHandler(this.buffsHasteIIToolStripMenuItem_Click);
 
 
@@ -2489,8 +2487,6 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buffsHasteToolStripMenuItem,
-            this.buffsHasteIIToolStripMenuItem,
             this.buffsShellToolStripMenuItem,
             this.buffsProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";
@@ -2846,7 +2842,7 @@ namespace Miraculix
             // buffOptions
             // 
             this.buffOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buffsHasteToolStripMenuItem,
+            //this.buffsHasteToolStripMenuItem,
             this.buffsHasteIIToolStripMenuItem,
             this.buffsFlurryToolStripMenuItem,
             this.buffsFlurryIIToolStripMenuItem,
@@ -3196,7 +3192,7 @@ namespace Miraculix
         private Button player15buffsButton;
         private Button player16buffsButton;
         private Button player17buffsButton;
-        private ToolStripMenuItem buffsHasteToolStripMenuItem;
+        //private ToolStripMenuItem buffsHasteToolStripMenuItem;
         private ToolStripMenuItem buffsHasteIIToolStripMenuItem;
         private ToolStripMenuItem buffsFlurryToolStripMenuItem;
         private ToolStripMenuItem buffsFlurryIIToolStripMenuItem;
