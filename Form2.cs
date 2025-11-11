@@ -4119,10 +4119,8 @@ namespace Miraculix
             {
                 for (int i = 0; i < defenseBoostCheckedListBox.Items.Count; i++)
                 {
-                    if (config.defenseBoostDispelItems.Contains(defenseBoostCheckedListBox.Items[i].ToString()))
-                    {
-                        defenseBoostCheckedListBox.SetItemChecked(i, true);
-                    }
+                    bool shouldBeChecked = config.defenseBoostDispelItems.Contains(defenseBoostCheckedListBox.Items[i].ToString());
+                    defenseBoostCheckedListBox.SetItemChecked(i, shouldBeChecked);
                 }
             }
 
@@ -4131,10 +4129,8 @@ namespace Miraculix
             {
                 for (int i = 0; i < magicShieldCheckedListBox.Items.Count; i++)
                 {
-                    if (config.magicShieldDispelItems.Contains(magicShieldCheckedListBox.Items[i].ToString()))
-                    {
-                        magicShieldCheckedListBox.SetItemChecked(i, true);
-                    }
+                    bool shouldBeChecked = config.magicShieldDispelItems.Contains(magicShieldCheckedListBox.Items[i].ToString());
+                    magicShieldCheckedListBox.SetItemChecked(i, shouldBeChecked);
                 }
             }
 
@@ -4143,10 +4139,8 @@ namespace Miraculix
             {
                 for (int i = 0; i < evasionBoostCheckedListBox.Items.Count; i++)
                 {
-                    if (config.evasionBoostDispelItems.Contains(evasionBoostCheckedListBox.Items[i].ToString()))
-                    {
-                        evasionBoostCheckedListBox.SetItemChecked(i, true);
-                    }
+                    bool shouldBeChecked = config.evasionBoostDispelItems.Contains(evasionBoostCheckedListBox.Items[i].ToString());
+                    evasionBoostCheckedListBox.SetItemChecked(i, shouldBeChecked);
                 }
             }
             dispel.Checked = config.dispel;
