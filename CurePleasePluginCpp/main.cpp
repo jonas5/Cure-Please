@@ -127,20 +127,20 @@ private:
         DWORD bytesRead;
 
         while (!m_Shutdown) {
-            m_LogManager->Log(LogLevel::Info, "Miraculix", "Pipe thread waiting for connection...");
+            m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", "Pipe thread waiting for connection...");
             m_hPipe = CreateNamedPipeW(PipeName.c_str(), PIPE_ACCESS_DUPLEX,
                 PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
                 1, 1024, 1024, 0, NULL);
 
             if (m_hPipe == INVALID_HANDLE_VALUE) {
-                m_LogManager->Log(LogLevel::Error, "Miraculix", "Failed to create named pipe.");
+                m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Error), "Miraculix", "Failed to create named pipe.");
                 Sleep(5000);
                 continue;
             }
 
             BOOL connected = ConnectNamedPipe(m_hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
             if (connected) {
-                m_LogManager->Log(LogLevel::Info, "Miraculix", "Pipe client connected.");
+                m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", "Pipe client connected.");
                 {
                     std::lock_guard<std::mutex> lock(m_PipeMutex);
                     m_PipeConnected = true;
@@ -151,7 +151,7 @@ private:
                     if (ReadFile(m_hPipe, buffer, sizeof(buffer) - 1, &bytesRead, NULL)) {
                         buffer[bytesRead] = '\0';
                         std::string received(buffer);
-                        m_LogManager->Log(LogLevel::Info, "Miraculix", ("Received from pipe: " + received).c_str());
+                        m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("Received from pipe: " + received).c_str());
                         // Simple parsing logic
                         if (received.rfind("SETTING|", 0) == 0) {
                             std::string setting = received.substr(8);
@@ -198,7 +198,7 @@ private:
                     }
                     else {
                         if (GetLastError() != ERROR_IO_PENDING) {
-                            m_LogManager->Log(LogLevel::Error, "Miraculix", "ReadFile error or pipe closed.");
+                            m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Error), "Miraculix", "ReadFile error or pipe closed.");
                             break; // Error or pipe closed
                         }
                     }
@@ -210,7 +210,7 @@ private:
                 std::lock_guard<std::mutex> lock(m_PipeMutex);
                 m_PipeConnected = false;
             }
-            m_LogManager->Log(LogLevel::Info, "Miraculix", "Pipe client disconnected.");
+            m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", "Pipe client disconnected.");
 
             if (m_hPipe != INVALID_HANDLE_VALUE) {
                 DisconnectNamedPipe(m_hPipe);
@@ -296,14 +296,14 @@ public:
 
     bool HandleIncomingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified, uint32_t sizeChunk, const uint8_t* dataChunk, bool injected, bool blocked) override
     {
-        m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] Incoming packet ID: " + std::to_string(id)).c_str());
+        m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] Incoming packet ID: " + std::to_string(id)).c_str());
         // Packet 0x00A: Zone Change
         if (id == 0x00A && size >= 4)
         {
             if (!m_isZoning) {
                 m_isZoning = true;
                 m_spellTimers.clear();
-                m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", "[Miraculix] Zoning detected, clearing all spell timers.");
+                m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", "[Miraculix] Zoning detected, clearing all spell timers.");
                 WriteToPipe("LOG|Zoning detected, clearing all spell timers.\n");
             }
         }
@@ -318,7 +318,7 @@ public:
             uint32_t actorId = *reinterpret_cast<const uint32_t*>(data + 4);
             uint16_t abilityId = *reinterpret_cast<const uint16_t*>(data + 12);
             std::string actorName = GetEntityNameById(actorId);
-            m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] Action packet: " + actorName + " used ability " + std::to_string(abilityId)).c_str());
+            m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] Action packet: " + actorName + " used ability " + std::to_string(abilityId)).c_str());
 
             if (!actorName.empty() && actorName != "Unknown" && actorName != "None")
             {
@@ -326,7 +326,7 @@ public:
                 auto it_def = dispel_defense_map.find(abilityId);
                 if (it_def != dispel_defense_map.end())
                 {
-                    m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] DISPEL_REQUESTED: " + actorName + " used " + it_def->second).c_str());
+                    m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] DISPEL_REQUESTED: " + actorName + " used " + it_def->second).c_str());
                     WriteToPipe("DISPEL_REQUESTED|" + actorName + "|" + it_def->second + "\n");
                     return false;
                 }
@@ -335,7 +335,7 @@ public:
                 auto it_mag = dispel_magic_map.find(abilityId);
                 if (it_mag != dispel_magic_map.end())
                 {
-                    m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] DISPEL_REQUESTED: " + actorName + " used " + it_mag->second).c_str());
+                    m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] DISPEL_REQUESTED: " + actorName + " used " + it_mag->second).c_str());
                     WriteToPipe("DISPEL_REQUESTED|" + actorName + "|" + it_mag->second + "\n");
                     return false;
                 }
@@ -344,7 +344,7 @@ public:
                 auto it_eva = dispel_evasion_map.find(abilityId);
                 if (it_eva != dispel_evasion_map.end())
                 {
-                    m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] DISPEL_REQUESTED: " + actorName + " used " + it_eva->second).c_str());
+                    m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] DISPEL_REQUESTED: " + actorName + " used " + it_eva->second).c_str());
                     WriteToPipe("DISPEL_REQUESTED|" + actorName + "|" + it_eva->second + "\n");
                     return false;
                 }
@@ -356,7 +356,7 @@ public:
         {
             uint16_t category = *reinterpret_cast<const uint16_t*>(data + 8);
             uint32_t param = *reinterpret_cast<const uint32_t*>(data + 12);
-            m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] Spell action packet, category: " + std::to_string(category)).c_str());
+            m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] Spell action packet, category: " + std::to_string(category)).c_str());
 
             // Category 4: Magic Finish
             if (category == 4)
@@ -366,7 +366,7 @@ public:
 
                 std::string actorName = GetEntityNameById(actorId);
                 std::string spellName = ResolveSpellName(spellId);
-                m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] Magic finish: " + actorName + " cast " + spellName).c_str());
+                m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] Magic finish: " + actorName + " cast " + spellName).c_str());
 
                 auto it = spells.find(spellId);
                 if (it != spells.end())
@@ -392,7 +392,7 @@ public:
                         if (spell.cooldown > 0)
                         {
                             m_spellTimers[targetName][spell.name] = std::chrono::steady_clock::now();
-                            m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] BUFF_APPLIED: " + spell.name + " on " + targetName).c_str());
+                            m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] BUFF_APPLIED: " + spell.name + " on " + targetName).c_str());
                             WriteToPipe("BUFF_APPLIED|" + targetName + "|" + spell.name + "\n");
                         }
                     }
@@ -408,18 +408,18 @@ public:
                     WriteToPipe(log.str());
                 }
 
-                m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", "[Miraculix] CAST_FINISH");
+                m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", "[Miraculix] CAST_FINISH");
                 WriteToPipe("CAST_FINISH\n");
             }
             // Category 8: Action Message (includes resists, interruptions, etc.)
             else if (category == 8)
             {
                 if (param == 24931) {
-                    m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", "[Miraculix] CAST_BLOCKED");
+                    m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", "[Miraculix] CAST_BLOCKED");
                     WriteToPipe("CAST_BLOCKED\n");
                 }
                 else if (param == 28787) {
-                    m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", "[Miraculix] CAST_INTERRUPT");
+                    m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", "[Miraculix] CAST_INTERRUPT");
                     WriteToPipe("CAST_INTERRUPT\n");
                 }
                 else if (param == 258) // Magic is resisted.
@@ -430,7 +430,7 @@ public:
                     std::string targetName = GetEntityNameById(targetId);
                     if (!spellName.empty() && !targetName.empty() && targetName != "None")
                     {
-                        m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] DEBUFF_RESISTED: " + spellName + " on " + targetName).c_str());
+                        m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] DEBUFF_RESISTED: " + spellName + " on " + targetName).c_str());
                         WriteToPipe("DEBUFF_RESISTED|" + targetName + "|" + spellName + "\n");
                         m_spellTimers[targetName].erase(spellName);
                     }
@@ -457,7 +457,7 @@ public:
                 {
                     debuff_name.pop_back();
                 }
-                m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] DEBUFF_APPLIED: " + debuff_name + " on " + player_name).c_str());
+                m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] DEBUFF_APPLIED: " + debuff_name + " on " + player_name).c_str());
                 WriteToPipe("DEBUFF_APPLIED|" + player_name + "|" + debuff_name + "\n");
                 return false;
             }
@@ -481,7 +481,7 @@ public:
                 }
 
                 if (is_rdm_debuff) {
-                    m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] DEBUFF_FADED: " + spell_name + " from " + player_name).c_str());
+                    m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] DEBUFF_FADED: " + spell_name + " from " + player_name).c_str());
                     WriteToPipe("DEBUFF_FADED|" + player_name + "|" + spell_name + "\n");
                     m_spellTimers[player_name].erase(spell_name);
                 }
@@ -496,12 +496,12 @@ public:
                     }
 
                     if (is_buff) {
-                        m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] BUFF_FADED: " + spell_name + " from " + player_name).c_str());
+                        m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] BUFF_FADED: " + spell_name + " from " + player_name).c_str());
                         WriteToPipe("BUFF_FADED|" + player_name + "|" + spell_name + "\n");
                         m_spellTimers[player_name].erase(spell_name);
                     }
                     else {
-                        m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] DEBUFF_FADED (non-RDM): " + spell_name + " from " + player_name).c_str());
+                        m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] DEBUFF_FADED (non-RDM): " + spell_name + " from " + player_name).c_str());
                         WriteToPipe("DEBUFF_FADED|" + player_name + "|" + spell_name + "\n");
                     }
                 }
@@ -513,17 +513,17 @@ public:
 
     bool HandleOutgoingPacket(uint16_t id, uint32_t size, const uint8_t* data, uint8_t* modified,
                               uint32_t sizeChunk, const uint8_t* dataChunk, bool injected, bool blocked) override {
-        m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] Outgoing packet ID: " + std::to_string(id)).c_str());
+        m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] Outgoing packet ID: " + std::to_string(id)).c_str());
         // Packet 0x15: Action Start
         if (id == 0x15 && size >= 8) {
             uint16_t category = *reinterpret_cast<const uint16_t*>(data);
             uint16_t spellId = *reinterpret_cast<const uint16_t*>(data + 4);
-            m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] Action start packet, category: " + std::to_string(category)).c_str());
+            m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] Action start packet, category: " + std::to_string(category)).c_str());
 
             // Category 8: Magic spell
             if (category == 8) {
                 std::string spellName = ResolveSpellName(spellId);
-                m_LogManager->Log(Ashita::LogLevel::Info, "Miraculix", ("[Miraculix] Player starts casting " + spellName).c_str());
+                m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Info), "Miraculix", ("[Miraculix] Player starts casting " + spellName).c_str());
                 auto it = spells.find(spellId);
                 if (it != spells.end()) {
                     const auto& spell_info = it->second;
@@ -537,7 +537,7 @@ public:
                                 auto last_cast = m_spellTimers[targetName][spell_info.name];
                                 auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - last_cast).count();
                                 if (elapsed < spell_info.cooldown) {
-                                    m_LogManager->Log(Ashita::LogLevel::Warning, "Miraculix", ("[Miraculix] Blocking cast of " + spell_info.name + " on " + targetName + " due to cooldown.").c_str());
+                                    m_LogManager->Log(static_cast<uint32_t>(Ashita::LogLevel::Warn), "Miraculix", ("[Miraculix] Blocking cast of " + spell_info.name + " on " + targetName + " due to cooldown.").c_str());
                                     return true; // Block the cast
                                 }
                             }
