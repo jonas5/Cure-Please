@@ -3082,16 +3082,41 @@ namespace Miraculix
                         return null; // Player knows no version of Shell.
                     }
                 case "haste":
+                    byte memberIndex = 255;
                     var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
                     if (partyMember != null)
                     {
-                        byte memberIndex = partyMember.MemberNumber;
-                        if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
-                        if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
+                        memberIndex = partyMember.MemberNumber;
                     }
-                    // Fallback if not found or settings not specific
-                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
-                    break;
+                    else
+                    {
+                        int oopIndex = -1;
+                        for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
+                        {
+                            if (oopPlayerComboBoxes[i].SelectedItem?.ToString() == targetName)
+                            {
+                                oopIndex = i;
+                                break;
+                            }
+                        }
+                        if (oopIndex != -1)
+                        {
+                            memberIndex = (byte)(18 + oopIndex);
+                        }
+                    }
+
+                    if (memberIndex != 255)
+                    {
+                        if (autoHaste_IIEnabled[memberIndex] && HasSpell("Haste II"))
+                        {
+                            return "Haste II";
+                        }
+                        if (autoHasteEnabled[memberIndex] && HasSpell("Haste"))
+                        {
+                            return "Haste";
+                        }
+                    }
+                    return null;
                 case "regen":
                     // Tiered selection based on settings, highest preferred first.
                     spellTiers.Add("Regen V");
@@ -7790,6 +7815,8 @@ namespace Miraculix
         {
             var menuItem = (ToolStripMenuItem)sender;
             autoHasteEnabled[buffOptionsSelected] = menuItem.Checked;
+            oopBuffPreferences[oopPlayerComboBoxes[buffOptionsSelected - 18].SelectedItem.ToString()]["Haste"] = menuItem.Checked;
+
             if (menuItem.Checked)
             {
                 autoHaste_IIEnabled[buffOptionsSelected] = false;
@@ -7805,6 +7832,8 @@ namespace Miraculix
         {
             var menuItem = (ToolStripMenuItem)sender;
             autoHaste_IIEnabled[buffOptionsSelected] = menuItem.Checked;
+            oopBuffPreferences[oopPlayerComboBoxes[buffOptionsSelected - 18].SelectedItem.ToString()]["Haste II"] = menuItem.Checked;
+
             if (menuItem.Checked)
             {
                 autoHasteEnabled[buffOptionsSelected] = false;
@@ -9526,6 +9555,7 @@ namespace Miraculix
             }
             IsPipeConnected = true;
             UpdateUiForPipeStatus();
+            SendSettingsToPlugin(); // Resync settings on connect
             AddOnStatus.BackColor = Color.ForestGreen;
             AddOnStatus.Text = "Connected";
         }

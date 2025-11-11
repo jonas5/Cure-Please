@@ -98,8 +98,6 @@ namespace Miraculix
             this.buffsShellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buffsProtectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stormspellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buffsHasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buffsHasteIIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sneakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2489,8 +2487,6 @@ namespace Miraculix
             // oopPlayerOptions
             // 
             this.oopPlayerOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buffsHasteToolStripMenuItem,
-            this.buffsHasteIIToolStripMenuItem,
             this.buffsShellToolStripMenuItem,
             this.buffsProtectToolStripMenuItem});
             this.oopPlayerOptions.Name = "oopPlayerOptions";
