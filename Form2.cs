@@ -29,6 +29,12 @@ namespace Miraculix
         [Serializable]
         public class MySettings
         {
+            public MySettings()
+            {
+                defenseBoostDispelItems = new List<string>();
+                magicShieldDispelItems = new List<string>();
+                evasionBoostDispelItems = new List<string>();
+            }
             // BASE NEEDED FOR CONFIRMATION
             public bool settingsSet
             {
@@ -1818,25 +1824,32 @@ namespace Miraculix
             // DEBUFFS
             public bool enableDebuffs { get; set; }
             public string DiaBioSelection { get; set; }
-        public int DiaBioDuration { get; set; }
+            public int DiaBioDuration { get; set; }
             public string ElementalGroupSelection { get; set; }
-        public int ElementalGroup1Duration { get; set; }
-        public int ElementalGroup2Duration { get; set; }
+            public int ElementalGroup1Duration { get; set; }
+            public int ElementalGroup2Duration { get; set; }
             public bool debuffParalyze { get; set; }
-        public int DebuffParalyzeDuration { get; set; }
+            public int DebuffParalyzeDuration { get; set; }
             public bool debuffBlind { get; set; }
-        public int DebuffBlindDuration { get; set; }
+            public int DebuffBlindDuration { get; set; }
             public bool debuffSlow { get; set; }
-        public int DebuffGravityDuration { get; set; }
+            public int DebuffGravityDuration { get; set; }
             public bool debuffGravity { get; set; }
-        public int DebuffSlowDuration { get; set; }
+            public int DebuffSlowDuration { get; set; }
             public bool debuffBind { get; set; }
-        public int DebuffBindDuration { get; set; }
+            public int DebuffBindDuration { get; set; }
             public bool debuffSilence { get; set; }
-        public int DebuffSilenceDuration { get; set; }
+            public int DebuffSilenceDuration { get; set; }
             public bool autoHealWhenIdle { get; set; }
             public decimal idleHealTime { get; set; }
-         }
+            public bool defenseBoostDispel { get; set; }
+            public List<string> defenseBoostDispelItems { get; set; }
+            public bool magicShieldDispel { get; set; }
+            public List<string> magicShieldDispelItems { get; set; }
+            public bool evasionBoostDispel { get; set; }
+            public List<string> evasionBoostDispelItems { get; set; }
+            public bool dispel { get; set; }
+        }
 
         #endregion "== Settings Class"
 
@@ -1845,125 +1858,125 @@ namespace Miraculix
         public int runOnce = 0;
         private Form1 mainForm;
 
-        public Form2 (Form1 mainForm)
+        public Form2(Form1 mainForm)
         {
             this.mainForm = mainForm;
             StartPosition = FormStartPosition.CenterScreen;
-            InitializeComponent ( );
+            InitializeComponent();
 
-            JobNames.Add ( new JobTitles
+            JobNames.Add(new JobTitles
             {
                 job_number = 1,
                 job_name = "WAR",
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 2,
                 job_name = "MNK"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 3,
                 job_name = "WHM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 4,
                 job_name = "BLM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 5,
                 job_name = "RDM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 6,
                 job_name = "THF"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 7,
                 job_name = "PLD"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 8,
                 job_name = "DRK"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 9,
                 job_name = "BST"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 10,
                 job_name = "BRD"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 11,
                 job_name = "RNG"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 12,
                 job_name = "SAM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 13,
                 job_name = "NIN"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 14,
                 job_name = "DRG"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 15,
                 job_name = "SMN"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 16,
                 job_name = "BLU"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 17,
                 job_name = "COR"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 18,
                 job_name = "PUP"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 19,
                 job_name = "DNC"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 20,
                 job_name = "SCH"
-            } );
+            });
 
-            JobNames.Add ( new JobTitles
+            JobNames.Add(new JobTitles
             {
                 job_number = 21,
                 job_name = "GEO"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 22,
                 job_name = "RUN"
-            } );
+            });
 
-            if ( config.settingsSet != true )
+            if (config.settingsSet != true)
             {
                 // HEALING MAGIC
                 config.cure1enabled = false;
@@ -2393,10 +2406,10 @@ namespace Miraculix
                 config.settingsSet = true;
             }
 
-            updateForm ( config );
+            updateForm(config);
 
             string path = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings");
-            if ( loadJobSettings.Checked == false && System.IO.File.Exists ( path + "/loadSettings" ) )
+            if (loadJobSettings.Checked == false && System.IO.File.Exists(path + "/loadSettings"))
             {
                 loadJobSettings.Checked = true;
             }
@@ -2410,24 +2423,24 @@ namespace Miraculix
 
         #region "== Cure Percentage's Changed"
 
-        private void curePercentage_ValueChanged ( object sender, EventArgs e )
+        private void curePercentage_ValueChanged(object sender, EventArgs e)
         {
-            curePercentageValueLabel.Text = curePercentage.Value.ToString ( );
+            curePercentageValueLabel.Text = curePercentage.Value.ToString();
         }
 
-        private void priorityCurePercentage_ValueChanged ( object sender, EventArgs e )
+        private void priorityCurePercentage_ValueChanged(object sender, EventArgs e)
         {
-            priorityCurePercentageValueLabel.Text = priorityCurePercentage.Value.ToString ( );
+            priorityCurePercentageValueLabel.Text = priorityCurePercentage.Value.ToString();
         }
 
-        private void curagaPercentage_ValueChanged ( object sender, EventArgs e )
+        private void curagaPercentage_ValueChanged(object sender, EventArgs e)
         {
-            curagaPercentageValueLabel.Text = curagaCurePercentage.Value.ToString ( );
+            curagaPercentageValueLabel.Text = curagaCurePercentage.Value.ToString();
         }
 
-        private void monitoredPercentage_ValueChanged ( object sender, EventArgs e )
+        private void monitoredPercentage_ValueChanged(object sender, EventArgs e)
         {
-            monitoredCurePercentageValueLabel.Text = monitoredCurePercentage.Value.ToString ( );
+            monitoredCurePercentageValueLabel.Text = monitoredCurePercentage.Value.ToString();
         }
 
         #endregion "== Cure Percentage's Changed"
@@ -2939,6 +2952,14 @@ namespace Miraculix
 
             config.autoHealWhenIdle = autoHealWhenIdle.Checked;
             config.idleHealTime = idleHealTime.Value;
+
+            config.defenseBoostDispel = defenseBoostDispel.Checked;
+            config.defenseBoostDispelItems = defenseBoostCheckedListBox.CheckedItems.Cast<string>().ToList();
+            config.magicShieldDispel = magicShieldDispel.Checked;
+            config.magicShieldDispelItems = magicShieldCheckedListBox.CheckedItems.Cast<string>().ToList();
+            config.evasionBoostDispel = evasionBoostDispel.Checked;
+            config.evasionBoostDispelItems = evasionBoostCheckedListBox.CheckedItems.Cast<string>().ToList();
+            config.dispel = dispel.Checked;
         }
 
         public void SaveSettings()
@@ -3014,9 +3035,9 @@ namespace Miraculix
 
         #region "== PL Debuff Check Boxes"
 
-        private void plDebuffEnabled_CheckedChanged ( object sender, EventArgs e )
+        private void plDebuffEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            if ( plDebuffEnabled.Checked )
+            if (plDebuffEnabled.Checked)
             {
                 plAgiDown.Checked = true;
                 plAgiDown.Enabled = true;
@@ -3107,7 +3128,7 @@ namespace Miraculix
                 plAmnesia.Checked = true;
                 plAmnesia.Enabled = true;
             }
-            else if ( plDebuffEnabled.Checked == false )
+            else if (plDebuffEnabled.Checked == false)
             {
                 plAgiDown.Checked = false;
                 plAgiDown.Enabled = false;
@@ -3204,9 +3225,9 @@ namespace Miraculix
 
         #region "== Na spell check boxes"
 
-        private void naSpellsenable_CheckedChanged ( object sender, EventArgs e )
+        private void naSpellsenable_CheckedChanged(object sender, EventArgs e)
         {
-            if ( naSpellsenable.Checked )
+            if (naSpellsenable.Checked)
             {
                 naBlindness.Checked = true;
                 naBlindness.Enabled = true;
@@ -3229,7 +3250,7 @@ namespace Miraculix
                 naErase.Enabled = true;
                 Esuna.Enabled = true;
             }
-            else if ( naSpellsenable.Checked == false )
+            else if (naSpellsenable.Checked == false)
             {
                 naBlindness.Checked = false;
                 naBlindness.Enabled = false;
@@ -3260,9 +3281,9 @@ namespace Miraculix
 
         #region "== Monitored Player Debuff Check Boxes"
 
-        private void monitoredDebuffEnabled_CheckedChanged ( object sender, EventArgs e )
+        private void monitoredDebuffEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            if ( monitoredDebuffEnabled.Checked )
+            if (monitoredDebuffEnabled.Checked)
             {
                 monitoredAgiDown.Checked = true;
                 monitoredAgiDown.Enabled = true;
@@ -3359,7 +3380,7 @@ namespace Miraculix
                 monitoredAmnesia.Checked = true;
                 monitoredAmnesia.Enabled = true;
             }
-            else if ( monitoredDebuffEnabled.Checked == false )
+            else if (monitoredDebuffEnabled.Checked == false)
             {
                 monitoredAgiDown.Checked = false;
                 monitoredAgiDown.Enabled = false;
@@ -3462,15 +3483,15 @@ namespace Miraculix
 
         #region "== Geomancy Check Boxes"
 
-        private void EnableGeoSpells_CheckedChanged ( object sender, EventArgs e )
+        private void EnableGeoSpells_CheckedChanged(object sender, EventArgs e)
         {
-            if ( EnableGeoSpells.Checked )
+            if (EnableGeoSpells.Checked)
             {
                 INDISpell.Enabled = true;
                 entrustINDISpell.Enabled = true;
                 entrustSpell_target.Enabled = true;
             }
-            else if ( EnableGeoSpells.Checked == false )
+            else if (EnableGeoSpells.Checked == false)
             {
                 INDISpell.Enabled = false;
                 entrustINDISpell.Enabled = false;
@@ -3478,14 +3499,14 @@ namespace Miraculix
             }
         }
 
-        private void EnableLuopanSpells_CheckedChanged ( object sender, EventArgs e )
+        private void EnableLuopanSpells_CheckedChanged(object sender, EventArgs e)
         {
-            if ( EnableLuopanSpells.Checked )
+            if (EnableLuopanSpells.Checked)
             {
                 GEOSpell.Enabled = true;
                 GEOSpell_target.Enabled = true;
             }
-            else if ( EnableLuopanSpells.Checked == false )
+            else if (EnableLuopanSpells.Checked == false)
             {
                 GEOSpell.Enabled = false;
                 GEOSpell_target.Enabled = false;
@@ -3494,17 +3515,17 @@ namespace Miraculix
 
         #endregion "== Geomancy Check Boxes"
 
-        private void saveAsButton_Click ( object sender, EventArgs e )
+        private void saveAsButton_Click(object sender, EventArgs e)
         {
             ApplySettingsToConfig();
 
             SaveFileDialog savefile = new SaveFileDialog();
 
-            if ( Form1._ELITEAPIPL != null )
+            if (Form1._ELITEAPIPL != null)
             {
-                if ( Form1._ELITEAPIPL.Player.MainJob != 0 )
+                if (Form1._ELITEAPIPL.Player.MainJob != 0)
                 {
-                    if ( Form1._ELITEAPIPL.Player.SubJob != 0 )
+                    if (Form1._ELITEAPIPL.Player.SubJob != 0)
                     {
                         JobTitles mainJob = JobNames.Where(c => c.job_number == Form1._ELITEAPIPL.Player.MainJob).FirstOrDefault();
                         JobTitles subJob = JobNames.Where(c => c.job_number == Form1._ELITEAPIPL.Player.SubJob).FirstOrDefault();
@@ -3523,19 +3544,19 @@ namespace Miraculix
             }
             savefile.Filter = " Extensible Markup Language (*.xml)|*.xml";
             savefile.FilterIndex = 2;
-            savefile.InitialDirectory = System.IO.Path.Combine ( System.AppDomain.CurrentDomain.BaseDirectory, "Settings" );
+            savefile.InitialDirectory = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings");
 
-            if ( savefile.ShowDialog ( ) == DialogResult.OK )
+            if (savefile.ShowDialog() == DialogResult.OK)
             {
                 XmlSerializer mySerializer = new XmlSerializer(typeof(MySettings));
                 StreamWriter myWriter = new StreamWriter(savefile.FileName);
-                mySerializer.Serialize ( myWriter, config );
-                myWriter.Close ( );
-                myWriter.Dispose ( );
+                mySerializer.Serialize(myWriter, config);
+                myWriter.Close();
+                myWriter.Dispose();
             }
         }
 
-        private void loadButton_Click ( object sender, EventArgs e )
+        private void loadButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
@@ -3544,21 +3565,21 @@ namespace Miraculix
                 InitialDirectory = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings")
             };
 
-            if ( openFileDialog1.ShowDialog ( ) == DialogResult.OK )
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 XmlSerializer mySerializer = new XmlSerializer(typeof(MySettings));
 
                 StreamReader reader = new StreamReader(openFileDialog1.FileName);
-                config = ( MySettings ) mySerializer.Deserialize ( reader );
+                config = (MySettings)mySerializer.Deserialize(reader);
 
-                reader.Close ( );
-                reader.Dispose ( );
-                updateForm ( config );
-                button4_Click ( sender, e );
+                reader.Close();
+                reader.Dispose();
+                updateForm(config);
+                button4_Click(sender, e);
             }
         }
 
-        public void updateForm ( MySettings config )
+        public void updateForm(MySettings config)
         {
             // HEALING MAGIC
             cure1enabled.Checked = config.cure1enabled;
@@ -3574,11 +3595,11 @@ namespace Miraculix
             cure5amount.Value = config.cure5amount;
             cure6amount.Value = config.cure6amount;
             curePercentage.Value = config.curePercentage;
-            curePercentageValueLabel.Text = config.curePercentage.ToString ( CultureInfo.InvariantCulture );
+            curePercentageValueLabel.Text = config.curePercentage.ToString(CultureInfo.InvariantCulture);
             priorityCurePercentage.Value = config.priorityCurePercentage;
-            priorityCurePercentageValueLabel.Text = config.priorityCurePercentage.ToString ( CultureInfo.InvariantCulture );
+            priorityCurePercentageValueLabel.Text = config.priorityCurePercentage.ToString(CultureInfo.InvariantCulture);
             monitoredCurePercentage.Value = config.monitoredCurePercentage;
-            monitoredCurePercentageValueLabel.Text = config.monitoredCurePercentage.ToString ( CultureInfo.InvariantCulture );
+            monitoredCurePercentageValueLabel.Text = config.monitoredCurePercentage.ToString(CultureInfo.InvariantCulture);
 
             curagaEnabled.Checked = config.curagaEnabled;
             curaga2Enabled.Checked = config.curaga2enabled;
@@ -3593,7 +3614,7 @@ namespace Miraculix
             curaga5Amount.Value = config.curaga5Amount;
 
             curagaCurePercentage.Value = config.curagaCurePercentage;
-            curagaPercentageValueLabel.Text = config.curagaCurePercentage.ToString ( CultureInfo.InvariantCulture );
+            curagaPercentageValueLabel.Text = config.curagaCurePercentage.ToString(CultureInfo.InvariantCulture);
             curagaTargetType.SelectedIndex = config.curagaTargetType;
             curagaTargetName.Text = config.curagaTargetName;
             requiredCuragaNumbers.Value = config.curagaRequiredMembers;
@@ -3607,7 +3628,7 @@ namespace Miraculix
 
             // BASIC ENHANCING
             autoHasteMinutes.Value = config.autoHasteMinutes;
-            if ( config.autoAdloquiumMinutes != 0 )
+            if (config.autoAdloquiumMinutes != 0)
             {
                 autoAdloquium_Minutes.Value = config.autoAdloquiumMinutes;
             }
@@ -3619,7 +3640,7 @@ namespace Miraculix
             autoProtect_Minutes.Value = config.autoProtect_Minutes;
             autoShell_Minutes.Value = config.autoShellMinutes;
             autoPhalanxIIMinutes.Value = config.autoPhalanxIIMinutes;
-            if ( config.autoStormspellMinutes == 0 )
+            if (config.autoStormspellMinutes == 0)
             {
                 autoStormspellMinutes.Value = 3;
             }
@@ -3644,75 +3665,75 @@ namespace Miraculix
 
 
             plRegen.Checked = config.plRegen;
-            if ( config.plRegen_Level == 1 && plRegen.Checked == true )
+            if (config.plRegen_Level == 1 && plRegen.Checked == true)
             {
                 plRegenLevel1.Checked = true;
             }
-            else if ( config.plRegen_Level == 2 && plRegen.Checked == true )
+            else if (config.plRegen_Level == 2 && plRegen.Checked == true)
             {
                 plRegenLevel2.Checked = true;
             }
-            else if ( config.plRegen_Level == 3 && plRegen.Checked == true )
+            else if (config.plRegen_Level == 3 && plRegen.Checked == true)
             {
                 plRegenLevel3.Checked = true;
             }
-            else if ( config.plRegen_Level == 4 && plRegen.Checked == true )
+            else if (config.plRegen_Level == 4 && plRegen.Checked == true)
             {
                 plRegenLevel4.Checked = true;
             }
-            else if ( config.plRegen_Level == 5 && plRegen.Checked == true )
+            else if (config.plRegen_Level == 5 && plRegen.Checked == true)
             {
                 plRegenLevel5.Checked = true;
             }
 
             plReraise.Checked = config.plReraise;
-            if ( config.plReraise_Level == 1 && plReraise.Checked == true )
+            if (config.plReraise_Level == 1 && plReraise.Checked == true)
             {
                 plReraiseLevel1.Checked = true;
             }
-            else if ( config.plReraise_Level == 2 && plReraise.Checked == true )
+            else if (config.plReraise_Level == 2 && plReraise.Checked == true)
             {
                 plReraiseLevel2.Checked = true;
             }
-            else if ( config.plReraise_Level == 3 && plReraise.Checked == true )
+            else if (config.plReraise_Level == 3 && plReraise.Checked == true)
             {
                 plReraiseLevel3.Checked = true;
             }
-            else if ( config.plReraise_Level == 4 && plReraise.Checked == true )
+            else if (config.plReraise_Level == 4 && plReraise.Checked == true)
             {
                 plReraiseLevel4.Checked = true;
             }
             plRefresh.Checked = config.plRefresh;
-            if ( config.plRefresh_Level == 1 && plRefresh.Checked == true )
+            if (config.plRefresh_Level == 1 && plRefresh.Checked == true)
             {
                 plRefreshLevel1.Checked = true;
             }
-            else if ( config.plRefresh_Level == 2 && plRefresh.Checked == true )
+            else if (config.plRefresh_Level == 2 && plRefresh.Checked == true)
             {
                 plRefreshLevel2.Checked = true;
             }
-            else if ( config.plRefresh_Level == 3 && plRefresh.Checked == true )
+            else if (config.plRefresh_Level == 3 && plRefresh.Checked == true)
             {
                 plRefreshLevel3.Checked = true;
             }
             plStoneskin.Checked = config.plStoneskin;
             plPhalanx.Checked = config.plPhalanx;
             plTemper.Checked = config.plTemper;
-            if ( config.plTemper_Level == 1 && plTemper.Checked == true )
+            if (config.plTemper_Level == 1 && plTemper.Checked == true)
             {
                 plTemperLevel1.Checked = true;
             }
-            else if ( config.plTemper_Level == 2 && plTemper.Checked == true )
+            else if (config.plTemper_Level == 2 && plTemper.Checked == true)
             {
                 plTemperLevel2.Checked = true;
             }
 
             plHaste.Checked = config.plHaste;
-            if ( config.plHaste_Level == 1 && plHaste.Checked == true )
+            if (config.plHaste_Level == 1 && plHaste.Checked == true)
             {
                 plHasteLevel1.Checked = true;
             }
-            else if ( config.plHaste_Level == 2 && plHaste.Checked == true )
+            else if (config.plHaste_Level == 2 && plHaste.Checked == true)
             {
                 plHasteLevel2.Checked = true;
             }
@@ -3728,7 +3749,7 @@ namespace Miraculix
             EntrustBox.Checked = config.Entrust;
             DematerializeBox.Checked = config.Dematerialize;
             plBarElement.Checked = config.plBarElement;
-            if ( config.plBarElement_Spell > 5 )
+            if (config.plBarElement_Spell > 5)
             {
                 plBarElement_Spell.SelectedIndex = 0;
                 config.plBarElement_Spell = 0; ;
@@ -3739,7 +3760,7 @@ namespace Miraculix
             }
             AOE_Barelemental.Checked = config.AOE_Barelemental;
             plBarStatus.Checked = config.plBarStatus;
-            if ( config.plBarStatus_Spell > 8 )
+            if (config.plBarStatus_Spell > 8)
             {
                 plBarStatus_Spell.SelectedIndex = 0;
                 config.plBarStatus_Spell = 0; ;
@@ -4092,14 +4113,45 @@ namespace Miraculix
 
             autoHealWhenIdle.Checked = config.autoHealWhenIdle;
             idleHealTime.Value = config.idleHealTime > 0 ? config.idleHealTime : 10;
+
+            defenseBoostDispel.Checked = config.defenseBoostDispel;
+            if (config.defenseBoostDispelItems != null)
+            {
+                for (int i = 0; i < defenseBoostCheckedListBox.Items.Count; i++)
+                {
+                    bool shouldBeChecked = config.defenseBoostDispelItems.Contains(defenseBoostCheckedListBox.Items[i].ToString());
+                    defenseBoostCheckedListBox.SetItemChecked(i, shouldBeChecked);
+                }
+            }
+
+            magicShieldDispel.Checked = config.magicShieldDispel;
+            if (config.magicShieldDispelItems != null)
+            {
+                for (int i = 0; i < magicShieldCheckedListBox.Items.Count; i++)
+                {
+                    bool shouldBeChecked = config.magicShieldDispelItems.Contains(magicShieldCheckedListBox.Items[i].ToString());
+                    magicShieldCheckedListBox.SetItemChecked(i, shouldBeChecked);
+                }
+            }
+
+            evasionBoostDispel.Checked = config.evasionBoostDispel;
+            if (config.evasionBoostDispelItems != null)
+            {
+                for (int i = 0; i < evasionBoostCheckedListBox.Items.Count; i++)
+                {
+                    bool shouldBeChecked = config.evasionBoostDispelItems.Contains(evasionBoostCheckedListBox.Items[i].ToString());
+                    evasionBoostCheckedListBox.SetItemChecked(i, shouldBeChecked);
+                }
+            }
+            dispel.Checked = config.dispel;
         }
 
-        private void autoAdjust_Cure_Click ( object sender, EventArgs e )
+        private void autoAdjust_Cure_Click(object sender, EventArgs e)
         {
             //decimal level = this.cureLevel.Value;
             double potency = System.Convert.ToDouble(curePotency.Value);
 
-            if ( Form1._ELITEAPIPL != null )
+            if (Form1._ELITEAPIPL != null)
             {
                 // First calculate default potency
 
@@ -4117,37 +4169,37 @@ namespace Miraculix
 
                 double Cure = 0;
 
-                if ( Power >= 0 && Power < 20 )
+                if (Power >= 0 && Power < 20)
                 {
-                    Cure = ( 0 + Power ) - 0;
+                    Cure = (0 + Power) - 0;
                     Cure /= 1;
-                    Cure = Math.Floor ( Cure + 10 );
+                    Cure = Math.Floor(Cure + 10);
                 }
-                else if ( Power >= 20 && Power < 40 )
+                else if (Power >= 20 && Power < 40)
                 {
-                    Cure = ( 0 + Power ) - 20;
+                    Cure = (0 + Power) - 20;
                     Cure /= 1.33;
-                    Cure = Math.Floor ( Cure + 15 );
+                    Cure = Math.Floor(Cure + 15);
                 }
-                else if ( Power >= 40 && Power < 125 )
+                else if (Power >= 40 && Power < 125)
                 {
-                    Cure = ( 0 + Power ) - 40;
+                    Cure = (0 + Power) - 40;
                     Cure /= 8.5;
-                    Cure = Math.Floor ( Cure + 30 );
+                    Cure = Math.Floor(Cure + 30);
                 }
-                else if ( Power >= 125 && Power < 200 )
+                else if (Power >= 125 && Power < 200)
                 {
-                    Cure = ( 0 + Power ) - 125;
+                    Cure = (0 + Power) - 125;
                     Cure /= 8.5;
-                    Cure = Math.Floor ( Cure + 40 );
+                    Cure = Math.Floor(Cure + 40);
                 }
-                else if ( Power >= 200 && Power < 600 )
+                else if (Power >= 200 && Power < 600)
                 {
-                    Cure = ( 0 + Power ) - 200;
+                    Cure = (0 + Power) - 200;
                     Cure /= 20;
-                    Cure = Math.Floor ( Cure + 45 );
+                    Cure = Math.Floor(Cure + 45);
                 }
-                else if ( Power >= 600 )
+                else if (Power >= 600)
                 {
                     Cure = 65;
                 }
@@ -4156,41 +4208,41 @@ namespace Miraculix
                 Cure_pot *= potency;
 
                 double Cure_mathed = Math.Round(Cure + Cure_pot);
-                Cure_mathed -= ( Cure_mathed * 0.10 );
+                Cure_mathed -= (Cure_mathed * 0.10);
 
                 double Cure2 = 0;
 
-                if ( Power >= 40 && Power < 70 )
+                if (Power >= 40 && Power < 70)
                 {
-                    Cure2 = ( 0 + Power ) - 40;
+                    Cure2 = (0 + Power) - 40;
                     Cure2 /= 1;
-                    Cure2 = Math.Floor ( Cure2 + 60 );
+                    Cure2 = Math.Floor(Cure2 + 60);
                 }
-                else if ( Power >= 70 && Power < 125 )
+                else if (Power >= 70 && Power < 125)
                 {
-                    Cure2 = ( 0 + Power ) - 70;
+                    Cure2 = (0 + Power) - 70;
                     Cure2 /= 5.5;
-                    Cure2 = Math.Floor ( Cure2 + 90 );
+                    Cure2 = Math.Floor(Cure2 + 90);
                 }
-                else if ( Power >= 125 && Power < 200 )
+                else if (Power >= 125 && Power < 200)
                 {
-                    Cure2 = ( 0 + Power ) - 125;
+                    Cure2 = (0 + Power) - 125;
                     Cure2 /= 7.5;
-                    Cure2 = Math.Floor ( Cure2 + 100 );
+                    Cure2 = Math.Floor(Cure2 + 100);
                 }
-                else if ( Power >= 200 && Power < 400 )
+                else if (Power >= 200 && Power < 400)
                 {
-                    Cure2 = ( 0 + Power ) - 200;
+                    Cure2 = (0 + Power) - 200;
                     Cure2 /= 10;
-                    Cure2 = Math.Floor ( Cure2 + 110 );
+                    Cure2 = Math.Floor(Cure2 + 110);
                 }
-                else if ( Power >= 400 && Power < 700 )
+                else if (Power >= 400 && Power < 700)
                 {
-                    Cure2 = ( 0 + Power ) - 400;
+                    Cure2 = (0 + Power) - 400;
                     Cure2 /= 20;
-                    Cure2 = Math.Floor ( Cure2 + 130 );
+                    Cure2 = Math.Floor(Cure2 + 130);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure2 = 145;
                 }
@@ -4199,35 +4251,35 @@ namespace Miraculix
                 Cure2_pot *= potency;
 
                 double Cure2_mathed = Math.Round(Cure2 + Cure2_pot);
-                Cure2_mathed -= ( Cure2_mathed * 0.10 );
+                Cure2_mathed -= (Cure2_mathed * 0.10);
 
                 double Cure3 = 0;
 
-                if ( Power >= 70 && Power < 125 )
+                if (Power >= 70 && Power < 125)
                 {
-                    Cure3 = ( 0 + Power ) - 70;
+                    Cure3 = (0 + Power) - 70;
                     Cure3 /= 2.2;
-                    Cure3 = Math.Floor ( Cure3 + 130 );
+                    Cure3 = Math.Floor(Cure3 + 130);
                 }
-                else if ( Power >= 125 && Power < 200 )
+                else if (Power >= 125 && Power < 200)
                 {
-                    Cure3 = ( 0 + Power ) - 125;
+                    Cure3 = (0 + Power) - 125;
                     Cure3 /= 1.15;
-                    Cure3 = Math.Floor ( Cure3 + 155 );
+                    Cure3 = Math.Floor(Cure3 + 155);
                 }
-                else if ( Power >= 200 && Power < 300 )
+                else if (Power >= 200 && Power < 300)
                 {
-                    Cure3 = ( 0 + Power ) - 200;
+                    Cure3 = (0 + Power) - 200;
                     Cure3 /= 2.5;
-                    Cure3 = Math.Floor ( Cure3 + 220 );
+                    Cure3 = Math.Floor(Cure3 + 220);
                 }
-                else if ( Power >= 300 && Power < 700 )
+                else if (Power >= 300 && Power < 700)
                 {
-                    Cure3 = ( 0 + Power ) - 300;
+                    Cure3 = (0 + Power) - 300;
                     Cure3 /= 5;
-                    Cure3 = Math.Floor ( Cure3 + 260 );
+                    Cure3 = Math.Floor(Cure3 + 260);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure3 = 340;
                 }
@@ -4236,35 +4288,35 @@ namespace Miraculix
                 Cure3_pot *= potency;
 
                 double Cure3_mathed = Math.Round(Cure3 + Cure3_pot);
-                Cure3_mathed -= ( Cure3_mathed * 0.10 );
+                Cure3_mathed -= (Cure3_mathed * 0.10);
 
                 double Cure4 = 0;
 
-                if ( Power >= 70 && Power < 200 )
+                if (Power >= 70 && Power < 200)
                 {
-                    Cure4 = ( 0 + Power ) - 70;
+                    Cure4 = (0 + Power) - 70;
                     Cure4 /= 1;
-                    Cure4 = Math.Floor ( Cure4 + 270 );
+                    Cure4 = Math.Floor(Cure4 + 270);
                 }
-                else if ( Power >= 200 && Power < 300 )
+                else if (Power >= 200 && Power < 300)
                 {
-                    Cure4 = ( 0 + Power ) - 200;
+                    Cure4 = (0 + Power) - 200;
                     Cure4 /= 2;
-                    Cure4 = Math.Floor ( Cure4 + 400 );
+                    Cure4 = Math.Floor(Cure4 + 400);
                 }
-                else if ( Power >= 300 && Power < 400 )
+                else if (Power >= 300 && Power < 400)
                 {
-                    Cure4 = ( 0 + Power ) - 300;
+                    Cure4 = (0 + Power) - 300;
                     Cure4 /= 1.43;
-                    Cure4 = Math.Floor ( Cure4 + 450 );
+                    Cure4 = Math.Floor(Cure4 + 450);
                 }
-                else if ( Power >= 400 && Power < 700 )
+                else if (Power >= 400 && Power < 700)
                 {
-                    Cure4 = ( 0 + Power ) - 400;
+                    Cure4 = (0 + Power) - 400;
                     Cure4 /= 2.5;
-                    Cure4 = Math.Floor ( Cure4 + 520 );
+                    Cure4 = Math.Floor(Cure4 + 520);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure4 = 640;
                 }
@@ -4273,47 +4325,47 @@ namespace Miraculix
                 Cure4_pot *= potency;
 
                 double Cure4_mathed = Math.Round(Cure4 + Cure4_pot);
-                Cure4_mathed -= ( Cure4_mathed * 0.10 );
+                Cure4_mathed -= (Cure4_mathed * 0.10);
 
                 double Cure5 = 0;
 
-                if ( Power >= 80 && Power < 150 )
+                if (Power >= 80 && Power < 150)
                 {
-                    Cure5 = ( 0 + Power ) - 80;
+                    Cure5 = (0 + Power) - 80;
                     Cure5 /= 0.7;
-                    Cure5 = Math.Floor ( Cure5 + 450 );
+                    Cure5 = Math.Floor(Cure5 + 450);
                 }
-                else if ( Power >= 150 && Power < 190 )
+                else if (Power >= 150 && Power < 190)
                 {
-                    Cure5 = ( 0 + Power ) - 150;
+                    Cure5 = (0 + Power) - 150;
                     Cure5 /= 1.25;
-                    Cure5 = Math.Floor ( Cure5 + 550 );
+                    Cure5 = Math.Floor(Cure5 + 550);
                 }
-                else if ( Power >= 190 && Power < 260 )
+                else if (Power >= 190 && Power < 260)
                 {
-                    Cure5 = ( 0 + Power ) - 190;
+                    Cure5 = (0 + Power) - 190;
                     Cure5 /= 1.84;
-                    Cure5 = Math.Floor ( Cure5 + 582 );
+                    Cure5 = Math.Floor(Cure5 + 582);
                 }
-                else if ( Power >= 260 && Power < 300 )
+                else if (Power >= 260 && Power < 300)
                 {
-                    Cure5 = ( 0 + Power ) - 260;
+                    Cure5 = (0 + Power) - 260;
                     Cure5 /= 2;
-                    Cure5 = Math.Floor ( Cure5 + 620 );
+                    Cure5 = Math.Floor(Cure5 + 620);
                 }
-                else if ( Power >= 300 && Power < 500 )
+                else if (Power >= 300 && Power < 500)
                 {
-                    Cure5 = ( 0 + Power ) - 300;
+                    Cure5 = (0 + Power) - 300;
                     Cure5 /= 2.5;
-                    Cure5 = Math.Floor ( Cure5 + 640 );
+                    Cure5 = Math.Floor(Cure5 + 640);
                 }
-                else if ( Power >= 500 && Power < 700 )
+                else if (Power >= 500 && Power < 700)
                 {
-                    Cure5 = ( 0 + Power ) - 500;
+                    Cure5 = (0 + Power) - 500;
                     Cure5 /= 3.33;
-                    Cure5 = Math.Floor ( Cure5 + 720 );
+                    Cure5 = Math.Floor(Cure5 + 720);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure5 = 780;
                 }
@@ -4322,41 +4374,41 @@ namespace Miraculix
                 Cure5_pot *= potency;
 
                 double Cure5_mathed = Math.Round(Cure5 + Cure5_pot);
-                Cure5_mathed -= ( Cure5_mathed * 0.10 );
+                Cure5_mathed -= (Cure5_mathed * 0.10);
 
                 double Cure6 = 0;
 
-                if ( Power >= 90 && Power < 210 )
+                if (Power >= 90 && Power < 210)
                 {
-                    Cure6 = ( 0 + Power ) - 90;
+                    Cure6 = (0 + Power) - 90;
                     Cure6 /= 1.5;
-                    Cure6 = Math.Floor ( Cure6 + 600 );
+                    Cure6 = Math.Floor(Cure6 + 600);
                 }
-                else if ( Power >= 210 && Power < 300 )
+                else if (Power >= 210 && Power < 300)
                 {
-                    Cure6 = ( 0 + Power ) - 210;
+                    Cure6 = (0 + Power) - 210;
                     Cure6 /= 0.9;
-                    Cure6 = Math.Floor ( Cure6 + 680 );
+                    Cure6 = Math.Floor(Cure6 + 680);
                 }
-                else if ( Power >= 300 && Power < 400 )
+                else if (Power >= 300 && Power < 400)
                 {
-                    Cure6 = ( 0 + Power ) - 300;
+                    Cure6 = (0 + Power) - 300;
                     Cure6 /= 1.43;
-                    Cure6 = Math.Floor ( Cure6 + 780 );
+                    Cure6 = Math.Floor(Cure6 + 780);
                 }
-                else if ( Power >= 400 && Power < 500 )
+                else if (Power >= 400 && Power < 500)
                 {
-                    Cure6 = ( 0 + Power ) - 400;
+                    Cure6 = (0 + Power) - 400;
                     Cure6 /= 2.5;
-                    Cure6 = Math.Floor ( Cure6 + 850 );
+                    Cure6 = Math.Floor(Cure6 + 850);
                 }
-                else if ( Power >= 500 && Power < 700 )
+                else if (Power >= 500 && Power < 700)
                 {
-                    Cure6 = ( 0 + Power ) - 500;
+                    Cure6 = (0 + Power) - 500;
                     Cure6 /= 1.67;
-                    Cure6 = Math.Floor ( Cure6 + 890 );
+                    Cure6 = Math.Floor(Cure6 + 890);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure6 = 1010;
                 }
@@ -4365,47 +4417,47 @@ namespace Miraculix
                 Cure6_pot *= potency;
 
                 double Cure6_mathed = Math.Round(Cure6 + Cure6_pot);
-                Cure6_mathed -= ( Cure6_mathed * 0.10 );
+                Cure6_mathed -= (Cure6_mathed * 0.10);
 
-                cure1amount.Value = Convert.ToDecimal ( Cure_mathed );
-                cure2amount.Value = Convert.ToDecimal ( Cure2_mathed );
-                cure3amount.Value = Convert.ToDecimal ( Cure3_mathed );
-                cure4amount.Value = Convert.ToDecimal ( Cure4_mathed );
-                cure5amount.Value = Convert.ToDecimal ( Cure5_mathed );
-                cure6amount.Value = Convert.ToDecimal ( Cure6_mathed );
+                cure1amount.Value = Convert.ToDecimal(Cure_mathed);
+                cure2amount.Value = Convert.ToDecimal(Cure2_mathed);
+                cure3amount.Value = Convert.ToDecimal(Cure3_mathed);
+                cure4amount.Value = Convert.ToDecimal(Cure4_mathed);
+                cure5amount.Value = Convert.ToDecimal(Cure5_mathed);
+                cure6amount.Value = Convert.ToDecimal(Cure6_mathed);
 
-                curagaAmount.Value = Convert.ToDecimal ( Cure2_mathed );
-                curaga2Amount.Value = Convert.ToDecimal ( Cure3_mathed );
-                curaga3Amount.Value = Convert.ToDecimal ( Cure4_mathed );
-                curaga4Amount.Value = Convert.ToDecimal ( Cure5_mathed );
-                curaga5Amount.Value = Convert.ToDecimal ( Cure6_mathed );
+                curagaAmount.Value = Convert.ToDecimal(Cure2_mathed);
+                curaga2Amount.Value = Convert.ToDecimal(Cure3_mathed);
+                curaga3Amount.Value = Convert.ToDecimal(Cure4_mathed);
+                curaga4Amount.Value = Convert.ToDecimal(Cure5_mathed);
+                curaga5Amount.Value = Convert.ToDecimal(Cure6_mathed);
             }
             else
             {
-                MessageBox.Show ( "Select a PL from the main screen before running this." );
+                MessageBox.Show("Select a PL from the main screen before running this.");
             }
         }
 
-        protected override bool ProcessCmdKey ( ref Message msg, Keys keyData )
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if ( keyData == ( Keys.Control | Keys.S ) )
+            if (keyData == (Keys.Control | Keys.S))
             {
-                loadButton.PerformClick ( );
+                loadButton.PerformClick();
             }
-            else if ( keyData == ( Keys.Control | Keys.O ) )
+            else if (keyData == (Keys.Control | Keys.O))
             {
-                saveAsButton.PerformClick ( );
+                saveAsButton.PerformClick();
             }
-            else if ( keyData == ( Keys.Escape ) )
+            else if (keyData == (Keys.Escape))
             {
-                button4.PerformClick ( );
+                button4.PerformClick();
             }
-            return base.ProcessCmdKey ( ref msg, keyData );
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void naErase_CheckedChanged ( object sender, EventArgs e )
+        private void naErase_CheckedChanged(object sender, EventArgs e)
         {
-            if ( naErase.Checked == true )
+            if (naErase.Checked == true)
             {
                 na_Weight.Enabled = true;
                 na_VitDown.Enabled = true;

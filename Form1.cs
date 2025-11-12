@@ -84,7 +84,7 @@ namespace Miraculix
 
         private int lastKnownEstablisherTarget = 0;
         private int lockedTargetId = 0;
-private DateTime _nextTargetSetTime = DateTime.MinValue;
+        private DateTime _nextTargetSetTime = DateTime.MinValue;
         private int debuffTargetId = 0;
         private Dictionary<string, DateTime> targetDebuffTimers = new Dictionary<string, DateTime>();
         private int debuffTimersTargetId = 0;
@@ -117,6 +117,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
         private Dictionary<string, DateTime> buffCooldowns = new Dictionary<string, DateTime>();
         private Dictionary<string, Dictionary<string, bool>> oopDebuffState = new Dictionary<string, Dictionary<string, bool>>();
         private Dictionary<string, HashSet<string>> activePlayerDebuffs = new Dictionary<string, HashSet<string>>();
+        private Dictionary<int, HashSet<string>> mobBuffs = new Dictionary<int, HashSet<string>>();
         public class DebuffSpell
         {
             public string Name { get; set; }
@@ -3084,56 +3085,56 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
                 buffID = 595
             });
 
-    //MessageBox.Show("🔍 Starting FFXI process scan...");
+            //MessageBox.Show("🔍 Starting FFXI process scan...");
 
-    var pol = GetFFXIProcesses(requireVisibleWindow: true);
+            var pol = GetFFXIProcesses(requireVisibleWindow: true);
 
-    //MessageBox.Show($"🧮 Total matching processes found: {pol.Count}");
+            //MessageBox.Show($"🧮 Total matching processes found: {pol.Count}");
 
-    if (pol.Count < 1)
-    {
-        MessageBox.Show("⚠️ No visible FFXI-related processes found. Returning early.");
-        //MessageBox.Show("FFXI not found y");
-        return;
-    }
+            if (pol.Count < 1)
+            {
+                MessageBox.Show("⚠️ No visible FFXI-related processes found. Returning early.");
+                //MessageBox.Show("FFXI not found y");
+                return;
+            }
 
-    // Clear UI elements
-   // MessageBox.Show("🧹 Clearing dropdowns...");
-    POLID.Items.Clear();
-    POLID2.Items.Clear();
-    processids.Items.Clear();
-    activeprocessids.Items.Clear();
+            // Clear UI elements
+            // MessageBox.Show("🧹 Clearing dropdowns...");
+            POLID.Items.Clear();
+            POLID2.Items.Clear();
+            processids.Items.Clear();
+            activeprocessids.Items.Clear();
 
-    // Populate dropdowns
-    string processSummary = "📋 Populating dropdowns with process info:\n";
-    foreach (var proc in pol)
-    {
-        processSummary += $"✅ {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\"\n";
+            // Populate dropdowns
+            string processSummary = "📋 Populating dropdowns with process info:\n";
+            foreach (var proc in pol)
+            {
+                processSummary += $"✅ {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\"\n";
 
-        POLID.Items.Add(proc.MainWindowTitle);
-        POLID2.Items.Add(proc.MainWindowTitle);
-        processids.Items.Add(proc.Id);
-        activeprocessids.Items.Add(proc.Id);
-    }
-    //MessageBox.Show(processSummary);
+                POLID.Items.Add(proc.MainWindowTitle);
+                POLID2.Items.Add(proc.MainWindowTitle);
+                processids.Items.Add(proc.Id);
+                activeprocessids.Items.Add(proc.Id);
+            }
+            //MessageBox.Show(processSummary);
 
-    // Set default selections
-    //MessageBox.Show("🎯 Setting default selections...");
-    POLID.SelectedIndex = 0;
-    POLID2.SelectedIndex = 0;
-    processids.SelectedIndex = 0;
-    activeprocessids.SelectedIndex = 0;
+            // Set default selections
+            //MessageBox.Show("🎯 Setting default selections...");
+            POLID.SelectedIndex = 0;
+            POLID2.SelectedIndex = 0;
+            processids.SelectedIndex = 0;
+            activeprocessids.SelectedIndex = 0;
 
-    // Update UI version info
-    var versionText = "Miraculix v" + Application.ProductVersion;
-    //MessageBox.Show($"🆕 Setting version text: {versionText}");
+            // Update UI version info
+            var versionText = "Miraculix v" + Application.ProductVersion;
+            //MessageBox.Show($"🆕 Setting version text: {versionText}");
 
-    Text = notifyIcon1.Text = versionText;
-    notifyIcon1.BalloonTipTitle = versionText;
-    notifyIcon1.BalloonTipText = "Miraculix has been minimized.";
-    notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+            Text = notifyIcon1.Text = versionText;
+            notifyIcon1.BalloonTipTitle = versionText;
+            notifyIcon1.BalloonTipText = "Miraculix has been minimized.";
+            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
 
-   // MessageBox.Show("✅ FFXI process scan complete.");
+            // MessageBox.Show("✅ FFXI process scan complete.");
             this.ClientSize = new System.Drawing.Size(874, 380);
 
             _lastSpellCastTime = DateTime.Now;
@@ -3156,7 +3157,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
                     // Clear and rebuild menu
                     oopPlayerOptions.Items.Clear();
 
-                    var buffs = new[] { "Protect", "Shell", "Haste" };
+                    var buffs = new[] { "Haste", "Haste II", "Adloquium", "Flurry", "Flurry II", "Protect", "Shell" };
 
                     if (!oopBuffPreferences.ContainsKey(playerName))
                     {
@@ -3218,7 +3219,7 @@ private DateTime _nextTargetSetTime = DateTime.MinValue;
                 }
             }
         }
-private void oopBuffToolStripMenuItem_Click(object sender, EventArgs e)
+        private void oopBuffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
             if (menuItem != null)
@@ -3256,209 +3257,209 @@ private void oopBuffToolStripMenuItem_Click(object sender, EventArgs e)
                 }
             }
         }
-private void setinstance_Click(object sender, EventArgs e)
-{
-    if (!CheckForDLLFiles())
-    {
-        MessageBox.Show(
-            "Unable to locate EliteAPI.dll or EliteMMO.API.dll\nMake sure both files are in the same directory as the application",
-            "Error");
-        return;
-    }
-
-    processids.SelectedIndex = POLID.SelectedIndex;
-    activeprocessids.SelectedIndex = POLID.SelectedIndex;
-
-    _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
-    plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
-    Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
-
-    plLabel.ForeColor = Color.Green;
-    POLID.BackColor = Color.White;
-    plPosition.Enabled = true;
-    setinstance2.Enabled = true;
-    Form2.config.autoFollowName = string.Empty;
-
-    ForceSongRecast = true;
-
-    var polProcesses = GetFFXIProcesses(requireVisibleWindow: true);
-    foreach (var dats in polProcesses)
-    {
-        if (POLID.Text == dats.MainWindowTitle)
+        private void setinstance_Click(object sender, EventArgs e)
         {
-            try
+            if (!CheckForDLLFiles())
             {
-                foreach (ProcessModule module in dats.Modules)
-                {
-                    if (module.FileName.Contains("Ashita.dll"))
-                    {
-                        WindowerMode = "Ashita";
-                    }
-                    else if (module.FileName.Contains("Hook.dll"))
-                    {
-                        WindowerMode = "Windower";
-                    }
-                }
+                MessageBox.Show(
+                    "Unable to locate EliteAPI.dll or EliteMMO.API.dll\nMake sure both files are in the same directory as the application",
+                    "Error");
+                return;
             }
-            catch (Exception ex)
+
+            processids.SelectedIndex = POLID.SelectedIndex;
+            activeprocessids.SelectedIndex = POLID.SelectedIndex;
+
+            _ELITEAPIPL = new EliteAPI((int)processids.SelectedItem);
+            plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
+            Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
+
+            plLabel.ForeColor = Color.Green;
+            POLID.BackColor = Color.White;
+            plPosition.Enabled = true;
+            setinstance2.Enabled = true;
+            Form2.config.autoFollowName = string.Empty;
+
+            ForceSongRecast = true;
+
+            var polProcesses = GetFFXIProcesses(requireVisibleWindow: true);
+            foreach (var dats in polProcesses)
             {
-                MessageBox.Show("Error accessing modules for process " + dats.ProcessName + " (" + dats.Id + "):\n" + ex.Message, "Module Access Error");
-            }
-        }
-    }
-
-    if (firstTime_Pause == 0)
-    {
-        Follow_BGW.RunWorkerAsync();
-        firstTime_Pause = 1;
-    }
-
-    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
-    string loadSettingsPath = Path.Combine(path, "loadSettings");
-
-    if (File.Exists(loadSettingsPath))
-    {
-        if (_ELITEAPIPL.Player.MainJob != 0 && _ELITEAPIPL.Player.SubJob != 0)
-        {
-            JobTitles mainJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.MainJob);
-            JobTitles subJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.SubJob);
-
-            if (mainJob != null && subJob != null)
-            {
-                string filename = Path.Combine(path, _ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml");
-                string filename2 = Path.Combine(path, mainJob.job_name + "_" + subJob.job_name + ".xml");
-
-                string configFile = null;
-                if (File.Exists(filename))
-                    configFile = filename;
-                else if (File.Exists(filename2))
-                    configFile = filename2;
-
-                if (configFile != null)
+                if (POLID.Text == dats.MainWindowTitle)
                 {
                     try
                     {
-                        Form2.MySettings loadedSettings;
-                        using (var reader = new StreamReader(configFile))
+                        foreach (ProcessModule module in dats.Modules)
                         {
-                            var serializer = new XmlSerializer(typeof(Form2.MySettings));
-                            loadedSettings = (Form2.MySettings)serializer.Deserialize(reader);
-                        }
-
-                        if (loadedSettings != null)
-                        {
-                            Form2.config = loadedSettings;
-                            Form2.updateForm(Form2.config);
-                            ReloadSettings();
+                            if (module.FileName.Contains("Ashita.dll"))
+                            {
+                                WindowerMode = "Ashita";
+                            }
+                            else if (module.FileName.Contains("Hook.dll"))
+                            {
+                                WindowerMode = "Windower";
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Failed to load settings from " + configFile + ":\n" + ex.Message, "Settings Load Error");
+                        MessageBox.Show("Error accessing modules for process " + dats.ProcessName + " (" + dats.Id + "):\n" + ex.Message, "Module Access Error");
                     }
                 }
             }
 
-            if (Form2.config.EnableAddOn && LUA_Plugin_Loaded == 0)
+            if (firstTime_Pause == 0)
+            {
+                Follow_BGW.RunWorkerAsync();
+                firstTime_Pause = 1;
+            }
+
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
+            string loadSettingsPath = Path.Combine(path, "loadSettings");
+
+            if (File.Exists(loadSettingsPath))
+            {
+                if (_ELITEAPIPL.Player.MainJob != 0 && _ELITEAPIPL.Player.SubJob != 0)
                 {
+                    JobTitles mainJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.MainJob);
+                    JobTitles subJob = JobNames.FirstOrDefault(c => c.job_number == _ELITEAPIPL.Player.SubJob);
 
-            if (WindowerMode == "Ashita")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("/load miraculix");
-                    Thread.Sleep(1500);
-
-
-                    _ELITEAPIPL.ThirdParty.SendString("/mx verify");
-                    if (Form2.config.enableHotKeys)
+                    if (mainJob != null && subJob != null)
                     {
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /mx toggle");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /mx start");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /mx pause");
+                        string filename = Path.Combine(path, _ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml");
+                        string filename2 = Path.Combine(path, mainJob.job_name + "_" + subJob.job_name + ".xml");
+
+                        string configFile = null;
+                        if (File.Exists(filename))
+                            configFile = filename;
+                        else if (File.Exists(filename2))
+                            configFile = filename2;
+
+                        if (configFile != null)
+                        {
+                            try
+                            {
+                                Form2.MySettings loadedSettings;
+                                using (var reader = new StreamReader(configFile))
+                                {
+                                    var serializer = new XmlSerializer(typeof(Form2.MySettings));
+                                    loadedSettings = (Form2.MySettings)serializer.Deserialize(reader);
+                                }
+
+                                if (loadedSettings != null)
+                                {
+                                    Form2.config = loadedSettings;
+                                    Form2.updateForm(Form2.config);
+                                    ReloadSettings();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Failed to load settings from " + configFile + ":\n" + ex.Message, "Settings Load Error");
+                            }
+                        }
                     }
+
+                    if (Form2.config.EnableAddOn && LUA_Plugin_Loaded == 0)
+                    {
+
+                        if (WindowerMode == "Ashita")
+                        {
+                            _ELITEAPIPL.ThirdParty.SendString("/load miraculix");
+                            Thread.Sleep(1500);
+
+
+                            _ELITEAPIPL.ThirdParty.SendString("/mx verify");
+                            if (Form2.config.enableHotKeys)
+                            {
+                                _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /mx toggle");
+                                _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /mx start");
+                                _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /mx pause");
+                            }
+                        }
+
+                        AddOnStatus_Click(sender, e);
+
+                        LUA_Plugin_Loaded = 1;
+                    }
+
+
                 }
-
-                AddOnStatus_Click(sender, e);
-
-                LUA_Plugin_Loaded = 1;
             }
-
-
         }
-    }
-}
 
 
-private string GetBestSpellTier(string buffType, string targetName)
-{
-    List<string> spellTiers = new List<string>();
-
-    switch (buffType.ToLower())
-    {
-        case "protect":
-            {
-                var tiers = new[] { "Protect V", "Protect IV", "Protect III", "Protect II", "Protect" };
-                foreach (var spell in tiers)
-                {
-                    if (HasSpell(spell))
-                    {
-                        // This is the best spell the player knows. Check only this one.
-                        return (CheckSpellRecast(spell) == 0) ? spell : null;
-                    }
-                }
-                return null; // Player knows no version of Protect.
-            }
-        case "shell":
-            {
-                var tiers = new[] { "Shell V", "Shell IV", "Shell III", "Shell II", "Shell" };
-                foreach (var spell in tiers)
-                {
-                    if (HasSpell(spell))
-                    {
-                        // This is the best spell the player knows. Check only this one.
-                        return (CheckSpellRecast(spell) == 0) ? spell : null;
-                    }
-                }
-                return null; // Player knows no version of Shell.
-            }
-        case "haste":
-             var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
-             if (partyMember != null)
-             {
-                 byte memberIndex = partyMember.MemberNumber;
-                 if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
-                 if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
-             }
-             // Fallback if not found or settings not specific
-             if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
-            break;
-        case "regen":
-            // Tiered selection based on settings, highest preferred first.
-            spellTiers.Add("Regen V");
-            spellTiers.Add("Regen IV");
-            if (Form2.config.regen3enabled) spellTiers.Add("Regen III");
-            if (Form2.config.regen2enabled) spellTiers.Add("Regen II");
-            if (Form2.config.regen1enabled) spellTiers.Add("Regen");
-            break;
-        case "refresh":
-            spellTiers.AddRange(new[] { "Refresh III", "Refresh II", "Refresh" });
-            break;
-         case "phalanx":
-            spellTiers.AddRange(new[] { "Phalanx II", "Phalanx" });
-            break;
-        default:
-            return null;
-    }
-
-    foreach (var spell in spellTiers)
-    {
-        if (HasSpell(spell) && CheckSpellRecast(spell) == 0)
+        private string GetBestSpellTier(string buffType, string targetName)
         {
-            return spell;
-        }
-    }
+            List<string> spellTiers = new List<string>();
 
-    return null;
-}
+            switch (buffType.ToLower())
+            {
+                case "protect":
+                    {
+                        var tiers = new[] { "Protect V", "Protect IV", "Protect III", "Protect II", "Protect" };
+                        foreach (var spell in tiers)
+                        {
+                            if (HasSpell(spell))
+                            {
+                                // This is the best spell the player knows. Check only this one.
+                                return (CheckSpellRecast(spell) == 0) ? spell : null;
+                            }
+                        }
+                        return null; // Player knows no version of Protect.
+                    }
+                case "shell":
+                    {
+                        var tiers = new[] { "Shell V", "Shell IV", "Shell III", "Shell II", "Shell" };
+                        foreach (var spell in tiers)
+                        {
+                            if (HasSpell(spell))
+                            {
+                                // This is the best spell the player knows. Check only this one.
+                                return (CheckSpellRecast(spell) == 0) ? spell : null;
+                            }
+                        }
+                        return null; // Player knows no version of Shell.
+                    }
+                case "haste":
+                    var partyMember = _ELITEAPIMonitored.Party.GetPartyMembers().FirstOrDefault(p => p.Name == targetName && p.Active != 0);
+                    if (partyMember != null)
+                    {
+                        byte memberIndex = partyMember.MemberNumber;
+                        if (autoHaste_IIEnabled[memberIndex]) spellTiers.Add("Haste II");
+                        if (autoHasteEnabled[memberIndex]) spellTiers.Add("Haste");
+                    }
+                    // Fallback if not found or settings not specific
+                    if (spellTiers.Count == 0) spellTiers.AddRange(new[] { "Haste II", "Haste" });
+                    break;
+                case "regen":
+                    // Tiered selection based on settings, highest preferred first.
+                    spellTiers.Add("Regen V");
+                    spellTiers.Add("Regen IV");
+                    if (Form2.config.regen3enabled) spellTiers.Add("Regen III");
+                    if (Form2.config.regen2enabled) spellTiers.Add("Regen II");
+                    if (Form2.config.regen1enabled) spellTiers.Add("Regen");
+                    break;
+                case "refresh":
+                    spellTiers.AddRange(new[] { "Refresh III", "Refresh II", "Refresh" });
+                    break;
+                case "phalanx":
+                    spellTiers.AddRange(new[] { "Phalanx II", "Phalanx" });
+                    break;
+                default:
+                    return null;
+            }
+
+            foreach (var spell in spellTiers)
+            {
+                if (HasSpell(spell) && CheckSpellRecast(spell) == 0)
+                {
+                    return spell;
+                }
+            }
+
+            return null;
+        }
 
 
 
@@ -6043,18 +6044,19 @@ private string GetBestSpellTier(string buffType, string targetName)
                 debug_MSG_show.AppendLine($"    -> State for {memberState.Name}: [{string.Join(", ", buffs)}]");
             }
 
-      
-                    if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical)
-                    {
-                        PrioritizeHealing();
-                        if (CastingBackground_Check) return;
-                    }
 
-                    ProcessRecastQueue();
-                    CheckAndApplyBuffs();
-                    CheckEngagedStatus_Hate();
-                    RunDebuffLogic();
-     
+            if (_currentProfile == Profile.Degraded || _currentProfile == Profile.Critical)
+            {
+                PrioritizeHealing();
+                if (CastingBackground_Check) return;
+            }
+
+            ProcessRecastQueue();
+            CheckAndApplyBuffs();
+            CheckEngagedStatus_Hate();
+            RunDebuffLogic();
+            RunDispelLogic();
+
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
 
@@ -7559,9 +7561,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player0optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 0;
-            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[0];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[0];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[0];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[0];
             partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[0];
 
@@ -7571,9 +7570,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player1optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 1;
-            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[1];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[1];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[1];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[1];
             partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[1];
             playerOptions.Show(party0, new Point(0, 0));
@@ -7582,9 +7578,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player2optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 2;
-            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[2];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[2];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[2];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[2];
             partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[2];
             playerOptions.Show(party0, new Point(0, 0));
@@ -7593,9 +7586,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player3optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 3;
-            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[3];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[3];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[3];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[3];
             partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[3];
             playerOptions.Show(party0, new Point(0, 0));
@@ -7604,9 +7594,6 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player4optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 4;
-            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[4];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[4];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[4];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[4];
             partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[4];
             playerOptions.Show(party0, new Point(0, 0));
@@ -7615,142 +7602,25 @@ private string GetBestSpellTier(string buffType, string targetName)
         private void player5optionsButton_Click(object sender, EventArgs e)
         {
             playerOptionsSelected = 5;
-            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[5];
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[5];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[5];
             partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[5];
             partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[5];
             playerOptions.Show(party0, new Point(0, 0));
         }
 
-        private void player6optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 6;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[6];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[6];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[6];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[6];
-            playerOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player7optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 7;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[7];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[7];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[7];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[7];
-            playerOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player8optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 8;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[8];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[8];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[8];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[8];
-            playerOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player9optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 9;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[9];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[9];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[9];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[9];
-            playerOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player10optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 10;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[10];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[10];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[10];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[10];
-            playerOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player11optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 11;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[11];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[11];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[11];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[11];
-            playerOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player12optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 12;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[12];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[12];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[12];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[12];
-            playerOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player13optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 13;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[13];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[13];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[13];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[13];
-            playerOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player14optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 14;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[14];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[14];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[14];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[14];
-            playerOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player15optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 15;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[15];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[15];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[15];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[15];
-            playerOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player16optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 16;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[16];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[16];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[16];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[16];
-            playerOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player17optionsButton_Click(object sender, EventArgs e)
-        {
-            playerOptionsSelected = 17;
-            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[17];
-            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[17];
-            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[17];
-            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[17];
-            playerOptions.Show(party2, new Point(0, 0));
-        }
 
         private void player0buffsButton_Click(object sender, EventArgs e)
         {
             autoOptionsSelected = 0;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[0];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[0];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[0];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[0];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[0];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[0];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[0];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[0];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[0];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[0];
             SandstormToolStripMenuItem.Checked = autoSandstormEnabled[0];
             RainstormToolStripMenuItem.Checked = autoRainstormEnabled[0];
             WindstormToolStripMenuItem.Checked = autoWindstormEnabled[0];
@@ -7767,9 +7637,14 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 1;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[1];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[1];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[1];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[1];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[1];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[1];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[1];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[1];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[1];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[1];
             SandstormToolStripMenuItem.Checked = autoSandstormEnabled[1];
             RainstormToolStripMenuItem.Checked = autoRainstormEnabled[1];
             WindstormToolStripMenuItem.Checked = autoWindstormEnabled[1];
@@ -7786,9 +7661,14 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 2;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[2];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[2];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[2];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[2];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[2];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[2];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[2];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[2];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[2];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[2];
             SandstormToolStripMenuItem.Checked = autoSandstormEnabled[2];
             RainstormToolStripMenuItem.Checked = autoRainstormEnabled[2];
             WindstormToolStripMenuItem.Checked = autoWindstormEnabled[2];
@@ -7805,9 +7685,14 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 3;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[3];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[3];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[3];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[3];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[3];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[3];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[3];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[3];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[3];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[3];
             SandstormToolStripMenuItem.Checked = autoSandstormEnabled[3];
             RainstormToolStripMenuItem.Checked = autoRainstormEnabled[3];
             WindstormToolStripMenuItem.Checked = autoWindstormEnabled[3];
@@ -7824,9 +7709,14 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 4;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[4];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[4];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[4];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[4];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[4];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[4];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[4];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[4];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[4];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[4];
             SandstormToolStripMenuItem.Checked = autoSandstormEnabled[4];
             RainstormToolStripMenuItem.Checked = autoRainstormEnabled[4];
             WindstormToolStripMenuItem.Checked = autoWindstormEnabled[4];
@@ -7843,9 +7733,14 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 5;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[5];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[5];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[5];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[5];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[5];
             autoPhalanxIIToolStripMenuItem1.Checked = autoPhalanx_IIEnabled[5];
             autoRegenVToolStripMenuItem.Checked = autoRegen_Enabled[5];
             autoRefreshIIToolStripMenuItem.Checked = autoRefreshEnabled[5];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[5];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[5];
             SandstormToolStripMenuItem.Checked = autoSandstormEnabled[5];
             RainstormToolStripMenuItem.Checked = autoRainstormEnabled[5];
             WindstormToolStripMenuItem.Checked = autoWindstormEnabled[5];
@@ -7862,6 +7757,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 6;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[6];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[6];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[6];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[6];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[6];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[6];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[6];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7870,6 +7770,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 7;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[7];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[7];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[7];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[7];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[7];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[7];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[7];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7878,6 +7783,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 8;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[8];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[8];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[8];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[8];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[8];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[8];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[8];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7886,6 +7796,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 9;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[9];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[9];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[9];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[9];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[9];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[9];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[9];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7894,6 +7809,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 10;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[10];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[10];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[10];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[10];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[10];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[10];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[10];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7902,6 +7822,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 11;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[11];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[11];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[11];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[11];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[11];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[11];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[11];
             autoOptions.Show(party1, new Point(0, 0));
         }
 
@@ -7910,6 +7835,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 12;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[12];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[12];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[12];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[12];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[12];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[12];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[12];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7918,6 +7848,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 13;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[13];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[13];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[13];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[13];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[13];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[13];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[13];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7926,6 +7861,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 14;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[14];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[14];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[14];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[14];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[14];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[14];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[14];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7934,6 +7874,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 15;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[15];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[15];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[15];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[15];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[15];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[15];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[15];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7942,6 +7887,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 16;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[16];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[16];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[16];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[16];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[16];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[16];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[16];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7950,6 +7900,11 @@ private string GetBestSpellTier(string buffType, string targetName)
             autoOptionsSelected = 17;
             autoHasteToolStripMenuItem.Checked = autoHasteEnabled[17];
             autoHasteIIToolStripMenuItem.Checked = autoHaste_IIEnabled[17];
+            autoAdloquiumToolStripMenuItem.Checked = autoAdloquium_Enabled[17];
+            autoFlurryToolStripMenuItem.Checked = autoFlurryEnabled[17];
+            autoFlurryIIToolStripMenuItem.Checked = autoFlurry_IIEnabled[17];
+            partyAutoProtectToolStripMenuItem.Checked = autoProtect_Enabled[17];
+            partyAutoShellToolStripMenuItem.Checked = autoShell_Enabled[17];
             autoOptions.Show(party2, new Point(0, 0));
         }
 
@@ -7977,17 +7932,17 @@ private string GetBestSpellTier(string buffType, string targetName)
             if (CastingBackground_Check != true && JobAbilityLock_Check != true)
             {
                 Invoke((MethodInvoker)(async () =>
-          {
-              JobAbilityLock_Check = true;
-              castingLockLabel.Text = "Casting is LOCKED for a JA.";
-              currentAction.Text = "Using a Job Ability: " + JobabilityDATA;
-              _ELITEAPIPL.ThirdParty.SendString("/ja \"" + JobAbilityName + "\" <me>");
-              await Task.Delay(TimeSpan.FromSeconds(2));
-              castingLockLabel.Text = "Casting is UNLOCKED";
-              currentAction.Text = string.Empty;
-              castingSpell = string.Empty;
-              JobAbilityLock_Check = false;
-          }));
+                {
+                    JobAbilityLock_Check = true;
+                    castingLockLabel.Text = "Casting is LOCKED for a JA.";
+                    currentAction.Text = "Using a Job Ability: " + JobabilityDATA;
+                    _ELITEAPIPL.ThirdParty.SendString("/ja \"" + JobAbilityName + "\" <me>");
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+                    castingLockLabel.Text = "Casting is UNLOCKED";
+                    currentAction.Text = string.Empty;
+                    castingSpell = string.Empty;
+                    JobAbilityLock_Check = false;
+                }));
             }
         }
 
@@ -8009,28 +7964,28 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void autoAdloquiumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoAdloquium_Enabled[playerOptionsSelected] = !autoAdloquium_Enabled[playerOptionsSelected];
+            autoAdloquium_Enabled[autoOptionsSelected] = !autoAdloquium_Enabled[autoOptionsSelected];
         }
 
         private void autoFlurryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurryEnabled[playerOptionsSelected] = !autoFlurryEnabled[playerOptionsSelected];
-            autoHasteEnabled[playerOptionsSelected] = false;
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
+            autoFlurryEnabled[autoOptionsSelected] = !autoFlurryEnabled[autoOptionsSelected];
+            autoHasteEnabled[autoOptionsSelected] = false;
+            autoHaste_IIEnabled[autoOptionsSelected] = false;
+            autoFlurry_IIEnabled[autoOptionsSelected] = false;
         }
 
         private void autoFlurryIIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoFlurry_IIEnabled[playerOptionsSelected] = !autoFlurry_IIEnabled[playerOptionsSelected];
-            autoHasteEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
+            autoFlurry_IIEnabled[autoOptionsSelected] = !autoFlurry_IIEnabled[autoOptionsSelected];
+            autoHasteEnabled[autoOptionsSelected] = false;
+            autoFlurryEnabled[autoOptionsSelected] = false;
+            autoHaste_IIEnabled[autoOptionsSelected] = false;
         }
 
         private void autoProtectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoProtect_Enabled[playerOptionsSelected] = !autoProtect_Enabled[playerOptionsSelected];
+            autoProtect_Enabled[autoOptionsSelected] = !autoProtect_Enabled[autoOptionsSelected];
         }
 
         private void enableDebuffRemovalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8041,7 +7996,7 @@ private string GetBestSpellTier(string buffType, string targetName)
 
         private void autoShellToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoShell_Enabled[playerOptionsSelected] = !autoShell_Enabled[playerOptionsSelected];
+            autoShell_Enabled[autoOptionsSelected] = !autoShell_Enabled[autoOptionsSelected];
         }
 
         private void autoHasteToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -8621,73 +8576,73 @@ private string GetBestSpellTier(string buffType, string targetName)
 
 
 
-private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
-{
-    var targetNames = new[] { "pol", "xiloader", "edenxi", "horizon-loader" };
-    var allProcesses = Process.GetProcesses();
-    var matchingProcesses = new List<Process>();
-
-    //string debugLog = "🔍 Scanning all processes...\n";
-
-    foreach (var proc in allProcesses)
-    {
-        string name = proc.ProcessName.ToLower();
-        bool isTarget = targetNames.Contains(name);
-        bool hasWindow = proc.MainWindowHandle != IntPtr.Zero;
-        bool passesVisibility = !requireVisibleWindow || hasWindow;
-
-        //debugLog += $"🧪 {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\" | WindowHandle: {proc.MainWindowHandle} | Match: {isTarget} | Visible: {hasWindow}\n";
-
-        if (isTarget && passesVisibility)
+        private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
         {
-            matchingProcesses.Add(proc);
+            var targetNames = new[] { "pol", "xiloader", "edenxi", "horizon-loader" };
+            var allProcesses = Process.GetProcesses();
+            var matchingProcesses = new List<Process>();
+
+            //string debugLog = "🔍 Scanning all processes...\n";
+
+            foreach (var proc in allProcesses)
+            {
+                string name = proc.ProcessName.ToLower();
+                bool isTarget = targetNames.Contains(name);
+                bool hasWindow = proc.MainWindowHandle != IntPtr.Zero;
+                bool passesVisibility = !requireVisibleWindow || hasWindow;
+
+                //debugLog += $"🧪 {proc.ProcessName} | ID: {proc.Id} | Title: \"{proc.MainWindowTitle}\" | WindowHandle: {proc.MainWindowHandle} | Match: {isTarget} | Visible: {hasWindow}\n";
+
+                if (isTarget && passesVisibility)
+                {
+                    matchingProcesses.Add(proc);
+                }
+            }
+
+            //debugLog += $"\n✅ Final matching count: {matchingProcesses.Count}";
+            //MessageBox.Show(debugLog, "FFXI Process Debug");
+
+            return matchingProcesses;
         }
-    }
-
-    //debugLog += $"\n✅ Final matching count: {matchingProcesses.Count}";
-    //MessageBox.Show(debugLog, "FFXI Process Debug");
-
-    return matchingProcesses;
-}
 
 
 
 
-	private void refreshCharactersToolStripMenuItem_Click(object sender, EventArgs e)
-	{
-	    var pol = GetFFXIProcesses();
+        private void refreshCharactersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var pol = GetFFXIProcesses();
 
-	    if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading ||
-	        _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
-	    {
-	        // Possibly show a loading indicator or skip refresh
-	        return;
-	    }
+            if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading ||
+                _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
+            {
+                // Possibly show a loading indicator or skip refresh
+                return;
+            }
 
-	if (pol.Count < 1)
-	{
-	    var hiddenPol = GetFFXIProcesses(requireVisibleWindow: false);
-	    if (hiddenPol.Count > 0)
-	        MessageBox.Show("FFXI found, but no visible window. Running in background?");
-	    else
-	        MessageBox.Show("FFXI not found at all.");
-	}
+            if (pol.Count < 1)
+            {
+                var hiddenPol = GetFFXIProcesses(requireVisibleWindow: false);
+                if (hiddenPol.Count > 0)
+                    MessageBox.Show("FFXI found, but no visible window. Running in background?");
+                else
+                    MessageBox.Show("FFXI not found at all.");
+            }
 
 
-	    POLID.Items.Clear();
-	    POLID2.Items.Clear();
-	    processids.Items.Clear();
+            POLID.Items.Clear();
+            POLID2.Items.Clear();
+            processids.Items.Clear();
 
-	    foreach (var proc in pol)
-	    {
-	        POLID.Items.Add(proc.MainWindowTitle);
-	        POLID2.Items.Add(proc.MainWindowTitle);
-	        processids.Items.Add(proc.Id);
-	    }
+            foreach (var proc in pol)
+            {
+                POLID.Items.Add(proc.MainWindowTitle);
+                POLID2.Items.Add(proc.MainWindowTitle);
+                processids.Items.Add(proc.Id);
+            }
 
-	    POLID.SelectedIndex = 0;
-	    POLID2.SelectedIndex = 0;
-	}
+            POLID.SelectedIndex = 0;
+            POLID2.SelectedIndex = 0;
+        }
 
 
 
@@ -9006,102 +8961,102 @@ private List<Process> GetFFXIProcesses(bool requireVisibleWindow = true)
         }
 
 
-private int CheckEngagedStatus_Hate()
-{
-    try
-    {
-        debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
-
-        // 1. Check if a target is already locked
-        if (lockedTargetId != 0)
+        private int CheckEngagedStatus_Hate()
         {
-            debug_MSG_show.AppendLine($"Checking locked target ID: {lockedTargetId}");
-            EliteAPI.XiEntity lockedEntity = _ELITEAPIPL.Entity.GetEntity(lockedTargetId);
-
-            // Check if the locked entity is still valid
-            if (lockedEntity != null && lockedEntity.HealthPercent > 0 && lockedEntity.Status == 1)
+            try
             {
-                debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
-                battleTargetLabel.Text = $"{lockedEntity.Name} ({lockedTargetId})";
-                return lockedTargetId;
-            }
-            else
-            {
-                debug_MSG_show.AppendLine($"  -> Locked target is no longer valid. Searching for a new one.");
-                lockedTargetId = 0; // Reset locked target
-                battleTargetLabel.Text = "Inactive";
-            }
-        }
+                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
 
-        debug_MSG_show.AppendLine("No locked target. Starting new search.");
-
-        var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
-            .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).ToList();
-        List<string> friendlyNames = partyMembers.Select(p => p.Name.ToLower()).ToList();
-        friendlyNames.Add(_ELITEAPIPL.Player.Name.ToLower());
-        if (_ELITEAPIPL.Player.Name.ToLower() != _ELITEAPIMonitored.Player.Name.ToLower())
-        {
-            friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
-        }
-        friendlyNames = friendlyNames.Distinct().ToList();
-
-        List<uint> friendlyIds = partyMembers.Select(p => p.ID).ToList();
-        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-        if (plInfo != null) friendlyIds.Add(plInfo.ID);
-        var monitoredInfo = _ELITEAPIMonitored.Party.GetPartyMember(0);
-        if (monitoredInfo != null) friendlyIds.Add(monitoredInfo.ID);
-        friendlyIds = friendlyIds.Distinct().ToList();
-
-        EliteAPI.XiEntity bestTarget = null;
-        int bestTargetId = 0;
-
-        debug_MSG_show.AppendLine("Scanning entities for best target...");
-        for (int i = 0; i < 2048; i++)
-        {
-            EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
-            if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0) continue;
-
-            var entityType = (TargetType)entity.Type;
-
-            if (entity.Status == 1 && !friendlyNames.Contains(entity.Name.ToLower()))
-            {
-                if (!(entityType.HasFlag(TargetType.Enemy) || entityType.HasFlag(TargetType.NPC))) continue;
-                if (entity.ClaimID != 0 && !friendlyIds.Contains(entity.ClaimID)) continue;
-                if (entity.HealthPercent >= 100) continue;
-                if (entity.Distance >= 21) continue;
-
-                if (bestTarget == null || entity.HealthPercent < bestTarget.HealthPercent)
+                // 1. Check if a target is already locked
+                if (lockedTargetId != 0)
                 {
-                    bestTarget = entity;
-                    bestTargetId = i;
+                    debug_MSG_show.AppendLine($"Checking locked target ID: {lockedTargetId}");
+                    EliteAPI.XiEntity lockedEntity = _ELITEAPIPL.Entity.GetEntity(lockedTargetId);
+
+                    // Check if the locked entity is still valid
+                    if (lockedEntity != null && lockedEntity.HealthPercent > 0 && lockedEntity.Status == 1)
+                    {
+                        debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
+                        battleTargetLabel.Text = $"{lockedEntity.Name} ({lockedTargetId})";
+                        return lockedTargetId;
+                    }
+                    else
+                    {
+                        debug_MSG_show.AppendLine($"  -> Locked target is no longer valid. Searching for a new one.");
+                        lockedTargetId = 0; // Reset locked target
+                        battleTargetLabel.Text = "Inactive";
+                    }
                 }
-            }
-        }
 
-        if (bestTarget != null)
-        {
-            debug_MSG_show.AppendLine($"  -> SUCCESS: Found best target '{bestTarget.Name}' with lowest HP. Locking and returning index: {bestTargetId}");
-            lockedTargetId = bestTargetId;
-            if (Form2.config.autoTargetOnLock)
+                debug_MSG_show.AppendLine("No locked target. Starting new search.");
+
+                var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
+                    .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).ToList();
+                List<string> friendlyNames = partyMembers.Select(p => p.Name.ToLower()).ToList();
+                friendlyNames.Add(_ELITEAPIPL.Player.Name.ToLower());
+                if (_ELITEAPIPL.Player.Name.ToLower() != _ELITEAPIMonitored.Player.Name.ToLower())
+                {
+                    friendlyNames.Add(_ELITEAPIMonitored.Player.Name.ToLower());
+                }
+                friendlyNames = friendlyNames.Distinct().ToList();
+
+                List<uint> friendlyIds = partyMembers.Select(p => p.ID).ToList();
+                var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                if (plInfo != null) friendlyIds.Add(plInfo.ID);
+                var monitoredInfo = _ELITEAPIMonitored.Party.GetPartyMember(0);
+                if (monitoredInfo != null) friendlyIds.Add(monitoredInfo.ID);
+                friendlyIds = friendlyIds.Distinct().ToList();
+
+                EliteAPI.XiEntity bestTarget = null;
+                int bestTargetId = 0;
+
+                debug_MSG_show.AppendLine("Scanning entities for best target...");
+                for (int i = 0; i < 2048; i++)
+                {
+                    EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
+                    if (entity == null || string.IsNullOrEmpty(entity.Name) || entity.HealthPercent == 0) continue;
+
+                    var entityType = (TargetType)entity.Type;
+
+                    if (entity.Status == 1 && !friendlyNames.Contains(entity.Name.ToLower()))
+                    {
+                        if (!(entityType.HasFlag(TargetType.Enemy) || entityType.HasFlag(TargetType.NPC))) continue;
+                        if (entity.ClaimID != 0 && !friendlyIds.Contains(entity.ClaimID)) continue;
+                        if (entity.HealthPercent >= 100) continue;
+                        if (entity.Distance >= 21) continue;
+
+                        if (bestTarget == null || entity.HealthPercent < bestTarget.HealthPercent)
+                        {
+                            bestTarget = entity;
+                            bestTargetId = i;
+                        }
+                    }
+                }
+
+                if (bestTarget != null)
+                {
+                    debug_MSG_show.AppendLine($"  -> SUCCESS: Found best target '{bestTarget.Name}' with lowest HP. Locking and returning index: {bestTargetId}");
+                    lockedTargetId = bestTargetId;
+                    if (Form2.config.autoTargetOnLock)
+                    {
+                        _nextTargetSetTime = DateTime.Now.AddSeconds(2);
+                    }
+                    battleTargetLabel.Text = $"{bestTarget.Name} ({bestTargetId})";
+                    return bestTargetId;
+                }
+
+                debug_MSG_show.AppendLine("No matching engaged target found.");
+            }
+            catch (Exception ex)
             {
-                _nextTargetSetTime = DateTime.Now.AddSeconds(2);
+                debug_MSG_show.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex}");
             }
-            battleTargetLabel.Text = $"{bestTarget.Name} ({bestTargetId})";
-            return bestTargetId;
+            finally
+            {
+                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate END ---");
+            }
+            return 0;
         }
-
-        debug_MSG_show.AppendLine("No matching engaged target found.");
-    }
-    catch (Exception ex)
-    {
-        debug_MSG_show.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex}");
-    }
-    finally
-    {
-        debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate END ---");
-    }
-    return 0;
-}
 
 
 
@@ -9177,58 +9132,58 @@ private int CheckEngagedStatus_Hate()
             return 0;
         }
 
-private void updateInstances_Tick(object sender, EventArgs e)
-{
-    // Skip update if either player is still loading
-    if ((_ELITEAPIPL != null && _ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading) ||
-        (_ELITEAPIMonitored != null && _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading))
-    {
-        return;
-    }
-
-    var pol = GetFFXIProcesses(requireVisibleWindow: true);
-
-    if (pol.Count < 1)
-    {
-        return;
-    }
-
-    // Clear dropdowns
-    POLID.Items.Clear();
-    POLID2.Items.Clear();
-    processids.Items.Clear();
-
-    int selectedPOLID = 0;
-    int selectedPOLID2 = 0;
-
-    for (int i = 0; i < pol.Count; i++)
-    {
-        var proc = pol[i];
-        string title = proc.MainWindowTitle;
-
-        POLID.Items.Add(title);
-        POLID2.Items.Add(title);
-        processids.Items.Add(proc.Id);
-
-        if (_ELITEAPIPL?.Player?.Name != null &&
-            title.Equals(_ELITEAPIPL.Player.Name, StringComparison.OrdinalIgnoreCase))
+        private void updateInstances_Tick(object sender, EventArgs e)
         {
-            selectedPOLID = i;
-            plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
-            Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
-        }
+            // Skip update if either player is still loading
+            if ((_ELITEAPIPL != null && _ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading) ||
+                (_ELITEAPIMonitored != null && _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading))
+            {
+                return;
+            }
 
-        if (_ELITEAPIMonitored?.Player?.Name != null &&
-            title.Equals(_ELITEAPIMonitored.Player.Name, StringComparison.Ordinal))
-        {
-            selectedPOLID2 = i;
-            monitoredLabel.Text = "Monitored Player: " + _ELITEAPIMonitored.Player.Name;
-        }
-    }
+            var pol = GetFFXIProcesses(requireVisibleWindow: true);
 
-    POLID.SelectedIndex = selectedPOLID;
-    POLID2.SelectedIndex = selectedPOLID2;
-}
+            if (pol.Count < 1)
+            {
+                return;
+            }
+
+            // Clear dropdowns
+            POLID.Items.Clear();
+            POLID2.Items.Clear();
+            processids.Items.Clear();
+
+            int selectedPOLID = 0;
+            int selectedPOLID2 = 0;
+
+            for (int i = 0; i < pol.Count; i++)
+            {
+                var proc = pol[i];
+                string title = proc.MainWindowTitle;
+
+                POLID.Items.Add(title);
+                POLID2.Items.Add(title);
+                processids.Items.Add(proc.Id);
+
+                if (_ELITEAPIPL?.Player?.Name != null &&
+                    title.Equals(_ELITEAPIPL.Player.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    selectedPOLID = i;
+                    plLabel.Text = "Selected PL: " + _ELITEAPIPL.Player.Name;
+                    Text = notifyIcon1.Text = _ELITEAPIPL.Player.Name + " - Miraculix v" + Application.ProductVersion;
+                }
+
+                if (_ELITEAPIMonitored?.Player?.Name != null &&
+                    title.Equals(_ELITEAPIMonitored.Player.Name, StringComparison.Ordinal))
+                {
+                    selectedPOLID2 = i;
+                    monitoredLabel.Text = "Monitored Player: " + _ELITEAPIMonitored.Player.Name;
+                }
+            }
+
+            POLID.SelectedIndex = selectedPOLID;
+            POLID2.SelectedIndex = selectedPOLID2;
+        }
 
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -10292,6 +10247,29 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         }
                     }
                     break;
+                case "MOB_BUFF_APPLIED":
+                    if (parts.Length == 3)
+                    {
+                        int mobId = int.Parse(parts[1]);
+                        string buffName = parts[2];
+                        if (!mobBuffs.ContainsKey(mobId))
+                        {
+                            mobBuffs[mobId] = new HashSet<string>();
+                        }
+                        mobBuffs[mobId].Add(buffName);
+                    }
+                    break;
+                case "MOB_BUFF_FADED":
+                    if (parts.Length == 3)
+                    {
+                        int mobId = int.Parse(parts[1]);
+                        string buffName = parts[2];
+                        if (mobBuffs.ContainsKey(mobId))
+                        {
+                            mobBuffs[mobId].Remove(buffName);
+                        }
+                    }
+                    break;
             }
         }
 
@@ -10779,6 +10757,67 @@ private void updateInstances_Tick(object sender, EventArgs e)
             }
         }
 
+        private async void RunDispelLogic()
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.dispel) return;
+            if (_ELITEAPIPL.Player.Status == 33) return;
+
+            debuffTargetId = lockedTargetId;
+            if (debuffTargetId == 0) return;
+
+            EliteAPI.XiEntity targetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTargetId);
+            if (targetEntity == null || targetEntity.HealthPercent == 0 || targetEntity.Distance > 20) return;
+
+            if (mobBuffs.ContainsKey(debuffTargetId))
+            {
+                var buffs = mobBuffs[debuffTargetId];
+                if (buffs.Count > 0)
+                {
+                    if (Form2.config.defenseBoostDispel)
+                    {
+                        if (await CheckAndDispelBuffs(Form2.config.defenseBoostDispelItems, buffs)) return;
+                    }
+                    if (Form2.config.magicShieldDispel)
+                    {
+                        if (await CheckAndDispelBuffs(Form2.config.magicShieldDispelItems, buffs)) return;
+                    }
+                    if (Form2.config.evasionBoostDispel)
+                    {
+                        if (await CheckAndDispelBuffs(Form2.config.evasionBoostDispelItems, buffs)) return;
+                    }
+                }
+            }
+        }
+
+        private async Task<bool> CheckAndDispelBuffs(System.Collections.Generic.List<string> buffEntries, HashSet<string> activeBuffs)
+        {
+            foreach (var buffEntry in buffEntries)
+            {
+                var parts = buffEntry.Split(new[] { " - " }, StringSplitOptions.None);
+                if (parts.Length > 1)
+                {
+                    var abilityPart = parts[1];
+                    var abilityNames = abilityPart.Split(',').Select(s => s.Trim());
+
+                    foreach (var rawAbilityName in abilityNames)
+                    {
+                        var abilityName = rawAbilityName.Split('(')[0].Trim();
+
+                        if (activeBuffs.Contains(abilityName))
+                        {
+                            if (HasSpell("Dispel") && CheckSpellRecast("Dispel") == 0)
+                            {
+                                _ELITEAPIPL.Target.SetTarget(debuffTargetId);
+                                await Task.Delay(500);
+                                CastSpell("<t>", "Dispel");
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         private async Task<bool> CheckAndCastDebuff(string debuffType, string[] spellTiers)
         {
             if (!targetDebuffTimers.ContainsKey(debuffType) || DateTime.Now >= targetDebuffTimers[debuffType])
@@ -10790,6 +10829,12 @@ private void updateInstances_Tick(object sender, EventArgs e)
                         _ELITEAPIPL.Target.SetTarget(debuffTargetId);
                         await Task.Delay(500); // Wait for target to register
                         CastSpell("<t>", spell);
+
+                        // Proactively set the timer to prevent immediate recasting.
+                        int duration = GetDebuffDuration(debuffType);
+                        targetDebuffTimers[debuffType] = DateTime.Now.AddSeconds(duration);
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF CAST] Set timer for '{debuffType}' for {duration}s.");
+
                         return true; // Spell was cast
                     }
                 }
