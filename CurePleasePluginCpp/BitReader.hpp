@@ -1,15 +1,18 @@
 #pragma once
-#include <vector>
+#include <cstddef>
 #include <cstdint>
 
 class BitReader {
+private:
+    const uint8_t* m_Data;
+    size_t m_Size;
+    size_t m_BitPos; // current bit position
+
 public:
     BitReader(const uint8_t* data, size_t size);
-    void setPosition(size_t byteOffset);
-    uint32_t readBits(size_t bitCount);
 
-private:
-    std::vector<uint8_t> buffer;
-    size_t bytePos;
-    uint8_t bitPos;
+    void setPosition(size_t bitPos);
+    size_t getPosition() const;
+
+    uint32_t readBits(size_t count);
 };

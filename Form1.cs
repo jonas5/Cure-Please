@@ -5896,15 +5896,15 @@ namespace Miraculix
             for (int i = 0; i < oopPlayerComboBoxes.Length; i++)
             {
                 string oopPlayerName = oopPlayerComboBoxes[i].SelectedItem?.ToString();
-                debug_MSG_show.AppendLine($"--- OOP Slot {i} ---");
-                debug_MSG_show.AppendLine($"  Enabled: {oopPlayerEnables[i].Checked}");
-                debug_MSG_show.AppendLine($"  Player: '{oopPlayerName ?? "null"}'");
+                //debug_MSG_show.AppendLine($"--- OOP Slot {i} ---");
+                //debug_MSG_show.AppendLine($"  Enabled: {oopPlayerEnables[i].Checked}");
+                //debug_MSG_show.AppendLine($"  Player: '{oopPlayerName ?? "null"}'");
                 if (oopPlayerEnables[i].Checked && oopPlayerComboBoxes[i].SelectedItem != null)
                 {
                     string playerName = oopPlayerComboBoxes[i].SelectedItem.ToString();
-                    debug_MSG_show.AppendLine($"  Is in range: {IsOopPlayerInRange(playerName)}");
-                    debug_MSG_show.AppendLine($"  Has buff preferences: {oopBuffPreferences.ContainsKey(playerName)}");
-                    debug_MSG_show.AppendLine($"  Is in partyState: {partyState.Members.ContainsKey(playerName)}");
+                    //debug_MSG_show.AppendLine($"  Is in range: {IsOopPlayerInRange(playerName)}");
+                    //debug_MSG_show.AppendLine($"  Has buff preferences: {oopBuffPreferences.ContainsKey(playerName)}");
+                    //debug_MSG_show.AppendLine($"  Is in partyState: {partyState.Members.ContainsKey(playerName)}");
 
                     if (string.IsNullOrEmpty(playerName) || !oopBuffPreferences.ContainsKey(playerName) || !partyState.Members.ContainsKey(playerName) || !IsOopPlayerInRange(playerName))
                     {
@@ -6037,11 +6037,11 @@ namespace Miraculix
                 _nextTargetSetTime = DateTime.MinValue;
             }
 
-            debug_MSG_show.AppendLine($"---\n[{DateTime.Now:HH:mm:ss.fff}] [actionTimer_TickAsync] Start of tick.");
+            //debug_MSG_show.AppendLine($"---\n[{DateTime.Now:HH:mm:ss.fff}] [actionTimer_TickAsync] Start of tick.");
             foreach (var memberState in partyState.Members.Values)
             {
                 var buffs = memberState.Buffs.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})");
-                debug_MSG_show.AppendLine($"    -> State for {memberState.Name}: [{string.Join(", ", buffs)}]");
+                //debug_MSG_show.AppendLine($"    -> State for {memberState.Name}: [{string.Join(", ", buffs)}]");
             }
 
 
@@ -8965,30 +8965,30 @@ namespace Miraculix
         {
             try
             {
-                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
+                //debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate START ---");
 
                 // 1. Check if a target is already locked
                 if (lockedTargetId != 0)
                 {
-                    debug_MSG_show.AppendLine($"Checking locked target ID: {lockedTargetId}");
+                    //debug_MSG_show.AppendLine($"Checking locked target ID: {lockedTargetId}");
                     EliteAPI.XiEntity lockedEntity = _ELITEAPIPL.Entity.GetEntity(lockedTargetId);
 
                     // Check if the locked entity is still valid
                     if (lockedEntity != null && lockedEntity.HealthPercent > 0 && lockedEntity.Status == 1)
                     {
-                        debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
+                        //debug_MSG_show.AppendLine($"  -> Locked target '{lockedEntity.Name}' is still valid. Sticking to it.");
                         battleTargetLabel.Text = $"{lockedEntity.Name} ({lockedTargetId})";
                         return lockedTargetId;
                     }
                     else
                     {
-                        debug_MSG_show.AppendLine($"  -> Locked target is no longer valid. Searching for a new one.");
+                        //debug_MSG_show.AppendLine($"  -> Locked target is no longer valid. Searching for a new one.");
                         lockedTargetId = 0; // Reset locked target
                         battleTargetLabel.Text = "Inactive";
                     }
                 }
 
-                debug_MSG_show.AppendLine("No locked target. Starting new search.");
+                //debug_MSG_show.AppendLine("No locked target. Starting new search.");
 
                 var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers()
                     .Where(p => p.Active != 0 && !string.IsNullOrEmpty(p.Name)).ToList();
@@ -9010,7 +9010,7 @@ namespace Miraculix
                 EliteAPI.XiEntity bestTarget = null;
                 int bestTargetId = 0;
 
-                debug_MSG_show.AppendLine("Scanning entities for best target...");
+                //debug_MSG_show.AppendLine("Scanning entities for best target...");
                 for (int i = 0; i < 2048; i++)
                 {
                     EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(i);
@@ -9045,16 +9045,16 @@ namespace Miraculix
                     return bestTargetId;
                 }
 
-                debug_MSG_show.AppendLine("No matching engaged target found.");
+                //debug_MSG_show.AppendLine("No matching engaged target found.");
             }
             catch (Exception ex)
             {
                 debug_MSG_show.AppendLine($"\n\n!!!! EXCEPTION !!!!\n{ex}");
             }
-            finally
-            {
-                debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate END ---");
-            }
+            //finally
+            //{
+            //    debug_MSG_show.AppendLine("--- CheckEngagedStatus_Hate END ---");
+            //}
             return 0;
         }
 
@@ -9808,7 +9808,7 @@ namespace Miraculix
                         var currentBuffs = memberState.Buffs.ToDictionary(b => b.Id);
 
                         string oldBuffsLog = string.Join(", ", currentBuffs.Values.Select(b => $"{b.Id}({b.Expiration:HH:mm:ss})"));
-                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Polling for {characterName}. Polled IDs: [{string.Join(", ", polledBuffIds)}]. Before merge: [{oldBuffsLog}]");
+                        //debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [BuffUpdateTimer_Tick] Polling for {characterName}. Polled IDs: [{string.Join(", ", polledBuffIds)}]. Before merge: [{oldBuffsLog}]");
 
                         // Remove buffs that are no longer present in the API and have expired according to our timer
                         memberState.Buffs.RemoveAll(buff =>
@@ -9836,7 +9836,7 @@ namespace Miraculix
                                             Expiration = DateTime.Now.AddSeconds(def.Value.Duration)
                                         };
                                         memberState.Buffs.Add(newBuff);
-                                        debug_MSG_show.AppendLine($"    -> Adding new buff {polledId} (cast by other?). Expires at {newBuff.Expiration:HH:mm:ss}");
+                                        //debug_MSG_show.AppendLine($"    -> Adding new buff {polledId} (cast by other?). Expires at {newBuff.Expiration:HH:mm:ss}");
                                         break;
                                     }
                                 }
@@ -9966,7 +9966,7 @@ namespace Miraculix
 
             var parts = message.Split('|');
             string command = parts[0];
-
+            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] message: {message}");
             switch (command)
             {
                 case "CAST_START":
@@ -10182,35 +10182,75 @@ namespace Miraculix
                             activePlayerDebuffs[playerName] = new HashSet<string>();
                         }
                         activePlayerDebuffs[playerName].Add(debuffName);
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Debuff applied: {message}");
                     }
                     break;
 
                 case "DEBUFF_FADED":
                     if (parts.Length == 3)
                     {
-                        string playerName = parts[1];
-                        string debuffName = parts[2];
+                        string targetName = parts[1];
+                        string spellName = parts[2];
 
-                        // Reset internal timer for RDM debuffs if it matches the current target
                         EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                        if (currentTarget != null && currentTarget.Name == playerName)
+                        if (currentTarget != null && currentTarget.Name == targetName)
                         {
-                            string debuffType = GetDebuffTypeForSpellName(debuffName);
+                            string debuffType = GetDebuffTypeForSpellName(spellName);
                             if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
                             {
-                                // Set timer to now, making it eligible for immediate recast.
                                 targetDebuffTimers[debuffType] = DateTime.Now;
-                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF FADE] '{debuffName}' wore off '{playerName}'. Resetting timer for '{debuffType}'.");
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_FADED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
                             }
                         }
 
-                        // This is for the WHM/SCH debuff removal logic
-                        if (activePlayerDebuffs.ContainsKey(playerName))
+                        if (activePlayerDebuffs.ContainsKey(targetName))
                         {
-                            activePlayerDebuffs[playerName].Remove(debuffName);
+                            activePlayerDebuffs[targetName].Remove(spellName);
                         }
                     }
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Debuff faded: {message}");
                     break;
+
+                case "DEBUFF_RESISTED":
+                    if (parts.Length == 4)
+                    {
+                        string targetName = GetEntityNameById(uint.Parse(parts[2]));
+                        string spellName = GetSpellNameById(ushort.Parse(parts[3]));
+
+                        EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                        if (currentTarget != null && currentTarget.Name == targetName)
+                        {
+                            string debuffType = GetDebuffTypeForSpellName(spellName);
+                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                            {
+                                targetDebuffTimers[debuffType] = DateTime.Now;
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_RESISTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
+                            }
+                        }
+                    }
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Debuff resisted: {message}");
+                    break;
+
+                case "DEBUFF_INTERRUPTED":
+                    if (parts.Length == 4)
+                    {
+                        string targetName = GetEntityNameById(uint.Parse(parts[2]));
+                        string spellName = GetSpellNameById(ushort.Parse(parts[3]));
+
+                        EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                        if (currentTarget != null && currentTarget.Name == targetName)
+                        {
+                            string debuffType = GetDebuffTypeForSpellName(spellName);
+                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                            {
+                                targetDebuffTimers[debuffType] = DateTime.Now;
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
+                            }
+                        }
+                    }
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Debuff interrupted: {message}");
+                    break;
+
                 case "BUFF_FADE":
                     if (parts.Length > 1)
                     {
@@ -10220,6 +10260,7 @@ namespace Miraculix
                             string playerName = fadeParts[0];
                             string buffName = fadeParts[1];
                             recastQueue.Enqueue(new RecastRequest { PlayerName = playerName, BuffName = buffName });
+                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Enqueued buff fade recast for {playerName} - {buffName}.");
                         }
                     }
                     break;
@@ -10257,6 +10298,7 @@ namespace Miraculix
                             mobBuffs[mobId] = new HashSet<string>();
                         }
                         mobBuffs[mobId].Add(buffName);
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_APPLIED: MobID={mobId}, Buff={buffName}");
                     }
                     break;
                 case "MOB_BUFF_FADED":
@@ -10268,7 +10310,11 @@ namespace Miraculix
                         {
                             mobBuffs[mobId].Remove(buffName);
                         }
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_FADED: MobID={mobId}, Buff={buffName}");
                     }
+                    break;
+                default:
+                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Unknown pipe message: {message} command: {command}");
                     break;
             }
         }
