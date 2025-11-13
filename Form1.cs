@@ -10188,26 +10188,67 @@ namespace Miraculix
                 case "DEBUFF_FADED":
                     if (parts.Length == 3)
                     {
-                        string playerName = parts[1];
-                        string debuffName = parts[2];
-
-                        // Reset internal timer for RDM debuffs if it matches the current target
-                        EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                        if (currentTarget != null && currentTarget.Name == playerName)
+                        if (uint.TryParse(parts[1], out uint targetId) && ushort.TryParse(parts[2], out ushort spellId))
                         {
-                            string debuffType = GetDebuffTypeForSpellName(debuffName);
-                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                            string targetName = GetEntityNameById(targetId);
+                            string spellName = GetSpellNameById(spellId);
+                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_FADED] Debuff '{spellName}' faded from '{targetName}'. Resetting timer.");
+                            EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                            if (currentTarget != null && currentTarget.Name == targetName)
                             {
-                                // Set timer to now, making it eligible for immediate recast.
-                                targetDebuffTimers[debuffType] = DateTime.Now;
-                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF FADE] '{debuffName}' wore off '{playerName}'. Resetting timer for '{debuffType}'.");
+                                string debuffType = GetDebuffTypeForSpellName(spellName);
+                                if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                                {
+                                    targetDebuffTimers[debuffType] = DateTime.Now;
+                                }
+                            }
+
+                            if (activePlayerDebuffs.ContainsKey(targetName))
+                            {
+                                activePlayerDebuffs[targetName].Remove(spellName);
                             }
                         }
+                    }
+                    break;
 
-                        // This is for the WHM/SCH debuff removal logic
-                        if (activePlayerDebuffs.ContainsKey(playerName))
+                case "DEBUFF_RESISTED":
+                    if (parts.Length == 4)
+                    {
+                        if (uint.TryParse(parts[2], out uint targetId) && ushort.TryParse(parts[3], out ushort spellId))
                         {
-                            activePlayerDebuffs[playerName].Remove(debuffName);
+                            string targetName = GetEntityNameById(targetId);
+                            string spellName = GetSpellNameById(spellId);
+                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_RESISTED] Debuff '{spellName}' resisted by '{targetName}'. Resetting timer.");
+                            EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                            if (currentTarget != null && currentTarget.Name == targetName)
+                            {
+                                string debuffType = GetDebuffTypeForSpellName(spellName);
+                                if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                                {
+                                    targetDebuffTimers[debuffType] = DateTime.Now;
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case "DEBUFF_INTERRUPTED":
+                    if (parts.Length == 4)
+                    {
+                        if (uint.TryParse(parts[2], out uint targetId) && ushort.TryParse(parts[3], out ushort spellId))
+                        {
+                            string targetName = GetEntityNameById(targetId);
+                            string spellName = GetSpellNameById(spellId);
+                            debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] Debuff '{spellName}' interrupted on '{targetName}'. Resetting timer.");
+                            EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                            if (currentTarget != null && currentTarget.Name == targetName)
+                            {
+                                string debuffType = GetDebuffTypeForSpellName(spellName);
+                                if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                                {
+                                    targetDebuffTimers[debuffType] = DateTime.Now;
+                                }
+                            }
                         }
                     }
                     break;
@@ -10250,23 +10291,27 @@ namespace Miraculix
                 case "MOB_BUFF_APPLIED":
                     if (parts.Length == 3)
                     {
-                        int mobId = int.Parse(parts[1]);
-                        string buffName = parts[2];
-                        if (!mobBuffs.ContainsKey(mobId))
+                        if (int.TryParse(parts[1], out int mobId))
                         {
-                            mobBuffs[mobId] = new HashSet<string>();
+                            string buffName = parts[2];
+                            if (!mobBuffs.ContainsKey(mobId))
+                            {
+                                mobBuffs[mobId] = new HashSet<string>();
+                            }
+                            mobBuffs[mobId].Add(buffName);
                         }
-                        mobBuffs[mobId].Add(buffName);
                     }
                     break;
                 case "MOB_BUFF_FADED":
                     if (parts.Length == 3)
                     {
-                        int mobId = int.Parse(parts[1]);
-                        string buffName = parts[2];
-                        if (mobBuffs.ContainsKey(mobId))
+                        if (int.TryParse(parts[1], out int mobId))
                         {
-                            mobBuffs[mobId].Remove(buffName);
+                            string buffName = parts[2];
+                            if (mobBuffs.ContainsKey(mobId))
+                            {
+                                mobBuffs[mobId].Remove(buffName);
+                            }
                         }
                     }
                     break;

@@ -145,7 +145,7 @@ public:
 
             uint32_t actorId     = reader.readBits(32);
             uint8_t  targetCount = reader.readBits(6);
-            reader.readBits(4); // resultCount
+            uint32_t resultCode = reader.readBits(4); // resultCount
             uint8_t category = reader.readBits(4);
             uint32_t spellId     = reader.readBits(16); // The spellId is here, even if it's a uint32, it's read as 16 bits in this context.
             reader.readBits(16); //
@@ -162,7 +162,16 @@ public:
                     reader.readBits(32); // Animation data
                     reader.readBits(32); // Animation data
 
-                    std::string message = "ACTION|" + std::to_string(actorId) + "|" + std::to_string(targetId) + "|" + std::to_string(spellId) + "\n";
+                    std::string message;
+                    if (resultCode == 1) { // Resisted
+                        message = "DEBUFF_RESISTED|" + std::to_string(actorId) + "|" + std::to_string(targetId) + "|" + std::to_string(spellId) + "\n";
+                    }
+                    else if (resultCode == 2) { // Interrupted
+                        message = "DEBUFF_INTERRUPTED|" + std::to_string(actorId) + "|" + std::to_string(targetId) + "|" + std::to_string(spellId) + "\n";
+                    }
+                    else {
+                        message = "ACTION|" + std::to_string(actorId) + "|" + std::to_string(targetId) + "|" + std::to_string(spellId) + "\n";
+                    }
                     WriteToPipe(message);
                 }
             } else if (category == 8) { // Monster abilities
@@ -215,12 +224,22 @@ public:
             if (pos_wears_off1 != std::string::npos && pos_wears_off2 != std::string::npos && pos_wears_off1 < pos_wears_off2) {
                 std::string target_name = message.substr(0, pos_wears_off1);
                 std::string buff_name = message.substr(pos_wears_off1 + wears_off_str1.length(), pos_wears_off2 - (pos_wears_off1 + wears_off_str1.length()));
-                
+
                 for (const auto& pair : rdm_debuff_map) {
                     for (const auto& name : pair.second) {
                         if (buff_name == name) {
-                            WriteToPipe("DEBUFF_FADED|" + target_name + "|" + buff_name + "\n");
-                            return false;
+                            auto entMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+                            if (entMgr) {
+                                for (int i = 0; i < 2048; ++i) {
+                                    const char* entName = entMgr->GetName(i);
+                                    if (entName && target_name == entName) {
+                                        uint32_t targetId = entMgr->GetServerId(i);
+                                        uint16_t spellId = pair.first;
+                                        WriteToPipe("DEBUFF_FADED|" + std::to_string(targetId) + "|" + std::to_string(spellId) + "\n");
+                                        return false;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
