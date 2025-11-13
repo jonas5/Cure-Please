@@ -118,6 +118,18 @@ namespace Miraculix
         private Dictionary<string, Dictionary<string, bool>> oopDebuffState = new Dictionary<string, Dictionary<string, bool>>();
         private Dictionary<string, HashSet<string>> activePlayerDebuffs = new Dictionary<string, HashSet<string>>();
         private Dictionary<int, HashSet<string>> mobBuffs = new Dictionary<int, HashSet<string>>();
+
+        public class PendingDebuff
+        {
+            public string SpellName { get; set; }
+            public string TargetName { get; set; }
+            public DateTime Timestamp { get; set; }
+            public uint ActorId { get; set; }
+        }
+
+        private readonly object _pendingDebuffsLock = new object();
+        private List<PendingDebuff> pendingDebuffs = new List<PendingDebuff>();
+
         public class DebuffSpell
         {
             public string Name { get; set; }
@@ -6019,6 +6031,13 @@ namespace Miraculix
 
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
+            CheckChatLogForOutcomes();
+
+            // Cleanup stale pending debuffs
+            lock (_pendingDebuffsLock)
+            {
+                pendingDebuffs.RemoveAll(p => (DateTime.Now - p.Timestamp).TotalSeconds > 10);
+            }
 
             if ((_ELITEAPIPL.Player.Status == (byte)Status.Healing) || (_ELITEAPIPL.Player.X != plX) || (_ELITEAPIPL.Player.Y != plY) || (_ELITEAPIPL.Player.Z != plZ))
             {
@@ -10277,12 +10296,35 @@ namespace Miraculix
                                 string targetName = GetEntityNameById(targetId);
                                 string buffType = GetBuffNameForSpellId(spellId);
 
-                                if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
+                                string spellName = GetSpellNameById(spellId);
+                                string debuffType = GetDebuffTypeForSpellName(spellName);
+
+                                if (debuffType != null)
                                 {
-                                    partyState.ResetBuffTimer(targetName, buffType);
-                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [ACTION] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
-                                    debug_MSG_show.AppendLine(logMessage);
-                                    UpdateDebugForm(logMessage);
+                                    var pending = new PendingDebuff
+                                    {
+                                        SpellName = spellName,
+                                        TargetName = targetName,
+                                        Timestamp = DateTime.Now,
+                                        ActorId = actorId
+                                    };
+                                    lock (_pendingDebuffsLock)
+                                    {
+                                        pendingDebuffs.Add(pending);
+                                    }
+                                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [PENDING] Enqueued from ACTION: {spellName} on {targetName}.");
+                                }
+                                else
+                                {
+                                    // This is not a debuff, so it's likely a buff. Handle buff timer reset.
+                                    string buffType = GetBuffNameForSpellId(spellId);
+                                    if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
+                                    {
+                                        partyState.ResetBuffTimer(targetName, buffType);
+                                        string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [ACTION] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
+                                        debug_MSG_show.AppendLine(logMessage);
+                                        UpdateDebugForm(logMessage);
+                                    }
                                 }
                             }
                         }
@@ -10917,6 +10959,121 @@ namespace Miraculix
 
         }
 
+        private void CheckChatLogForOutcomes()
+        {
+            if (_ELITEAPIPL == null) return;
+
+            EliteAPI.ChatEntry cl;
+            while ((cl = _ELITEAPIPL.Chat.GetNextChatLine()) != null)
+            {
+                ProcessChatLine(cl.Text);
+            }
+        }
+
+        private void ProcessChatLine(string chatLine)
+        {
+            lock (_pendingDebuffsLock)
+            {
+                if (pendingDebuffs.Count == 0) return;
+
+                for (int i = pendingDebuffs.Count - 1; i >= 0; i--)
+                {
+                    var pending = pendingDebuffs[i];
+                    bool outcomeDetermined = false;
+                    string casterName = GetEntityNameById(pending.ActorId);
+                    bool isRecent = (DateTime.Now - pending.Timestamp).TotalSeconds < 3;
+
+                    // --- 1. Specific, high-confidence matches ---
+                    if (chatLine.Contains(casterName) && chatLine.Contains("casting is interrupted"))
+                    {
+                        outcomeDetermined = true;
+                        debug_MSG_show.AppendLine($"[MATCH] Interrupted: '{chatLine}' matched pending '{pending.SpellName}' for '{pending.TargetName}'.");
+                    }
+                    else if (chatLine.Contains(casterName) && chatLine.Contains(pending.SpellName) && chatLine.Contains("has no effect on") && chatLine.Contains(pending.TargetName))
+                    {
+                        outcomeDetermined = true;
+                        debug_MSG_show.AppendLine($"[MATCH] No Effect: '{chatLine}' matched pending '{pending.SpellName}' for '{pending.TargetName}'.");
+                    }
+
+                    // --- 2. Generic, time-sensitive matches ---
+                    else if (isRecent && chatLine.Contains(pending.TargetName))
+                    {
+                        string appliedDebuffType = GetDebuffTypeFromSuccessMessage(chatLine);
+                        string pendingDebuffType = GetDebuffTypeForSpellName(pending.SpellName);
+
+                        if (appliedDebuffType != null && appliedDebuffType == pendingDebuffType)
+                        {
+                            int duration = GetDebuffDuration(appliedDebuffType);
+                            targetDebuffTimers[appliedDebuffType] = DateTime.Now.AddSeconds(duration);
+                            debug_MSG_show.AppendLine($"[MATCH] Success (Timed): '{chatLine}' matched pending '{pending.SpellName}' for '{pending.TargetName}'. Set timer for '{appliedDebuffType}' for {duration}s.");
+                            outcomeDetermined = true;
+                        }
+                        else if (chatLine.Contains("resists the spell"))
+                        {
+                            outcomeDetermined = true;
+                            debug_MSG_show.AppendLine($"[MATCH] Resist (Timed): '{chatLine}' matched pending '{pending.SpellName}' for '{pending.TargetName}'.");
+                        }
+                    }
+
+                    if (outcomeDetermined)
+                    {
+                        pendingDebuffs.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private string GetDebuffTypeFromSuccessMessage(string chatLine)
+        {
+            if (chatLine.Contains("is paralyzed")) return "Paralyze";
+            if (chatLine.Contains("is poisoned")) return "Poison";
+            if (chatLine.Contains("is silenced")) return "Silence";
+            if (chatLine.Contains("is blinded")) return "Blind";
+            if (chatLine.Contains("is slowed")) return "Slow";
+            return null;
+        }
+
+        private string GetDebuffTypeForSpellName(string spellName)
+        {
+            if (string.IsNullOrEmpty(spellName)) return null;
+            string lowerSpellName = spellName.ToLower();
+
+            if (lowerSpellName.Contains("dia")) return "Dia";
+            if (lowerSpellName.Contains("bio")) return "Bio";
+            if (lowerSpellName.Contains("paralyze")) return "Paralyze";
+            if (lowerSpellName.Contains("blind")) return "Blind";
+            if (lowerSpellName.Contains("slow")) return "Slow";
+            if (lowerSpellName.Contains("gravity")) return "Gravity";
+            if (lowerSpellName.Contains("silence")) return "Silence";
+            if (lowerSpellName.Contains("bind")) return "Bind";
+            if (lowerSpellName.Contains("choke") || lowerSpellName.Contains("burn") || lowerSpellName.Contains("shock")) return "Elemental1";
+            if (lowerSpellName.Contains("rasp")) return "Rasp";
+            if (lowerSpellName.Contains("frost")) return "Frost";
+            if (lowerSpellName.Contains("drown")) return "Drown";
+
+            return null;
+        }
+
+        private int GetDebuffDuration(string debuffType)
+        {
+            switch (debuffType)
+            {
+                case "Dia": return (int)Form2.config.DiaBioDuration;
+                case "Bio": return (int)Form2.config.DiaBioDuration;
+                case "Paralyze": return (int)Form2.config.DebuffParalyzeDuration;
+                case "Blind": return (int)Form2.config.DebuffBlindDuration;
+                case "Slow": return (int)Form2.config.DebuffSlowDuration;
+                case "Gravity": return (int)Form2.config.DebuffGravityDuration;
+                case "Silence": return (int)Form2.config.DebuffSilenceDuration;
+                case "Bind": return (int)Form2.config.DebuffBindDuration;
+                case "Elemental1": return (int)Form2.config.ElementalGroup1Duration;
+                case "Rasp": return (int)Form2.config.ElementalGroup2Duration;
+                case "Frost": return (int)Form2.config.ElementalGroup2Duration;
+                case "Drown": return (int)Form2.config.ElementalGroup2Duration;
+                default: return 30; // Default duration
+            }
+        }
         private void PrioritizeHealing()
         {
             if (CastingBackground_Check || JobAbilityLock_Check) return;
