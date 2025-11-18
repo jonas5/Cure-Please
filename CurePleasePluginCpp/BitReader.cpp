@@ -11,11 +11,15 @@ size_t BitReader::getPosition() const {
     return m_BitPos;
 }
 
+size_t BitReader::remainingBits() const {
+    return (m_Size * 8) - m_BitPos;
+}
+
 uint32_t BitReader::readBits(size_t count) {
     uint32_t value = 0;
     for (size_t i = 0; i < count; ++i) {
-        size_t byteIndex = m_BitPos >> 3;       // divide by 8
-        size_t bitIndex  = 7 - (m_BitPos & 7);  // MSB-first: 7 down to 0
+        size_t byteIndex = m_BitPos >> 3;
+        size_t bitIndex  = 7 - (m_BitPos & 7);
         if (byteIndex >= m_Size) break;
         uint8_t bit = (m_Data[byteIndex] >> bitIndex) & 1;
         value = (value << 1) | bit;

@@ -1,7 +1,5 @@
 #pragma once
 #include <string>
-#include <vector>
-#include <map>
 #include <unordered_map>
 
 struct Spell {
@@ -9,52 +7,6 @@ struct Spell {
     std::string name;
     uint8_t aoe; // 0 = single-target, 1 = AoE
 };
-
-// Define the maps for debuffs and dispelable buffs
-static const std::map<int, std::vector<std::string>> rdm_debuff_map = {
-    {23, {"Dia", "Dia II", "Dia III"}},
-    {71, {"Paralyze", "Paralyze II"}},
-    {72, {"Slow", "Slow II"}},
-    {73, {"Silence"}},
-    {74, {"Blind", "Blind II"}},
-    {75, {"Bind", "Bind II"}},
-    {89, {"Gravity", "Gravity II"}},
-    {134, {"Bio", "Bio II", "Bio III"}},
-    {149, {"Burn"}},
-    {151, {"Frost"}},
-    {153, {"Shock"}},
-    {154, {"Rasp"}},
-    {155, {"Choke"}},
-    {156, {"Drown"}}
-};
-
-// Category: Defense Boost
-inline std::unordered_map<uint16_t, std::string> dispel_defense_map = {
-    {872, "Harden Shell"}, {873, "Sand Shield"}, {874, "Scutum"}, {547, "Cocoon"},
-    {875, "Scissor Guard"}, {876, "Promyvion Barrier"}, {877, "Barrier Tusk"},
-    {878, "Arm Block"}, {879, "Shell Guard"}, {880, "Particle Shield"},
-    {881, "Amber Scutum"}, {882, "Aura of Persistence"}, {883, "Hexagon Belt"},
-    {884, "Parry"}, {885, "Shiko no Mitate"}, {886, "Molluscous Mutation"},
-    {887, "Reactor Cool"}
-};
-
-// Category: Magic Shield
-inline std::unordered_map<uint16_t, std::string> dispel_magic_map = {
-    {888, "Magic Barrier"}, {889, "Perfect Defense"}, {890, "Polar Bulwark"},
-    {891, "Spectral Barrier"}, {892, "Mind Wall"}, {893, "Discharger"},
-    {894, "Bastion of Twilight"}, {895, "Mana Screen"}, {896, "Hydro Blast"},
-    {897, "Shadow Lord (Magic Stance)"}, {898, "Immortal Shield"}
-};
-
-// Category: Evasion Boost
-inline std::unordered_map<uint16_t, std::string> dispel_evasion_map = {
-    {899, "Sand Veil"}, {900, "Rhino Guard"}, {901, "Rabid Dance"},
-    {902, "Material Fend"}, {903, "Secretion"}, {904, "Warm-Up"},
-    {905, "Water Shield"}, {906, "Feather Barrier"}, {907, "Evasion"},
-    {908, "Hard Membrane"}, {909, "Sigh"}, {910, "Mirage"},
-    {911, "Wind Wall"}
-};
-
 
 inline std::unordered_map<uint16_t, Spell> spells = {
     // Healing Magic

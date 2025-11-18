@@ -9733,6 +9733,18 @@ namespace Miraculix
             }
         }
 
+
+        // Helper function
+        private int ParseField(string part, string prefix)
+        {
+            if (part.StartsWith(prefix) &&
+                int.TryParse(part.Substring(prefix.Length), out int value))
+            {
+                return value;
+            }
+            return -1;
+        }
+
         private void PartyBuffsButton_Click(object sender, EventArgs e)
         {
             PartyBuffs PartyBuffs = new PartyBuffs(this);
@@ -9866,22 +9878,23 @@ namespace Miraculix
         {
             if (_ELITEAPIPL == null || id == 0) return "None";
 
+            // ✅ Self
             var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
             if (plInfo != null && id == plInfo.ID)
-            {
                 return _ELITEAPIPL.Player.Name;
-            }
 
-            var partyMember = _ELITEAPIMonitored?.Party.GetPartyMembers().FirstOrDefault(p => p.ID == id);
+            // ✅ Party members
+            var partyMember = _ELITEAPIMonitored?.Party.GetPartyMembers()
+                .FirstOrDefault(p => p.ID == id);
             if (partyMember != null && !string.IsNullOrEmpty(partyMember.Name))
-            {
                 return partyMember.Name;
-            }
 
+            // ✅ Any entity in the zone
             for (int i = 0; i < 2048; i++)
             {
                 var entity = _ELITEAPIPL.Entity.GetEntity(i);
-                if (entity != null && entity.TargetID == id && !string.IsNullOrEmpty(entity.Name))
+                if (entity != null && entity.ServerID == id   // use ServerID, not TargetID
+                    && !string.IsNullOrEmpty(entity.Name))
                 {
                     return entity.Name;
                 }
@@ -9890,18 +9903,22 @@ namespace Miraculix
             return $"Unknown Entity ({id})";
         }
 
+
         private string GetBuffNameForSpellId(ushort spellId)
         {
             string spellName = GetSpellNameById(spellId);
             if (string.IsNullOrEmpty(spellName)) return null;
+
             string lowerSpellName = spellName.ToLower();
+
+            // Handle Cure spells explicitly
+            if (lowerSpellName.StartsWith("cure"))
+                return spellName; // e.g. "Cure III"
 
             foreach (var buffDef in buff_definitions)
             {
                 if (lowerSpellName.Contains(buffDef.Key.ToLower()))
-                {
                     return buffDef.Key;
-                }
             }
             return null;
         }
@@ -9976,6 +9993,29 @@ namespace Miraculix
                     break;
 
                 case "CAST_INTERRUPT":
+                {
+                    if (parts.Length >= 4 &&
+                        uint.TryParse(parts[1], out uint actorId) &&
+                        uint.TryParse(parts[2], out uint targetId) &&
+                        ushort.TryParse(parts[3], out ushort spellId))
+                    {
+                        int status = ParseField(parts[4], "status=");
+
+                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                        if (plInfo != null && actorId == plInfo.ID)   // ✅ only handle your own interrupts
+                        {
+                            string targetName = GetEntityNameById(targetId);
+                            string buffType   = GetBuffNameForSpellId(spellId);
+                            string spellName  = GetSpellNameById(spellId);
+
+                            debug_MSG_show.AppendLine(
+                                $"[CAST_INTERRUPT] Player’s {spellName} on {targetName} was interrupted. Resetting {buffType} timer.");
+
+                            if (!string.IsNullOrEmpty(buffType))
+                                partyState.ResetBuffTimer(targetName, buffType);
+                        }
+                    }
+
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
                     Task.Delay(3000).ContinueWith(_ =>
@@ -9986,20 +10026,47 @@ namespace Miraculix
                             CastingBackground_Check = false;
                         }
                     }, TaskScheduler.FromCurrentSynchronizationContext());
-                    break;
+                }
+                break;
+
 
                 case "CAST_BLOCKED":
+                {
+                    if (parts.Length >= 4 &&
+                        uint.TryParse(parts[1], out uint actorId) &&
+                        uint.TryParse(parts[2], out uint targetId) &&
+                        ushort.TryParse(parts[3], out ushort spellId))
+                    {
+                        int status = ParseField(parts[4], "status=");
+
+                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                        if (plInfo != null && actorId == plInfo.ID)   // ✅ only handle your own blocked casts
+                        {
+                            string targetName = GetEntityNameById(targetId);
+                            string buffType   = GetBuffNameForSpellId(spellId);
+                            string spellName  = GetSpellNameById(spellId);
+
+                            debug_MSG_show.AppendLine(
+                                $"[CAST_BLOCKED] Player’s {spellName} on {targetName} was blocked. Resetting {buffType} timer.");
+
+                            if (!string.IsNullOrEmpty(buffType))
+                                partyState.ResetBuffTimer(targetName, buffType);
+                        }
+                    }
+
                     ProtectCasting.CancelAsync();
-                    castingLockLabel.Text = "PACKET: Casting is BLOCKED";
+                    castingLockLabel.Text = "PACKET: Casting was BLOCKED";
                     Task.Delay(3000).ContinueWith(_ =>
                     {
-                        if (castingLockLabel.Text == "PACKET: Casting is BLOCKED")
+                        if (castingLockLabel.Text == "PACKET: Casting was BLOCKED")
                         {
                             castingLockLabel.Text = "Casting is UNLOCKED";
                             CastingBackground_Check = false;
                         }
                     }, TaskScheduler.FromCurrentSynchronizationContext());
-                    break;
+                }
+                break;
+
                 case "CAST_FINISH":
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
@@ -10015,7 +10082,7 @@ namespace Miraculix
                     break;
 
                 case "LOG":
-                    if (parts.Length > 1)
+                    if (parts.Length > 10)
                     {
                         string logData = parts[1];
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [PipeClient_MessageReceived] Raw LOG: {logData}");
@@ -10172,7 +10239,7 @@ namespace Miraculix
                         }
                     }
                     break;
-                case "DEBUFF_APPLIED":
+                case "DEBUFF_APPLIEDx":
                     if (parts.Length == 3)
                     {
                         string playerName = parts[1];
@@ -10186,7 +10253,8 @@ namespace Miraculix
                     }
                     break;
 
-                case "DEBUFF_FADED":
+                case "DEBUFF_FADEDx":
+
                     if (parts.Length == 3)
                     {
                         string targetName = parts[1];
@@ -10211,47 +10279,11 @@ namespace Miraculix
                     debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Debuff faded: {message}");
                     break;
 
-                case "DEBUFF_RESISTED":
-                    if (parts.Length == 4)
-                    {
-                        string targetName = GetEntityNameById(uint.Parse(parts[2]));
-                        string spellName = GetSpellNameById(ushort.Parse(parts[3]));
 
-                        EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                        if (currentTarget != null && currentTarget.Name == targetName)
-                        {
-                            string debuffType = GetDebuffTypeForSpellName(spellName);
-                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
-                            {
-                                targetDebuffTimers[debuffType] = DateTime.Now;
-                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_RESISTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
-                            }
-                        }
-                    }
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Debuff resisted: {message}");
-                    break;
 
-                case "DEBUFF_INTERRUPTED":
-                    if (parts.Length == 4)
-                    {
-                        string targetName = GetEntityNameById(uint.Parse(parts[2]));
-                        string spellName = GetSpellNameById(ushort.Parse(parts[3]));
 
-                        EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                        if (currentTarget != null && currentTarget.Name == targetName)
-                        {
-                            string debuffType = GetDebuffTypeForSpellName(spellName);
-                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
-                            {
-                                targetDebuffTimers[debuffType] = DateTime.Now;
-                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
-                            }
-                        }
-                    }
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Debuff interrupted: {message}");
-                    break;
-
-                case "BUFF_FADE":
+                case "BUFF_FADEx":
+                    
                     if (parts.Length > 1)
                     {
                         var fadeParts = parts[1].Split(':');
@@ -10265,29 +10297,86 @@ namespace Miraculix
                     }
                     break;
                 case "ACTION":
-                    if (parts.Length == 4)
+                {
+                    if (parts.Length >= 5 &&
+                        uint.TryParse(parts[1], out uint actorId) &&
+                        uint.TryParse(parts[2], out uint targetId) &&
+                        ushort.TryParse(parts[3], out ushort spellId))
                     {
-                        if (uint.TryParse(parts[1], out uint actorId) &&
-                            uint.TryParse(parts[2], out uint targetId) &&
-                            ushort.TryParse(parts[3], out ushort spellId))
-                        {
-                            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                            if (plInfo != null && actorId == plInfo.ID)
-                            {
-                                string targetName = GetEntityNameById(targetId);
-                                string buffType = GetBuffNameForSpellId(spellId);
+                        int effect = ParseField(parts[4], "EFFECT=");
+                        int status = ParseField(parts[5], "status=");
 
-                                if (targetName != null && buffType != null && partyState.Members.ContainsKey(targetName))
-                                {
+                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                        if (plInfo != null && actorId == plInfo.ID)   // ✅ only handle your own casts
+                        {
+                            string targetName = GetEntityNameById(targetId);
+                            string buffType   = GetBuffNameForSpellId(spellId);
+                            string spellName  = GetSpellNameById(spellId);
+
+                            // Skip Cure line
+                            if (spellName.StartsWith("Cure", StringComparison.OrdinalIgnoreCase))
+                            {
+                                debug_MSG_show.AppendLine(
+                                    $"[ACTION] Player cast {spellName} on {targetName}. (instant heal, no timer)");
+                            }
+                            else
+                            {
+                                debug_MSG_show.AppendLine(
+                                    $"[ACTION] Player cast {spellName} on {targetName}. Resetting {buffType} timer.");
+                                if (!string.IsNullOrEmpty(buffType))
                                     partyState.ResetBuffTimer(targetName, buffType);
-                                    string logMessage = $"[{DateTime.Now:HH:mm:ss.fff}] [ACTION] Player cast {GetSpellNameById(spellId)} on {targetName}. Resetting {buffType} timer.";
-                                    debug_MSG_show.AppendLine(logMessage);
-                                    UpdateDebugForm(logMessage);
-                                }
                             }
                         }
                     }
-                    break;
+                }
+                break;
+
+                case "DEBUFF_INTERRUPTED":
+                {
+                    if (parts.Length >= 4 &&
+                        uint.TryParse(parts[1], out uint actorId) &&
+                        uint.TryParse(parts[2], out uint targetId) &&
+                        ushort.TryParse(parts[3], out ushort spellId))
+                    {
+                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                        if (plInfo != null && actorId == plInfo.ID)
+                        {
+                            string targetName = GetEntityNameById(targetId);
+                            string spellName  = GetSpellNameById(spellId);
+                            debug_MSG_show.AppendLine($"[DEBUFF INTERRUPTED] {spellName} on {targetName} was interrupted.");
+
+                            string buffType = GetBuffNameForSpellId(spellId);
+                            if (!string.IsNullOrEmpty(buffType))
+                                partyState.ResetBuffTimer(targetName, buffType);
+                        }
+                    }
+                }
+                break;
+
+                case "DEBUFF_RESISTED":
+                {
+                    if (parts.Length >= 4 &&
+                        uint.TryParse(parts[1], out uint actorId) &&
+                        uint.TryParse(parts[2], out uint targetId) &&
+                        ushort.TryParse(parts[3], out ushort spellId))
+                    {
+                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                        if (plInfo != null && actorId == plInfo.ID)
+                        {
+                            string targetName = GetEntityNameById(targetId);
+                            string spellName  = GetSpellNameById(spellId);
+                            debug_MSG_show.AppendLine($"[DEBUFF RESISTED] {spellName} on {targetName} was resisted.");
+
+                            // Optional: clear/reset timer if you want to stop tracking
+                            string buffType = GetBuffNameForSpellId(spellId);
+                            if (!string.IsNullOrEmpty(buffType))
+                                partyState.ResetBuffTimer(targetName, buffType);
+                        }
+                    }
+                }
+                break;
+
+
                 case "MOB_BUFF_APPLIED":
                     if (parts.Length == 3)
                     {
