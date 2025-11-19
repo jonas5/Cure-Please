@@ -10792,51 +10792,6 @@ namespace Miraculix
             return null;
         }
 
-        private int GetDebuffDuration(string debuffType)
-        {
-            switch (debuffType)
-            {
-                case "Dia": return (int)Form2.config.DiaBioDuration;
-                case "Bio": return (int)Form2.config.DiaBioDuration;
-                case "Paralyze": return (int)Form2.config.DebuffParalyzeDuration;
-                case "Blind": return (int)Form2.config.DebuffBlindDuration;
-                case "Slow": return (int)Form2.config.DebuffSlowDuration;
-                case "Gravity": return (int)Form2.config.DebuffGravityDuration;
-                case "Silence": return (int)Form2.config.DebuffSilenceDuration;
-                case "Bind": return (int)Form2.config.DebuffBindDuration;
-                case "Elemental1": return (int)Form2.config.ElementalGroup1Duration;
-                case "Rasp": return (int)Form2.config.ElementalGroup2Duration;
-                case "Frost": return (int)Form2.config.ElementalGroup2Duration;
-                case "Drown": return (int)Form2.config.ElementalGroup2Duration;
-                default: return 30;
-            }
-        }
-
-        private string GetDebuffTypeForSpellName(string spellName)
-        {
-            if (string.IsNullOrEmpty(spellName)) return null;
-            string lowerSpellName = spellName.ToLower();
-
-            if (lowerSpellName.Contains("dia")) return "Dia";
-            if (lowerSpellName.Contains("bio")) return "Bio";
-            if (lowerSpellName.Contains("paralyze")) return "Paralyze";
-            if (lowerSpellName.Contains("blind")) return "Blind";
-            if (lowerSpellName.Contains("slow")) return "Slow";
-            if (lowerSpellName.Contains("gravity")) return "Gravity";
-            if (lowerSpellName.Contains("silence")) return "Silence";
-            if (lowerSpellName.Contains("bind")) return "Bind";
-
-            if (lowerSpellName.Contains("choke") || lowerSpellName.Contains("burn") || lowerSpellName.Contains("shock"))
-            {
-                return "Elemental1";
-            }
-            if (lowerSpellName.Contains("rasp")) return "Rasp";
-            if (lowerSpellName.Contains("frost")) return "Frost";
-            if (lowerSpellName.Contains("drown")) return "Drown";
-
-            return null;
-        }
-
         private async void RunDebuffLogic()
         {
             if (CastingBackground_Check || JobAbilityLock_Check || !Form2.config.enableDebuffs) return;
