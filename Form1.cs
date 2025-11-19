@@ -9995,14 +9995,14 @@ namespace Miraculix
                 case "CAST_INTERRUPT":
                 {
                     if (parts.Length >= 4 &&
-                        uint.TryParse(parts[1], out uint actorId) &&
+                        uint.TryParse(parts[1],  out uint actorId) &&
                         uint.TryParse(parts[2], out uint targetId) &&
                         ushort.TryParse(parts[3], out ushort spellId))
                     {
                         int status = ParseField(parts[4], "status=");
 
                         var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId == plInfo.ID)   // ✅ only handle your own interrupts
+                        if (plInfo != null && actorId == plInfo.ID) // ✅ only handle your own interrupts
                         {
                             string targetName = GetEntityNameById(targetId);
                             string buffType   = GetBuffNameForSpellId(spellId);
@@ -10013,6 +10013,15 @@ namespace Miraculix
 
                             if (!string.IsNullOrEmpty(buffType))
                                 partyState.ResetBuffTimer(targetName, buffType);
+
+                            // ✅ Check if this was a debuff and handle accordingly
+                            string debuffType = GetDebuffTypeForSpellName(spellName);
+                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                            {
+                                HandleFailedDebuff(actorId, targetId, spellId, "DEBUFF_INTERRUPTED");
+                                debug_MSG_show.AppendLine(
+                                    $"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}' was interrupted. Resetting timer for '{debuffType}'.");
+                            }
                         }
                     }
 

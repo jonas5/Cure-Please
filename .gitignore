@@ -140,3 +140,5 @@ ClientBin/
 
 # Runtime DLLs (if not tracked)
 dlls/
+CurePleasePluginCpp/
+
