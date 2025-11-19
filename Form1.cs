@@ -10332,60 +10332,16 @@ namespace Miraculix
                 break;
 
                 case "DEBUFF_INTERRUPTED":
+                    if (parts.Length >= 4 && uint.TryParse(parts[1], out uint actorId) && uint.TryParse(parts[2], out uint targetId) && ushort.TryParse(parts[3], out ushort spellId))
                     {
-                        if (parts.Length >= 4 &&
-                            uint.TryParse(parts[1], out uint actorId) &&
-                            uint.TryParse(parts[2], out uint targetId) &&
-                            ushort.TryParse(parts[3], out ushort spellId))
-                        {
-                            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                            if (plInfo != null && actorId == plInfo.ID)
-                            {
-                                string targetName = GetEntityNameById(targetId);
-                                string spellName = GetSpellNameById(spellId);
-                                debug_MSG_show.AppendLine($"[DEBUFF INTERRUPTED] {spellName} on {targetName} was interrupted.");
-
-                                EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                                if (currentTarget != null && currentTarget.Name == targetName)
-                                {
-                                    string debuffType = GetDebuffTypeForSpellName(spellName);
-                                    if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
-                                    {
-                                    targetDebuffTimers[debuffType] = DateTime.MinValue;
-                                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
-                                    }
-                                }
-                            }
-                        }
+                        HandleFailedDebuff(actorId, targetId, spellId, "DEBUFF_INTERRUPTED");
                     }
                     break;
 
                 case "DEBUFF_RESISTED":
+                    if (parts.Length >= 4 && uint.TryParse(parts[1], out uint actorId) && uint.TryParse(parts[2], out uint targetId) && ushort.TryParse(parts[3], out ushort spellId))
                     {
-                        if (parts.Length >= 4 &&
-                            uint.TryParse(parts[1], out uint actorId) &&
-                            uint.TryParse(parts[2], out uint targetId) &&
-                            ushort.TryParse(parts[3], out ushort spellId))
-                        {
-                            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                            if (plInfo != null && actorId == plInfo.ID)
-                            {
-                                string targetName = GetEntityNameById(targetId);
-                                string spellName = GetSpellNameById(spellId);
-                                debug_MSG_show.AppendLine($"[DEBUFF RESISTED] {spellName} on {targetName} was resisted.");
-
-                                EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                                if (currentTarget != null && currentTarget.Name == targetName)
-                                {
-                                    string debuffType = GetDebuffTypeForSpellName(spellName);
-                                    if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
-                                    {
-                                        targetDebuffTimers[debuffType] = DateTime.MinValue;
-                                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_RESISTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
-                                    }
-                                }
-                            }
-                        }
+                        HandleFailedDebuff(actorId, targetId, spellId, "DEBUFF_RESISTED");
                     }
                     break;
 
@@ -10418,6 +10374,28 @@ namespace Miraculix
                 default:
                     debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Unknown pipe message: {message} command: {command}");
                     break;
+            }
+        }
+
+        private void HandleFailedDebuff(uint actorId, uint targetId, ushort spellId, string reason)
+        {
+            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+            if (plInfo != null && actorId == plInfo.ID)
+            {
+                string targetName = GetEntityNameById(targetId);
+                string spellName = GetSpellNameById(spellId);
+                debug_MSG_show.AppendLine($"[{reason}] {spellName} on {targetName} was {reason.ToLower().Replace("debuff_", "")}.");
+
+                EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                if (currentTarget != null && currentTarget.Name == targetName)
+                {
+                    string debuffType = GetDebuffTypeForSpellName(spellName);
+                    if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                    {
+                        targetDebuffTimers[debuffType] = DateTime.MinValue;
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [{reason}] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
+                    }
+                }
             }
         }
 
@@ -10785,6 +10763,51 @@ namespace Miraculix
             // Group 1
             if (lowerSpellName.Contains("choke") || lowerSpellName.Contains("burn") || lowerSpellName.Contains("shock")) return "Elemental1";
             // Group 2 (Stackable)
+            if (lowerSpellName.Contains("rasp")) return "Rasp";
+            if (lowerSpellName.Contains("frost")) return "Frost";
+            if (lowerSpellName.Contains("drown")) return "Drown";
+
+            return null;
+        }
+
+        private int GetDebuffDuration(string debuffType)
+        {
+            switch (debuffType)
+            {
+                case "Dia": return (int)Form2.config.DiaBioDuration;
+                case "Bio": return (int)Form2.config.DiaBioDuration;
+                case "Paralyze": return (int)Form2.config.DebuffParalyzeDuration;
+                case "Blind": return (int)Form2.config.DebuffBlindDuration;
+                case "Slow": return (int)Form2.config.DebuffSlowDuration;
+                case "Gravity": return (int)Form2.config.DebuffGravityDuration;
+                case "Silence": return (int)Form2.config.DebuffSilenceDuration;
+                case "Bind": return (int)Form2.config.DebuffBindDuration;
+                case "Elemental1": return (int)Form2.config.ElementalGroup1Duration;
+                case "Rasp": return (int)Form2.config.ElementalGroup2Duration;
+                case "Frost": return (int)Form2.config.ElementalGroup2Duration;
+                case "Drown": return (int)Form2.config.ElementalGroup2Duration;
+                default: return 30;
+            }
+        }
+
+        private string GetDebuffTypeForSpellName(string spellName)
+        {
+            if (string.IsNullOrEmpty(spellName)) return null;
+            string lowerSpellName = spellName.ToLower();
+
+            if (lowerSpellName.Contains("dia")) return "Dia";
+            if (lowerSpellName.Contains("bio")) return "Bio";
+            if (lowerSpellName.Contains("paralyze")) return "Paralyze";
+            if (lowerSpellName.Contains("blind")) return "Blind";
+            if (lowerSpellName.Contains("slow")) return "Slow";
+            if (lowerSpellName.Contains("gravity")) return "Gravity";
+            if (lowerSpellName.Contains("silence")) return "Silence";
+            if (lowerSpellName.Contains("bind")) return "Bind";
+
+            if (lowerSpellName.Contains("choke") || lowerSpellName.Contains("burn") || lowerSpellName.Contains("shock"))
+            {
+                return "Elemental1";
+            }
             if (lowerSpellName.Contains("rasp")) return "Rasp";
             if (lowerSpellName.Contains("frost")) return "Frost";
             if (lowerSpellName.Contains("drown")) return "Drown";
