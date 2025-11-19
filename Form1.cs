@@ -10332,49 +10332,62 @@ namespace Miraculix
                 break;
 
                 case "DEBUFF_INTERRUPTED":
-                {
-                    if (parts.Length >= 4 &&
-                        uint.TryParse(parts[1], out uint actorId) &&
-                        uint.TryParse(parts[2], out uint targetId) &&
-                        ushort.TryParse(parts[3], out ushort spellId))
                     {
-                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId == plInfo.ID)
+                        if (parts.Length >= 4 &&
+                            uint.TryParse(parts[1], out uint actorId) &&
+                            uint.TryParse(parts[2], out uint targetId) &&
+                            ushort.TryParse(parts[3], out ushort spellId))
                         {
-                            string targetName = GetEntityNameById(targetId);
-                            string spellName  = GetSpellNameById(spellId);
-                            debug_MSG_show.AppendLine($"[DEBUFF INTERRUPTED] {spellName} on {targetName} was interrupted.");
+                            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                            if (plInfo != null && actorId == plInfo.ID)
+                            {
+                                string targetName = GetEntityNameById(targetId);
+                                string spellName = GetSpellNameById(spellId);
+                                debug_MSG_show.AppendLine($"[DEBUFF INTERRUPTED] {spellName} on {targetName} was interrupted.");
 
-                            string buffType = GetBuffNameForSpellId(spellId);
-                            if (!string.IsNullOrEmpty(buffType))
-                                partyState.ResetBuffTimer(targetName, buffType);
+                                EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                                if (currentTarget != null && currentTarget.Name == targetName)
+                                {
+                                    string debuffType = GetDebuffTypeForSpellName(spellName);
+                                    if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                                    {
+                                    targetDebuffTimers[debuffType] = DateTime.MinValue;
+                                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-                break;
+                    break;
 
                 case "DEBUFF_RESISTED":
-                {
-                    if (parts.Length >= 4 &&
-                        uint.TryParse(parts[1], out uint actorId) &&
-                        uint.TryParse(parts[2], out uint targetId) &&
-                        ushort.TryParse(parts[3], out ushort spellId))
                     {
-                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId == plInfo.ID)
+                        if (parts.Length >= 4 &&
+                            uint.TryParse(parts[1], out uint actorId) &&
+                            uint.TryParse(parts[2], out uint targetId) &&
+                            ushort.TryParse(parts[3], out ushort spellId))
                         {
-                            string targetName = GetEntityNameById(targetId);
-                            string spellName  = GetSpellNameById(spellId);
-                            debug_MSG_show.AppendLine($"[DEBUFF RESISTED] {spellName} on {targetName} was resisted.");
+                            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+                            if (plInfo != null && actorId == plInfo.ID)
+                            {
+                                string targetName = GetEntityNameById(targetId);
+                                string spellName = GetSpellNameById(spellId);
+                                debug_MSG_show.AppendLine($"[DEBUFF RESISTED] {spellName} on {targetName} was resisted.");
 
-                            // Optional: clear/reset timer if you want to stop tracking
-                            string buffType = GetBuffNameForSpellId(spellId);
-                            if (!string.IsNullOrEmpty(buffType))
-                                partyState.ResetBuffTimer(targetName, buffType);
+                                EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                                if (currentTarget != null && currentTarget.Name == targetName)
+                                {
+                                    string debuffType = GetDebuffTypeForSpellName(spellName);
+                                    if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                                    {
+                                        targetDebuffTimers[debuffType] = DateTime.MinValue;
+                                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_RESISTED] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-                break;
+                    break;
 
 
                 case "MOB_BUFF_APPLIED":
