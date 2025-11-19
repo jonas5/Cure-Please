@@ -22,7 +22,7 @@
 #include <cfloat>
 #include <cmath>
 
-bool CurePleasePlugin::debugEnabled = true;
+bool CurePleasePlugin::debugEnabled = false;
 
 // --- Define status message sets (from HXUI debuffhandler.lua) ---
 const std::set<uint16_t> statusOnMes = {
@@ -326,6 +326,10 @@ bool CurePleasePlugin::HandleOutgoingPacket(uint16_t id, uint32_t size, const ui
                 castDurationMs = (spell->CastTime * 250) + 500;
         }
 
+        // Assumption: a player can only start one action at a time.
+        // Clear any previous pending casts to prevent state corruption.
+        m_PendingCasts.clear();
+
         // Track pending cast
         uint32_t seq = ++m_sequenceIdCounter;
         m_PendingCasts.push_back({
@@ -421,11 +425,11 @@ void CurePleasePlugin::HandleStatusMessage(uint16_t messageId,
     }
 }
 
+
 void CurePleasePlugin::ParseChatLogPacket(uint16_t id, uint32_t size, const uint8_t* data)
 {
-
-
-	// if (e.id == 0x00E) then
+    return;
+    // if (e.id == 0x00E) then
 	//	local mobPacket = T{};
 	//	mobPacket.monsterId = struct.unpack('L', e.data, 0x04 + 1);
 	//	mobPacket.monsterIndex = struct.unpack('H', e.data, 0x08 + 1);
@@ -436,71 +440,77 @@ void CurePleasePlugin::ParseChatLogPacket(uint16_t id, uint32_t size, const uint
 	//	return mobPacket;
 	//end
 
+    // Special case: mob packet (id == 0x00E)
+    if (id == 0x0E && size >= 0x30) 
+    {
+        struct MobPacket {
+            uint32_t monsterId;
+            uint16_t monsterIndex;
+            uint8_t  updateFlags;
+            uint32_t newClaimId;
+        } mobPacket{};
 
-    const size_t bitsTotal = static_cast<size_t>(size) * 8;
-    
-    // Combine all IDs we care about
-    std::set<uint16_t> MAGIC_IDS;
-    MAGIC_IDS.insert(statusOnMes.begin(), statusOnMes.end());
-    MAGIC_IDS.insert(statusOffMes.begin(), statusOffMes.end());
-    MAGIC_IDS.insert(deathMes.begin(), deathMes.end());
-    MAGIC_IDS.insert(spellDamageMes.begin(), spellDamageMes.end());
+        mobPacket.monsterId    = *reinterpret_cast<const uint32_t*>(data + 0x04);
+        mobPacket.monsterIndex = *reinterpret_cast<const uint16_t*>(data + 0x08);
+        mobPacket.updateFlags  = *(data + 0x0A);
 
-    uint16_t messageId = 0;
-    size_t chosenOffset = 0;
-    uint8_t paramCount = 0;
-    std::vector<uint32_t> params;
-
-    // --- Discovery loop ---
-    for (size_t off = 0; off < 200; ++off) {
-        if (bitsTotal < off + 16) continue;
-        uint16_t candidate = static_cast<uint16_t>(readBitsLittle(data, off, 16, size));
-        if (MAGIC_IDS.count(candidate)) {
-            uint8_t pc = static_cast<uint8_t>(readBitsLittle(data, off + 16, 8, size));
-            if (pc > 0 && pc < 20) {
-                messageId   = candidate;
-                chosenOffset = off;
-                paramCount   = pc;
-                break;
-            }
+        if ((mobPacket.updateFlags & 0x02) == 0x02) {
+            mobPacket.newClaimId = *reinterpret_cast<const uint32_t*>(data + 0x2C);
         }
-    }
 
-    // --- Params extraction ---
-    if (messageId != 0) {
-        size_t PARAMS_OFFSET = chosenOffset + 24; // after msgId (16) + paramCount (8)
-        const size_t bitsRemaining = bitsTotal - PARAMS_OFFSET;
-        const size_t maxParams = bitsRemaining / 32u;
-        size_t toRead = std::min<size_t>(paramCount, maxParams);
-        for (size_t i = 0; i < toRead; ++i) {
-            params.push_back(readBitsLittle(data, PARAMS_OFFSET + i * 32, 32, size));
-        }
-    }
-
-    // For incoming status packets, actorId is not present.
-    // Use targetId and spell/effectId from params.
-    uint32_t targetId = (params.size() > 0 ? params[0] : 0);
-    uint32_t spellOrEffectId = (params.size() > 1 ? params[1] : 0);
-    uint32_t actorId = 0; // not available in these packets
-
-    // --- Delegate to handler ---
-    if (messageId != 0) {
-        if (debugEnabled) {
+        if (debugEnabled == false) {
             std::ostringstream dbg;
-            dbg << "LOG|DEBUG|CHAT|RawBytes=";
-            for (uint32_t i = 0; i < size; ++i)
-                dbg << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(data[i]) << " ";
-            dbg << "|Params=[";
-            for (size_t i = 0; i < params.size(); ++i) {
-                dbg << params[i];
-                if (i + 1 < params.size()) dbg << ",";
-            }
-            dbg << "]";
+            dbg << "LOG|DEBUG|0x0e|MobPacket"
+                << "|monsterId="    << mobPacket.monsterId
+                << "|monsterIndex=" << mobPacket.monsterIndex
+                << "|updateFlags=0x" << std::hex << static_cast<int>(mobPacket.updateFlags)
+                << "|newClaimId="   << mobPacket.newClaimId;
             WriteToPipe(dbg.str() + "\n");
         }
-        HandleStatusMessage(messageId, actorId, targetId, spellOrEffectId, params);
+
+        //HandleMobPacket(mobPacket);
+        //return;
     }
+
+    // --- Status packet parsing ---
+    std::vector<uint32_t> params;
+
+    // Direct param extraction: assume params start at fixed offset (no discovery loop)
+    const size_t bitsTotal = static_cast<size_t>(size) * 8;
+    const size_t PARAMS_OFFSET = 24; // after msgId (16) + paramCount (8)
+    const size_t bitsRemaining = bitsTotal - PARAMS_OFFSET;
+    const size_t maxParams = bitsRemaining / 32u;
+
+    // For simplicity, read up to 4 params (adjust as needed)
+    size_t toRead = std::min<size_t>(4, maxParams);
+    for (size_t i = 0; i < toRead; ++i) {
+        params.push_back(readBitsLittle(data, PARAMS_OFFSET + i * 32, 32, size));
+    }
+
+    // Crucial fields
+    uint32_t targetId       = (params.size() > 0 ? params[0] : 0);
+    uint32_t spellOrEffectId= (params.size() > 1 ? params[1] : 0); // CRUCIAL
+    uint32_t actorId        = 0; // not present in these packets
+
+    if (debugEnabled == false) {
+        std::ostringstream dbg;
+        dbg << "LOG|DEBUG|0x00E|StatusPacket"
+            << "|actorId=" << actorId
+            << "|targetId=" << targetId
+            << "|spellOrEffectId=" << spellOrEffectId
+            << "|Params=[";
+        for (size_t i = 0; i < params.size(); ++i) {
+            dbg << params[i];
+            if (i + 1 < params.size()) dbg << ",";
+        }
+        dbg << "]";
+        WriteToPipe(dbg.str() + "\n");
+    }
+
+    //HandleStatusMessage(id, actorId, targetId, spellOrEffectId, params);
 }
+
+
 
 void CurePleasePlugin::TryToGetPlayerInfo()
 {
@@ -583,8 +593,8 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
 {
     if (size < 16) return; // Basic sanity check
 
-    //if (debugEnabled)
-    //    Discovery(data, size);
+    if (debugEnabled)
+        Discovery(data, size);
 
     uint32_t casterId = 0;
     std::memcpy(&casterId, data + 5, sizeof(casterId));
@@ -593,6 +603,10 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
     std::memcpy(&spellId, data + 29, sizeof(spellId));
 
     uint32_t category = readBitsBig(data, 82, 4, size);
+
+
+    const uint32_t msgBits      = readBitsBE(data, 230, 10, size);  // Lua: msg at 230 bits
+
 
     if (debugEnabled)
     {
@@ -614,9 +628,11 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
 
     uint64_t now = getCurrentTimeMs();
 
-    if (category == 8) // Interrupted / Blocked / Started
+    if (category == 8) // Interrupted / Blocked / Resisted / Started
     {
         uint16_t subval = static_cast<uint16_t>(readBitsBig(data, 86, 16, size));
+        // subval is the same 16-bit field as Lua 'param' at 86 bits
+
         auto it = std::find_if(m_PendingCasts.rbegin(), m_PendingCasts.rend(),
             [&](const PendingCast& cast) {
                 return cast.actorId == casterId && (now - cast.timestamp0x1A) < cast.castDurationMs;
@@ -648,6 +664,26 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
                 WriteToPipe(msg.str());
                 shouldErase = true;
             }
+            else if (msgBits == 85 || msgBits == 284 || subval == 258) // Resisted (partial/full)
+            {
+                it->status = CastingStatus::RESISTED;
+
+                std::string trigger;
+                if (msgBits == 85)       trigger = "msgBits=85";
+                else if (msgBits == 284) trigger = "msgBits=284";
+                else if (subval == 258) trigger = "subval=258";
+                else trigger = "unknown";
+
+                std::ostringstream msg;
+                msg << "LOG|CAST_RESISTED|" << casterId
+                    << "|" << it->targetId
+                    << "|" << it->spellId
+                    << "|status=" << static_cast<int>(it->status)
+                    << "|trigger=" << trigger;
+                WriteToPipe(msg.str());
+
+                shouldErase = true;
+            }
             else
             {
                 it->status = CastingStatus::STARTED;
@@ -670,11 +706,16 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
                 m_PendingCasts.erase(std::next(it).base());
         }
     }
+
+
+ 
     else if (category == 4) // Finished
     {
         auto it = std::find_if(m_PendingCasts.rbegin(), m_PendingCasts.rend(),
             [&](const PendingCast& cast) {
-                return cast.actorId == casterId && cast.spellId == spellId && (now - cast.timestamp0x1A) < cast.castDurationMs;
+                // The spellId in a FINISHED packet is not reliable.
+                // Instead, we find the latest spell from this caster that is in a 'STARTED' state.
+                return cast.actorId == casterId && cast.status == CastingStatus::STARTED && (now - cast.timestamp0x1A) < cast.castDurationMs;
             });
 
         if (it != m_PendingCasts.rend())
@@ -708,13 +749,11 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
         }
         else if (debugEnabled)
         {
-            WriteToPipe("LOG|DEBUG|0x28|No matching pending cast for casterId=" +
-                        std::to_string(casterId) + " and spellId=" + std::to_string(spellId));
+            WriteToPipe("LOG|DEBUG|0x28|No matching 'STARTED' cast found for casterId=" + std::to_string(casterId));
         }
     }
+
 }
-
-
 
 void CurePleasePlugin::HandleBuffPacket(const uint8_t* data, size_t size)
 {
