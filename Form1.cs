@@ -9893,7 +9893,7 @@ namespace Miraculix
             for (int i = 0; i < 2048; i++)
             {
                 var entity = _ELITEAPIPL.Entity.GetEntity(i);
-                if (entity != null && entity.ServerID == id   // use ServerID, not TargetID
+                if (entity != null && entity.TargetID == id   // use ServerID (TargetID), not TargetIndex
                     && !string.IsNullOrEmpty(entity.Name))
                 {
                     return entity.Name;
@@ -10377,21 +10377,21 @@ namespace Miraculix
                     }
                     break;
                 case "MOB_BUFF_FADED":
-                    if (parts.Length >= 3 && uint.TryParse(parts[1], out uint mobId))
+                    if (parts.Length >= 3 && uint.TryParse(parts[1], out uint fadedMobId))
                     {
                         string buffName = parts[2];
-                        if (mobBuffs.ContainsKey((int)mobId))
+                        if (mobBuffs.ContainsKey((int)fadedMobId))
                         {
-                            mobBuffs[(int)mobId].Remove(buffName);
+                            mobBuffs[(int)fadedMobId].Remove(buffName);
                         }
-                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_FADED: MobID={mobId}, Buff={buffName}");
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_FADED: MobID={fadedMobId}, Buff={buffName}");
 
                         EliteAPI.XiEntity currentTargetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
 
-                        debug_MSG_show.AppendLine($"[MOB_BUFF_FADED] Check: ConfigDebuffs={Form2.config.enableDebuffs}, TargetIndex={debuffTimersTargetId}, EntityID={(currentTargetEntity != null ? currentTargetEntity.ID : 0)}, MsgMobID={mobId}");
+                        debug_MSG_show.AppendLine($"[MOB_BUFF_FADED] Check: ConfigDebuffs={Form2.config.enableDebuffs}, TargetIndex={debuffTimersTargetId}, EntityID={(currentTargetEntity != null ? currentTargetEntity.TargetID : 0)}, MsgMobID={fadedMobId}");
 
                         // Check if mobId matches the Entity ID OR the Target Index (to support different plugin behaviors)
-                        bool isMatch = currentTargetEntity != null && (currentTargetEntity.ID == mobId || debuffTimersTargetId == mobId);
+                        bool isMatch = currentTargetEntity != null && (currentTargetEntity.TargetID == fadedMobId || debuffTimersTargetId == fadedMobId);
 
                         if (Form2.config.enableDebuffs && isMatch)
                         {
@@ -10419,9 +10419,9 @@ namespace Miraculix
                                 debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] '{buffName}' faded but did not match any enabled debuff configuration.");
                             }
                         }
-                        else if (currentTargetEntity == null || currentTargetEntity.ID != mobId)
+                        else if (currentTargetEntity == null || currentTargetEntity.TargetID != fadedMobId)
                         {
-                             debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] Ignored '{buffName}' on MobID={mobId} (Current TargetID={debuffTimersTargetId}, Current MobID={(currentTargetEntity != null ? currentTargetEntity.ID : 0)}).");
+                             debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] Ignored '{buffName}' on MobID={fadedMobId} (Current TargetID={debuffTimersTargetId}, Current MobID={(currentTargetEntity != null ? currentTargetEntity.TargetID : 0)}).");
                         }
                         else if (!Form2.config.enableDebuffs)
                         {
