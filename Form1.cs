@@ -10369,38 +10369,60 @@ namespace Miraculix
                     }
                     break;
                 case "MOB_BUFF_FADED":
-                    if (parts.Length >= 3)
+                    if (parts.Length >= 3 && uint.TryParse(parts[1], out uint mobId))
                     {
-                        int mobId = int.Parse(parts[1]);
                         string buffName = parts[2];
-                        if (mobBuffs.ContainsKey(mobId))
+                        if (mobBuffs.ContainsKey((int)mobId))
                         {
-                            mobBuffs[mobId].Remove(buffName);
+                            mobBuffs[(int)mobId].Remove(buffName);
                         }
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_FADED: MobID={mobId}, Buff={buffName}");
 
-                        if (Form2.config.enableDebuffs && mobId == debuffTimersTargetId)
+                        EliteAPI.XiEntity currentTargetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+
+                        debug_MSG_show.AppendLine($"[MOB_BUFF_FADED] Check: ConfigDebuffs={Form2.config.enableDebuffs}, TargetIndex={debuffTimersTargetId}, EntityID={(currentTargetEntity != null ? currentTargetEntity.ID : 0)}, MsgMobID={mobId}");
+
+                        if (Form2.config.enableDebuffs && currentTargetEntity != null && currentTargetEntity.ID == mobId)
                         {
                             string keyToReset = null;
-                            if (buffName == "Dia" && Form2.config.DiaBioSelection == "Dia") keyToReset = "Dia";
-                            else if (buffName == "Bio" && Form2.config.DiaBioSelection == "Bio") keyToReset = "Bio";
-                            else if (buffName == "Paralysis" && Form2.config.debuffParalyze) keyToReset = "Paralyze";
-                            else if (buffName == "Silence" && Form2.config.debuffSilence) keyToReset = "Silence";
-                            else if (buffName == "Slow" && Form2.config.debuffSlow) keyToReset = "Slow";
-                            else if (buffName == "Blindness" && Form2.config.debuffBlind) keyToReset = "Blind";
-                            else if ((buffName == "Weight" || buffName == "Gravity") && Form2.config.debuffGravity) keyToReset = "Gravity";
-                            else if (buffName == "Bind" && Form2.config.debuffBind) keyToReset = "Bind";
+                            if (string.Equals(buffName, "Dia", StringComparison.OrdinalIgnoreCase) && Form2.config.DiaBioSelection == "Dia") keyToReset = "Dia";
+                            else if (string.Equals(buffName, "Bio", StringComparison.OrdinalIgnoreCase) && Form2.config.DiaBioSelection == "Bio") keyToReset = "Bio";
+                            else if ((string.Equals(buffName, "Paralysis", StringComparison.OrdinalIgnoreCase) || string.Equals(buffName, "Paralyze", StringComparison.OrdinalIgnoreCase)) && Form2.config.debuffParalyze) keyToReset = "Paralyze";
+                            else if (string.Equals(buffName, "Silence", StringComparison.OrdinalIgnoreCase) && Form2.config.debuffSilence) keyToReset = "Silence";
+                            else if (string.Equals(buffName, "Slow", StringComparison.OrdinalIgnoreCase) && Form2.config.debuffSlow) keyToReset = "Slow";
+                            else if ((string.Equals(buffName, "Blindness", StringComparison.OrdinalIgnoreCase) || string.Equals(buffName, "Blind", StringComparison.OrdinalIgnoreCase)) && Form2.config.debuffBlind) keyToReset = "Blind";
+                            else if ((string.Equals(buffName, "Weight", StringComparison.OrdinalIgnoreCase) || string.Equals(buffName, "Gravity", StringComparison.OrdinalIgnoreCase)) && Form2.config.debuffGravity) keyToReset = "Gravity";
+                            else if (string.Equals(buffName, "Bind", StringComparison.OrdinalIgnoreCase) && Form2.config.debuffBind) keyToReset = "Bind";
 
                             if (keyToReset != null && targetDebuffTimers.ContainsKey(keyToReset))
                             {
                                 targetDebuffTimers[keyToReset] = DateTime.MinValue;
                                 debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] '{buffName}' faded from current target. Resetting timer for '{keyToReset}'.");
                             }
+                            else if (keyToReset != null)
+                            {
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] '{buffName}' faded, matched '{keyToReset}', but timer not found in active list.");
+                            }
+                            else
+                            {
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] '{buffName}' faded but did not match any enabled debuff configuration.");
+                            }
+                        }
+                        else if (currentTargetEntity == null || currentTargetEntity.ID != mobId)
+                        {
+                             debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] Ignored '{buffName}' on MobID={mobId} (Current TargetID={debuffTimersTargetId}, Current MobID={(currentTargetEntity != null ? currentTargetEntity.ID : 0)}).");
+                        }
+                        else if (!Form2.config.enableDebuffs)
+                        {
+                             debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] Ignored '{buffName}' because Debuffs are disabled.");
                         }
                     }
                     break;
                 default:
-                    debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Unknown pipe message: {message} command: {command}");
+                    if (!message.StartsWith("@") && !message.StartsWith("LOG|DISCOVER"))
+                    {
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Unknown pipe message: {message} command: {command}");
+                    }
                     break;
             }
         }
