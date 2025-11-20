@@ -421,6 +421,16 @@ namespace Miraculix
                 string buffType = GetBuffNameForSpellId(spellId);
                 string debuffType = GetDebuffTypeForSpellName(spellName);
 
+                // Heuristic: If target is unknown but we are tracking this debuff, assume it's the locked target
+                if (targetName.StartsWith("Unknown Entity") && debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                {
+                    var heuristicTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
+                    if (heuristicTarget != null && !string.IsNullOrEmpty(heuristicTarget.Name))
+                    {
+                        targetName = heuristicTarget.Name;
+                    }
+                }
+
                 debug_MSG_show.AppendLine($"[{reason}] {spellName} on {targetName} failed.");
 
                 // Handle Buffs
@@ -10460,6 +10470,12 @@ namespace Miraculix
                 {
                     if (isTracked)
                     {
+                        // If we can't resolve name by ID but we are tracking the debuff on the current target, use the current target's name
+                        if (targetName.StartsWith("Unknown Entity") && currentTarget != null && !string.IsNullOrEmpty(currentTarget.Name))
+                        {
+                            targetName = currentTarget.Name;
+                        }
+
                         targetDebuffTimers[debuffType] = DateTime.MinValue;
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [{reason}] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
                     }
