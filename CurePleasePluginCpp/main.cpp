@@ -10,19 +10,27 @@
 
 #include "main.h"
 #include "spells.h"
+#include "buffs.h"
+#include "monster_abilities.h"
+
+
 #include "EffectNames.h"
 #include "SpellNames.h"
 #include "debuffhandler.h"
+
 #include "PendingCast.h"
 
 #include <string>
 #include <unordered_map>
 #include <set>   // add this at the top of main.cpp
+#include <span>
+#include <cstdint>
+#include <bit>   // for std::bit_cast
 
 #include <cfloat>
 #include <cmath>
 
-bool CurePleasePlugin::debugEnabled = false;
+bool CurePleasePlugin::debugEnabled = true;
 
 // --- Define status message sets (from HXUI debuffhandler.lua) ---
 const std::set<uint16_t> statusOnMes = {
@@ -45,6 +53,51 @@ const std::set<uint16_t> deathMes = {
 const std::set<uint16_t> spellDamageMes = {
     2, 252, 264, 265
 };
+
+
+
+// Category: Defense Boost
+inline std::unordered_map<uint16_t, std::string> dispel_defense_map = {
+    {872, "Harden Shell"}, {873, "Sand Shield"}, {874, "Scutum"}, {547, "Cocoon"},
+    {875, "Scissor Guard 2"}, {876, "Promyvion Barrier"}, {877, "Barrier Tusk"},
+    {878, "Arm Block"}, {879, "Shell Guard"}, {880, "Particle Shield"},
+    {881, "Amber Scutum"}, {882, "Aura of Persistence"}, {883, "Hexagon Belt"},
+    {884, "Parry"}, {885, "Shiko no Mitate"}, {886, "Molluscous Mutation"},
+    {887, "Reactor Cool"}
+};
+
+// Category: Magic Shield
+inline std::unordered_map<uint16_t, std::string> dispel_magic_map = {
+    {888, "Magic Barrier"}, {889, "Perfect Defense"}, {890, "Polar Bulwark"},
+    {891, "Spectral Barrier"}, {892, "Mind Wall"}, {893, "Discharger"},
+    {894, "Bastion of Twilight"}, {895, "Mana Screen"}, {896, "Hydro Blast"},
+    {897, "Shadow Lord (Magic Stance)"}, {898, "Immortal Shield"}
+};
+
+// Category: Evasion Boost
+inline std::unordered_map<uint16_t, std::string> dispel_evasion_map = {
+    {899, "Sand Veil"}, {900, "Rhino Guard"}, {901, "Rabid Dance"},
+    {902, "Material Fend"}, {903, "Secretion"}, {904, "Warm-Up"},
+    {905, "Water Shield"}, {906, "Feather Barrier"}, {907, "Evasion"},
+    {908, "Hard Membrane"}, {909, "Sigh"}, {910, "Mirage"},
+    {911, "Wind Wall"}
+};
+
+inline std::string GetBuffName(uint32_t id, int form = 0) {
+    // form = 0 → noun (en)
+    // form = 1 → adjective (enl)
+    // form = 2 → spell (enspell)
+
+    if (auto it = BuffNames.find(id); it != BuffNames.end()) {
+        const auto& [noun, adjective, spell] = it->second;
+        switch (form) {
+            case 1: return adjective;
+            case 2: return spell;
+            default: return noun;
+        }
+    }
+    return std::to_string(id); // fallback
+}
 
 
 // Helper: read a specific number of bits from a byte array (big-endian)
@@ -247,6 +300,25 @@ std::pair<uint32_t, std::string> CurePleasePlugin::ResolveTargetIndex(uint16_t t
 }
 
 
+std::string ToHex(uint16_t value)
+{
+    std::stringstream ss;
+    ss << std::hex << std::uppercase << std::setfill('0') << std::setw(4) << value;
+    return ss.str();
+}
+
+
+std::string BytesToHex(const uint8_t* data, size_t length)
+{
+    std::stringstream ss;
+    for (size_t i = 0; i < length; ++i)
+    {
+        ss << std::hex << std::uppercase << std::setfill('0') << std::setw(2)
+           << static_cast<int>(data[i]);
+    }
+    return ss.str();
+}
+
 // ---------------------------------------------------------------------------
 // Packet handlers
 // ---------------------------------------------------------------------------
@@ -257,14 +329,44 @@ bool CurePleasePlugin::HandleIncomingPacket(uint16_t id, uint32_t size, const ui
     if (!ready_ || !data || size == 0)
         return false;
 
+
+        // Packet 0x00A: Zone Change
+        if (id == 0x00A && size >= 4)
+        {
+            if (!m_isZoning) {
+                m_isZoning = true;
+                WriteToPipe("LOG|Zoning detected, wont be clearing all spell timers! oops.. \n");
+            }
+        }
+        else if (id != 0x00A)
+        {
+            m_isZoning = false;
+        }
+
+
+    // 🔍 Log all incoming packet IDs
+    if (debugEnabled)
+        WriteToPipe("LOG|INCOMING|id=0x" + ToHex(id) + "|size=" + std::to_string(size) + "\n");
+
+    if (id == 0x28) {
+        Handle0x28(id, data, size);
+    } 
+    
     if (id == 0x0E) {
-        ParseChatLogPacket(id, size, data);
-    } else if (id == 0x28) {
-        Handle0x28(data, size);
-    } else if (id == 0xCA || id == 0x076) {
-        HandleBuffPacket(data, size);
+        Handle0x0E(id, data, size);
+    } 
+    //return false;
+    if (id == 0xCA || id == 0x076) {
+        Handle0xCA(id, data, size);
     }
 
+    if (id == 0x29) {
+        Handle0x29(id, data, size);
+    } 
+    
+    //if (id == 0x37 || id == 0xDF) {
+    //    Discovery(id, data, size);
+    //}
     // message
     //local basic = {
     //    sender     = struct.unpack('i4', e, 0x04 + 1),
@@ -279,15 +381,81 @@ bool CurePleasePlugin::HandleIncomingPacket(uint16_t id, uint32_t size, const ui
     return false;
 }
 
+
 bool CurePleasePlugin::HandleOutgoingPacket(uint16_t id, uint32_t size, const uint8_t* data,
                                             uint8_t*, uint32_t, const uint8_t*, bool, bool)
 {
     TryToGetPlayerInfo();
 
+    // 🔍 Log all outgoing packet IDs
+    if (debugEnabled)
+        WriteToPipe("LOG|OUTGOING|id=0x" + ToHex(id) + "|size=" + std::to_string(size) + "\n");
+
     if (id == 0x1A && size >= 14)
     {
+        Handle0x1A(id, data, size);
+    }
+
+    else if (id == 0x15) {
+
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+// A helper function to get an entity's array index from their server ID.
+int CurePleasePlugin::GetIndexFromId(uint32_t id) {
+    auto* entMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+    if (!entMgr) return 0;
+
+    // Fast path for monsters/static NPCs
+    if ((id & 0x1000000) != 0) {
+        int index = id & 0xFFF;
+        if (index >= 0x900) {
+            index -= 0x100;
+        }
+        if (index < 0x900 && entMgr->GetServerId(index) == id) {
+            return index;
+        }
+    }
+
+    // Slow path for players/other entities
+    for (int i = 1; i < 0x900; ++i) {
+        if (entMgr->GetServerId(i) == id) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+void CurePleasePlugin::HandleStatusMessage(uint16_t messageId,
+                                           uint32_t actorId,
+                                           uint32_t targetId,
+                                           uint32_t spellId,
+                                           const std::vector<uint32_t>& params)
+{
+    uint64_t now = getCurrentTimeMs();
+    auto it = std::find_if(m_PendingCasts.rbegin(), m_PendingCasts.rend(),
+        [&](const PendingCast& cast) {
+            bool targetMatch = cast.targetId == targetId;
+            bool timeMatch = (now - cast.timestamp0x1A) < cast.castDurationMs;
+            return targetMatch && timeMatch;
+    });
+
+    if (it != m_PendingCasts.rend()) {
+        LogSuccessfulCast(it->actorId, it->targetId, it->spellId);
+        m_PendingCasts.erase(std::next(it).base());
+    }
+}
+
+void CurePleasePlugin::Handle0x1A(uint16_t id, const uint8_t* data, size_t size) 
+{
+
         //if (debugEnabled)
-        //    Discovery(data, size);
+        //    Discovery(id, data, size);
 
         uint32_t targetId = 0;
         std::memcpy(&targetId, data + 4, sizeof(targetId));
@@ -343,10 +511,17 @@ bool CurePleasePlugin::HandleOutgoingPacket(uint16_t id, uint32_t size, const ui
             castDurationMs
             });
 
+        WriteToPipe(
+            "CAST_START|    seq=" + std::to_string(seq) +
+            "|" + std::to_string(casterId) +
+            "|" + std::to_string(spellId) +
+            "|" + std::to_string(targetId)
+        );
+
+           
         // Debug logging
         if (debugEnabled)
         {
-            WriteToPipe("CAST_START");
             WriteToPipe("LOG|DEBUG|0x1A|casterId=" + std::to_string(casterId) +
                 "|targetId=" + std::to_string(targetId) +
                 "|spellId=" + std::to_string(spellId) +
@@ -360,9 +535,11 @@ bool CurePleasePlugin::HandleOutgoingPacket(uint16_t id, uint32_t size, const ui
             //log << "\n";
             //WriteToPipe(log.str());
         }
-    }
+   
+}
+void CurePleasePlugin::Handle0x15(uint16_t id, const uint8_t* data, size_t size)
+{
 
-    else if (id == 0x15) {
         if (debugEnabled) {
             std::ostringstream log;
             log << "LOG|PACKET_OUT|0015|";
@@ -370,64 +547,110 @@ bool CurePleasePlugin::HandleOutgoingPacket(uint16_t id, uint32_t size, const ui
                 log << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]);
             }
             log << "\n";
-            WriteToPipe(log.str());
+            //WriteToPipe(log.str());
         }
-    }
-    return false;
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-// A helper function to get an entity's array index from their server ID.
-int CurePleasePlugin::GetIndexFromId(uint32_t id) {
-    auto* entMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
-    if (!entMgr) return 0;
-
-    // Fast path for monsters/static NPCs
-    if ((id & 0x1000000) != 0) {
-        int index = id & 0xFFF;
-        if (index >= 0x900) {
-            index -= 0x100;
-        }
-        if (index < 0x900 && entMgr->GetServerId(index) == id) {
-            return index;
-        }
-    }
-
-    // Slow path for players/other entities
-    for (int i = 1; i < 0x900; ++i) {
-        if (entMgr->GetServerId(i) == id) {
-            return i;
-        }
-    }
-    return 0;
-}
-
-void CurePleasePlugin::HandleStatusMessage(uint16_t messageId,
-                                           uint32_t actorId,
-                                           uint32_t targetId,
-                                           uint32_t spellId,
-                                           const std::vector<uint32_t>& params)
+void CurePleasePlugin::Handle0x29(uint16_t id, const uint8_t* data, size_t size)
 {
-    uint64_t now = getCurrentTimeMs();
-    auto it = std::find_if(m_PendingCasts.rbegin(), m_PendingCasts.rend(),
-        [&](const PendingCast& cast) {
-            bool targetMatch = cast.targetId == targetId;
-            bool timeMatch = (now - cast.timestamp0x1A) < cast.castDurationMs;
-            return targetMatch && timeMatch;
-    });
+    if (debugEnabled)
+        Discovery(id, data, size);
 
-    if (it != m_PendingCasts.rend()) {
-        LogSuccessfulCast(it->actorId, it->targetId, it->spellId);
-        m_PendingCasts.erase(std::next(it).base());
+    std::span<const uint8_t> packet(data, size);
+    if (packet.size() < 26) return; // sanity check
+
+    // --- Inline helpers for safe extraction ---
+    auto read_u32 = [&](size_t offset) {
+        return std::bit_cast<uint32_t>(*reinterpret_cast<const uint32_t*>(packet.data() + offset));
+    };
+    auto read_u16 = [&](size_t offset) {
+        return std::bit_cast<uint16_t>(*reinterpret_cast<const uint16_t*>(packet.data() + offset));
+    };
+
+    // --- Parse fields directly ---
+    uint32_t actorId     = read_u32(4);
+    uint32_t targetId    = read_u32(8);
+    uint32_t abilityId   = read_u32(12);
+    uint32_t raw32       = read_u32(16);
+    uint16_t param2      = static_cast<uint16_t>(raw32 & 0x7F); // first 7 bits
+    uint32_t param3      = raw32 >> 5;                          // rest
+    uint16_t actorIndex  = read_u16(20);
+    uint16_t targetIndex = read_u16(22);
+    uint16_t messageId   = read_u16(24) & 0x7FFF;               // cut MSB
+
+    std::string actorName  = GetEntityNameById(actorId);
+    std::string targetName = GetEntityNameById(targetId);
+
+    if (actorName.empty() || actorName == "Unknown" || actorName == "None")
+        return;
+
+    // --- Ability checks (dispel maps) ---
+    if (auto it_def = dispel_defense_map.find(abilityId); it_def != dispel_defense_map.end()) {
+        WriteToPipe("LOG|DISPEL_REQUESTED|" + actorName + "|" + it_def->second + "\n");
+    }
+    if (auto it_mag = dispel_magic_map.find(abilityId); it_mag != dispel_magic_map.end()) {
+        WriteToPipe("LOG|DISPEL_REQUESTED|" + actorName + "|" + it_mag->second + "\n");
+    }
+    if (auto it_eva = dispel_evasion_map.find(abilityId); it_eva != dispel_evasion_map.end()) {
+        WriteToPipe("LOG|DISPEL_REQUESTED|" + actorName + "|" + it_eva->second + "\n");
+    }
+
+    // --- Wears off messages ---
+    if (messageId == 206) {
+        // # from buffs.h only
+        std::string buffName = GetBuffName(abilityId, 2); // spell form
+        WriteToPipe("MOB_BUFF_FADED|" 
+                    + std::to_string(actorId) + "|" 
+                    + buffName + "|" 
+                    + targetName + "\n");
+        return;
+    }
+
+    if (messageId == 16) {
+        // -- Uses ability ... ? message
+        std::string buffName = GetBuffName(abilityId, 0); // noun form
+        WriteToPipe("LOG|Ability|16|" 
+                    + std::to_string(actorId) + "|" 
+                    + buffName + "|" 
+                    + targetName + "\n");
+        return;
+    }
+
+    if (messageId == 38) {
+        //  -- gains the effect of ... ?
+        std::string buffName = GetBuffName(abilityId, 1); // adjective form
+        WriteToPipe("LOG|Ability|38|" 
+                    + std::to_string(actorId) + "|" 
+                    + buffName + "|" 
+                    + targetName + "\n");
+        return;
+    }
+
+    // --- Other messages (debug only) ---
+    if (debugEnabled) {
+        std::ostringstream dbg;
+        dbg << "LOG|DEBUG|0x29"
+            << "|actorId=" << actorId
+            << "|actorName=" << actorName
+            << "|targetId=" << targetId
+            << "|targetName=" << targetName
+            << "|abilityId=" << abilityId
+            << "|param2=" << param2
+            << "|param3=" << param3
+            << "|actorIndex=" << actorIndex
+            << "|targetIndex=" << targetIndex
+            << "|messageId=" << messageId;
+        WriteToPipe(dbg.str() + "\n");
     }
 }
 
-
-void CurePleasePlugin::ParseChatLogPacket(uint16_t id, uint32_t size, const uint8_t* data)
+void CurePleasePlugin::Handle0x0E(uint16_t id, const uint8_t* data, uint32_t size)
 {
+
+
+    //if (debugEnabled)
+    //    Discovery(id, data, size);
+
     return;
     // if (e.id == 0x00E) then
 	//	local mobPacket = T{};
@@ -568,12 +791,15 @@ extern "C" __declspec(dllexport) double __stdcall expGetInterfaceVersion(void)
     return ASHITA_INTERFACE_VERSION;
 }
 
-void CurePleasePlugin::Discovery(const uint8_t* data, size_t size)
+void CurePleasePlugin::Discovery(uint16_t id, const uint8_t* data, size_t size)
 {
     if (size < 16) return;
 
     std::ostringstream log;
-    log << "LOG|DISCOVER|DWORDS|size=" << size << "\n";
+    log << "LOG|DISCOVER|DWORDS|id=0x"
+        << std::hex << std::uppercase << id
+        << "|size=" << std::dec << size << "\n";
+
 
     // Slide a 4-byte window from offset 1 to 32 (or up to size-4)
     for (size_t offset = 1; offset <= 32 && offset + 3 < size; ++offset)
@@ -589,12 +815,13 @@ void CurePleasePlugin::Discovery(const uint8_t* data, size_t size)
 }
 
 
-void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
+
+void CurePleasePlugin::Handle0x28(uint16_t id, const uint8_t* data, size_t size)
 {
     if (size < 16) return; // Basic sanity check
 
-    if (debugEnabled)
-        Discovery(data, size);
+    //if (debugEnabled)
+    //    Discovery(id, data, size);
 
     uint32_t casterId = 0;
     std::memcpy(&casterId, data + 5, sizeof(casterId));
@@ -642,7 +869,7 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
         {
             bool shouldErase = false;
 
-            if (subval == 28787) // Interrupted
+            if (subval == 28787 || subval == 1847) // Interrupted
             {
                 it->status = CastingStatus::INTERRUPTED;
                 std::ostringstream msg;
@@ -675,7 +902,7 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
                 else trigger = "unknown";
 
                 std::ostringstream msg;
-                msg << "LOG|CAST_RESISTED|" << casterId
+                msg << "DEBUFF_RESISTED|" << casterId
                     << "|" << it->targetId
                     << "|" << it->spellId
                     << "|status=" << static_cast<int>(it->status)
@@ -686,7 +913,15 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
             }
             else
             {
+                WriteToPipe("CAST_START");
                 it->status = CastingStatus::STARTED;
+                if (debugEnabled)
+                {
+                    std::ostringstream dbg;
+                    dbg << "LOG|DEBUG|0x28|UNHANDLED_SUBVAL"
+                        << "|subval=" << subval;
+                    WriteToPipe(dbg.str());
+                }
             }
 
             it->timestamp0x28 = now;
@@ -755,9 +990,13 @@ void CurePleasePlugin::Handle0x28(const uint8_t* data, size_t size)
 
 }
 
-void CurePleasePlugin::HandleBuffPacket(const uint8_t* data, size_t size)
+void CurePleasePlugin::Handle0xCA(uint16_t id, const uint8_t* data, size_t size)
 {
     auto* entMgr = m_AshitaCore->GetMemoryManager()->GetEntity();
+
+    if (debugEnabled)
+        Discovery(id, data, size);
+
     if (!entMgr) return;
 
     for (int k = 0; k < 5; ++k) {

@@ -9995,18 +9995,18 @@ namespace Miraculix
                 case "CAST_INTERRUPT":
                 {
                     if (parts.Length >= 4 &&
-                        uint.TryParse(parts[1],  out uint actorId) &&
-                        uint.TryParse(parts[2], out uint targetId) &&
-                        ushort.TryParse(parts[3], out ushort spellId))
+                        uint.TryParse(parts[1],  out uint actorId_ci) &&
+                        uint.TryParse(parts[2], out uint targetId_ci) &&
+                        ushort.TryParse(parts[3], out ushort spellId_ci))
                     {
                         int status = ParseField(parts[4], "status=");
 
                         var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId == plInfo.ID) // ✅ only handle your own interrupts
+                        if (plInfo != null && actorId_ci == plInfo.ID) // ✅ only handle your own interrupts
                         {
-                            string targetName = GetEntityNameById(targetId);
-                            string buffType   = GetBuffNameForSpellId(spellId);
-                            string spellName  = GetSpellNameById(spellId);
+                            string targetName = GetEntityNameById(targetId_ci);
+                            string buffType   = GetBuffNameForSpellId(spellId_ci);
+                            string spellName  = GetSpellNameById(spellId_ci);
 
                             debug_MSG_show.AppendLine(
                                 $"[CAST_INTERRUPT] Player’s {spellName} on {targetName} was interrupted. Resetting {buffType} timer.");
@@ -10018,7 +10018,7 @@ namespace Miraculix
                             string debuffType = GetDebuffTypeForSpellName(spellName);
                             if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
                             {
-                                HandleFailedDebuff(actorId, targetId, spellId, "DEBUFF_INTERRUPTED");
+                                HandleFailedDebuff(actorId_ci, targetId_ci, spellId_ci, "DEBUFF_INTERRUPTED");
                                 debug_MSG_show.AppendLine(
                                     $"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}' was interrupted. Resetting timer for '{debuffType}'.");
                             }
@@ -10042,18 +10042,18 @@ namespace Miraculix
                 case "CAST_BLOCKED":
                 {
                     if (parts.Length >= 4 &&
-                        uint.TryParse(parts[1], out uint actorId) &&
-                        uint.TryParse(parts[2], out uint targetId) &&
-                        ushort.TryParse(parts[3], out ushort spellId))
+                        uint.TryParse(parts[1], out uint actorId_cb) &&
+                        uint.TryParse(parts[2], out uint targetId_cb) &&
+                        ushort.TryParse(parts[3], out ushort spellId_cb))
                     {
                         int status = ParseField(parts[4], "status=");
 
                         var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId == plInfo.ID)   // ✅ only handle your own blocked casts
+                        if (plInfo != null && actorId_cb == plInfo.ID)   // ✅ only handle your own blocked casts
                         {
-                            string targetName = GetEntityNameById(targetId);
-                            string buffType   = GetBuffNameForSpellId(spellId);
-                            string spellName  = GetSpellNameById(spellId);
+                            string targetName = GetEntityNameById(targetId_cb);
+                            string buffType   = GetBuffNameForSpellId(spellId_cb);
+                            string spellName  = GetSpellNameById(spellId_cb);
 
                             debug_MSG_show.AppendLine(
                                 $"[CAST_BLOCKED] Player’s {spellName} on {targetName} was blocked. Resetting {buffType} timer.");
@@ -10308,19 +10308,19 @@ namespace Miraculix
                 case "ACTION":
                 {
                     if (parts.Length >= 5 &&
-                        uint.TryParse(parts[1], out uint actorId) &&
-                        uint.TryParse(parts[2], out uint targetId) &&
-                        ushort.TryParse(parts[3], out ushort spellId))
+                        uint.TryParse(parts[1], out uint actorId_ac) &&
+                        uint.TryParse(parts[2], out uint targetId_ac) &&
+                        ushort.TryParse(parts[3], out ushort spellId_ac))
                     {
                         int effect = ParseField(parts[4], "EFFECT=");
                         int status = ParseField(parts[5], "status=");
 
                         var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId == plInfo.ID)   // ✅ only handle your own casts
+                        if (plInfo != null && actorId_ac == plInfo.ID)   // ✅ only handle your own casts
                         {
-                            string targetName = GetEntityNameById(targetId);
-                            string buffType   = GetBuffNameForSpellId(spellId);
-                            string spellName  = GetSpellNameById(spellId);
+                            string targetName = GetEntityNameById(targetId_ac);
+                            string buffType   = GetBuffNameForSpellId(spellId_ac);
+                            string spellName  = GetSpellNameById(spellId_ac);
 
                             // Skip Cure line
                             if (spellName.StartsWith("Cure", StringComparison.OrdinalIgnoreCase))
@@ -10341,16 +10341,16 @@ namespace Miraculix
                 break;
 
                 case "DEBUFF_INTERRUPTED":
-                    if (parts.Length >= 4 && uint.TryParse(parts[1], out uint actorId) && uint.TryParse(parts[2], out uint targetId) && ushort.TryParse(parts[3], out ushort spellId))
+                    if (parts.Length >= 4 && uint.TryParse(parts[1], out uint actorId_di) && uint.TryParse(parts[2], out uint targetId_di) && ushort.TryParse(parts[3], out ushort spellId_di))
                     {
-                        HandleFailedDebuff(actorId, targetId, spellId, "DEBUFF_INTERRUPTED");
+                        HandleFailedDebuff(actorId_di, targetId_di, spellId_di, "DEBUFF_INTERRUPTED");
                     }
                     break;
 
                 case "DEBUFF_RESISTED":
-                    if (parts.Length >= 4 && uint.TryParse(parts[1], out uint actorId) && uint.TryParse(parts[2], out uint targetId) && ushort.TryParse(parts[3], out ushort spellId))
+                    if (parts.Length >= 4 && uint.TryParse(parts[1], out uint actorId_dr) && uint.TryParse(parts[2], out uint targetId_dr) && ushort.TryParse(parts[3], out ushort spellId_dr))
                     {
-                        HandleFailedDebuff(actorId, targetId, spellId, "DEBUFF_RESISTED");
+                        HandleFailedDebuff(actorId_dr, targetId_dr, spellId_dr, "DEBUFF_RESISTED");
                     }
                     break;
 

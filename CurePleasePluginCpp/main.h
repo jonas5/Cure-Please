@@ -75,6 +75,7 @@ private:
     static bool debugEnabled;
     uint32_t m_PlayerActorId = 0;
     std::string m_PlayerName;
+    bool m_isZoning = false;
 
 
 
@@ -142,12 +143,18 @@ private:
     // Helpers
     void TryToGetPlayerInfo();
     static std::string CastingStatusToString(CastingStatus status);
-    void ParseChatLogPacket(uint16_t id, uint32_t size, const uint8_t* data);
+
     void HandleStatusMessage(uint16_t messageId, uint32_t actorId, uint32_t targetId, uint32_t spellId, const std::vector<uint32_t>& params);
-    void Handle0x28(const uint8_t* data, size_t size);
+    void Handle0x0E(uint16_t id, const uint8_t* data, uint32_t size);
+    void Handle0x28(uint16_t id, const uint8_t* data, size_t size);
+    void Handle0x29(uint16_t id, const uint8_t* data, size_t size);
+    void Handle0x15(uint16_t id, const uint8_t* data, size_t size);
+    void Handle0x1A(uint16_t id, const uint8_t* data, size_t size);
+    void Handle0xCA(uint16_t id, const uint8_t* data, size_t size);
+
     std::pair<uint32_t, std::string> ResolveTargetIndex(uint16_t targetIndex, IAshitaCore* core, uint32_t actorId, bool debugEnabled = false);
-    void Discovery(const uint8_t* data, size_t size);
-    void HandleBuffPacket(const uint8_t* data, size_t size);
+    void Discovery(uint16_t id, const uint8_t* data, size_t size);
+
     int GetIndexFromId(uint32_t id);
 
     // Wrapper to keep WriteToPipe syntax
