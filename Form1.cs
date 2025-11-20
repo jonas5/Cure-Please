@@ -10015,13 +10015,8 @@ namespace Miraculix
                                 partyState.ResetBuffTimer(targetName, buffType);
 
                             // ✅ Check if this was a debuff and handle accordingly
-                            string debuffType = GetDebuffTypeForSpellName(spellName);
-                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
-                            {
-                                HandleFailedDebuff(actorId_ci, targetId_ci, spellId_ci, "DEBUFF_INTERRUPTED");
-                                debug_MSG_show.AppendLine(
-                                    $"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}' was interrupted. Resetting timer for '{debuffType}'.");
-                            }
+                        // Note: We rely on DEBUFF_INTERRUPTED message for logic to avoid duplication,
+                        // but we keep the log here for context if needed, or rely on the generic CAST_INTERRUPT log above.
                         }
                     }
 
@@ -10382,7 +10377,10 @@ namespace Miraculix
 
                         debug_MSG_show.AppendLine($"[MOB_BUFF_FADED] Check: ConfigDebuffs={Form2.config.enableDebuffs}, TargetIndex={debuffTimersTargetId}, EntityID={(currentTargetEntity != null ? currentTargetEntity.ID : 0)}, MsgMobID={mobId}");
 
-                        if (Form2.config.enableDebuffs && currentTargetEntity != null && currentTargetEntity.ID == mobId)
+                        // Check if mobId matches the Entity ID OR the Target Index (to support different plugin behaviors)
+                        bool isMatch = currentTargetEntity != null && (currentTargetEntity.ID == mobId || debuffTimersTargetId == mobId);
+
+                        if (Form2.config.enableDebuffs && isMatch)
                         {
                             string keyToReset = null;
                             if (string.Equals(buffName, "Dia", StringComparison.OrdinalIgnoreCase) && Form2.config.DiaBioSelection == "Dia") keyToReset = "Dia";
@@ -10419,7 +10417,7 @@ namespace Miraculix
                     }
                     break;
                 default:
-                    if (!message.StartsWith("@") && !message.StartsWith("LOG|DISCOVER"))
+                    if (!message.TrimStart().StartsWith("@") && !message.StartsWith("LOG|DISCOVER"))
                     {
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] Unknown pipe message: {message} command: {command}");
                     }
