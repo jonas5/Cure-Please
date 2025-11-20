@@ -10451,10 +10451,14 @@ namespace Miraculix
                 // debuffTimersTargetId is always an Index.
                 bool isMatch = currentTarget != null && (currentTarget.TargetID == targetId || debuffTimersTargetId == targetId);
 
-                if (isMatch)
+                string debuffType = GetDebuffTypeForSpellName(spellName);
+                bool isTracked = debuffType != null && targetDebuffTimers.ContainsKey(debuffType);
+
+                // If we are explicitly tracking this debuff, we assume it belongs to the current target context
+                // (since timers are cleared on target switch), so we reset it even if the ID check fails (e.g. due to lag/desync).
+                if (isMatch || isTracked)
                 {
-                    string debuffType = GetDebuffTypeForSpellName(spellName);
-                    if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                    if (isTracked)
                     {
                         targetDebuffTimers[debuffType] = DateTime.MinValue;
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [{reason}] '{spellName}' on '{targetName}'. Resetting timer for '{debuffType}'.");
