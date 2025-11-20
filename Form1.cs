@@ -9900,6 +9900,16 @@ namespace Miraculix
                 }
             }
 
+            // ✅ Fallback: If ID looks like an index, try that
+            if (id < 2048)
+            {
+                var entityByIndex = _ELITEAPIPL.Entity.GetEntity((int)id);
+                if (entityByIndex != null && !string.IsNullOrEmpty(entityByIndex.Name))
+                {
+                    return entityByIndex.Name;
+                }
+            }
+
             return $"Unknown Entity ({id})";
         }
 
@@ -10015,8 +10025,11 @@ namespace Miraculix
                                 partyState.ResetBuffTimer(targetName, buffType);
 
                             // ✅ Check if this was a debuff and handle accordingly
-                        // Note: We rely on DEBUFF_INTERRUPTED message for logic to avoid duplication,
-                        // but we keep the log here for context if needed, or rely on the generic CAST_INTERRUPT log above.
+                            string debuffType = GetDebuffTypeForSpellName(spellName);
+                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
+                            {
+                                HandleFailedDebuff(actorId_ci, targetId_ci, spellId_ci, "DEBUFF_INTERRUPTED");
+                            }
                         }
                     }
 
