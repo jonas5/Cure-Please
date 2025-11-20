@@ -10369,7 +10369,7 @@ namespace Miraculix
                     }
                     break;
                 case "MOB_BUFF_FADED":
-                    if (parts.Length == 3)
+                    if (parts.Length >= 3)
                     {
                         int mobId = int.Parse(parts[1]);
                         string buffName = parts[2];
@@ -10378,6 +10378,25 @@ namespace Miraculix
                             mobBuffs[mobId].Remove(buffName);
                         }
                         debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_FADED: MobID={mobId}, Buff={buffName}");
+
+                        if (Form2.config.enableDebuffs && mobId == debuffTimersTargetId)
+                        {
+                            string keyToReset = null;
+                            if (buffName == "Dia" && Form2.config.DiaBioSelection == "Dia") keyToReset = "Dia";
+                            else if (buffName == "Bio" && Form2.config.DiaBioSelection == "Bio") keyToReset = "Bio";
+                            else if (buffName == "Paralysis" && Form2.config.debuffParalyze) keyToReset = "Paralyze";
+                            else if (buffName == "Silence" && Form2.config.debuffSilence) keyToReset = "Silence";
+                            else if (buffName == "Slow" && Form2.config.debuffSlow) keyToReset = "Slow";
+                            else if (buffName == "Blindness" && Form2.config.debuffBlind) keyToReset = "Blind";
+                            else if ((buffName == "Weight" || buffName == "Gravity") && Form2.config.debuffGravity) keyToReset = "Gravity";
+                            else if (buffName == "Bind" && Form2.config.debuffBind) keyToReset = "Bind";
+
+                            if (keyToReset != null && targetDebuffTimers.ContainsKey(keyToReset))
+                            {
+                                targetDebuffTimers[keyToReset] = DateTime.MinValue;
+                                debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] '{buffName}' faded from current target. Resetting timer for '{keyToReset}'.");
+                            }
+                        }
                     }
                     break;
                 default:
