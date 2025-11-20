@@ -96,5 +96,16 @@ namespace Miraculix
                 }
             }
         }
+
+        public void ExpireBuff(string memberName, string buffType)
+        {
+            if (Members.TryGetValue(memberName, out PartyMemberState member) && this.buff_definitions != null)
+            {
+                if (this.buff_definitions.TryGetValue(buffType, out BuffInfo buffInfo))
+                {
+                    member.Buffs.RemoveAll(b => buffInfo.Ids.Contains(b.Id));
+                }
+            }
+        }
     }
 }

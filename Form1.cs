@@ -411,6 +411,38 @@ namespace Miraculix
             }
         }
 
+        private void HandleCastFailure(uint actorId, uint targetId, ushort spellId, string reason)
+        {
+            var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
+            if (plInfo != null && actorId == plInfo.ID)
+            {
+                string targetName = GetEntityNameById(targetId);
+                string spellName = GetSpellNameById(spellId);
+                string buffType = GetBuffNameForSpellId(spellId);
+                string debuffType = GetDebuffTypeForSpellName(spellName);
+
+                debug_MSG_show.AppendLine($"[{reason}] {spellName} on {targetName} failed.");
+
+                // Handle Buffs
+                if (!string.IsNullOrEmpty(buffType))
+                {
+                    partyState.ExpireBuff(targetName, buffType);
+                    string cooldownKey = $"{targetName}:{buffType}";
+                    if (buffCooldowns.ContainsKey(cooldownKey))
+                    {
+                        buffCooldowns[cooldownKey] = DateTime.MinValue;
+                    }
+                    debug_MSG_show.AppendLine($"    -> Expired buff timer for {buffType} on {targetName} to force retry.");
+                }
+
+                // Handle Debuffs
+                if (debuffType != null)
+                {
+                    HandleFailedDebuff(actorId, targetId, spellId, reason);
+                }
+            }
+        }
+
         public static bool HasAbility(string checked_abilityName)
         {
             if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 261) || _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 16)) // IF YOU HAVE INPAIRMENT/AMNESIA THEN BLOCK JOB ABILITY CASTING
@@ -10009,28 +10041,7 @@ namespace Miraculix
                         uint.TryParse(parts[2], out uint targetId_ci) &&
                         ushort.TryParse(parts[3], out ushort spellId_ci))
                     {
-                        int status = ParseField(parts[4], "status=");
-
-                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId_ci == plInfo.ID) // ✅ only handle your own interrupts
-                        {
-                            string targetName = GetEntityNameById(targetId_ci);
-                            string buffType   = GetBuffNameForSpellId(spellId_ci);
-                            string spellName  = GetSpellNameById(spellId_ci);
-
-                            debug_MSG_show.AppendLine(
-                                $"[CAST_INTERRUPT] Player’s {spellName} on {targetName} was interrupted. Resetting {buffType} timer.");
-
-                            if (!string.IsNullOrEmpty(buffType))
-                                partyState.ResetBuffTimer(targetName, buffType);
-
-                            // ✅ Check if this was a debuff and handle accordingly
-                            string debuffType = GetDebuffTypeForSpellName(spellName);
-                            if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
-                            {
-                                HandleFailedDebuff(actorId_ci, targetId_ci, spellId_ci, "DEBUFF_INTERRUPTED");
-                            }
-                        }
+                        HandleCastFailure(actorId_ci, targetId_ci, spellId_ci, "CAST_INTERRUPT");
                     }
 
                     ProtectCasting.CancelAsync();
@@ -10054,21 +10065,7 @@ namespace Miraculix
                         uint.TryParse(parts[2], out uint targetId_cb) &&
                         ushort.TryParse(parts[3], out ushort spellId_cb))
                     {
-                        int status = ParseField(parts[4], "status=");
-
-                        var plInfo = _ELITEAPIPL.Party.GetPartyMember(0);
-                        if (plInfo != null && actorId_cb == plInfo.ID)   // ✅ only handle your own blocked casts
-                        {
-                            string targetName = GetEntityNameById(targetId_cb);
-                            string buffType   = GetBuffNameForSpellId(spellId_cb);
-                            string spellName  = GetSpellNameById(spellId_cb);
-
-                            debug_MSG_show.AppendLine(
-                                $"[CAST_BLOCKED] Player’s {spellName} on {targetName} was blocked. Resetting {buffType} timer.");
-
-                            if (!string.IsNullOrEmpty(buffType))
-                                partyState.ResetBuffTimer(targetName, buffType);
-                        }
+                        HandleCastFailure(actorId_cb, targetId_cb, spellId_cb, "CAST_BLOCKED");
                     }
 
                     ProtectCasting.CancelAsync();
