@@ -10377,21 +10377,21 @@ namespace Miraculix
                     }
                     break;
                 case "MOB_BUFF_FADED":
-                    if (parts.Length >= 3 && uint.TryParse(parts[1], out uint fadedMobId))
+                    if (parts.Length >= 3 && uint.TryParse(parts[1], out uint fadedMobIndex))
                     {
                         string buffName = parts[2];
-                        if (mobBuffs.ContainsKey((int)fadedMobId))
+                        if (mobBuffs.ContainsKey((int)fadedMobIndex))
                         {
-                            mobBuffs[(int)fadedMobId].Remove(buffName);
+                            mobBuffs[(int)fadedMobIndex].Remove(buffName);
                         }
-                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_FADED: MobID={fadedMobId}, Buff={buffName}");
+                        debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] MOB_BUFF_FADED: MobID={fadedMobIndex}, Buff={buffName}");
 
                         EliteAPI.XiEntity currentTargetEntity = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
 
-                        debug_MSG_show.AppendLine($"[MOB_BUFF_FADED] Check: ConfigDebuffs={Form2.config.enableDebuffs}, TargetIndex={debuffTimersTargetId}, EntityID={(currentTargetEntity != null ? currentTargetEntity.TargetID : 0)}, MsgMobID={fadedMobId}");
+                        debug_MSG_show.AppendLine($"[MOB_BUFF_FADED] Check: ConfigDebuffs={Form2.config.enableDebuffs}, TargetIndex={debuffTimersTargetId}, EntityID={(currentTargetEntity != null ? currentTargetEntity.TargetID : 0)}, MsgMobID={fadedMobIndex}");
 
                         // Check if mobId matches the Entity ID OR the Target Index (to support different plugin behaviors)
-                        bool isMatch = currentTargetEntity != null && (currentTargetEntity.TargetID == fadedMobId || debuffTimersTargetId == fadedMobId);
+                        bool isMatch = currentTargetEntity != null && (currentTargetEntity.TargetID == fadedMobIndex || debuffTimersTargetId == fadedMobIndex);
 
                         if (Form2.config.enableDebuffs && isMatch)
                         {
@@ -10419,9 +10419,9 @@ namespace Miraculix
                                 debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] '{buffName}' faded but did not match any enabled debuff configuration.");
                             }
                         }
-                        else if (currentTargetEntity == null || currentTargetEntity.TargetID != fadedMobId)
+                        else if (currentTargetEntity == null || currentTargetEntity.TargetID != fadedMobIndex)
                         {
-                             debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] Ignored '{buffName}' on MobID={fadedMobId} (Current TargetID={debuffTimersTargetId}, Current MobID={(currentTargetEntity != null ? currentTargetEntity.TargetID : 0)}).");
+                             debug_MSG_show.AppendLine($"[{DateTime.Now:HH:mm:ss.fff}] [MOB_BUFF_FADED] Ignored '{buffName}' on MobID={fadedMobIndex} (Current TargetID={debuffTimersTargetId}, Current MobID={(currentTargetEntity != null ? currentTargetEntity.TargetID : 0)}).");
                         }
                         else if (!Form2.config.enableDebuffs)
                         {
@@ -10448,7 +10448,13 @@ namespace Miraculix
                 debug_MSG_show.AppendLine($"[{reason}] {spellName} on {targetName} was {reason.ToLower().Replace("debuff_", "")}.");
 
                 EliteAPI.XiEntity currentTarget = _ELITEAPIPL.Entity.GetEntity(debuffTimersTargetId);
-                if (currentTarget != null && currentTarget.Name == targetName)
+
+                // Check if the interrupted target matches the current debuff target via ID or Index.
+                // Note: targetId from CAST_INTERRUPT/DEBUFF_RESISTED is usually a Server ID, but might be an Index.
+                // debuffTimersTargetId is always an Index.
+                bool isMatch = currentTarget != null && (currentTarget.TargetID == targetId || debuffTimersTargetId == targetId);
+
+                if (isMatch)
                 {
                     string debuffType = GetDebuffTypeForSpellName(spellName);
                     if (debuffType != null && targetDebuffTimers.ContainsKey(debuffType))
