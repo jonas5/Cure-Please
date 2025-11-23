@@ -119,6 +119,7 @@ namespace Miraculix
     public class SpellRequest
     {
         public string SpellName { get; set; }
+        public int SpellId { get; set; }
         public string TargetName { get; set; }
         public int TargetId { get; set; }
         public SpellType Type { get; set; }

@@ -5599,10 +5599,18 @@ namespace Miraculix
 
         private void QueueSpell(string partyMemberName, string spellName, SpellType type, SpellPriority priority = SpellPriority.Normal, Action onSuccess = null, Action onFailure = null, string optionalExtras = null)
         {
+            int spellId = 0;
+            if (_ELITEAPIPL != null && _ELITEAPIPL.Resources != null)
+            {
+                var spell = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
+                if (spell != null) spellId = spell.Index;
+            }
+
             var request = new SpellRequest
             {
                 TargetName = partyMemberName,
                 SpellName = spellName,
+                SpellId = spellId,
                 Type = type,
                 Priority = priority,
                 OnSuccess = onSuccess,
@@ -10114,8 +10122,13 @@ namespace Miraculix
                             // Update Master Queue
                             if (currentSpellRequest != null)
                             {
-                                if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
-                                currentSpellRequest = null;
+                                // Only fail if ID matches or if ID is 0 (safety fallback)
+                                if (currentSpellRequest.SpellId == spellId_ci || currentSpellRequest.SpellId == 0)
+                                {
+                                    debug_MSG_show.AppendLine($"[CAST_INTERRUPT] Matching spell ID {spellId_ci}. Failing request.");
+                                    if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
+                                    currentSpellRequest = null;
+                                }
                             }
                         }
                     }
@@ -10159,8 +10172,12 @@ namespace Miraculix
                             // Update Master Queue
                             if (currentSpellRequest != null)
                             {
-                                if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
-                                currentSpellRequest = null;
+                                if (currentSpellRequest.SpellId == spellId_cb || currentSpellRequest.SpellId == 0)
+                                {
+                                    debug_MSG_show.AppendLine($"[CAST_BLOCKED] Matching spell ID {spellId_cb}. Failing request.");
+                                    if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
+                                    currentSpellRequest = null;
+                                }
                             }
                         }
                     }
@@ -10179,12 +10196,8 @@ namespace Miraculix
                 break;
 
                 case "CAST_FINISH":
-                    // Update Master Queue
-                    if (currentSpellRequest != null)
-                    {
-                        if (currentSpellRequest.OnSuccess != null) currentSpellRequest.OnSuccess();
-                        currentSpellRequest = null;
-                    }
+                    // Note: CAST_FINISH doesn't carry spell ID, so we rely on ACTION packet for success confirmation.
+                    // CAST_FINISH is just for unlocking UI.
 
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
@@ -10443,6 +10456,17 @@ namespace Miraculix
                                     $"[ACTION] Player cast {spellName} on {targetName}. Resetting {buffType} timer.");
                                 if (!string.IsNullOrEmpty(buffType))
                                     partyState.ResetBuffTimer(targetName, buffType);
+                            }
+
+                            // Update Master Queue
+                            if (currentSpellRequest != null)
+                            {
+                                if (currentSpellRequest.SpellId == spellId_ac || currentSpellRequest.SpellId == 0)
+                                {
+                                    debug_MSG_show.AppendLine($"[ACTION] Matching spell ID {spellId_ac}. Success.");
+                                    if (currentSpellRequest.OnSuccess != null) currentSpellRequest.OnSuccess();
+                                    currentSpellRequest = null;
+                                }
                             }
                         }
                     }
