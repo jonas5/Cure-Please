@@ -100,6 +100,42 @@ namespace Miraculix
         public System.Collections.Generic.List<int> Ids { get; set; }
         public int Duration { get; set; } // Base duration in seconds
     }
+
+    public enum SpellType
+    {
+        Heal,
+        Buff,
+        Debuff,
+        Other
+    }
+
+    public enum SpellPriority
+    {
+        High,
+        Normal,
+        Low
+    }
+
+    public class SpellRequest
+    {
+        public string SpellName { get; set; }
+        public string TargetName { get; set; }
+        public int TargetId { get; set; }
+        public SpellType Type { get; set; }
+        public SpellPriority Priority { get; set; }
+        public string OptionalExtras { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public System.Action OnSuccess { get; set; }
+        public System.Action OnFailure { get; set; }
+        public int RetryCount { get; set; }
+        public int MaxRetries { get; set; } = 0;
+
+        public SpellRequest()
+        {
+            Timestamp = System.DateTime.Now;
+            Priority = SpellPriority.Normal;
+        }
+    }
 }
 
 

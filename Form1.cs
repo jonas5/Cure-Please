@@ -100,6 +100,10 @@ namespace Miraculix
             public string BuffName { get; set; }
         }
 
+        private System.Collections.Concurrent.ConcurrentQueue<SpellRequest> masterSpellQueue = new System.Collections.Concurrent.ConcurrentQueue<SpellRequest>();
+        private SpellRequest currentSpellRequest = null;
+        private DateTime currentSpellStartTime;
+
         private System.Collections.Concurrent.ConcurrentQueue<RecastRequest> recastQueue = new System.Collections.Concurrent.ConcurrentQueue<RecastRequest>();
         private List<string> nearbyPlayers = new List<string>();
         private Dictionary<string, OopPlayerState> oopPlayerStates = new Dictionary<string, OopPlayerState>();
@@ -5551,11 +5555,18 @@ namespace Miraculix
         }
 
 
-        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
+        private bool ExecuteCast(string partyMemberName, string spellName, [Optional] string OptionalExtras)
         {
+            // Only proceed if not already casting
             if (CastingBackground_Check != true)
             {
                 EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
+                if (magic == null)
+                {
+                    // Handle invalid spell gracefully
+                    debug_MSG_show.AppendLine($"[ExecuteCast] Spell not found: {spellName}");
+                    return false;
+                }
 
                 castingSpell = magic.Name[0];
 
@@ -5581,9 +5592,83 @@ namespace Miraculix
                     castingLockLabel.Text = "Casting is LOCKED";
                     if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
                 }
+                return true;
+            }
+            return false;
+        }
 
+        private void QueueSpell(string partyMemberName, string spellName, SpellType type, SpellPriority priority = SpellPriority.Normal, Action onSuccess = null, Action onFailure = null, string optionalExtras = null)
+        {
+            var request = new SpellRequest
+            {
+                TargetName = partyMemberName,
+                SpellName = spellName,
+                Type = type,
+                Priority = priority,
+                OnSuccess = onSuccess,
+                OnFailure = onFailure,
+                OptionalExtras = optionalExtras
+            };
+
+            // Priority Queue implementation would be better, but for now we just enqueue.
+            // If needed, we can sort or use multiple queues.
+            // Given the ConcurrentQueue doesn't support priority insertion, we might need to handle priority in ProcessQueue
+            // or use a different collection. For simplicity in this refactor step, we'll just append.
+            // A more advanced implementation would use a PriorityQueue or multiple queues.
+
+            masterSpellQueue.Enqueue(request);
+            debug_MSG_show.AppendLine($"[QueueSpell] Enqueued {spellName} on {partyMemberName} (Type: {type})");
+        }
+
+        // Backward compatibility wrapper
+        private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
+        {
+             // Determine type based on spell name or context?
+             // For now, treat legacy calls as "Other" or infer.
+             // We'll try to infer to be helpful.
+             SpellType type = SpellType.Other;
+             string lower = spellName.ToLower();
+             if (lower.StartsWith("cure") || lower.StartsWith("curaga") || lower.StartsWith("regen")) type = SpellType.Heal;
+             else if (lower.StartsWith("haste") || lower.StartsWith("protect") || lower.StartsWith("shell") || lower.StartsWith("refresh") || lower.StartsWith("phalanx")) type = SpellType.Buff;
+             else if (lower.StartsWith("dia") || lower.StartsWith("bio") || lower.StartsWith("paralyze") || lower.StartsWith("slow") || lower.StartsWith("blind") || lower.StartsWith("bind") || lower.StartsWith("gravity") || lower.StartsWith("silence") || lower.StartsWith("dispel")) type = SpellType.Debuff;
+
+             QueueSpell(partyMemberName, spellName, type, SpellPriority.Normal, null, null, OptionalExtras);
+        }
+
+        private void ProcessSpellQueue()
+        {
+            if (CastingBackground_Check || JobAbilityLock_Check) return;
+            if (currentSpellRequest != null)
+            {
+                // Check for timeout?
+                if ((DateTime.Now - currentSpellStartTime).TotalSeconds > 15) // 15s timeout
+                {
+                     debug_MSG_show.AppendLine($"[ProcessSpellQueue] Timeout waiting for {currentSpellRequest.SpellName}. Clearing.");
+                     if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
+                     currentSpellRequest = null;
+                     CastingBackground_Check = false; // Force unlock
+                }
+                return; // Still processing a request
             }
 
+            // Simple priority handling: Scan queue?
+            // ConcurrentQueue doesn't support random access.
+            // Ideally we'd have 3 queues: High, Normal, Low.
+            // For now, we just take the next one.
+
+            if (masterSpellQueue.TryDequeue(out var request))
+            {
+                currentSpellRequest = request;
+                currentSpellStartTime = DateTime.Now;
+
+                // Execute
+                if (!ExecuteCast(request.TargetName, request.SpellName, request.OptionalExtras))
+                {
+                    // If execution failed immediately (e.g. spell not found), clean up
+                    if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
+                    currentSpellRequest = null;
+                }
+            }
         }
 
         private void hastePlayer(byte partyMemberId)
@@ -6056,6 +6141,9 @@ namespace Miraculix
             CheckEngagedStatus_Hate();
             RunDebuffLogic();
             RunDispelLogic();
+
+            // Process the queue at the end of the logic block
+            ProcessSpellQueue();
 
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
             string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
@@ -10022,6 +10110,13 @@ namespace Miraculix
                                 debug_MSG_show.AppendLine(
                                     $"[{DateTime.Now:HH:mm:ss.fff}] [DEBUFF_INTERRUPTED] '{spellName}' on '{targetName}' was interrupted. Resetting timer for '{debuffType}'.");
                             }
+
+                            // Update Master Queue
+                            if (currentSpellRequest != null)
+                            {
+                                if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
+                                currentSpellRequest = null;
+                            }
                         }
                     }
 
@@ -10060,6 +10155,13 @@ namespace Miraculix
 
                             if (!string.IsNullOrEmpty(buffType))
                                 partyState.ResetBuffTimer(targetName, buffType);
+
+                            // Update Master Queue
+                            if (currentSpellRequest != null)
+                            {
+                                if (currentSpellRequest.OnFailure != null) currentSpellRequest.OnFailure();
+                                currentSpellRequest = null;
+                            }
                         }
                     }
 
@@ -10077,6 +10179,13 @@ namespace Miraculix
                 break;
 
                 case "CAST_FINISH":
+                    // Update Master Queue
+                    if (currentSpellRequest != null)
+                    {
+                        if (currentSpellRequest.OnSuccess != null) currentSpellRequest.OnSuccess();
+                        currentSpellRequest = null;
+                    }
+
                     ProtectCasting.CancelAsync();
                     castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
                     Task.Delay(3000).ContinueWith(_ =>
